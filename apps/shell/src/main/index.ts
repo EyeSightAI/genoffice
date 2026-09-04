@@ -78,6 +78,7 @@ import {
   syncCloudProjects,
 } from './cloud-projects'
 import { handleDroppedFiles } from './dropped-files'
+import { activateMembership, loadMembership, verifyCard } from './membership'
 import { ProjectStore } from '@genoffice/project-store'
 import {
   ensureGenofficeLogin,
@@ -2868,6 +2869,21 @@ function registerHomeIpc(): void {
     await genofficeLogout()
     // the cloud projects cache belongs to the account that just signed out
     clearCloudProjectsStore(cloudProjectsStorePath())
+  })
+
+  ipcMain.handle(HOME_CHANNELS.membershipStatus, () => loadMembership(app.getPath('userData')))
+
+  ipcMain.handle(HOME_CHANNELS.membershipActivate, (_event, card: unknown) => {
+    if (typeof card !== 'string' || !card.trim()) return { ok: false, error: '请输入卡密' }
+    const res = verifyCard(card)
+    if (!res.ok || !res.payload) return { ok: false, error: res.error ?? '卡密无效' }
+    const status = activateMembership(app.getPath('userData'), res.payload)
+    return { ok: true, status }
+  })
+
+  ipcMain.handle(HOME_CHANNELS.membershipOpenPurchase, () => {
+    // TODO: 替换成发卡平台购买页地址
+    void shell.openExternal('https://example.com/buy')
   })
 
   ipcMain.handle(HOME_CHANNELS.getAppVersion, (): string => app.getVersion())

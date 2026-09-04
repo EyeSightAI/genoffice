@@ -36,7 +36,7 @@
 | `apps/docs/build/icon.{png,ico,icon-mac.png}` | 用 UToLogo 替换（Pillow 生成多尺寸 ico） |
 | `apps/shell/build/icon.{png,ico,icon-mac.png}` | 同上 |
 | `apps/shell/src/renderer/src/assets/app-icon.png` | 用 UToLogo 替换（onboarding 图标） |
-| `apps/shell/src/renderer/src/assets/genoffice-logo.svg` | 换成 UToLogo 图标 + `<text>UToOffice</text>`（侧边栏 logo lockup）。**原版尺寸：整体 1091×240，图标 240×240，文字约 766×131px（font-size 约 180）**；我的文字用 `font-size 180`，`x=300 y=185` |
+| `apps/shell/src/renderer/src/assets/genoffice-logo.svg` | 换成 UToLogo 图标 + `<text>UToOffice</text>`（侧边栏 logo lockup）。**原版尺寸：整体 1091×240，图标 240×240，文字约 766×131px（font-size 约 180）**；我的文字用 `font-size 160`，`x=300 y=185`（**Segoe UI Bold 实测 `UToOffice` 文字宽：font-size 165=783px 是 791px 可用宽的理论上限，175=833px 会溢出被裁；用 160 留 31px 安全余量**） |
 
 > ⚠️ 注意：安装包图标在 `build/`，应用内 UI 图标在 `src/renderer/src/assets/`，两处都要改。
 >

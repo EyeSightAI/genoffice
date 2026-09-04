@@ -10,7 +10,7 @@ import {
 import type { AiSettings } from '@genoffice/ai-provider'
 import { useI18n } from './locale'
 import type { StringKey, TFunc } from './locale'
-import type { AccountStatus, AiCatalogEntry, UiTheme } from '../../shared/home-api'
+import type { AccountStatus, AiCatalogEntry, MembershipStatus, UiTheme } from '../../shared/home-api'
 import { ProviderLogo } from './provider-logos'
 import './settings.css'
 
@@ -495,6 +495,10 @@ export function SettingsModal({
   const [channel, setChannel] = useState<'stable' | 'beta'>('stable')
   const [appVersion, setAppVersion] = useState('')
   const [githubStars, setGithubStars] = useState<number | null>(null)
+  const [membership, setMembership] = useState<MembershipStatus | null>(null)
+  const [cardInput, setCardInput] = useState('')
+  const [activating, setActivating] = useState(false)
+  const [activateMsg, setActivateMsg] = useState<{ ok: boolean; text: string } | null>(null)
 
   useEffect(() => {
     let alive = true
@@ -515,6 +519,9 @@ export function SettingsModal({
     })
     void window.aiOffice.githubStars?.().then((n) => {
       if (alive && n !== null) setGithubStars(n)
+    })
+    void window.aiOffice.membershipStatus?.().then((m) => {
+      if (alive) setMembership(m)
     })
     return () => {
       alive = false
@@ -540,6 +547,27 @@ export function SettingsModal({
     void window.aiOffice.pickDefaultSaveDir?.().then((dir) => {
       if (dir) setSaveDir(dir)
     })
+  }
+
+  const handleActivate = () => {
+    const card = cardInput.trim()
+    if (!card) return
+    setActivating(true)
+    setActivateMsg(null)
+    void window.aiOffice.membershipActivate?.(card).then((res) => {
+      setActivating(false)
+      if (res.ok && res.status) {
+        setMembership(res.status)
+        setCardInput('')
+        setActivateMsg({ ok: true, text: t('membershipSuccess') })
+      } else {
+        setActivateMsg({ ok: false, text: res.error ?? t('membershipInvalid') })
+      }
+    })
+  }
+
+  const openPurchase = () => {
+    void window.aiOffice.membershipOpenPurchase?.()
   }
 
   const loggedIn = status?.loggedIn ?? false
@@ -627,6 +655,69 @@ export function SettingsModal({
                     </>
                   )}
                 </div>
+
+                {/* 会员区 */}
+                <h3 className="set-pane-title" style={{ marginTop: 20 }}>
+                  {t('membershipTitle')}
+                </h3>
+                <Field
+                  label={t('membershipPro')}
+                  value={
+                    membership?.isPro
+                      ? membership.type === 'lifetime'
+                        ? t('membershipLifetime')
+                        : t('membershipExpiresAt', {
+                            date: membership.expiresAt
+                              ? new Date(membership.expiresAt).toLocaleDateString()
+                              : '',
+                          })
+                      : t('membershipFree')
+                  }
+                />
+                {membership?.isPro ? (
+                  <p style={{ fontSize: 12, color: 'var(--muted-foreground, #888)', margin: '0 0 12px' }}>
+                    {t('membershipSuccess')}
+                  </p>
+                ) : (
+                  <>
+                    <div className="set-field">
+                      <div className="set-field-text">
+                        <label className="set-field-label">{t('membershipActivate')}</label>
+                      </div>
+                      <div style={{ display: 'flex', gap: 8, alignItems: 'center', width: '100%' }}>
+                        <input
+                          value={cardInput}
+                          onChange={(e) => setCardInput(e.target.value)}
+                          placeholder={t('membershipPlaceholder')}
+                          style={{ flex: 1, padding: '6px 8px', fontSize: 13 }}
+                        />
+                        <button
+                          className="set-btn primary"
+                          disabled={activating || !cardInput.trim()}
+                          onClick={handleActivate}
+                        >
+                          {activating ? t('membershipActivating') : t('membershipActivate')}
+                        </button>
+                      </div>
+                    </div>
+                    {activateMsg && (
+                      <p
+                        style={{
+                          fontSize: 12,
+                          margin: '4px 0',
+                          color: activateMsg.ok ? 'var(--muted-foreground, #888)' : '#d93025',
+                        }}
+                      >
+                        {activateMsg.text}
+                      </p>
+                    )}
+                    <div className="set-pane-footer">
+                      <button className="set-btn primary" onClick={openPurchase}>
+                        {t('membershipBuy')}
+                      </button>
+                    </div>
+                  </>
+                )}
               </>
             )}
             {section === 'aiModel' && <AiModelPane t={t} />}

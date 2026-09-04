@@ -8,6 +8,8 @@ import type {
   AccountStatus,
   CloudProjectsSnapshot,
   HomeApi,
+  MembershipActivateResult,
+  MembershipStatus,
   RecentEntry,
   RecentPage,
   RenameResult,
@@ -152,6 +154,17 @@ const homeApi: HomeApi = {
   },
   async accountLogout() {
     await ipcRenderer.invoke(HOME_CHANNELS.accountLogout)
+  },
+  async membershipStatus() {
+    const result: unknown = await ipcRenderer.invoke(HOME_CHANNELS.membershipStatus)
+    return (result ?? { plan: 'free', expiresAt: null, isPro: false }) as MembershipStatus
+  },
+  async membershipActivate(card) {
+    const result: unknown = await ipcRenderer.invoke(HOME_CHANNELS.membershipActivate, card)
+    return (result ?? { ok: false, error: 'Activation failed' }) as MembershipActivateResult
+  },
+  async membershipOpenPurchase() {
+    await ipcRenderer.invoke(HOME_CHANNELS.membershipOpenPurchase)
   },
   async getAppVersion() {
     const result: unknown = await ipcRenderer.invoke(HOME_CHANNELS.getAppVersion)
