@@ -81,7 +81,13 @@ zh + en 两版：
 | `apps/markdown/src/renderer/ai/AiPanel.tsx` | `aria-label="Genspark"` → `AI 助手`；标题 `<GensparkMark/>` + `Genspark` 文字 → UToLogo base64 图标 + `AI 助手` |
 | `apps/markdown/src/renderer/App.tsx` + `components/Ribbon.tsx` | `<GensparkMark/>` 图标 → 已随 GensparkMark 组件替换为 UToLogo |
 
-> 通用替换：`Genspark AI`→`AI 助手`、`"Genspark"`/`'Genspark'`→`AI 助手`。**markdown 的 `GensparkMark` 是图标组件，需把组件体替换成 UToLogo base64 图片**（不只改文字）。
+> **GensparkMark 图标组件（每个 app 各有一个独立定义，都要替换成 UToLogo base64 图片）**：
+> - docs `components/icons.tsx:1660`、slides `components/icons.tsx:2140`、pdf `ai/AiPanel.tsx:891`、sheets `ribbon-icons.tsx:716`、markdown `ai/AiPanel.tsx:1022`
+> - 替换体：`return <img src="data:image/png;base64,{B64}" width={size} height={size} alt="" />`（保留各自签名；**用字符串拼接，别用 f-string**——花括号转义会生成 `style={ display:"block" }` 这种非法 JSX 导致构建失败）
+>
+> **AI 面板标题硬编码「Genspark」文字（JSX 文本节点，非 i18n）**：markdown `AiPanel.tsx:575`、pdf `AiPanel.tsx:546`、sheets `AiChatPanel.tsx:512` → 都改 `AI 助手`（docs/slides 用的是 i18n `aiPanelTitle`，改 zh/en 即可）
+
+> 通用替换：`Genspark AI`→`AI 助手`、`"Genspark"`/`'Genspark'`→`AI 助手`。
 
 ### 7. URL 链接
 
@@ -137,7 +143,48 @@ zh + en 两版：
 6. **「Genspark AI」是硬编码**：在 Ribbon.tsx 里，不走 i18n，容易被漏
 7. **安装包未签名**：Windows 11「智能应用控制」会拦截，需关闭该功能或买签名证书
 
-## 六、剩余工作（Phase 1）
+## 六、换皮验收检查（未来「验收程序」的核心规则）
+
+每次上游更新换皮后，跑下面 5 组检查，**期望结果都是「干净」**（无输出，或只剩白名单）。
+
+### A. 产品名残留（GenOffice）
+```bash
+grep -rn "GenOffice" apps/shell/src/ apps/*/src/renderer/ --include='*.ts' --include='*.tsx' \
+  | grep -viE '@genoffice|fonts\.css|GenOffice (PUA|Sans|Serif|Gothic|Songti|Box|Hiragino)|StaticForm|FormField|doc-style'
+```
+期望：无输出（白名单 = 字体别名、@genoffice 包名、PDF 字段名，都是允许的）。
+
+### B. 商标残留（Genspark）
+```bash
+grep -rn "Genspark" apps/*/src/ packages/ --include='*.ts' --include='*.tsx' \
+  | grep -viE '@genspark|@genoffice|\.test\.|// |/\*|GENSPARK_ORIGIN|gsk|errGsk|GensparkMark|image-skill|fonts\.css'
+```
+期望：Phase 0 后无用户可见残留。剩下的 `gsk`/`errGsk`/`GENSPARK_ORIGIN` 是 Phase 1 删登录时的白名单，删登录后这些也会消失。
+
+### C. URL 残留
+```bash
+grep -rn "genspark-ai\|genoffice\.ai\|genspark\.ai\|genspark\.com" apps/ packages/ --include='*.ts' --include='*.tsx' \
+  | grep -viE '\.test\.|// |/\*'
+```
+期望：无输出（注释里的历史 issue 链接是允许的）。
+
+### D. 图标组件（GensparkMark → UToLogo）
+```bash
+grep -rn "function GensparkMark" apps/*/src/
+```
+期望：恰好 5 处（docs/slides 的 `components/icons.tsx`、pdf/markdown 的 `ai/AiPanel.tsx`、sheets 的 `ribbon-icons.tsx`），且每处下一行都是 `return <img src="data:image/png;base64,`。
+
+### E. AI 面板标题硬编码文字
+```bash
+grep -rn "Genspark" apps/*/src/renderer/ai/*.tsx apps/*/src/renderer/*Shell.tsx \
+  | grep -viE 'GensparkMark|// |/\*'
+```
+期望：无输出（标题文字都已改「AI 助手」）。
+
+### 验收程序落地建议
+做成脚本时，按 A–E 五条规则跑 grep，任一规则「非干净」即判定换皮不彻底。白名单用固定正则；未来新增残留类型时，往对应白名单追加条目即可。图标 D 条还需要校验 `return <img` 这一行存在（不只数 5 处）。
+
+## 七、剩余工作（Phase 1）
 
 - 17 种其他语言（ja/ko/de/fr/es/…）的 Genspark 文案残留
 - Genspark 登录功能代码（设备码登录、gsk 工具端点）
