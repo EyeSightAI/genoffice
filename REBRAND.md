@@ -63,12 +63,18 @@ zh + en 两版：
 - `未登录（AI 功能需要登录 Genspark 账号）` → 去掉 Genspark
 - `Genspark 积分已用完…` → `额度已用完，请检查你的 API Key 余额`
 
-### 6. 硬编码「Genspark AI」（不走 i18n）
+### 6. 硬编码「Genspark / Genspark AI」（不走 i18n，分散在各 app 组件里）
 
 | 文件 | 改动 |
 |---|---|
 | `apps/docs/src/renderer/components/Ribbon.tsx` | `<span>Genspark AI</span>` 和 `<div class="ribbon-group-label">Genspark AI</div>` → `AI 助手` |
 | `apps/markdown/src/renderer/components/Ribbon.tsx` | `<span>Genspark AI</span>` → `AI 助手` |
+| `apps/slides/src/renderer/App.tsx` + `components/RibbonHomeTab.tsx` + `ai/AiPanel.tsx` | `<span>Genspark AI</span>`、`<Group label="Genspark AI">`、`aria-label="Genspark AI"` → `AI 助手` |
+| `apps/sheets/src/renderer/ExcelShell.tsx` + `ai/AiChatPanel.tsx` | `<strong>Genspark AI</strong>`、`aria-label="Genspark"` → `AI 助手` |
+| `apps/pdf/src/renderer/App.tsx` + `ai/AiPanel.tsx` | `<span>Genspark AI</span>`、`aria-label="Genspark"` → `AI 助手` |
+| `apps/markdown/src/renderer/ai/AiPanel.tsx` | `aria-label="Genspark"` → `AI 助手` |
+
+> 通用替换：`Genspark AI`→`AI 助手`、`"Genspark"`→`"AI 助手"`、`'Genspark'`→`'AI 助手'`
 
 ### 7. URL 链接
 
