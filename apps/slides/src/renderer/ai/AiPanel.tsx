@@ -370,6 +370,14 @@ function clampPanelWidth(w: number): number {
   return Math.min(Math.max(w, PANEL_WIDTH_MIN), max)
 }
 
+/** 预置专业风格（会员专享）；名字与 apps/slides/src/main/preset-styles.ts 保持一致 */
+const PRESET_STYLES = [
+  { name: '商务提案 · 深蓝专业风', topic: '企业汇报 / 商务提案' },
+  { name: '党政公文 · 国标红头风', topic: '公文 / 汇报材料' },
+  { name: '学术报告 · 简洁学术风', topic: '学术汇报 / 论文答辩' },
+  { name: '科技产品 · 深色科技风', topic: '产品发布 / 技术分享' },
+] as const
+
 export function AiPanel({
   slides,
   current,
@@ -404,6 +412,22 @@ export function AiPanel({
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null)
   const [attachments, setAttachments] = useState<AttachmentMeta[]>([])
   const [attachNotice, setAttachNotice] = useState<string | null>(null)
+  /** 选中的预置风格名（null = 未选） */
+  const [selectedStyle, setSelectedStyle] = useState<string | null>(null)
+  const [isPro, setIsPro] = useState(false)
+
+  // 会员判断：会员时 listStyleTemplates 返回预置风格
+  useEffect(() => {
+    let alive = true
+    void window.slidesApi.listStyleTemplates().then((list) => {
+      if (!alive) return
+      const names = (list ?? []).map((s) => s.name)
+      setIsPro(PRESET_STYLES.some((s) => names.includes(s.name)))
+    })
+    return () => {
+      alive = false
+    }
+  }, [])
   /** data-URL previews for image attachments, keyed by path (Genspark composer thumbnails) */
   const [attachmentPreviews, setAttachmentPreviews] = useState<Record<string, string>>({})
   /** image paths with a read already issued — one readAttachmentImage per attach, even while pending */
@@ -1512,7 +1536,12 @@ export function AiPanel({
     // `open` dep: re-measure after expand restores a draft
   }, [input, open])
 
-  const run = () => runWith(input.trim())
+  const run = () => {
+    const instruction = selectedStyle
+      ? `请使用「${selectedStyle}」这个风格模板来生成。\n${input.trim()}`
+      : input.trim()
+    runWith(instruction)
+  }
 
   /** Image attachments read as base64, sent multimodally with this user message (≤5MB per image, max 20; isomorphic to docs) */
   const MAX_IMAGES_PER_MESSAGE = 20
@@ -2298,6 +2327,46 @@ export function AiPanel({
                 )}
               </div>
             )}
+            {/* 预置专业风格选择器（会员专享） */}
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: 6,
+                padding: '6px 12px 0',
+              }}
+            >
+              {PRESET_STYLES.map((s) => (
+                <button
+                  key={s.name}
+                  onClick={() => {
+                    if (!isPro) {
+                      setAttachNotice('专业风格库为会员专享，请在设置里激活会员')
+                      window.setTimeout(() => setAttachNotice(null), 5000)
+                      return
+                    }
+                    setSelectedStyle(selectedStyle === s.name ? null : s.name)
+                  }}
+                  data-tip={isPro ? s.topic : '会员专享'}
+                  style={{
+                    padding: '4px 10px',
+                    fontSize: 12,
+                    borderRadius: 14,
+                    border:
+                      selectedStyle === s.name
+                        ? '1px solid var(--accent)'
+                        : '1px solid var(--border)',
+                    background: selectedStyle === s.name ? 'var(--accent-soft)' : 'transparent',
+                    color: 'var(--text)',
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {!isPro ? '🔒 ' : ''}
+                  {s.name}
+                </button>
+              ))}
+            </div>
             <textarea
               ref={inputRef}
               value={input}
