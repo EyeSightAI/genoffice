@@ -6342,7 +6342,7 @@ export default function App() {
               aria-label={t('aiOpenAssistant')}
               onClick={() => setAiCollapsed(false)}
             >
-              <GensparkMark size={22} />
+              <GensparkMark size={26} />
             </button>
           )}
           <AiPanel

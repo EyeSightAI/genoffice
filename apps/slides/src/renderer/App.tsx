@@ -3175,7 +3175,7 @@ export function App() {
                 data-tip={t('appAiRailExpand')}
                 aria-label={t('appAiRailExpand')}
               >
-                <GensparkMark size={22} />
+                <GensparkMark size={26} />
               </button>
             )}
           </div>

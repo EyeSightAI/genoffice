@@ -36,9 +36,11 @@
 | `apps/docs/build/icon.{png,ico,icon-mac.png}` | 用 UToLogo 替换（Pillow 生成多尺寸 ico） |
 | `apps/shell/build/icon.{png,ico,icon-mac.png}` | 同上 |
 | `apps/shell/src/renderer/src/assets/app-icon.png` | 用 UToLogo 替换（onboarding 图标） |
-| `apps/shell/src/renderer/src/assets/genoffice-logo.svg` | 换成 UToLogo 图标 + `<text>UToOffice</text>`（侧边栏 logo lockup）。**原版尺寸：整体 1091×240，图标 240×240，文字约 766×131px（font-size 约 180）**；我的文字用 `font-size 175`，`x=300 y=185` |
+| `apps/shell/src/renderer/src/assets/genoffice-logo.svg` | 换成 UToLogo 图标 + `<text>UToOffice</text>`（侧边栏 logo lockup）。**原版尺寸：整体 1091×240，图标 240×240，文字约 766×131px（font-size 约 180）**；我的文字用 `font-size 180`，`x=300 y=185` |
 
 > ⚠️ 注意：安装包图标在 `build/`，应用内 UI 图标在 `src/renderer/src/assets/`，两处都要改。
+>
+> **⚠️ logo 留白问题（重要）**：用户原始 `UTOlogo.png`（1024×1024）有大量透明留白（logo 图形只占 64%×74%，尤其下面留白 242px），直接缩放会让桌面图标/侧边栏 logo 显得很小。**必须先裁掉留白**：`im.getbbox()` 取非透明区域 + 5% padding，居中放到正方形，生成 `UTOlogo_tight.png`（图形占 80%×92%），再用紧凑版生成图标和 svg base64。
 
 ### 3. NOTICE（法律要求）
 

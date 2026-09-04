@@ -614,7 +614,7 @@ export default function App() {
               aria-label={t('aiOpenAssistant')}
               onClick={() => setAiOpen(true)}
             >
-              <GensparkMark size={22} />
+              <GensparkMark size={26} />
             </button>
           )}
           {/* mounted only after the file is loaded so chat history resolves against the real path */}

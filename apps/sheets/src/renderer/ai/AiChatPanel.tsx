@@ -440,7 +440,7 @@ export function AiChatPanel({
           data-tip={t('aiOpenAssistant')}
           aria-label={t('aiOpenAssistant')}
         >
-          <GensparkMark size={22} />
+          <GensparkMark size={26} />
         </button>
       </aside>
     )
@@ -508,7 +508,7 @@ export function AiChatPanel({
       />
       <header className="ai-panel-header">
         <span className="ai-panel-title">
-          <GensparkMark size={22} />
+          <GensparkMark size={26} />
           AI 助手
         </span>
         <div className="ai-panel-header-actions">

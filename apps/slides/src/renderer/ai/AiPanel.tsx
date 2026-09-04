@@ -1959,7 +1959,7 @@ export function AiPanel({
         aria-label={t('appAiRailExpand')}
         onClick={onExpand}
       >
-        <GensparkMark size={22} />
+        <GensparkMark size={26} />
       </button>
     )
   }
@@ -1990,7 +1990,7 @@ export function AiPanel({
       />
       <div className="ai-panel-header">
         <span className="ai-panel-title">
-          <GensparkMark size={22} />
+          <GensparkMark size={26} />
           {t('aiPanelTitle')}
         </span>
         <div className="ai-panel-header-actions">
