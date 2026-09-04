@@ -36,7 +36,7 @@
 | `apps/docs/build/icon.{png,ico,icon-mac.png}` | 用 UToLogo 替换（Pillow 生成多尺寸 ico） |
 | `apps/shell/build/icon.{png,ico,icon-mac.png}` | 同上 |
 | `apps/shell/src/renderer/src/assets/app-icon.png` | 用 UToLogo 替换（onboarding 图标） |
-| `apps/shell/src/renderer/src/assets/genoffice-logo.svg` | 换成 UToLogo 图标 + `<text>UToOffice</text>`（侧边栏 logo lockup） |
+| `apps/shell/src/renderer/src/assets/genoffice-logo.svg` | 换成 UToLogo 图标 + `<text>UToOffice</text>`（侧边栏 logo lockup）。**原版尺寸：整体 1091×240，图标 240×240，文字约 766×131px（font-size 约 180）**；我的文字用 `font-size 175`，`x=300 y=185` |
 
 > ⚠️ 注意：安装包图标在 `build/`，应用内 UI 图标在 `src/renderer/src/assets/`，两处都要改。
 
@@ -77,6 +77,9 @@ zh + en 两版：
 | `apps/shell/src/main/index.ts` | `GENTEAM_URL`: `https://genoffice.ai/join` → `https://github.com/EyeSightAI/genoffice/issues` |
 | `apps/shell/src/main/index.ts` | GitHub star API: `genspark-ai/genoffice` → `EyeSightAI/genoffice` |
 | `apps/shell/src/renderer/src/SettingsModal.tsx` | `github.com/genspark-ai/genoffice` → `github.com/EyeSightAI/genoffice` |
+| `packages/electron-utils/src/github-menu.ts` | `GITHUB_REPO_URL`（**star 按钮 + 菜单**打开的就是它）: `genspark-ai/genoffice` → `EyeSightAI/genoffice` |
+| `apps/shell/src/main/updater.ts` | `DOWNLOAD_PAGE_URL`（更新器下载页）: `genspark-ai/genoffice/releases/latest` → `EyeSightAI/...` |
+| `apps/shell/src/main/index.ts` | `CREDIT_USAGE_URL`（账户「查看用量」）: `genspark.ai/credit-usage` → `EyeSightAI/genoffice` |
 
 ### 8. AI 工具描述
 

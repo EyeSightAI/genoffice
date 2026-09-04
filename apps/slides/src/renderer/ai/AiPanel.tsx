@@ -1986,7 +1986,7 @@ export function AiPanel({
         onPointerDown={startResize}
         role="separator"
         aria-orientation="vertical"
-        aria-label="Genspark AI"
+        aria-label="AI 助手"
       />
       <div className="ai-panel-header">
         <span className="ai-panel-title">

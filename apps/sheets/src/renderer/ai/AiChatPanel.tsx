@@ -504,7 +504,7 @@ export function AiChatPanel({
         onPointerDown={startResize}
         role="separator"
         aria-orientation="vertical"
-        aria-label="Genspark"
+        aria-label="AI 助手"
       />
       <header className="ai-panel-header">
         <span className="ai-panel-title">
