@@ -680,21 +680,23 @@ export function SettingsModal({
                   </p>
                 ) : (
                   <>
-                    <div className="set-field">
-                      <div className="set-field-text">
-                        <label className="set-field-label">{t('membershipActivate')}</label>
-                      </div>
-                      <div style={{ display: 'flex', gap: 8, alignItems: 'center', width: '100%' }}>
+                    <div
+                      className="set-field"
+                      style={{ flexDirection: 'column', alignItems: 'stretch', gap: 8 }}
+                    >
+                      <label className="set-field-label">{t('membershipActivate')}</label>
+                      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                         <input
                           value={cardInput}
                           onChange={(e) => setCardInput(e.target.value)}
                           placeholder={t('membershipPlaceholder')}
-                          style={{ flex: 1, padding: '6px 8px', fontSize: 13 }}
+                          style={{ flex: 1, padding: '6px 8px', fontSize: 13, minWidth: 0 }}
                         />
                         <button
                           className="set-btn primary"
                           disabled={activating || !cardInput.trim()}
                           onClick={handleActivate}
+                          style={{ flexShrink: 0 }}
                         >
                           {activating ? t('membershipActivating') : t('membershipActivate')}
                         </button>
