@@ -16,6 +16,7 @@ import {
   writeFileSync,
 } from 'node:fs'
 import { join } from 'node:path'
+import { PRESET_STYLES } from './preset-styles'
 import {
   AiCreditsError,
   AiTimeoutError,
@@ -449,6 +450,24 @@ export function registerSlidesOnlyAiIpc(): void {
   // ── Style template save: stored in userData/style-templates/<name>.json
   const STYLE_TEMPLATES_DIR = () => join(app.getPath('userData'), 'style-templates')
 
+  // 会员判断：读 userData/membership.json（与 shell 的 membership 状态一致）
+  const isProMember = (): boolean => {
+    try {
+      const mp = join(app.getPath('userData'), 'membership.json')
+      if (!existsSync(mp)) return false
+      const d = JSON.parse(readFileSync(mp, 'utf-8')) as {
+        plan?: string
+        type?: string
+        expiresAt?: number | null
+      }
+      if (d.plan !== 'pro') return false
+      if (d.type === 'lifetime') return true
+      return d.expiresAt != null && d.expiresAt > Date.now()
+    } catch {
+      return false
+    }
+  }
+
   ipcMain.handle(
     'ai:save-style-template',
     (
@@ -474,12 +493,19 @@ export function registerSlidesOnlyAiIpc(): void {
   ipcMain.handle(
     'ai:list-style-templates',
     (): Array<{ name: string; topic: string; createdAt: string }> => {
+      const result: Array<{ name: string; topic: string; createdAt: string }> = []
+      // 会员：预置专业风格在最前面
+      if (isProMember()) {
+        for (const s of PRESET_STYLES) {
+          result.push({ name: s.name, topic: s.topic, createdAt: '' })
+        }
+      }
+      // 用户自己保存的模板
       try {
         const dir = STYLE_TEMPLATES_DIR()
-        if (!existsSync(dir)) return []
-        const files = readdirSync(dir).filter((f) => f.endsWith('.json'))
-        return files
-          .map((f) => {
+        if (existsSync(dir)) {
+          const files = readdirSync(dir).filter((f) => f.endsWith('.json'))
+          for (const f of files) {
             try {
               const raw = readJson<{
                 name?: string
@@ -487,19 +513,20 @@ export function registerSlidesOnlyAiIpc(): void {
                 createdAt?: string
                 styleSkill?: string
               }>(join(dir, f), {})
-              return {
+              result.push({
                 name: raw.name ?? f.replace(/\.json$/, ''),
                 topic: raw.topic ?? '',
                 createdAt: raw.createdAt ?? '',
-              }
+              })
             } catch {
-              return null
+              /* skip unreadable template */
             }
-          })
-          .filter(Boolean) as Array<{ name: string; topic: string; createdAt: string }>
+          }
+        }
       } catch {
-        return []
+        /* ignore list errors */
       }
+      return result
     },
   )
 
@@ -510,6 +537,11 @@ export function registerSlidesOnlyAiIpc(): void {
       _event,
       name: string,
     ): { ok: boolean; styleSkill?: string; topic?: string; error?: string } => {
+      // 会员：命中预置专业风格直接返回
+      if (isProMember()) {
+        const preset = PRESET_STYLES.find((s) => s.name === name)
+        if (preset) return { ok: true, styleSkill: preset.styleSkill, topic: preset.topic }
+      }
       try {
         const dir = STYLE_TEMPLATES_DIR()
         const safeName = name.replace(/[/\\:*?"<>|]/g, '_').slice(0, 64)
