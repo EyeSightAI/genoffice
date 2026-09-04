@@ -46,9 +46,6 @@ jobs:
 
       - name: Build Windows installer
         run: npm run dist:win
-        env:
-          # No GA4 credentials → analytics disabled in the packaged app.
-          # Set GENOFFICE_UPDATE_URL when an update channel exists.
 
       - name: List artifacts
         shell: bash
