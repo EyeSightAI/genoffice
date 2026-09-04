@@ -12,7 +12,7 @@
  * Membership state is persisted at userData/membership.json.
  */
 
-import { createHmac } from 'node:crypto'
+import { createHmac, randomUUID } from 'node:crypto'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 
@@ -37,6 +37,8 @@ export interface CardPayload {
   type: MembershipType
   /** expiry ms epoch; 0 for lifetime */
   exp: number
+  /** random unique id so every card is distinct (offline HMAC cannot dedupe) */
+  id: string
 }
 
 function sign(data: string): string {
@@ -46,7 +48,7 @@ function sign(data: string): string {
 /** Generate a signed card (used offline to mint cards for the reseller platform). */
 export function generateCard(type: MembershipType): string {
   const exp = type === 'lifetime' ? 0 : Date.now() + 365 * 24 * 60 * 60 * 1000
-  const payload: CardPayload = { plan: 'pro', type, exp }
+  const payload: CardPayload = { plan: 'pro', type, exp, id: randomUUID() }
   const body = Buffer.from(JSON.stringify(payload)).toString('base64url')
   // sig 固定 16 字符，紧跟 body 拼接（不用分隔符：base64url 本身含 -/_，会干扰分隔解析）
   return `UTO-${body}${sign(body)}`
