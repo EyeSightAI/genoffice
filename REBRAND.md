@@ -55,13 +55,19 @@ zh + en 两版：
 - `加入 GenTeam` → `提交反馈`；`1,000+ Genspark 积分` → 中性文案
 - `发送匿名统计…Google Analytics 4` → `本应用不收集任何使用数据`
 
-### 5. 编辑器 AI 面板文案（docs/sheets/slides 的 `i18n/ai/*.ts` + `i18n/app/*.ts`）
+### 5. 编辑器 AI 面板文案
+
+**⚠️ 结构差异（重要）**：
+- docs/sheets/slides 的 i18n 是**分文件**（`i18n/ai/zh.ts` + `i18n/app/zh.ts`）
+- **pdf 的 i18n 是单文件 `i18n/strings.ts`**（19 语言在一个文件里，含 `ribbonAiAssistant: 'Genspark'`）
+- markdown 的 i18n 里**没有** Genspark（它的残留是硬编码，见第 6 节）
 
 zh + en 两版：
 - `aiPanelTitle: 'Genspark'` → `'AI 助手'` / `'AI Assistant'`
 - `登录 Genspark` → `登录`；`Genspark 账号` → `账号`
 - `未登录（AI 功能需要登录 Genspark 账号）` → 去掉 Genspark
 - `Genspark 积分已用完…` → `额度已用完，请检查你的 API Key 余额`
+- pdf 的 `ribbonAiAssistant: 'Genspark'` → `'AI 助手'` / `'AI Assistant'`
 
 ### 6. 硬编码「Genspark / Genspark AI」（不走 i18n，分散在各 app 组件里）
 
@@ -72,9 +78,10 @@ zh + en 两版：
 | `apps/slides/src/renderer/App.tsx` + `components/RibbonHomeTab.tsx` + `ai/AiPanel.tsx` | `<span>Genspark AI</span>`、`<Group label="Genspark AI">`、`aria-label="Genspark AI"` → `AI 助手` |
 | `apps/sheets/src/renderer/ExcelShell.tsx` + `ai/AiChatPanel.tsx` | `<strong>Genspark AI</strong>`、`aria-label="Genspark"` → `AI 助手` |
 | `apps/pdf/src/renderer/App.tsx` + `ai/AiPanel.tsx` | `<span>Genspark AI</span>`、`aria-label="Genspark"` → `AI 助手` |
-| `apps/markdown/src/renderer/ai/AiPanel.tsx` | `aria-label="Genspark"` → `AI 助手` |
+| `apps/markdown/src/renderer/ai/AiPanel.tsx` | `aria-label="Genspark"` → `AI 助手`；标题 `<GensparkMark/>` + `Genspark` 文字 → UToLogo base64 图标 + `AI 助手` |
+| `apps/markdown/src/renderer/App.tsx` + `components/Ribbon.tsx` | `<GensparkMark/>` 图标 → 已随 GensparkMark 组件替换为 UToLogo |
 
-> 通用替换：`Genspark AI`→`AI 助手`、`"Genspark"`→`"AI 助手"`、`'Genspark'`→`'AI 助手'`
+> 通用替换：`Genspark AI`→`AI 助手`、`"Genspark"`/`'Genspark'`→`AI 助手`。**markdown 的 `GensparkMark` 是图标组件，需把组件体替换成 UToLogo base64 图片**（不只改文字）。
 
 ### 7. URL 链接
 
