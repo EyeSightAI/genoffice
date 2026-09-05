@@ -235,10 +235,10 @@ describe('parseGskConvertResult', () => {
       status: 'ok',
       data: {
         result:
-          'Conversion complete. Download links:\n[report.docx](https://www./api/files/s/JmS2WJHv)\n',
+          'Conversion complete. Download links:\n[report.docx](https://www.genspark.ai/api/files/s/JmS2WJHv)\n',
       },
     }
-    expect(parseGskConvertResult(raw)).toBe('https://www./api/files/s/JmS2WJHv')
+    expect(parseGskConvertResult(raw)).toBe('https://www.genspark.ai/api/files/s/JmS2WJHv')
   })
 
   it('falls back to a bare URL without markdown', () => {

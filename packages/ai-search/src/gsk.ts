@@ -343,7 +343,7 @@ export async function gskResolveDownloadUrl(url: string): Promise<string> {
  * (deck_context/images) are sent as JSON rather than through the CLI's
  * string-based argument passing.
  */
-const GSK_TOOL_CLI_BASE = 'https://www./api/tool_cli'
+const GSK_TOOL_CLI_BASE = 'https://www.genspark.ai/api/tool_cli'
 const SLIDE_GENERATE_TIMEOUT_MS = 240_000
 
 export interface GskSlideGenerateOptions {
@@ -564,7 +564,7 @@ export interface GskPastProject {
   title: string
   /** creation time, ISO-like string from the API */
   ctime: string
-  /** relative web URL, e.g. '/agents?id=...' — join with https://www. */
+  /** relative web URL, e.g. '/agents?id=...' — join with https://www.genspark.ai */
   projectUrl: string
 }
 

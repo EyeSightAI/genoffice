@@ -14,7 +14,7 @@ export function kindFromType(type: string): CloudProjectKind | 'other' {
   return KINDS.find((k) => type.startsWith(k)) ?? 'other'
 }
 
-export const GENSPARK_ORIGIN = 'https://www.'
+export const GENSPARK_ORIGIN = 'https://www.genspark.ai'
 
 /** API ctime carries no timezone marker and is UTC; append Z before parsing */
 function ctimeToMs(ctime: string): number {

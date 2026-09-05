@@ -4096,7 +4096,7 @@ async function installMainProcessProxy(): Promise<void> {
     try {
       // PAC/rule proxies answer per-host: probe the host the login flow, the
       //  LLM proxy and the gsk CLI actually target
-      const resolved = await session.defaultSession.resolveProxy('https://www./')
+      const resolved = await session.defaultSession.resolveProxy('https://www.genspark.ai/')
       const m = /PROXY\s+([^;\s]+)/.exec(resolved)
       if (m) proxyUrl = `http://${m[1]}`
     } catch {

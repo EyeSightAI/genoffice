@@ -30,7 +30,7 @@ const KEY_NAME = 'genoffice'
 const HTTP_TIMEOUT_MS = 30_000
 
 function baseUrl(): string {
-  return (process.env.GSK_BASE_URL || 'https://www.').replace(/\/$/, '')
+  return (process.env.GSK_BASE_URL || 'https://www.genspark.ai').replace(/\/$/, '')
 }
 
 let cachedFetch: typeof fetch | undefined

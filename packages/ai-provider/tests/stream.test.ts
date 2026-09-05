@@ -820,7 +820,7 @@ describe('streamForProvider: genspark', () => {
       cb,
     ).catch(() => {})
     expect(fetchMock).toHaveBeenCalledWith(
-      'https://www./api/anthropic/v1/messages',
+      'https://www.genspark.ai/api/anthropic/v1/messages',
       expect.objectContaining({ headers: expect.objectContaining({ 'x-api-key': 'gsk-k' }) }),
     )
   })
@@ -839,7 +839,7 @@ describe('streamForProvider: genspark', () => {
       cb,
     ).catch(() => {})
     expect(fetchMock).toHaveBeenCalledWith(
-      'https://www./api/llm_proxy/v1/chat/completions',
+      'https://www.genspark.ai/api/llm_proxy/v1/chat/completions',
       expect.anything(),
     )
   })
@@ -881,7 +881,7 @@ describe('streamForProvider: genspark', () => {
 
 describe('streamForProvider: 200 + non-stream JSON instead of SSE', () => {
   const creditsNotice =
-    'Your credits have been exhausted. Please visit https://www. to purchase more credits.'
+    'Your credits have been exhausted. Please visit https://www.genspark.ai to purchase more credits.'
   const json = (value: unknown) =>
     new Response(JSON.stringify(value), {
       status: 200,
@@ -916,7 +916,7 @@ describe('streamForProvider: 200 + non-stream JSON instead of SSE', () => {
           candidates: [
             {
               content: {
-                parts: [{ text: 'Out of quota, visit https://www. to top up.' }],
+                parts: [{ text: 'Out of quota, visit https://www.genspark.ai to top up.' }],
               },
             },
           ],

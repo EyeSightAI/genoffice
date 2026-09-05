@@ -18,7 +18,7 @@ export function remoteImageHeaders(rawUrl: string): Record<string, string> {
   try {
     const host = new URL(rawUrl).hostname.toLowerCase()
     if (host === '' || host.endsWith('.')) {
-      headers.Referer = 'https://www./'
+      headers.Referer = 'https://www.genspark.ai/'
     }
   } catch {
     /* fetchWithSsrfGuard rejects unparseable URLs on its own */
