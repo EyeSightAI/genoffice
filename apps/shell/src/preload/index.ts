@@ -166,6 +166,10 @@ const homeApi: HomeApi = {
   async membershipOpenPurchase() {
     await ipcRenderer.invoke(HOME_CHANNELS.membershipOpenPurchase)
   },
+  async openTemplate(name) {
+    if (typeof name !== 'string' || !name) throw new Error('Invalid template name.')
+    await ipcRenderer.invoke(HOME_CHANNELS.openTemplate, name)
+  },
   async getAppVersion() {
     const result: unknown = await ipcRenderer.invoke(HOME_CHANNELS.getAppVersion)
     return typeof result === 'string' ? result : ''

@@ -5,6 +5,7 @@ export const strings = {
     navRecent: '最近',
     navStarred: '收藏',
     navCloud: '云端项目',
+    navTemplates: '模板库',
     cloudSubtitle: '云端项目会在浏览器中继续编辑——点击任意项目即可打开。',
     cloudSearchPlaceholder: '搜索 {n} 个项目…',
     cloudNoResults: '没有匹配的项目。',
@@ -220,6 +221,7 @@ export const strings = {
     navRecent: 'Recent',
     navStarred: 'Starred',
     navCloud: 'Cloud Projects',
+    navTemplates: 'Templates',
     cloudSubtitle:
       'Cloud projects continue editing in your browser — click any project to open it.',
     cloudSearchPlaceholder: 'Search {n} projects…',

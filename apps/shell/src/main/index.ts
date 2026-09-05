@@ -79,6 +79,7 @@ import {
 } from './cloud-projects'
 import { handleDroppedFiles } from './dropped-files'
 import { activateMembership, loadMembership, verifyCard } from './membership'
+import { registerTemplateIpc } from './template-ipc'
 import { ProjectStore } from '@genoffice/project-store'
 import {
   ensureGenofficeLogin,
@@ -2885,6 +2886,9 @@ function registerHomeIpc(): void {
     // TODO: 替换成发卡平台购买页地址
     void shell.openExternal('https://example.com/buy')
   })
+
+  // UToOffice: 模板库一键做同款（独立注册函数）
+  if (tabManager) registerTemplateIpc(tabManager)
 
   ipcMain.handle(HOME_CHANNELS.getAppVersion, (): string => app.getVersion())
 

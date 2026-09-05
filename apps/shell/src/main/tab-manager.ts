@@ -33,6 +33,7 @@ import {
 } from '../../../sheets/src/main/sheets-main'
 import {
   createSlidesView,
+  queueTemplateForView,
   requestSlidesClose,
   setActiveSlidesWebContents,
   slidesIsDirty,
@@ -196,7 +197,7 @@ export class TabManager {
     return id
   }
 
-  openSlidesTab(openPath?: string): string {
+  openSlidesTab(openPath?: string, templateName?: string): string {
     const view = createSlidesView(openPath)
     const id = `t${this.nextId++}`
     this.shellWindow.contentView.addChildView(view)
@@ -209,6 +210,7 @@ export class TabManager {
       title: openPath ? basename(openPath) : this.untitled('slides', 'AI Slides'),
       filePath: openPath,
     })
+    if (templateName) queueTemplateForView(view.webContents.id, templateName)
     this.activateTab(id)
     return id
   }

@@ -120,6 +120,8 @@ export interface HomeApi {
   membershipActivate(card: string): Promise<MembershipActivateResult>
   /** open the purchase page (reseller platform) in the default browser */
   membershipOpenPurchase(): Promise<void>
+  /** open the slides editor preloaded with a template (模板库一键做同款) */
+  openTemplate(name: string): Promise<void>
   /** app version (from package.json / electron app.getVersion) */
   getAppVersion(): Promise<string>
   /** whether the first-run onboarding has been completed or skipped (persisted in userData/app-settings.json) */
@@ -317,6 +319,7 @@ export const HOME_CHANNELS = {
   membershipStatus: 'home:membership-status',
   membershipActivate: 'home:membership-activate',
   membershipOpenPurchase: 'home:membership-open-purchase',
+  openTemplate: 'home:open-template',
   getAppVersion: 'home:get-app-version',
   onboardingSeen: 'home:onboarding-seen',
   setOnboardingSeen: 'home:set-onboarding-seen',

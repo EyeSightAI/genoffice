@@ -281,6 +281,13 @@ export { registerAiIpc } from './ai-ipc'
 let pendingOpenPath: string | null = null
 /** tab mode: each view queues its own path; the renderer consumes it after mounting */
 const pendingByWc = new Map<number, string>()
+/** 一键做同款：每个 view 的待处理模板名 */
+const pendingTemplateByWc = new Map<number, string>()
+
+/** shell 调用：给某个 slides view 设置待处理模板（一键做同款） */
+export function queueTemplateForView(wcId: number, name: string): void {
+  pendingTemplateByWc.set(wcId, name)
+}
 /**
  * Renderer freeze watchdog: the freeze is sporadic and has never
  * reproduced under instrumentation, so when it does happen, capture the
@@ -1186,6 +1193,13 @@ export function registerSlidesIpc(): void {
       } satisfies OpenResult
     }
     return null
+  })
+
+  // 一键做同款：renderer 挂载后读取待处理模板名并清除
+  ipcMain.handle('slides:consume-pending-template', (e) => {
+    const name = pendingTemplateByWc.get(e.sender.id)
+    pendingTemplateByWc.delete(e.sender.id)
+    return name ?? null
   })
 
   // Shim over the canonical setText op (rich-text rebuild, link rels, resource cleanup,

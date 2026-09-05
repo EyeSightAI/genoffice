@@ -18,6 +18,7 @@ import type {
 import { useDismissablePopover } from '@genoffice/ui'
 import { fileCountKey, visiblePageCount } from './counts'
 import { useI18n } from './locale'
+import { TemplatesView } from './TemplatesView'
 import type { I18n, StringKey } from './locale'
 import { SettingsModal } from './SettingsModal'
 
@@ -1136,6 +1137,8 @@ export function Home() {
   const [view, setView] = useState<'recent' | 'starred'>('recent')
   // Genspark web projects take over the content area (like a selected project)
   const [cloudMode, setCloudMode] = useState(false)
+  // UToOffice: 模板库视图
+  const [templatesMode, setTemplatesMode] = useState(false)
   const [filter, setFilter] = useState('all')
   // modified-column sort (WPS-style header popover), shared by the global and project tables
   const [fileSort, setFileSort] = useState<'recent' | 'oldest'>('recent')
@@ -2186,6 +2189,24 @@ export function Home() {
               </svg>
             </button>
           )}
+          <button
+            className={`nav-item${templatesMode && !selectedProjectId ? ' active' : ''}`}
+            onClick={() => {
+              setTemplatesMode(true)
+              setSelectedProjectId(null)
+              setCloudMode(false)
+              setSelected(new Set())
+              setRowMenu(null)
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.3" />
+              <rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.3" />
+              <rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.3" />
+              <rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.3" />
+            </svg>
+            <span className="nav-label">{t('navTemplates')}</span>
+          </button>
         </nav>
 
         {/* project sidebar */}
@@ -2214,6 +2235,8 @@ export function Home() {
         renderProjectContent()
       ) : cloudMode ? (
         <CloudProjectsView />
+      ) : templatesMode ? (
+        <TemplatesView />
       ) : (
         renderGlobalContent()
       )}

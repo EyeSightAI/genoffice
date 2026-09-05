@@ -1166,6 +1166,14 @@ export function App() {
     [],
   )
 
+  // 一键做同款：挂载后读取待处理模板名，填入 AI 输入框（不自动运行，让用户补主题）
+  useEffect(() => {
+    void window.slidesApi.consumePendingTemplate?.().then((name) => {
+      if (name) pushAiPreset(`【风格模板：${name}】\n`, false)
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pushAiPreset])
+
   // ── AI element edit queue ──────────────────────────────────────────────
   // Session-only: annotations are a scratchpad for the next AI submission, not
   // document content, so nothing here is persisted with the file.
