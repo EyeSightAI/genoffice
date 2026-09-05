@@ -2887,8 +2887,8 @@ function registerHomeIpc(): void {
     void shell.openExternal('https://example.com/buy')
   })
 
-  // UToOffice: 模板库一键做同款（独立注册函数）
-  if (tabManager) registerTemplateIpc(tabManager)
+  // UToOffice: 模板库一键做同款（独立注册函数；tabManager 惰性获取，模块顶层时为 null）
+  registerTemplateIpc(() => tabManager)
 
   ipcMain.handle(HOME_CHANNELS.getAppVersion, (): string => app.getVersion())
 

@@ -1448,6 +1448,7 @@ export function Home() {
     setView(next)
     setSelected(new Set())
     setRowMenu(null)
+    setTemplatesMode(false)
   }
 
   const changeFilter = (key: string) => {
@@ -2160,6 +2161,7 @@ export function Home() {
                 setSelectedProjectId(null)
                 setSelected(new Set())
                 setRowMenu(null)
+                setTemplatesMode(false)
               }}
             >
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
