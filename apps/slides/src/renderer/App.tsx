@@ -1149,6 +1149,7 @@ export function App() {
       displayText?: string,
       attachments?: AttachmentMeta[],
       slideShot?: boolean,
+      style?: string,
     ) => {
       setShowAi(() => {
         localStorage.setItem('ai-slides-show-ai', '1')
@@ -1161,6 +1162,7 @@ export function App() {
         displayText,
         ...(attachments && attachments.length > 0 ? { attachments } : {}),
         ...(slideShot ? { slideShot } : {}),
+        ...(style ? { style } : {}),
       })
     },
     [],
@@ -1169,7 +1171,7 @@ export function App() {
   // 一键做同款：挂载后读取待处理模板名，填入 AI 输入框（不自动运行，让用户补主题）
   useEffect(() => {
     void window.slidesApi.consumePendingTemplate?.().then((name) => {
-      if (name) pushAiPreset(`【风格模板：${name}】\n`, false)
+      if (name) pushAiPreset(`【风格模板：${name}】\n`, false, undefined, undefined, undefined, name)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pushAiPreset])

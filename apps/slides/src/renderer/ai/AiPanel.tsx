@@ -284,6 +284,7 @@ interface AiPanelProps {
     displayText?: string
     attachments?: AttachmentMeta[]
     slideShot?: boolean
+    style?: string
   } | null
   /** false shows only the collapsed rail; the component stays mounted so panel state survives */
   open?: boolean
@@ -1505,6 +1506,8 @@ export function AiPanel({
       attachmentsRef.current = merged
       setAttachments(merged)
     }
+    // 同步风格选择器（模板库一键做同款跳转携带模板名）
+    if (preset.style) setSelectedStyle(preset.style)
     if (preset.autoRun)
       runWith(preset.text, preset.displayText, { slideShot: preset.slideShot ?? false })
     else {
