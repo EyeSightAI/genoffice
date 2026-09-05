@@ -222,6 +222,8 @@ export interface DeckAccess {
    * (decks must be built from attachment content, not generic filler).
    */
   unreadTextAttachments?(): string[]
+  /** UI 层风格选择器当前选中的预置风格名；generate_deck 未显式传 style_template 时作为默认 */
+  getSelectedStyle?(): string | null
 }
 
 /** Single survey question structure (with options). */
@@ -2416,7 +2418,8 @@ async function executeTool(
       const PAGE_CONTEXT_MAX = 8000
       const pageContext =
         context && context.length > PAGE_CONTEXT_MAX ? context.slice(0, PAGE_CONTEXT_MAX) : context
-      const styleTemplateName = String(call.input.style_template ?? '').trim() || undefined
+      const styleTemplateName =
+        String(call.input.style_template ?? '').trim() || access.getSelectedStyle?.() || undefined
 
       // Figure-provenance gate: a data-dense request must say where its numbers came from
       {

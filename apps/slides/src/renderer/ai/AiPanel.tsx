@@ -415,6 +415,11 @@ export function AiPanel({
   /** 选中的预置风格名（null = 未选） */
   const [selectedStyle, setSelectedStyle] = useState<string | null>(null)
   const [isPro, setIsPro] = useState(false)
+  /** 保持最新选中的风格（供 DeckAccess.getSelectedStyle 读取） */
+  const selectedStyleRef = useRef<string | null>(null)
+  useEffect(() => {
+    selectedStyleRef.current = selectedStyle
+  }, [selectedStyle])
 
   // 会员判断：会员时 listStyleTemplates 返回预置风格
   useEffect(() => {
@@ -1343,6 +1348,7 @@ export function AiPanel({
             (a) => !ATTACHMENT_IMAGE_EXTS.has(a.ext) && !readAttachmentPathsRef.current.has(a.path),
           )
           .map((a) => a.name),
+      getSelectedStyle: () => selectedStyleRef.current,
     }
     accessRef.current = access
     loopRef.current = new AgentLoop({
