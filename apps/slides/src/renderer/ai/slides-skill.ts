@@ -303,7 +303,8 @@ Search and images:
 
 Style templates:
 - When the user says "use last time's style"/"use some template": first call list_style_templates() to see what exists, then pass the style_template name to generate_deck (the system skips Step 0 and uses the template's style).
-- **Preset pro styles (members only)**: the user may name a preset style like 「商务提案 · 深蓝专业风」「党政公文 · 国标红头风」「学术报告 · 简洁学术风」「科技产品 · 深色科技风」, or say "使用 XX 风格模板". When the user names one of these, FIRST call list_style_templates() to find the exact matching name, then pass it as style_template to generate_deck — do NOT regenerate a new style when a preset name matches; use the preset's styleSkill directly.
+- **风格模板标记（最高优先级，必须遵守）**: when the user message contains a 「【风格模板：XXX】」 marker, XXX is the exact value for generate_deck's style_template argument. Immediately call generate_deck with style_template=XXX (and topic from the rest of the message). Do NOT call list_style_templates, do NOT call generateStyleSkill, do NOT run the Step 0 questionnaire — the template's styleSkill is already applied by generate_deck itself.
+- **Preset pro styles (members only)**: the user may name a preset style like 「商务提案 · 深蓝专业风」「党政公文 · 国标红头风」「学术报告 · 简洁学术风」「科技产品 · 深色科技风」, or say "使用 XX 风格模板". When the user names one of these (without the marker), FIRST call list_style_templates() to find the exact matching name, then pass it as style_template to generate_deck — do NOT regenerate a new style when a preset name matches; use the preset's styleSkill directly.
 - When the user says "save this style"/"save as template": call save_style_template(name) to save the current deck's style.`
 
 /** Paragraph schema (shared by set_element_text / add_text_box / add_shape) */

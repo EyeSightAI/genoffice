@@ -1538,7 +1538,7 @@ export function AiPanel({
 
   const run = () => {
     const instruction = selectedStyle
-      ? `请使用「${selectedStyle}」这个风格模板来生成。\n${input.trim()}`
+      ? `【风格模板：${selectedStyle}】\n${input.trim()}`
       : input.trim()
     runWith(instruction)
   }
