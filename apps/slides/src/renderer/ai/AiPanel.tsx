@@ -2377,7 +2377,11 @@ export function AiPanel({
                         if (r && typeof r === 'object' && 'error' in r) {
                           setAttachNotice((r as { error: string }).error)
                           window.setTimeout(() => setAttachNotice(null), 5000)
+                          return
                         }
+                        // 成功：用返回的 slides 刷新画布
+                        const res = r as { slides?: unknown }
+                        if (res?.slides) applyDeckRef.current(res.slides as never)
                       } catch (err) {
                         setAttachNotice(err instanceof Error ? err.message : String(err))
                         window.setTimeout(() => setAttachNotice(null), 5000)
