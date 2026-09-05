@@ -63,6 +63,8 @@ import {
   readHeaderFooter,
   createBlankPptx,
   copySlide,
+  deleteSlide,
+  duplicateSlide,
   type SlideBundle,
   listSlideLayouts,
   editChartElement,
@@ -1204,39 +1206,64 @@ export function registerSlidesIpc(): void {
     return name ?? null
   })
 
-  // 套用模板版式：把用户导入模板的每一页，以「保留源格式」方式整页搬进当前 deck。
-  // 每页 = copySlide(模板页) + pasteSlide(mode:'source' → keepSourceFormatting)，logo/背景/版式/配色全保留。
-  // 文字未清空：后续由 AI 用 execute_slide_script 的 setText 覆盖占位内容。
-  ipcMain.handle('slides:apply-template', (e, fitWidthPx: number) => {
-    const session = sessions.get(e.sender.id)
-    const template = templateSources.get(e.sender.id)
-    if (!session || !template) return { error: '未导入模板，或没有打开的画布。' }
-    const bundles = template.deck.slides
-      .map((_, i) => copySlide(template, i))
-      .filter((b): b is NonNullable<typeof b> => b != null)
-    if (!bundles.length) return { error: '模板没有可套用的页面。' }
-    pushHistory(session)
-    for (const bundle of bundles) {
-      const r = journaledTxn(session, 'edit', {
-        ops: [
-          {
-            op: 'pasteSlide' as const,
-            afterIndex: session.opened.deck.slides.length - 1,
-            mode: 'source' as const,
-            bundle,
-          },
-        ],
-      })
-      if (!r.applied) {
-        session.undoStack.pop()
-        return { error: '套用模板失败。' }
+  // 套用模板：把「当前打开的 deck」当作模板，识别版式角色（封面/内容/结束），
+  // 按内容规划就地填封面+结束、克隆内容版式页填文字（按内容自动增页）、删除旧内容页。
+  // 直接操作元素模型（duplicateSlide/deleteSlide + el.text），不做 op 事务（套用可重做，无需 undo）。
+  ipcMain.handle('slides:apply-template', (_e, plan: unknown) => {
+    const session = sessions.get(_e.sender.id)
+    if (!session) return { error: '没有打开的画布。' }
+    const opened = session.opened
+    const n = opened.deck.slides.length
+    if (n < 2) return { error: '文件页数太少，无法识别版式（至少需要封面和结束两页）。' }
+
+    const coverIndex = 0
+    const contentIndex = 1
+    const endingIndex = n - 1
+    const hasContentTemplate = n >= 3
+
+    const p = (plan ?? {}) as { title?: string; subtitle?: string; ending?: string; sections?: Array<{ title?: string; body?: string }> }
+    const title = p.title ?? ''
+    const subtitle = p.subtitle ?? ''
+    const ending = p.ending ?? ''
+    const sections = Array.isArray(p.sections) ? p.sections : []
+
+    // 按 placeholder 填文字（直接改元素模型）；返回是否命中
+    const fillPh = (slide: Slide, ph: string, text: string): boolean => {
+      if (!text) return false
+      for (const el of slide.elements) {
+        if ((el.type === 'text' || el.type === 'shape') && (el as TextElement).placeholder === ph && (el as TextElement).text) {
+          ;(el as TextElement).text!.paragraphs = [{ runs: [{ text }] }]
+          el.dirty = true
+          return true
+        }
       }
+      return false
     }
-    session.fitWidthPx = fitWidthPx
-    return {
-      slides: buildAllRenderSlides(session.opened, fitWidthPx),
-      count: bundles.length,
+
+    // 1. 封面就地填 title/subtitle
+    fillPh(opened.deck.slides[coverIndex], 'title', title)
+    fillPh(opened.deck.slides[coverIndex], 'subTitle', subtitle)
+    // 结束就地填（优先 body，其次 title）
+    if (!fillPh(opened.deck.slides[endingIndex], 'body', ending))
+      fillPh(opened.deck.slides[endingIndex], 'title', ending)
+
+    // 2. 内容页：倒序克隆（保证最终顺序）+ 填文字
+    if (hasContentTemplate) {
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const sec = sections[i]
+        const s = duplicateSlide(opened, contentIndex, { clearText: true })
+        if (s) {
+          fillPh(s, 'title', sec?.title ?? '')
+          fillPh(s, 'body', sec?.body ?? '')
+        }
+      }
+      // 3. 删除模板旧内容页（原 index 2..n-2，克隆 M 页后新 index = 原 index + M）和样本页(index 1)
+      const M = sections.length
+      for (let k = n - 2; k >= 2; k--) deleteSlide(opened, k + M)
+      deleteSlide(opened, 1)
     }
+
+    return { slides: buildAllRenderSlides(opened, session.fitWidthPx), count: sections.length }
   })
 
   // 导入模板：弹文件选择器选用户自己的 .pptx，解析每页版式（占位符/文本/图片），供「模板套用」。

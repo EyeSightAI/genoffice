@@ -242,6 +242,7 @@ const AGENT_SYSTEM_PROMPT = `You are the AI assistant inside UToOffice Slides (a
 ## Most important tool-selection principles (judge the scenario before acting)
 - **Creating a whole new deck (from scratch)** → first gather material (web_search) and images (image_search), then call **generate_deck**. With many pages, prefer **passing topic + approx_pages + context (the real material you found)** and let the system plan internally + generate page by page + display page by page (**you don't hand-write dozens of pages, and no pages get missed / arguments truncated**). For few pages where you already know each page, you may pass core_hook+style+pages directly.
 - **Adding 1 page or a few pages to an existing deck** → generate_deck(pages: briefs for just the new pages, insert_mode:"append"). Write each page's brief in detail (real content/data per region + layout); first look at the existing pages (get_deck_context) and pass a style description matching them so new pages stay consistent. **Even a single new page goes through this generation pipeline; don't fall back to native tools and build a crude page**.
+- **Filling the user's own template** (they opened a .pptx template file with their logo/layout and want a deck made FROM it — e.g. "用这个模板做XX" / "在这个模板基础上做XX" / "套用我的模板做XX") → **apply_template**: call it with the full content plan (title + sections + optional subtitle/ending). apply_template preserves the template's logo/layout/colors and only fills content + auto-clones content pages — do NOT use generate_deck here (generate_deck builds from scratch and would discard the template). Only when the current deck is empty/blank should you use generate_deck.
 - **Redoing / redesigning an existing page** (user says "redo this page / redesign it / try another layout / make it prettier") → **regenerate_slide**: first read_slide to get the page's original copy, then pass a detailed brief (copy the text/data to keep into the brief verbatim, state what to change and the target layout); the page is regenerated in place (other pages untouched). Don't dismantle and rebuild the whole page element by element with native tools.
 - **Deleting a page** → delete_slide(slideIndex).
 - **Modifying / fine-tuning existing elements** (position/size/alignment/distribution/relative nudges/text/style/fill/stroke, one or many elements) → always prefer **execute_slide_script** and do it in one script (see "Editing existing elements" below; read-write combined, no read_slide first). Don't blind-fire individual set_element_* calls. Add/delete elements with add_* / delete_element; redo a whole page with regenerate_slide.
@@ -877,6 +878,32 @@ const TOOLS: AgentToolDef[] = [
     description:
       'List all saved style templates (name + topic + createdAt). When the user says "use last time\'s style" or "use some template", call this first to see what exists, then pass the target template name to generate_deck\'s style_template argument.',
     inputSchema: { type: 'object', properties: {}, required: [] },
+  },
+  {
+    name: 'apply_template',
+    description:
+      "Fill the CURRENTLY OPENED deck (treated as the user's own template) with new content while preserving its layout/logo/background. Page 0 = cover (title/subtitle), the LAST page = ending, page 1 = content-layout sample. Each section becomes one content page (auto-cloned, so more sections = more pages). Use when the user opened their own template file and asks to make a presentation FROM that template — pass the whole content plan at once (title + sections + optional subtitle/ending).",
+    inputSchema: {
+      type: 'object',
+      properties: {
+        title: { type: 'string', description: 'Cover main title' },
+        subtitle: { type: 'string', description: 'Cover subtitle (optional)' },
+        sections: {
+          type: 'array',
+          description: 'Content sections; each becomes one content page',
+          items: {
+            type: 'object',
+            properties: {
+              title: { type: 'string', description: 'Section heading' },
+              body: { type: 'string', description: 'Section body content' },
+            },
+            required: ['title', 'body'],
+          },
+        },
+        ending: { type: 'string', description: 'Ending page text (optional)' },
+      },
+      required: ['title', 'sections'],
+    },
   },
   {
     name: 'add_slide',
@@ -2987,6 +3014,31 @@ async function executeTool(
         output: okMsg + failMsg + degradedMsg + imageFailNote(deckImageFails) + progressTail,
         mutated: true,
         summary: t('aiSumDeckGenerated', { done: landedPages, total }),
+      }
+    }
+
+    case 'apply_template': {
+      const plan = {
+        title: String(call.input.title ?? ''),
+        subtitle: call.input.subtitle != null ? String(call.input.subtitle) : undefined,
+        ending: call.input.ending != null ? String(call.input.ending) : undefined,
+        sections: Array.isArray(call.input.sections)
+          ? (call.input.sections as Array<{ title?: unknown; body?: unknown }>).map((s) => ({
+              title: String(s?.title ?? ''),
+              body: String(s?.body ?? ''),
+            }))
+          : [],
+      }
+      const r = await window.slidesApi.applyTemplate(plan)
+      if (!r || (typeof r === 'object' && 'error' in r)) {
+        return fail(t('aiFailNewSlide'), r && typeof r === 'object' ? String((r as { error: string }).error) : '套用失败')
+      }
+      access.applyDeck((r as { slides: RenderSlide[] }).slides)
+      const cnt = (r as { count: number }).count ?? 0
+      return {
+        output: `已按当前模板套用内容：封面 + ${cnt} 个内容页 + 结束页。`,
+        mutated: true,
+        summary: t('aiSumNewSlide', { n: cnt }),
       }
     }
 
