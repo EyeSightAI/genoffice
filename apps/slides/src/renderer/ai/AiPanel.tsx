@@ -415,6 +415,8 @@ export function AiPanel({
   const [attachNotice, setAttachNotice] = useState<string | null>(null)
   /** 选中的预置风格名（null = 未选） */
   const [selectedStyle, setSelectedStyle] = useState<string | null>(null)
+  /** 是否「使用当前模板」：选中后 AI 只套用当前打开的文件填内容（不重新生成版式） */
+  const [useCurrentTemplate, setUseCurrentTemplate] = useState(false)
   const [isPro, setIsPro] = useState(false)
   /** 保持最新选中的风格（供 DeckAccess.getSelectedStyle 读取） */
   const selectedStyleRef = useRef<string | null>(null)
@@ -1546,9 +1548,11 @@ export function AiPanel({
   }, [input, open])
 
   const run = () => {
-    const instruction = selectedStyle
-      ? `【风格模板：${selectedStyle}】\n${input.trim()}`
-      : input.trim()
+    const instruction = useCurrentTemplate
+      ? `【使用当前模板】\n${input.trim()}`
+      : selectedStyle
+        ? `【风格模板：${selectedStyle}】\n${input.trim()}`
+        : input.trim()
     runWith(instruction)
   }
 
@@ -2345,6 +2349,26 @@ export function AiPanel({
                 padding: '6px 12px 0',
               }}
             >
+              {/* 使用当前模板：选中后只套用当前打开的文件填内容 */}
+              <button
+                onClick={() => {
+                  setUseCurrentTemplate(!useCurrentTemplate)
+                  if (!useCurrentTemplate) setSelectedStyle(null)
+                }}
+                data-tip="用当前打开的文件作为模板，只填内容"
+                style={{
+                  padding: '4px 10px',
+                  fontSize: 12,
+                  borderRadius: 14,
+                  border: useCurrentTemplate ? '1px solid var(--accent)' : '1px solid var(--border)',
+                  background: useCurrentTemplate ? 'var(--accent-soft)' : 'transparent',
+                  color: 'var(--text)',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                📄 使用当前模板
+              </button>
               {PRESET_STYLES.map((s) => (
                 <button
                   key={s.name}
@@ -2355,6 +2379,7 @@ export function AiPanel({
                       return
                     }
                     setSelectedStyle(selectedStyle === s.name ? null : s.name)
+                    setUseCurrentTemplate(false)
                   }}
                   data-tip={isPro ? s.topic : '会员专享'}
                   style={{
@@ -2375,6 +2400,26 @@ export function AiPanel({
                   {s.name}
                 </button>
               ))}
+              {/* 更多：跳转到模板库 */}
+              <button
+                onClick={() => {
+                  setAttachNotice('模板库即将开放，敬请期待')
+                  window.setTimeout(() => setAttachNotice(null), 4000)
+                }}
+                data-tip="更多模板"
+                style={{
+                  padding: '4px 10px',
+                  fontSize: 12,
+                  borderRadius: 14,
+                  border: '1px solid var(--border)',
+                  background: 'transparent',
+                  color: 'var(--muted-foreground)',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                更多 ›
+              </button>
             </div>
             <textarea
               ref={inputRef}
