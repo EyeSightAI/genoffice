@@ -246,6 +246,8 @@ const lastSlidePaste = new Map<number, { afterIndex: number; undoLen: number }>(
 // by slides:cloud-page-generate are readable (the renderer can't point the reader at arbitrary files)
 const CLOUD_PAGE_PREFIX = 'cloudpptx:'
 const issuedCloudPages = new Set<string>()
+/** 导入的模板源（用户上传的 .pptx），按 webContents id 保存；套用生成时从这里 copySlide 版式页 */
+const templateSources = new Map<number, OpenedPptx>()
 import { registerPresenterIpc } from './presenter-show'
 import { registerAttachmentIpc } from './attachments-ipc'
 
@@ -1200,6 +1202,84 @@ export function registerSlidesIpc(): void {
     const name = pendingTemplateByWc.get(e.sender.id)
     pendingTemplateByWc.delete(e.sender.id)
     return name ?? null
+  })
+
+  // 套用模板版式：把用户导入模板的每一页，以「保留源格式」方式整页搬进当前 deck。
+  // 每页 = copySlide(模板页) + pasteSlide(mode:'source' → keepSourceFormatting)，logo/背景/版式/配色全保留。
+  // 文字未清空：后续由 AI 用 execute_slide_script 的 setText 覆盖占位内容。
+  ipcMain.handle('slides:apply-template', (e, fitWidthPx: number) => {
+    const session = sessions.get(e.sender.id)
+    const template = templateSources.get(e.sender.id)
+    if (!session || !template) return { error: '未导入模板，或没有打开的画布。' }
+    const bundles = template.deck.slides
+      .map((_, i) => copySlide(template, i))
+      .filter((b): b is NonNullable<typeof b> => b != null)
+    if (!bundles.length) return { error: '模板没有可套用的页面。' }
+    pushHistory(session)
+    for (const bundle of bundles) {
+      const r = journaledTxn(session, 'edit', {
+        ops: [
+          {
+            op: 'pasteSlide' as const,
+            afterIndex: session.opened.deck.slides.length - 1,
+            mode: 'source' as const,
+            bundle,
+          },
+        ],
+      })
+      if (!r.applied) {
+        session.undoStack.pop()
+        return { error: '套用模板失败。' }
+      }
+    }
+    session.fitWidthPx = fitWidthPx
+    return {
+      slides: buildAllRenderSlides(session.opened, fitWidthPx),
+      count: bundles.length,
+    }
+  })
+
+  // 导入模板：弹文件选择器选用户自己的 .pptx，解析每页版式（占位符/文本/图片），供「模板套用」。
+  // 保存 opened 到 templateSources，套用生成时从这里 copySlide 版式页。
+  ipcMain.handle('slides:import-template', async (e) => {
+    const r = await showOpenDialogWithMemory(dialog, dialogParent(), {
+      properties: ['openFile' as const],
+      filters: [{ name: 'PowerPoint Template', extensions: ['pptx', 'ppt'] }],
+    })
+    if (r.canceled || !r.filePaths[0]) return null
+    const path = r.filePaths[0]
+    const raw = await readFile(path)
+    const opened = await openPptx(new Uint8Array(raw))
+    templateSources.set(e.sender.id, opened)
+    const size = opened.deck.size
+    const slides = opened.deck.slides.map((slide, index) => {
+      const texts: Array<{ placeholder: string | null; text: string; x: number; y: number; w: number; h: number }> = []
+      const pictures: Array<{ x: number; y: number; w: number; h: number }> = []
+      for (const el of slide.elements) {
+        const r = el.transform?.offset
+        if (el.type === 'picture') {
+          pictures.push({ x: r?.x ?? 0, y: r?.y ?? 0, w: r?.cx ?? 0, h: r?.cy ?? 0 })
+        } else if (el.type === 'text' || el.type === 'shape') {
+          const body = (el as TextElement).text
+          const plain = body?.paragraphs?.flatMap((par) => par.runs ?? []).map((run) => run.text ?? '').join('') ?? ''
+          texts.push({
+            placeholder: el.placeholder ?? null,
+            text: plain.slice(0, 120),
+            x: r?.x ?? 0,
+            y: r?.y ?? 0,
+            w: r?.cx ?? 0,
+            h: r?.cy ?? 0,
+          })
+        }
+      }
+      return { index, texts, pictures }
+    })
+    return {
+      name: basename(path),
+      slideCount: opened.deck.slides.length,
+      size: { cx: size.cx, cy: size.cy },
+      slides,
+    }
   })
 
   // Shim over the canonical setText op (rich-text rebuild, link rels, resource cleanup,

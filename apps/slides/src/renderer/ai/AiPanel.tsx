@@ -415,6 +415,8 @@ export function AiPanel({
   const [attachNotice, setAttachNotice] = useState<string | null>(null)
   /** 选中的预置风格名（null = 未选） */
   const [selectedStyle, setSelectedStyle] = useState<string | null>(null)
+  /** 导入的文件模板（用户自己的 .pptx），供「模板套用」生成 */
+  const [importedTemplate, setImportedTemplate] = useState<{ name: string; slideCount: number } | null>(null)
   const [isPro, setIsPro] = useState(false)
   /** 保持最新选中的风格（供 DeckAccess.getSelectedStyle 读取） */
   const selectedStyleRef = useRef<string | null>(null)
@@ -2336,6 +2338,67 @@ export function AiPanel({
                 )}
               </div>
             )}
+            {/* 导入模板：用户自己的 .pptx（模板套用） */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px 0', flexWrap: 'wrap' }}>
+              <button
+                onClick={async () => {
+                  try {
+                    const r = await window.slidesApi.importTemplate()
+                    if (r && typeof r === 'object' && 'name' in r) {
+                      setImportedTemplate({ name: (r as { name: string }).name, slideCount: (r as { slideCount: number }).slideCount })
+                    }
+                  } catch (err) {
+                    setAttachNotice(err instanceof Error ? err.message : String(err))
+                    window.setTimeout(() => setAttachNotice(null), 5000)
+                  }
+                }}
+                style={{
+                  padding: '4px 12px',
+                  fontSize: 12,
+                  borderRadius: 14,
+                  border: '1px solid var(--accent)',
+                  background: 'var(--accent-soft)',
+                  color: 'var(--text)',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                📂 导入模板
+              </button>
+              {importedTemplate && (
+                <>
+                  <span style={{ fontSize: 12, color: 'var(--muted-foreground)' }}>
+                    已导入：{importedTemplate.name}（{importedTemplate.slideCount} 页）
+                  </span>
+                  <button
+                    onClick={async () => {
+                      try {
+                        const r = await window.slidesApi.applyTemplate(fitWidthPx)
+                        if (r && typeof r === 'object' && 'error' in r) {
+                          setAttachNotice((r as { error: string }).error)
+                          window.setTimeout(() => setAttachNotice(null), 5000)
+                        }
+                      } catch (err) {
+                        setAttachNotice(err instanceof Error ? err.message : String(err))
+                        window.setTimeout(() => setAttachNotice(null), 5000)
+                      }
+                    }}
+                    style={{
+                      padding: '4px 12px',
+                      fontSize: 12,
+                      borderRadius: 14,
+                      border: '1px solid var(--accent)',
+                      background: 'var(--accent)',
+                      color: '#fff',
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    套用到画布
+                  </button>
+                </>
+              )}
+            </div>
             {/* 预置专业风格选择器（会员专享） */}
             <div
               style={{

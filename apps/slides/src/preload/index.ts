@@ -123,6 +123,8 @@ const api: SlidesApi = {
   openPptxPath: (path, fitWidthPx) => ipcRenderer.invoke('slides:open-path', path, fitWidthPx),
   consumePendingOpen: (fitWidthPx) => ipcRenderer.invoke('slides:consume-pending-open', fitWidthPx),
   consumePendingTemplate: () => ipcRenderer.invoke('slides:consume-pending-template'),
+  importTemplate: () => ipcRenderer.invoke('slides:import-template'),
+  applyTemplate: (fitWidthPx) => ipcRenderer.invoke('slides:apply-template', fitWidthPx),
   newBlank: (fitWidthPx) => ipcRenderer.invoke('slides:new-blank', fitWidthPx),
   landGeneratedPages: (
     pageMarkers: string[],
