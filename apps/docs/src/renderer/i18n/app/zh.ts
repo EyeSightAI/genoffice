@@ -238,13 +238,13 @@ export const zh = {
   appTabBar: '竖线',
   // AI settings
   appAiSettings: 'AI 设置',
-  appGensparkAccount: 'Genspark 账号',
+  appAccount: '账号',
   appChecking: '检测中…',
   appLoggedIn: '已登录',
   appLoggedInEmail: '已登录：{email}',
-  appNotLoggedIn: '未登录（AI 功能需要登录 Genspark 账号）',
+  appNotLoggedIn: '未登录（AI 功能需要登录 账号）',
   appWaitingBrowserLogin: '等待浏览器登录…',
-  appLoginGenspark: '登录 Genspark',
+  appLogin: '登录',
   appModel: '模型',
   // Context menu
   appCut: '剪切',

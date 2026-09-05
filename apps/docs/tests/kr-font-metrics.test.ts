@@ -9,8 +9,8 @@ import { describe, expect, it } from 'vitest'
 import { advanceEm, readWoff2 } from './helpers/woff2-metrics'
 
 const FONTS = join(__dirname, '../src/renderer/fonts')
-const sans = readWoff2(join(FONTS, 'GenOfficeSansKR-Regular-subset.woff2'))
-const serif = readWoff2(join(FONTS, 'GenOfficeSerifKR-Regular-subset.woff2'))
+const sans = readWoff2(join(FONTS, 'UToOfficeSansKR-Regular-subset.woff2'))
+const serif = readWoff2(join(FONTS, 'UToOfficeSerifKR-Regular-subset.woff2'))
 
 const PRIMARY_NAME_IDS = new Set([1, 2, 3, 4, 6, 16, 17, 18, 20, 21, 22, 25])
 
@@ -106,8 +106,8 @@ describe('GenOffice Serif KR (Batang-normalized)', () => {
   })
 })
 
-describe('GenOffice Che Latin KR (fixed-pitch half-width)', () => {
-  const che = readWoff2(join(FONTS, 'GenOfficeCheLatinKR.woff2'))
+describe('UToOffice Che Latin KR (fixed-pitch half-width)', () => {
+  const che = readWoff2(join(FONTS, 'UToOfficeCheLatinKR.woff2'))
 
   it('every printable ASCII advance is exactly 0.5em (probe 2026-08-24: real -Che faces)', () => {
     for (let cp = 0x20; cp <= 0x7e; cp++) {
@@ -117,7 +117,7 @@ describe('GenOffice Che Latin KR (fixed-pitch half-width)', () => {
 })
 
 describe('GenOffice Gothic KR (real source metrics, unmodified)', () => {
-  const gothicKr = readWoff2(join(FONTS, 'GenOfficeGothicKR-Regular-subset.woff2'))
+  const gothicKr = readWoff2(join(FONTS, 'UToOfficeGothicKR-Regular-subset.woff2'))
 
   it('keeps the M3 probe truth: hangul 0.94em, space 0.28em, digits 0.606em', () => {
     for (const cp of [0xac00, 0xd55c, 0xae00]) {
@@ -141,7 +141,7 @@ describe('GenOffice Gothic KR (real source metrics, unmodified)', () => {
       expect(value, `name ID ${nameId}`).not.toMatch(/nanum/i)
     }
     expect(names).toContainEqual({ nameId: 1, value: 'GenOffice Gothic KR' })
-    expect(names).toContainEqual({ nameId: 6, value: 'GenOfficeGothicKR-Regular' })
+    expect(names).toContainEqual({ nameId: 6, value: 'UToOfficeGothicKR-Regular' })
   })
 })
 

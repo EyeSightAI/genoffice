@@ -1,5 +1,5 @@
 /**
- * Wrapper around gsk (Genspark CLI, @genspark/cli) — search / image generation /
+ * Wrapper around gsk ( CLI, @genspark/cli) — search / image generation /
  * media analysis / upload / transcription.
  *
  * Execution: the main process spawns the CLI's JS entry with
@@ -79,8 +79,8 @@ function electronCompatArgs(): string[] {
 }
 
 /**
- * API key for Genspark LLM proxy / tool_cli auth; '' when not logged in.
- * Priority: GSK_API_KEY env → GenOffice's own key (bills to us via its
+ * API key for  LLM proxy / tool_cli auth; '' when not logged in.
+ * Priority: GSK_API_KEY env → UToOffice's own key (bills to us via its
  * key_name) → shared gsk CLI login (bills to the Claw bucket).
  */
 export function gskApiKey(): string {
@@ -109,7 +109,7 @@ export function hasGskAuth(): boolean {
 // ── Child-process proxy plumbing ────────────────────────────────────
 
 // The main process's undici dispatcher (see the apps' proxy bootstraps) never
-// reaches child processes: without forwarding they dial genspark.ai directly.
+// reaches child processes: without forwarding they dial  directly.
 export { setGskProxyUrl, gskProxyUrl } from './shared'
 
 /**
@@ -336,14 +336,14 @@ export async function gskResolveDownloadUrl(url: string): Promise<string> {
   }
 }
 
-// ── Cloud single-slide generation (Genspark slide_generate) ─────────
+// ── Cloud single-slide generation ( slide_generate) ─────────
 
 /**
  * Calls the tool_cli HTTP endpoint directly so structured params
  * (deck_context/images) are sent as JSON rather than through the CLI's
  * string-based argument passing.
  */
-const GSK_TOOL_CLI_BASE = 'https://www.genspark.ai/api/tool_cli'
+const GSK_TOOL_CLI_BASE = 'https://www./api/tool_cli'
 const SLIDE_GENERATE_TIMEOUT_MS = 240_000
 
 export interface GskSlideGenerateOptions {
@@ -386,7 +386,7 @@ async function toolCliPost(
   signal?: AbortSignal,
 ): Promise<unknown> {
   const key = gskApiKey()
-  if (!key) throw new Error('Not logged in to Genspark (gsk login)')
+  if (!key) throw new Error('Not logged in to  (gsk login)')
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), timeoutMs)
   const onAbort = () => controller.abort()
@@ -394,7 +394,7 @@ async function toolCliPost(
   try {
     const resp = await fetch(`${GSK_TOOL_CLI_BASE}${path}`, {
       method: 'POST',
-      // X-Agent-Type splits GenOffice usage out of the proxy's "Claw" billing bucket
+      // X-Agent-Type splits UToOffice usage out of the proxy's "Claw" billing bucket
       headers: {
         'X-Api-Key': key,
         'Content-Type': 'application/json',
@@ -555,7 +555,7 @@ export async function gskUpload(filePath: string): Promise<string> {
   return String(url)
 }
 
-// ── Past projects (Genspark web) ────────────────────────────────────
+// ── Past projects ( web) ────────────────────────────────────
 
 export interface GskPastProject {
   projectId: string
@@ -564,7 +564,7 @@ export interface GskPastProject {
   title: string
   /** creation time, ISO-like string from the API */
   ctime: string
-  /** relative web URL, e.g. '/agents?id=...' — join with https://www.genspark.ai */
+  /** relative web URL, e.g. '/agents?id=...' — join with https://www. */
   projectUrl: string
 }
 
@@ -623,7 +623,7 @@ export interface GskListPastProjectsOptions {
   signal?: AbortSignal
 }
 
-/** Lists the user's own past Genspark web projects, newest first (`gsk projects`). */
+/** Lists the user's own past  web projects, newest first (`gsk projects`). */
 export async function gskListPastProjects(
   options: GskListPastProjectsOptions = {},
 ): Promise<GskPastProjectsPage> {

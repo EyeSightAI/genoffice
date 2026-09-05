@@ -391,12 +391,12 @@ describe('replaceAllText', () => {
   it('replaces every occurrence and keeps marks', () => {
     const editor = createEditor(fixtureDoc())
     const outcome = executeCommands(editor, {
-      commands: [{ replaceAllText: { containsText: 'GenSpark', replaceText: 'Genspark' } }],
+      commands: [{ replaceAllText: { containsText: 'GenSpark', replaceText: '' } }],
     })
     expect(outcome.ok).toBe(true)
     expect(outcome.results[0].detail).toBe('共替换 2 处')
     const block = editor.state.doc.child(1)
-    expect(block.textContent).toBe('Genspark intro,Genspark is great')
+    expect(block.textContent).toBe(' intro, is great')
     const boldChild = block.child(block.childCount - 1)
     expect(boldChild.marks.some((m) => m.type.name === 'bold')).toBe(true)
   })
@@ -671,7 +671,7 @@ describe('transaction atomicity and aiChanged', () => {
             fields: ['color'],
           },
         },
-        { replaceAllText: { containsText: 'GenSpark', replaceText: 'Genspark' } },
+        { replaceAllText: { containsText: 'GenSpark', replaceText: '' } },
         { deleteBlocks: { target: { blockIndexes: [3] } } },
       ],
     })

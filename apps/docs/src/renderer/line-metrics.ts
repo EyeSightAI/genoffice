@@ -461,9 +461,9 @@ export const BUNDLED_FONTS = new Set([
   'GenOffice Sans KR',
   'GenOffice Serif KR',
   'GenOffice Gothic KR',
-  'GenOffice Poppins',
-  'GenOffice Tamil',
-  'GenOffice Fullwidth TC',
+  'UToOffice Poppins',
+  'UToOffice Tamil',
+  'UToOffice Fullwidth TC',
   'GenOffice Songti SC',
   'Carlito GO',
   'Caladea',
@@ -619,7 +619,7 @@ export function cssFontFamily(font: string, followAltName = true): string {
   if (f.includes('nunito')) return `${chain(font, 'Nunito Sans GO', CJK_SANS)},sans-serif`
   // Poppins is an M365 cloud font Word renders real; the bundled Latin subset
   // (fonts.css) carries its true advances (probe 2026-09-01)
-  if (f.includes('poppins')) return `${chain(font, 'GenOffice Poppins', CJK_SANS)},sans-serif`
+  if (f.includes('poppins')) return `${chain(font, 'UToOffice Poppins', CJK_SANS)},sans-serif`
   // Microsoft New Tai Lue ships with Office; its Latin is Segoe-flavored with
   // Arial-class widths (probe 2026-08-23: +0.5% vs Helvetica)
   if (f.includes('new tai lue'))
@@ -654,20 +654,20 @@ export function cssFontFamily(font: string, followAltName = true): string {
   if (f.includes('隶书') || f.includes('lisu'))
     return `${chain(font, 'Baoli SC', 'LiSu', CJK_SERIF)},serif`
   // Japanese/Korean/Traditional Chinese: fall back within the same script (win/mac family names as mutual backups) so Han glyphs don't render with Simplified forms.
-  // 'GenOffice *' entries are CJK-only local() aliases (fonts.css): the underlying
+  // 'UToOffice *' entries are CJK-only local() aliases (fonts.css): the underlying
   // system faces draw Cyrillic/Greek fullwidth, so those scripts must pass through
   const JA_SANS = ['Yu Gothic', 'GenOffice Hiragino Sans', 'Meiryo', 'Noto Sans JP']
   const JA_SERIF = [
     'Yu Mincho',
     'GenOffice Hiragino Mincho',
-    'GenOffice MS Mincho',
+    'UToOffice MS Mincho',
     'Noto Serif JP',
   ]
   const KO_SANS = ['Malgun Gothic', 'GenOffice Sans KR', 'Apple SD Gothic Neo', 'Noto Sans KR']
-  const KO_SERIF = ['GenOffice Batang', 'GenOffice Serif KR', 'GenOffice Myungjo', 'Noto Serif KR']
-  const TC_SANS = ['Microsoft JhengHei', 'PingFang TC', 'GenOffice Heiti TC', 'Noto Sans TC']
-  // 'GenOffice Fullwidth TC' (fonts.css): fullwidth U+FF0D/FF0F/FF3C/FF3F/FF5E whose Songti TC glyphs look half-width
-  const TC_SERIF = ['GenOffice MingLiU', 'GenOffice Fullwidth TC', 'Songti TC', 'Noto Serif TC']
+  const KO_SERIF = ['UToOffice Batang', 'GenOffice Serif KR', 'UToOffice Myungjo', 'Noto Serif KR']
+  const TC_SANS = ['Microsoft JhengHei', 'PingFang TC', 'UToOffice Heiti TC', 'Noto Sans TC']
+  // 'UToOffice Fullwidth TC' (fonts.css): fullwidth U+FF0D/FF0F/FF3C/FF3F/FF5E whose Songti TC glyphs look half-width
+  const TC_SERIF = ['UToOffice MingLiU', 'UToOffice Fullwidth TC', 'Songti TC', 'Noto Serif TC']
   const SC_SANS = ['PingFang SC', 'Microsoft YaHei', CJK_SANS]
   const SC_SERIF = ['GenOffice Songti SC', 'STSong', 'SimSun', CJK_SERIF]
   const nfkc = font.normalize('NFKC')
@@ -785,7 +785,7 @@ export function cssFontFamily(font: string, followAltName = true): string {
     if (/(?:batang|gulim|dotum|gungsuh) ?che\b|(?:바탕|굴림|돋움|궁서)체/i.test(nfkc)) {
       const cheGungsuh = /gungsuh|궁서/i.test(nfkc)
       const cheSerif = cheGungsuh || /batang|바탕/i.test(nfkc)
-      return `${chain(font, 'GenOffice Che Latin KR', ...(cheGungsuh ? ['GungSeo'] : []), ...(cheSerif ? KO_SERIF : KO_SANS))},${cheSerif ? 'serif' : 'sans-serif'}`
+      return `${chain(font, 'UToOffice Che Latin KR', ...(cheGungsuh ? ['GungSeo'] : []), ...(cheSerif ? KO_SERIF : KO_SANS))},${cheSerif ? 'serif' : 'sans-serif'}`
     }
     // Gungsuh ships with Office (batang.ttc) and Word renders it real; its
     // Latin is typewriter-slab at ~0.58em advances — Courier New is the
@@ -815,14 +815,14 @@ export function cssFontFamily(font: string, followAltName = true): string {
   // Kefa alias (fonts.css) re-centers Chromium's ~1.35x-wide Kefa fallback. On
   // Windows the declared name resolves natively ahead of the alias.
   if (/nyala|ebrima|abyssinica|ethiopic/i.test(nfkc)) {
-    return `${chain(font, 'GenOffice Ethiopic')},sans-serif`
+    return `${chain(font, 'UToOffice Ethiopic')},sans-serif`
   }
   // Tamil: Word substitutes missing Tamil families with Latha; the bundled
   // Latha-metric face (fonts.css) keeps line breaks aligned. On Windows the
   // declared name resolves natively ahead of it; macOS system faces stay as
   // coverage tails (the subset ships no Latin letters).
   if (/tamil|latha|vijaya|inaimathi/i.test(nfkc)) {
-    return `${chain(font, 'GenOffice Tamil', 'InaiMathi', 'Tamil MN', 'Tamil Sangam MN')},sans-serif`
+    return `${chain(font, 'UToOffice Tamil', 'InaiMathi', 'Tamil MN', 'Tamil Sangam MN')},sans-serif`
   }
   // unknown missing font with a fontTable altName: Word substitutes the alias
   // wholesale, so the alias's whole chain follows the declared head. Hei-class

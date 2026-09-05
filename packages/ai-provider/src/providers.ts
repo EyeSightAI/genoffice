@@ -1,24 +1,24 @@
 import type { AiProviderId, AiProviderMeta, AiSettings, LegacyAiSettings } from './types'
 
 /**
- * Genspark server-side LLM proxy endpoints. All three protocols share the
+ *  server-side LLM proxy endpoints. All three protocols share the
  * api_key from the gsk login; model ids follow the proxy's own naming scheme,
  * which differs from the official vendor ids.
  */
 export const GENSPARK_LLM_BASE_URLS = {
-  anthropic: 'https://www.genspark.ai/api/anthropic',
-  openai: 'https://www.genspark.ai/api/llm_proxy/v1',
+  anthropic: 'https://www./api/anthropic',
+  openai: 'https://www./api/llm_proxy/v1',
 } as const
 
 /**
- * Splits GenOffice usage out of the proxy's default "Claw" billing bucket
+ * Splits UToOffice usage out of the proxy's default "Claw" billing bucket
  * (the backend attributes gsk-key traffic by X-Agent-Type). Only sent to the
- * Genspark proxy — never to direct vendor APIs.
+ *  proxy — never to direct vendor APIs.
  */
 export const GENSPARK_AGENT_TYPE = 'genoffice'
 
 export function gensparkAttributionHeaders(baseUrl?: string): Record<string, string> {
-  return baseUrl?.startsWith('https://www.genspark.ai')
+  return baseUrl?.startsWith('https://www.')
     ? { 'X-Agent-Type': GENSPARK_AGENT_TYPE }
     : {}
 }
@@ -26,7 +26,7 @@ export function gensparkAttributionHeaders(baseUrl?: string): Record<string, str
 export const AI_PROVIDERS: AiProviderMeta[] = [
   {
     id: 'genspark',
-    label: 'Genspark',
+    label: '',
     // must stay within the proxy's served set (GET /api/llm_proxy/v1/models);
     // bare gpt-5.6 and the gemini family dropped off it (verified 2026-08-31)
     models: [
@@ -37,7 +37,7 @@ export const AI_PROVIDERS: AiProviderMeta[] = [
       'gpt-5.6-luna',
     ],
     defaultModel: 'claude-opus-4-7',
-    keyPlaceholder: 'Not required - sign in to Genspark',
+    keyPlaceholder: 'Not required - sign in to ',
   },
   {
     id: 'anthropic',

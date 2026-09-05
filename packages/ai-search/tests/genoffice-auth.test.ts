@@ -16,7 +16,7 @@ import {
 import { gskApiKey, setGskProxyUrl } from '../src/gsk'
 
 const CODE = 'a'.repeat(64)
-const AUTH_URL = `https://www.genspark.ai/api/office_addin_auth/verify?code=${CODE}`
+const AUTH_URL = `https://www./api/office_addin_auth/verify?code=${CODE}`
 
 let dir: string
 

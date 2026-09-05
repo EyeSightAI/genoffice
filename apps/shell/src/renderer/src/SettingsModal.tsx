@@ -15,7 +15,7 @@ import { ProviderLogo } from './provider-logos'
 import './settings.css'
 
 // ── Settings modal (opened from the account menu) ─────────
-// Genspark-style two-pane dialog: section nav on the left, fields on the right.
+// -style two-pane dialog: section nav on the left, fields on the right.
 // All values go through the existing home IPC; nothing is stored locally.
 
 // sorted by ISO 639 language code — native-script labels have no natural
@@ -188,7 +188,7 @@ function AiModelPane({ t }: { t: TFunc }) {
     apiKey: '',
     model: meta?.defaultModel ?? '',
   }
-  const isGenspark = provider === 'genspark'
+  const is = provider === 'genspark'
 
   const touch = () => {
     setDirty(true)
@@ -268,7 +268,7 @@ function AiModelPane({ t }: { t: TFunc }) {
         />
       </div>
       <div className="set-field-desc set-ai-note">
-        {isGenspark ? t('setAiGensparkHint') : t('setAiByokNote')}
+        {is ? t('setAiHint') : t('setAiByokNote')}
       </div>
       <div className="set-field">
         <div className="set-field-text">
@@ -294,7 +294,7 @@ function AiModelPane({ t }: { t: TFunc }) {
           />
         )}
       </div>
-      {!isGenspark && (
+      {!is && (
         <>
           <div className="set-field">
             <div className="set-field-text">
@@ -373,7 +373,7 @@ function AiModelPane({ t }: { t: TFunc }) {
           role="switch"
           aria-checked={settings.gskToolsEnabled !== false}
           aria-label={t('setAiGskTools')}
-          disabled={isGenspark}
+          disabled={is}
           onClick={() => {
             setSettings({ ...settings, gskToolsEnabled: settings.gskToolsEnabled === false })
             touch()
@@ -469,7 +469,7 @@ export interface SettingsModalProps {
   onOpenLoginUrl: () => void
   onCopyLoginUrl: () => void
   onClose: () => void
-  /** closes the modal and launches the Genspark login flow (progress shows on the account entry) */
+  /** closes the modal and launches the  login flow (progress shows on the account entry) */
   onLogin: () => void
   onLogout: () => void
 }
@@ -622,7 +622,7 @@ export function SettingsModal({
                         </>
                       )}
                       <button className="set-btn primary" onClick={onLogin}>
-                        {loginWaiting ? t('waitingShort') : t('loginGenspark')}
+                        {loginWaiting ? t('waitingShort') : t('login')}
                       </button>
                     </>
                   )}
@@ -725,8 +725,8 @@ export function SettingsModal({
                   label={t('setGithub')}
                   value={
                     githubStars === null
-                      ? 'github.com/genspark-ai/genoffice'
-                      : `github.com/genspark-ai/genoffice · ★ ${formatStars(githubStars)}`
+                      ? 'github.com/EyeSightAI/genoffice'
+                      : `github.com/EyeSightAI/genoffice · ★ ${formatStars(githubStars)}`
                   }
                   action={
                     <button

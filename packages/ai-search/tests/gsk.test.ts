@@ -114,7 +114,7 @@ describe('parseGskImageSearch', () => {
       status: 'ok',
       data: [
         {
-          image_url: 'https://sspark.genspark.ai/img1',
+          image_url: 'https://sspark./img1',
           title: 'T1',
           source: 'Site',
           link: 'https://site.com/page',
@@ -127,7 +127,7 @@ describe('parseGskImageSearch', () => {
     expect(images).toEqual([
       {
         title: 'T1',
-        imageUrl: 'https://sspark.genspark.ai/img1',
+        imageUrl: 'https://sspark./img1',
         sourceUrl: 'https://site.com/page',
         source: 'Site',
         width: 1000,
@@ -235,10 +235,10 @@ describe('parseGskConvertResult', () => {
       status: 'ok',
       data: {
         result:
-          'Conversion complete. Download links:\n[report.docx](https://www.genspark.ai/api/files/s/JmS2WJHv)\n',
+          'Conversion complete. Download links:\n[report.docx](https://www./api/files/s/JmS2WJHv)\n',
       },
     }
-    expect(parseGskConvertResult(raw)).toBe('https://www.genspark.ai/api/files/s/JmS2WJHv')
+    expect(parseGskConvertResult(raw)).toBe('https://www./api/files/s/JmS2WJHv')
   })
 
   it('falls back to a bare URL without markdown', () => {
