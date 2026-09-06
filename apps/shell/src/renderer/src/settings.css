@@ -447,3 +447,68 @@
     transform: rotate(360deg);
   }
 }
+
+/* ── UToOffice membership pane ── */
+
+.set-card-input {
+  flex-shrink: 0;
+  width: 220px;
+  padding: 6px 10px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 13px;
+  color: var(--text-primary);
+  background: var(--surface);
+}
+
+.set-card-input:focus {
+  outline: none;
+  border-color: var(--accent, var(--text-primary));
+}
+
+.set-card-input::placeholder {
+  color: var(--text-tertiary, var(--text-secondary));
+}
+
+.set-card-input:disabled {
+  opacity: 0.55;
+}
+
+.set-hint {
+  padding: 6px 0 2px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.set-hint-ok {
+  color: var(--success);
+}
+
+.set-hint-err {
+  color: var(--danger);
+}
+
+.set-membership-benefits {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  background: var(--surface-subtle);
+}
+
+.set-membership-title {
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.set-membership-item {
+  padding: 3px 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+

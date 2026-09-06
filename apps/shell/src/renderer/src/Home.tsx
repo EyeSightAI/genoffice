@@ -9,6 +9,7 @@ import iconMd from './assets/file-md.svg'
 import type {
   AccountStatus,
   CloudProjectKind,
+  MembershipStatus,
   CloudProjectsSnapshot,
   HomeApi,
   ProjectHomeApi,
@@ -460,6 +461,11 @@ function AccountEntry({
 }) {
   const { t } = useI18n()
   const [status, setStatus] = useState<AccountStatus | null>(null)
+  const [membership, setMembership] = useState<MembershipStatus | null>(null)
+
+  useEffect(() => {
+    void window.aiOffice.membershipStatus?.().then((m) => setMembership(m))
+  }, [])
 
   useEffect(() => {
     onStatusChange?.(status)
@@ -701,13 +707,11 @@ function AccountEntry({
         </span>
         <span className="account-text">
           <span className="account-name">
-            {loggedIn
-              ? email
-                ? email.split('@')[0]
-                : t('loggedIn')
-              : waiting
-                ? t('waitingShort')
-                : t('login')}
+            {membership?.isPro
+              ? membership.type === 'lifetime'
+                ? '永久会员'
+                : '会员'
+              : '开通会员'}
           </span>
           {!loggedIn && !waiting && errorText && (
             <span className="account-sub error">{errorText}</span>

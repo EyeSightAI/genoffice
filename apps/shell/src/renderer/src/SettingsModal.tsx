@@ -10,7 +10,7 @@ import {
 import type { AiSettings } from '@genoffice/ai-provider'
 import { useI18n } from './locale'
 import type { StringKey, TFunc } from './locale'
-import type { AccountStatus, AiCatalogEntry, UiTheme } from '../../shared/home-api'
+import type { AccountStatus, AiCatalogEntry, MembershipStatus, UiTheme } from '../../shared/home-api'
 import { ProviderLogo } from './provider-logos'
 import './settings.css'
 
@@ -495,6 +495,10 @@ export function SettingsModal({
   const [channel, setChannel] = useState<'stable' | 'beta'>('stable')
   const [appVersion, setAppVersion] = useState('')
   const [githubStars, setGithubStars] = useState<number | null>(null)
+  const [membership, setMembership] = useState<MembershipStatus | null>(null)
+  const [cardInput, setCardInput] = useState('')
+  const [activating, setActivating] = useState(false)
+  const [activateMsg, setActivateMsg] = useState<{ ok: boolean; text: string } | null>(null)
 
   useEffect(() => {
     let alive = true
@@ -516,10 +520,44 @@ export function SettingsModal({
     void window.aiOffice.githubStars?.().then((n) => {
       if (alive && n !== null) setGithubStars(n)
     })
+    void window.aiOffice.membershipStatus?.().then((m) => {
+      if (alive) setMembership(m)
+    })
     return () => {
       alive = false
     }
   }, [])
+
+  const memberLabel = membership?.isPro
+    ? membership.type === 'lifetime'
+      ? '永久会员'
+      : membership.expiresAt
+        ? `会员 · ${new Date(membership.expiresAt).toLocaleDateString('zh-CN')} 到期`
+        : '会员'
+    : '免费版'
+
+  const doActivate = async () => {
+    const card = cardInput.trim()
+    if (!card) {
+      setActivateMsg({ ok: false, text: '请输入卡密' })
+      return
+    }
+    setActivating(true)
+    setActivateMsg(null)
+    const res = await window.aiOffice.membershipActivate?.(card)
+    if (res?.ok) {
+      setMembership(res.status ?? null)
+      setCardInput('')
+      setActivateMsg({ ok: true, text: '激活成功，已解锁全部会员权益' })
+    } else {
+      setActivateMsg({ ok: false, text: res?.error ?? '卡密无效' })
+    }
+    setActivating(false)
+  }
+
+  const openPurchase = () => {
+    void window.aiOffice.membershipOpenPurchase?.()
+  }
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -541,9 +579,6 @@ export function SettingsModal({
       if (dir) setSaveDir(dir)
     })
   }
-
-  const loggedIn = status?.loggedIn ?? false
-  const email = status?.email ?? ''
 
   return (
     <div
@@ -584,48 +619,41 @@ export function SettingsModal({
             {section === 'account' && (
               <>
                 <h3 className="set-pane-title">{t('setSecAccount')}</h3>
-                <Field label={t('setEmail')} value={loggedIn ? email : t('setNotLoggedIn')} />
-                {loggedIn && (
-                  <Field
-                    label={t('credits')}
-                    value={
-                      status?.creditBalance === undefined
-                        ? '—'
-                        : Math.floor(status.creditBalance).toLocaleString('en-US')
-                    }
-                    action={
-                      <button
-                        className="set-btn"
-                        data-tip={t('creditsTip')}
-                        onClick={() => void window.aiOffice.openCreditUsage?.()}
-                      >
-                        {t('setViewUsage')}
-                      </button>
-                    }
-                  />
+                <Field label="会员状态" value={memberLabel} />
+                <div className="set-field">
+                  <div className="set-field-text">
+                    <div className="set-field-label">激活码</div>
+                    <input
+                      className="set-card-input"
+                      value={cardInput}
+                      onChange={(e) => setCardInput(e.target.value)}
+                      placeholder="输入卡密激活"
+                      disabled={membership?.isPro}
+                    />
+                  </div>
+                  <button
+                    className="set-btn"
+                    disabled={activating || membership?.isPro}
+                    onClick={() => void doActivate()}
+                  >
+                    {membership?.isPro ? '已激活' : activating ? '激活中…' : '激活'}
+                  </button>
+                </div>
+                {activateMsg && (
+                  <div className={activateMsg.ok ? 'set-hint set-hint-ok' : 'set-hint set-hint-err'}>
+                    {activateMsg.text}
+                  </div>
                 )}
+                <div className="set-membership-benefits">
+                  <div className="set-membership-title">会员权益</div>
+                  <div className="set-membership-item">✓ 全部专业模板免费使用</div>
+                  <div className="set-membership-item">✓ 套用模板一键生成</div>
+                  <div className="set-membership-item">✓ 专业版式库 + 设计规范</div>
+                </div>
                 <div className="set-pane-footer">
-                  {loggedIn ? (
-                    <button className="set-btn danger" disabled={loggingOut} onClick={onLogout}>
-                      {loggingOut ? t('loggingOut') : t('logout')}
-                    </button>
-                  ) : (
-                    <>
-                      {loginWaiting && loginUrl && (
-                        <>
-                          <button className="set-btn" onClick={onOpenLoginUrl}>
-                            {t('loginOpenManually')}
-                          </button>
-                          <button className="set-btn" onClick={onCopyLoginUrl}>
-                            {urlCopied ? t('loginCopied') : t('loginCopyUrl')}
-                          </button>
-                        </>
-                      )}
-                      <button className="set-btn primary" onClick={onLogin}>
-                        {loginWaiting ? t('waitingShort') : t('login')}
-                      </button>
-                    </>
-                  )}
+                  <button className="set-btn primary" onClick={openPurchase}>
+                    开通会员
+                  </button>
                 </div>
               </>
             )}
@@ -722,18 +750,14 @@ export function SettingsModal({
                   />
                 </div>
                 <Field
-                  label={t('setGithub')}
-                  value={
-                    githubStars === null
-                      ? 'github.com/EyeSightAI/genoffice'
-                      : `github.com/EyeSightAI/genoffice · ★ ${formatStars(githubStars)}`
-                  }
+                  label="加入我们"
+                  value="获取最新模板和教程"
                   action={
                     <button
                       className="set-btn"
                       onClick={() => void window.aiOffice.openGitHubRepo?.()}
                     >
-                      {t('starOnGitHub')}
+                      加入我们
                     </button>
                   }
                 />
