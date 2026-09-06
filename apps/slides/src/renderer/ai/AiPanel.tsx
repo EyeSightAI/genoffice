@@ -397,7 +397,16 @@ export function AiPanel({
 }: AiPanelProps) {
   const { t } = useI18n()
   const [input, setInput] = useState('')
+  /** 「使用当前模板」标签：选中后生成时严格套用当前文件版式（会员专属） */
+  const [useCurrentTemplate, setUseCurrentTemplate] = useState(false)
+  const [isPro, setIsPro] = useState(false)
+  const [templateHint, setTemplateHint] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
+
+  // 加载会员状态（「使用当前模板」标签是否解锁）
+  useEffect(() => {
+    void window.slidesApi.membershipStatus?.().then((s) => setIsPro(s?.isPro ?? false))
+  }, [])
   const [chat, setChat] = useState<ChatEntry[]>([])
   /** Past conversation restored from JSONL (read-only transcript, not fed to the model) */
   const [historicChat, setHistoricChat] = useState<ChatEntry[]>([])
@@ -1606,6 +1615,16 @@ export function AiPanel({
         // AI Beautify sends the current slide's rendering along, so the model sees what it edits;
         // the note rides on the model instruction only — the chat bubble stays the localized preset text
         let modelInstruction = instruction
+        if (useCurrentTemplate) {
+          modelInstruction +=
+            '\n\n【使用当前模板：严格套用】用户打开了现有 .pptx 作为模板。生成时严格遵守：' +
+            '\n1. 保留模板的 logo、背景、配色、字体，绝不改动；' +
+            '\n2. 沿用模板现有页面的版式框架和视觉语言；' +
+            '\n3. 每页内容设计要不同，不重复同一版式；' +
+            '\n4. 内容匹配模板的主题风格；' +
+            '\n5. 按内容适当增减页内项目；' +
+            '\n6. 只整理美化内容，不重新设计版式。'
+        }
         if (opts?.slideShot && settingsSupportVision(settingsRef.current)) {
           const shot = await captureSlideShot(currentRef.current)
           if (shot) {
@@ -2242,6 +2261,30 @@ export function AiPanel({
             />
           )}
           {attachNotice && <div className="ai-attach-notice">{attachNotice}</div>}
+          <div className="ai-template-chips">
+            <button
+              className={`ai-template-chip${useCurrentTemplate ? ' active' : ''}`}
+              onClick={() => {
+                if (!isPro) {
+                  setTemplateHint('「使用当前模板」为会员专属功能，请先开通会员')
+                  return
+                }
+                setTemplateHint(null)
+                setUseCurrentTemplate((v) => !v)
+              }}
+              data-tip={isPro ? '严格套用当前模板的 logo / 版式 / 配色' : '会员专属功能'}
+            >
+              📄 使用当前模板
+            </button>
+            <button
+              className="ai-template-chip ai-template-more"
+              onClick={() => void window.slidesApi.openTemplateLibrary?.()}
+              data-tip="去网站模板库挑选精美模板"
+            >
+              更多 ›
+            </button>
+          </div>
+          {templateHint && <div className="ai-template-hint">{templateHint}</div>}
           <div className="ai-input-box">
             {attachments.length > 0 && (
               <div className="ai-attachments" onScroll={onAttachmentsScroll}>

@@ -523,4 +523,37 @@ export function registerSlidesOnlyAiIpc(): void {
       }
     },
   )
+
+  // ── UToOffice membership + template library ──
+  ipcMain.handle(
+    'slides:membership-status',
+    (): { isPro: boolean; type?: 'lifetime' | 'year'; expiresAt: number | null } => {
+      try {
+        const p = join(app.getPath('userData'), 'membership.json')
+        if (!existsSync(p)) return { isPro: false, expiresAt: null }
+        const raw = JSON.parse(readFileSync(p, 'utf-8')) as {
+          remainDays?: number
+          expireTime?: string | null
+        }
+        const lifetime = (raw.remainDays ?? 0) >= 9999 || raw.expireTime === '永久'
+        const exp =
+          typeof raw.expireTime === 'string' && raw.expireTime !== '永久'
+            ? Date.parse(raw.expireTime.replace(' ', 'T'))
+            : null
+        const expNum = typeof exp === 'number' && !Number.isNaN(exp) ? exp : null
+        const isPro = lifetime || (expNum !== null && expNum > Date.now())
+        return {
+          isPro,
+          type: lifetime ? 'lifetime' : isPro ? 'year' : undefined,
+          expiresAt: lifetime ? null : isPro ? expNum : null,
+        }
+      } catch {
+        return { isPro: false, expiresAt: null }
+      }
+    },
+  )
+
+  ipcMain.handle('slides:open-template-library', () => {
+    void shell.openExternal('https://example.com/templates')
+  })
 }

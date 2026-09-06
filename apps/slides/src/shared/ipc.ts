@@ -1641,6 +1641,10 @@ export interface SlidesApi {
   loadStyleTemplate: (
     name: string,
   ) => Promise<{ ok: boolean; styleSkill?: string; topic?: string; error?: string }>
+  /** UToOffice membership status（会员 = 解锁「使用当前模板」+ 模板库下载） */
+  membershipStatus: () => Promise<{ isPro: boolean; type?: 'lifetime' | 'year'; expiresAt: number | null }>
+  /** Open the UToOffice template library website */
+  openTemplateLibrary: () => Promise<void>
   /** New blank page (with a specific layout): inserted after slide sourceIndex, rels pointing at the chosen layout */
   addSlideWithLayout: (
     op: AddSlideWithLayoutOp,

@@ -214,6 +214,13 @@ function assertModuleTreesPresent() {
 const config = {
   appId: 'com.utooffice.app',
   productName: 'UToOffice',
+  // UToOffice deep link（网站模板库「用 UToOffice 打开」→ utooffice://import?url=...）
+  protocols: [
+    {
+      name: 'UToOffice',
+      schemes: ['utooffice'],
+    },
+  ],
   // Resolved from the installed electron package so dependency bumps can
   // never leave a stale hard-coded pin behind (packaging would silently ship
   // the old runtime).

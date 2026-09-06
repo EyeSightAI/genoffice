@@ -5,6 +5,7 @@ import {
   existsSync,
   readFileSync,
   readdirSync,
+  mkdirSync,
   renameSync,
   writeFileSync,
 } from 'node:fs'
@@ -2566,6 +2567,42 @@ const OPEN_DIALOG_EXTENSIONS = [
   'markdown',
 ]
 
+/** 从 argv 解析 utooffice://import?url=xxx 的模板下载地址 */
+function templateUrlIn(argv: string[]): string | null {
+  for (const arg of argv) {
+    if (!arg.startsWith('utooffice://')) continue
+    try {
+      const u = new URL(arg)
+      const url = u.searchParams.get('url')
+      if (url) return url
+    } catch {
+      /* ignore malformed */
+    }
+  }
+  return null
+}
+
+/** 下载网站模板 .pptx 并用 slides 打开（deep link 入口） */
+async function handleTemplateImport(templateUrl: string): Promise<void> {
+  try {
+    const u = new URL(templateUrl)
+    if (u.protocol !== 'https:' && u.protocol !== 'http:') return
+    if (!/\.pptx$/i.test(u.pathname)) return
+    const res = await fetch(templateUrl)
+    if (!res.ok) return
+    const buf = Buffer.from(await res.arrayBuffer())
+    const dir = join(app.getPath('userData'), 'templates')
+    mkdirSync(dir, { recursive: true })
+    const name = basename(u.pathname) || `template-${Date.now()}.pptx`
+    const filePath = join(dir, name)
+    writeFileSync(filePath, buf)
+    revealShellWindow()
+    if (!openDocumentPath(filePath)) tabManager?.openHomeTab()
+  } catch {
+    /* ignore failed import */
+  }
+}
+
 function supportedFileIn(argv: string[]): string | null {
   return (
     argv.find(
@@ -4136,6 +4173,7 @@ async function installMainProcessProxy(): Promise<void> {
 // ---- lifecycle (the shell is the only owner) ----
 
 let pendingLaunchPath = supportedFileIn(process.argv) ?? unsupportedFileIn(process.argv)
+let pendingTemplateUrl = templateUrlIn(process.argv)
 
 // show() does not un-minimize, and on macOS ⌘W destroys the shell window while the
 // app keeps running — either way a file opened from Finder would land out of sight.
@@ -4161,6 +4199,11 @@ app.on('open-file', (event, filePath) => {
 })
 
 app.on('second-instance', (_event, argv, _cwd, additionalData) => {
+  const templateUrl = templateUrlIn(argv)
+  if (templateUrl) {
+    void handleTemplateImport(templateUrl)
+    return
+  }
   const file =
     supportedFileIn(argv) ??
     unsupportedFileIn(argv) ??
@@ -4263,6 +4306,12 @@ app.whenReady().then(async () => {
   installDockMenu()
   initAutoUpdater(() => shellWindow, currentUpdateChannel())
 
+  // UToOffice deep link（网站模板库「用 UToOffice 打开」）
+  if (process.platform !== 'linux') app.setAsDefaultProtocolClient('utooffice')
+  if (pendingTemplateUrl) {
+    void handleTemplateImport(pendingTemplateUrl)
+    pendingTemplateUrl = null
+  }
   if (!pendingLaunchPath || !openDocumentPath(pendingLaunchPath)) tabManager?.openHomeTab()
   pendingLaunchPath = null
 
