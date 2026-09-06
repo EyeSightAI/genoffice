@@ -669,17 +669,11 @@ function AccountEntry({
         onClick={handleClick}
         aria-haspopup="dialog"
         aria-expanded={settingsOpen}
-        data-tip={
-          loggedIn
-            ? email || t('loggedIn')
-            : waiting
-              ? t('waitingLogin')
-              : (errorText ?? t('login'))
-        }
+        data-tip={membership?.isPro ? '查看会员权益' : '开通会员'}
         aria-label={t('settings')}
       >
         <span
-          className={`account-avatar${loggedIn ? ' logged-in' : ''}${waiting ? ' waiting' : ''}`}
+          className={`account-avatar${membership?.isPro ? ' member' : ''}${waiting ? ' waiting' : ''}`}
         >
           {waiting ? (
             <svg
@@ -702,7 +696,16 @@ function AccountEntry({
               />
             </svg>
           ) : (
-            initial
+            <svg
+              className="account-member-icon"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M6 3h12l4 6-10 12L2 9l4-6z" />
+            </svg>
           )}
         </span>
         <span className="account-text">

@@ -220,6 +220,16 @@ body.vib .home {
   color: #fff;
 }
 
+.account-avatar.member {
+  background: linear-gradient(135deg, #f5b53d, #d98a1b);
+  color: #fff;
+}
+
+.account-member-icon {
+  width: 15px;
+  height: 15px;
+}
+
 .account-avatar.waiting {
   color: var(--accent);
 }
