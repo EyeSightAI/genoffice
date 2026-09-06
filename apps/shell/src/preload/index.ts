@@ -17,7 +17,7 @@ import type {
   UiLanguage,
 } from '../shared/home-api'
 import { HOME_CHANNELS, PROJECT_CHANNELS } from '../shared/home-api'
-import type { MembershipActivateResult, MembershipStatus } from '../shared/home-api'
+import type { MembershipActivateResult, MembershipPackage, MembershipStatus } from '../shared/home-api'
 import type { TabsApi, TabSummary } from '../shared/tabs-api'
 import { TABS_CHANNELS } from '../shared/tabs-api'
 
@@ -162,8 +162,12 @@ const homeApi: HomeApi = {
     const result: unknown = await ipcRenderer.invoke(HOME_CHANNELS.membershipActivate, card)
     return (result ?? { ok: false, error: 'Activation failed' }) as MembershipActivateResult
   },
-  async membershipOpenPurchase() {
-    await ipcRenderer.invoke(HOME_CHANNELS.membershipOpenPurchase)
+  async membershipPackages() {
+    const result: unknown = await ipcRenderer.invoke(HOME_CHANNELS.membershipPackages)
+    return (Array.isArray(result) ? result : []) as MembershipPackage[]
+  },
+  async membershipOpenPurchase(payUrl: string) {
+    await ipcRenderer.invoke(HOME_CHANNELS.membershipOpenPurchase, payUrl)
   },
   async getAppVersion() {
     const result: unknown = await ipcRenderer.invoke(HOME_CHANNELS.getAppVersion)

@@ -118,8 +118,10 @@ export interface HomeApi {
   membershipStatus(): Promise<MembershipStatus>
   /** activate a card key; returns the new status */
   membershipActivate(card: string): Promise<MembershipActivateResult>
-  /** open the purchase page (reseller platform) in the default browser */
-  membershipOpenPurchase(): Promise<void>
+  /** fetch the purchasable packages (含酷发卡 pay_url) from the auth system */
+  membershipPackages(): Promise<MembershipPackage[]>
+  /** open a package's reseller (酷发卡) purchase page in the default browser */
+  membershipOpenPurchase(payUrl: string): Promise<void>
   /** app version (from package.json / electron app.getVersion) */
   getAppVersion(): Promise<string>
   /** whether the first-run onboarding has been completed or skipped (persisted in userData/app-settings.json) */
@@ -167,6 +169,31 @@ export interface HomeApi {
   getAiProviders(): AiCatalogEntry[]
   /** one-shot round trip against the given (possibly unsaved) settings — the settings-UI connection test */
   testAiSettings(settings: AiSettings): Promise<AiChatResponse>
+}
+
+/** UToOffice membership state (free / pro by card activation). */
+export interface MembershipStatus {
+  plan: 'free' | 'pro'
+  type?: 'lifetime' | 'year'
+  activatedAt?: number
+  expiresAt: number | null
+  isPro: boolean
+}
+
+export interface MembershipActivateResult {
+  ok: boolean
+  status?: MembershipStatus
+  error?: string
+}
+
+/** purchasable package from the auth system (含酷发卡 pay_url). */
+export interface MembershipPackage {
+  goodsId: string
+  name: string
+  price: string
+  validDays: number
+  stock: number
+  payUrl: string
 }
 
 export interface AiCatalogEntry extends AiProviderMeta {
@@ -302,6 +329,7 @@ export const HOME_CHANNELS = {
   membershipStatus: 'home:membership-status',
   membershipActivate: 'home:membership-activate',
   membershipOpenPurchase: 'home:membership-open-purchase',
+  membershipPackages: 'home:membership-packages',
   getAppVersion: 'home:get-app-version',
   onboardingSeen: 'home:onboarding-seen',
   setOnboardingSeen: 'home:set-onboarding-seen',

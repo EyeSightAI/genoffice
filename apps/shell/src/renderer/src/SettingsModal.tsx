@@ -10,7 +10,7 @@ import {
 import type { AiSettings } from '@genoffice/ai-provider'
 import { useI18n } from './locale'
 import type { StringKey, TFunc } from './locale'
-import type { AccountStatus, AiCatalogEntry, MembershipStatus, UiTheme } from '../../shared/home-api'
+import type { AccountStatus, AiCatalogEntry, MembershipPackage, MembershipStatus, UiTheme } from '../../shared/home-api'
 import { ProviderLogo } from './provider-logos'
 import './settings.css'
 
@@ -499,6 +499,8 @@ export function SettingsModal({
   const [cardInput, setCardInput] = useState('')
   const [activating, setActivating] = useState(false)
   const [activateMsg, setActivateMsg] = useState<{ ok: boolean; text: string } | null>(null)
+  const [packages, setPackages] = useState<MembershipPackage[] | null>(null)
+  const [loadingPackages, setLoadingPackages] = useState(false)
 
   useEffect(() => {
     let alive = true
@@ -555,8 +557,15 @@ export function SettingsModal({
     setActivating(false)
   }
 
-  const openPurchase = () => {
-    void window.aiOffice.membershipOpenPurchase?.()
+  const loadPackages = async () => {
+    setLoadingPackages(true)
+    const list = await window.aiOffice.membershipPackages?.()
+    setPackages(list ?? [])
+    setLoadingPackages(false)
+  }
+
+  const openPackage = (payUrl: string) => {
+    if (payUrl) void window.aiOffice.membershipOpenPurchase?.(payUrl)
   }
 
   useEffect(() => {
@@ -651,10 +660,36 @@ export function SettingsModal({
                   <div className="set-membership-item">✓ 专业版式库 + 设计规范</div>
                 </div>
                 <div className="set-pane-footer">
-                  <button className="set-btn primary" onClick={openPurchase}>
-                    开通会员
+                  <button className="set-btn primary" onClick={() => void loadPackages()}>
+                    {packages === null ? '开通会员' : '收起套餐'}
                   </button>
                 </div>
+                {packages !== null && (
+                  <div className="set-membership-packages">
+                    {loadingPackages && <div className="set-package-loading">加载中…</div>}
+                    {!loadingPackages && packages.length === 0 && (
+                      <div className="set-package-empty">暂无可购买的套餐</div>
+                    )}
+                    {!loadingPackages &&
+                      packages.map((pkg) => (
+                        <div key={pkg.goodsId} className="set-package-card">
+                          <div className="set-package-info">
+                            <div className="set-package-name">{pkg.name}</div>
+                            <div className="set-package-meta">
+                              ¥{pkg.price} · {pkg.validDays >= 9999 ? '永久' : `${pkg.validDays} 天`}
+                            </div>
+                          </div>
+                          <button
+                            className="set-btn primary"
+                            onClick={() => openPackage(pkg.payUrl)}
+                            disabled={!pkg.payUrl}
+                          >
+                            {pkg.payUrl ? '购买' : '暂未开放'}
+                          </button>
+                        </div>
+                      ))}
+                  </div>
+                )}
               </>
             )}
             {section === 'aiModel' && <AiModelPane t={t} />}

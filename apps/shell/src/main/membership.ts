@@ -1,121 +1,235 @@
 /**
- * UToOffice membership: offline card-key activation + local membership state.
+ * UToOffice membership: online card-key activation against the auth system.
  *
- * Card format: `UTO-<base64url(payload)>-<base64url(hmac16)>`
- *   payload = JSON { plan: 'pro', type: 'lifetime' | 'year', exp: number }
- *   exp = expiry ms epoch (ignored for lifetime cards).
+ * Backend: FastAPI multi-app authorization system (see 卡密系统对接文档.md).
+ *   - base  : http://47.109.16.117:8088
+ *   - app_key: 73379542474545c4b1ab8913647dea32 (UToOffice app)
  *
- * Activation is fully offline (HMAC-SHA256 signature) — no server required.
- * The secret is hardcoded for MVP; move it to a build-time env injection
- * (GENOFFICE_MEMBERSHIP_SECRET) before going to production.
+ * Flow:
+ *   device_id = stable machine fingerprint (CPU + board serial + MAC + host)
+ *   activate  -> POST /api/auth/activate  { app_key, device_id, auth_code }
+ *   check     -> POST /api/auth/check     { app_key, device_id }
  *
- * Membership state is persisted at userData/membership.json.
+ * "一机一码" (max_device=1): a card is bound to one device_id. Re-activating
+ * on a new machine re-binds (换机) and the server returns the original expiry.
+ *
+ * valid_days == 9999  => lifetime ("永久"). Server returns expire_time as
+ * "永久" for lifetime cards, or "YYYY-MM-DD HH:mm:ss" otherwise.
+ *
+ * Local state is cached at userData/membership.json (device_id + expiry) so
+ * the app starts offline-tolerant; server is the source of truth.
  */
 
-import { createHmac, randomUUID } from 'node:crypto'
+import { execSync } from 'node:child_process'
+import { createHash } from 'node:crypto'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
+import * as os from 'node:os'
+import type { MembershipPackage, MembershipStatus } from '../shared/home-api'
 
-import type { MembershipStatus } from '../shared/home-api'
+const SERVER_BASE = 'http://47.109.16.117:8088'
+const APP_KEY = '73379542474545c4b1ab8913647dea32'
+const TIMEOUT_MS = 10000
+const LIFETIME_DAYS = 9999
 
-const SECRET = process.env.GENOFFICE_MEMBERSHIP_SECRET || 'UTO-office-2026-membership-secret'
-
-export type MembershipPlan = 'free' | 'pro'
-export type MembershipType = 'lifetime' | 'year'
-
-export interface CardPayload {
-  plan: 'pro'
-  type: MembershipType
-  /** expiry ms epoch; 0 for lifetime */
-  exp: number
-  /** random unique id so every card is distinct (offline HMAC cannot dedupe) */
-  id: string
-}
-
-function sign(data: string): string {
-  return createHmac('sha256', SECRET).update(data).digest('base64url').slice(0, 16)
-}
-
-/** Generate a signed card (used offline to mint cards for the reseller platform). */
-export function generateCard(type: MembershipType): string {
-  const exp = type === 'lifetime' ? 0 : Date.now() + 365 * 24 * 60 * 60 * 1000
-  const payload: CardPayload = { plan: 'pro', type, exp, id: randomUUID() }
-  const body = Buffer.from(JSON.stringify(payload)).toString('base64url')
-  // sig 固定 16 字符，紧跟 body 拼接（不用分隔符：base64url 本身含 -/_，会干扰分隔解析）
-  return `UTO-${body}${sign(body)}`
-}
-
-export function verifyCard(
-  card: string,
-): { ok: boolean; payload?: CardPayload; error?: string } {
-  const raw = card.trim()
-  if (!raw.startsWith('UTO-')) return { ok: false, error: '卡密格式不正确' }
-  const rest = raw.slice(4)
-  if (rest.length <= 16) return { ok: false, error: '卡密格式不正确' }
-  const sig = rest.slice(-16)
-  const body = rest.slice(0, -16)
-  if (sign(body) !== sig) return { ok: false, error: '卡密无效，请检查是否输入正确' }
-  let payload: CardPayload
-  try {
-    payload = JSON.parse(Buffer.from(body, 'base64url').toString()) as CardPayload
-  } catch {
-    return { ok: false, error: '卡密无效' }
-  }
-  if (payload.plan !== 'pro') return { ok: false, error: '卡密无效' }
-  if (payload.type === 'year' && payload.exp > 0 && payload.exp < Date.now()) {
-    return { ok: false, error: '卡密已过期' }
-  }
-  return { ok: true, payload }
+interface StoredMembership {
+  deviceId: string
+  code: string
+  expireTime: string | null // 'YYYY-MM-DD HH:mm:ss' 或 '永久'
+  remainDays: number
+  activatedAt: number
+  lastCheck: number
 }
 
 function membershipPath(userDataDir: string): string {
   return join(userDataDir, 'membership.json')
 }
 
-interface StoredMembership {
-  plan?: MembershipPlan
-  type?: MembershipType
-  activatedAt?: number
-  expiresAt?: number | null
+function readStore(userDataDir: string): StoredMembership | null {
+  try {
+    const p = membershipPath(userDataDir)
+    if (!existsSync(p)) return null
+    return JSON.parse(readFileSync(p, 'utf-8')) as StoredMembership
+  } catch {
+    return null
+  }
 }
 
-function statusFrom(data: StoredMembership): MembershipStatus {
-  const plan = data.plan === 'pro' ? 'pro' : 'free'
-  const type = data.type
-  const activatedAt = data.activatedAt
-  const expiresAt = data.expiresAt ?? null
-  const active =
-    plan === 'pro' && (type === 'lifetime' || (expiresAt !== null && expiresAt > Date.now()))
-  if (!active) return { plan: 'free', expiresAt: null, isPro: false }
-  return {
-    plan: 'pro',
-    type: type === 'year' ? 'year' : 'lifetime',
-    activatedAt,
-    expiresAt: type === 'lifetime' ? null : expiresAt,
-    isPro: true,
+function writeStore(userDataDir: string, s: StoredMembership): void {
+  try {
+    writeFileSync(membershipPath(userDataDir), JSON.stringify(s, null, 2) + '\n')
+  } catch {
+    /* ignore */
   }
+}
+
+/** stable machine fingerprint — several hardware bits so swapping one part
+ *  (NIC/board) does not change the id; SHA-256 hex, 32 chars. */
+function machineFingerprint(): string {
+  const parts: string[] = []
+  const run = (cmd: string): string => {
+    try {
+      return execSync(cmd, { encoding: 'utf8', timeout: 3000 }).trim()
+    } catch {
+      return ''
+    }
+  }
+  const cpu = run('wmic cpu get ProcessorId /value')
+  if (cpu) parts.push(cpu)
+  const board = run('wmic baseboard get SerialNumber /value')
+  if (board) parts.push(board)
+  try {
+    const macs = Object.values(os.networkInterfaces())
+      .flat()
+      .filter((n): n is os.NetworkInterfaceInfo => !!n && !!n.mac && n.mac !== '00:00:00:00:00:00')
+      .map((n) => n.mac)
+    parts.push([...new Set(macs)].sort().join(','))
+  } catch {
+    /* ignore */
+  }
+  parts.push(`${os.hostname()}|${os.arch()}`)
+  return createHash('sha256').update(parts.join('|')).digest('hex').slice(0, 32)
+}
+
+function getOrCreateDeviceId(userDataDir: string): string {
+  const store = readStore(userDataDir)
+  if (store?.deviceId) return store.deviceId
+  const id = machineFingerprint()
+  writeStore(userDataDir, {
+    deviceId: id,
+    code: '',
+    expireTime: null,
+    remainDays: 0,
+    activatedAt: 0,
+    lastCheck: Date.now(),
+  })
+  return id
+}
+
+interface ApiResp {
+  code: number
+  msg: string
+  data: Record<string, unknown>
+}
+
+async function apiPost(path: string, body: Record<string, unknown>): Promise<ApiResp> {
+  const res = await fetch(`${SERVER_BASE}${path}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+    signal: AbortSignal.timeout(TIMEOUT_MS),
+  })
+  return (await res.json()) as ApiResp
+}
+
+/** expire_time string -> ms epoch (null for "永久" / missing). */
+function parseExpire(expireTime: unknown): number | null {
+  if (typeof expireTime !== 'string') return null
+  if (expireTime === '永久') return null
+  const t = Date.parse(expireTime.replace(' ', 'T'))
+  return Number.isNaN(t) ? null : t
+}
+
+function isLifetime(remainDays: unknown, expireTime: unknown): boolean {
+  if (typeof remainDays === 'number' && remainDays >= LIFETIME_DAYS) return true
+  return expireTime === '永久'
 }
 
 export function loadMembership(userDataDir: string): MembershipStatus {
+  const store = readStore(userDataDir)
+  if (!store) return { plan: 'free', expiresAt: null, isPro: false }
+  if (isLifetime(store.remainDays, store.expireTime)) {
+    return {
+      plan: 'pro',
+      type: 'lifetime',
+      activatedAt: store.activatedAt || undefined,
+      expiresAt: null,
+      isPro: true,
+    }
+  }
+  const exp = parseExpire(store.expireTime)
+  if (exp && exp > Date.now()) {
+    return {
+      plan: 'pro',
+      type: 'year',
+      activatedAt: store.activatedAt || undefined,
+      expiresAt: exp,
+      isPro: true,
+    }
+  }
+  return { plan: 'free', expiresAt: null, isPro: false }
+}
+
+export async function activateMembership(
+  userDataDir: string,
+  card: string,
+): Promise<{ ok: boolean; status?: MembershipStatus; error?: string }> {
+  const deviceId = getOrCreateDeviceId(userDataDir)
   try {
-    const p = membershipPath(userDataDir)
-    if (!existsSync(p)) return { plan: 'free', expiresAt: null, isPro: false }
-    const data = JSON.parse(readFileSync(p, 'utf-8')) as StoredMembership
-    return statusFrom(data)
+    const resp = await apiPost('/api/auth/activate', {
+      app_key: APP_KEY,
+      device_id: deviceId,
+      auth_code: card,
+    })
+    if (resp.code !== 0) return { ok: false, error: resp.msg || '激活失败' }
+    const d = resp.data
+    const expireTime = typeof d.expire_time === 'string' ? d.expire_time : null
+    const remainDays = typeof d.remain_days === 'number' ? d.remain_days : 0
+    const prev = readStore(userDataDir)
+    writeStore(userDataDir, {
+      deviceId,
+      code: typeof d.code === 'string' ? d.code : card,
+      expireTime,
+      remainDays,
+      activatedAt: prev?.activatedAt || Date.now(),
+      lastCheck: Date.now(),
+    })
+    return { ok: true, status: loadMembership(userDataDir) }
   } catch {
-    return { plan: 'free', expiresAt: null, isPro: false }
+    return { ok: false, error: '网络连接失败，请检查网络后重试' }
   }
 }
 
-export function activateMembership(userDataDir: string, payload: CardPayload): MembershipStatus {
-  const now = Date.now()
-  const expiresAt = payload.type === 'lifetime' ? null : payload.exp
-  const data: StoredMembership = {
-    plan: 'pro',
-    type: payload.type,
-    activatedAt: now,
-    expiresAt,
+/** Reconcile against the server (called at startup; falls back to cache). */
+export async function checkMembership(userDataDir: string): Promise<MembershipStatus> {
+  const deviceId = getOrCreateDeviceId(userDataDir)
+  const prev = readStore(userDataDir)
+  try {
+    const resp = await apiPost('/api/auth/check', { app_key: APP_KEY, device_id: deviceId })
+    if (resp.code !== 0) return loadMembership(userDataDir)
+    const d = resp.data
+    if (d.activated === true) {
+      writeStore(userDataDir, {
+        deviceId,
+        code: typeof d.code === 'string' ? d.code : prev?.code ?? '',
+        expireTime: typeof d.expire_time === 'string' ? d.expire_time : null,
+        remainDays: typeof d.remain_days === 'number' ? d.remain_days : 0,
+        activatedAt: prev?.activatedAt || Date.now(),
+        lastCheck: Date.now(),
+      })
+      return loadMembership(userDataDir)
+    }
+    return { plan: 'free', expiresAt: null, isPro: false }
+  } catch {
+    return loadMembership(userDataDir)
   }
-  writeFileSync(membershipPath(userDataDir), JSON.stringify(data, null, 2) + '\n')
-  return statusFrom(data)
+}
+
+/** Fetch purchasable packages (含酷发卡 pay_url). */
+export async function getPackages(): Promise<MembershipPackage[]> {
+  try {
+    const resp = await apiPost('/api/v1/goods/cate', { appid: APP_KEY })
+    if (resp.code !== 0) return []
+    const arr = Array.isArray(resp.data) ? resp.data : []
+    return arr.map((g) => ({
+      goodsId: String((g as Record<string, unknown>).goods_id ?? ''),
+      name: String((g as Record<string, unknown>).goods_name ?? ''),
+      price: String((g as Record<string, unknown>).price ?? ''),
+      validDays: Number((g as Record<string, unknown>).valid_days ?? 0),
+      stock: Number((g as Record<string, unknown>).stock ?? 0),
+      payUrl: String((g as Record<string, unknown>).pay_url ?? ''),
+    }))
+  } catch {
+    return []
+  }
 }
