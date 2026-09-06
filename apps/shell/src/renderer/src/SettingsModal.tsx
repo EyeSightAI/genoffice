@@ -660,7 +660,10 @@ export function SettingsModal({
                   <div className="set-membership-item">✓ 专业版式库 + 设计规范</div>
                 </div>
                 <div className="set-pane-footer">
-                  <button className="set-btn primary" onClick={() => void loadPackages()}>
+                  <button
+                    className="set-btn primary"
+                    onClick={() => (packages === null ? void loadPackages() : setPackages(null))}
+                  >
                     {packages === null ? '开通会员' : '收起套餐'}
                   </button>
                 </div>
