@@ -556,4 +556,10 @@ export function registerSlidesOnlyAiIpc(): void {
   ipcMain.handle('slides:open-template-library', () => {
     void shell.openExternal('https://utooffice-templates.vercel.app')
   })
+
+  ipcMain.handle('slides:open-template-deeplink', (_e, url: string) => {
+    if (typeof url === 'string' && /^https?:\/\//.test(url)) {
+      void shell.openExternal(`utooffice://import?url=${encodeURIComponent(url)}`)
+    }
+  })
 }

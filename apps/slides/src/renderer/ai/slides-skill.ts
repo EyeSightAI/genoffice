@@ -11,6 +11,7 @@ import { opVocabulary } from '../../shared/op-docs'
 import { auditSlideLayout, formatAudit } from './layout-audit'
 import { runLayoutScript, type LayoutScriptElement, type SlideStylePatch } from './layout-script'
 import { t } from '../i18n/locale'
+import templatesMeta from './templates-meta.json'
 
 /**
  * Slides capability as an AgentSkill: deck outline context + three tools (read structure /
@@ -238,7 +239,7 @@ export interface ClarifyQuestion {
 const AGENT_SYSTEM_PROMPT = `You are the AI assistant inside UToOffice Slides (a slide editor), helping users improve and generate presentations.
 
 ## Most important tool-selection principles (judge the scenario before acting)
-- **Creating a whole new deck (from scratch)** → first gather material (web_search) and images (image_search), then call **generate_deck**. With many pages, prefer **passing topic + approx_pages + context (the real material you found)** and let the system plan internally + generate page by page + display page by page (**you don't hand-write dozens of pages, and no pages get missed / arguments truncated**). For few pages where you already know each page, you may pass core_hook+style+pages directly.
+- **Creating a whole new deck (from scratch)** → **if the user described a topic/style but has no template yet, FIRST call search_templates(query) to pick a matching UToOffice 模板库 template, then open_template(url) it (that template becomes the design base — the user can then say "使用当前模板" to strictly apply it). Only skip this and go straight to generate_deck when the user explicitly wants a blank AI-designed deck, or nothing in the library fits.** Then gather material (web_search) and images (image_search), then call **generate_deck**. With many pages, prefer **passing topic + approx_pages + context (the real material you found)** and let the system plan internally + generate page by page + display page by page (**you don't hand-write dozens of pages, and no pages get missed / arguments truncated**). For few pages where you already know each page, you may pass core_hook+style+pages directly.
 - **Adding 1 page or a few pages to an existing deck** → generate_deck(pages: briefs for just the new pages, insert_mode:"append"). Write each page's brief in detail (real content/data per region + layout); first look at the existing pages (get_deck_context) and pass a style description matching them so new pages stay consistent. **Even a single new page goes through this generation pipeline; don't fall back to native tools and build a crude page**.
 - **Redoing / redesigning an existing page** (user says "redo this page / redesign it / try another layout / make it prettier") → **regenerate_slide**: first read_slide to get the page's original copy, then pass a detailed brief (copy the text/data to keep into the brief verbatim, state what to change and the target layout); the page is regenerated in place (other pages untouched). Don't dismantle and rebuild the whole page element by element with native tools.
 - **Deleting a page** → delete_slide(slideIndex).
@@ -1223,7 +1224,66 @@ const TOOLS: AgentToolDef[] = [
       required: ['slideIndex', 'sourceId'],
     },
   },
+  {
+    name: 'search_templates',
+    description:
+      '从 UToOffice 模板库检索匹配的 PPT 模板。用户描述需求（如「年度总结 商务简约」「述职报告 蓝色科技风」）后调用，按标题/标签/分类关键词匹配返回候选模板（含 id/标题/标签/下载链接）。挑出最贴合用户需求的一个，用 open_template 打开它作为后续「使用当前模板」的底版。',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        query: { type: 'string', description: '用户需求关键词/描述（中文）' },
+        limit: { type: 'integer', description: '返回候选数量，默认 6，最大 12' },
+      },
+      required: ['query'],
+    },
+  },
+  {
+    name: 'open_template',
+    description:
+      '下载并打开一个模板（作为当前模板的底版）。传入 search_templates 返回的某个模板 url（http(s) 链接），系统会唤起 shell 下载该 .pptx 并在新标签页打开，之后用户可「使用当前模板」严格套用。会员未开通时会被拦截。',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        url: { type: 'string', description: 'search_templates 返回的模板下载链接（http(s)）' },
+      },
+      required: ['url'],
+    },
+  },
 ]
+
+/** UToOffice 模板库元数据（AI 自动选模板用） */
+interface TemplateMeta {
+  id: string
+  title: string
+  tags: string[]
+  category: string
+  url: string
+}
+const TEMPLATE_META = templatesMeta as TemplateMeta[]
+
+/** 关键词匹配模板库：按标题/标签/分类命中计分，返回 top N 候选。 */
+function searchTemplates(query: string, limit: number): TemplateMeta[] {
+  const q = query.trim().toLowerCase()
+  const tokens = q.split(/[\s,，、。;；/|+·]+/).filter((s) => s.length >= 2)
+  const scored = TEMPLATE_META.map((m) => {
+    const title = m.title.toLowerCase()
+    const cat = m.category.toLowerCase()
+    const tags = m.tags.join(' ').toLowerCase()
+    let score = 0
+    if (q && title.includes(q)) score += 6
+    if (q && cat.includes(q)) score += 4
+    if (q && tags.includes(q)) score += 2
+    for (const tk of tokens) {
+      if (title.includes(tk)) score += 3
+      if (cat.includes(tk)) score += 2
+      if (tags.includes(tk)) score += 1
+    }
+    return { m, score }
+  })
+  scored.sort((a, b) => b.score - a.score)
+  const hits = scored.filter((s) => s.score > 0).map((s) => s.m)
+  return (hits.length > 0 ? hits : scored.map((s) => s.m)).slice(0, Math.min(limit, 12))
+}
 
 /** Collect readable text of nodes (including nested group children); returns a list of [sourceId, type, text] */
 /** Find one node by id in the node tree (including groups). */
@@ -1735,6 +1795,32 @@ async function executeTool(
         mutated: false,
         summary: t('aiSumDeckContext'),
       }
+
+    case 'search_templates': {
+      const query = String(call.input.query ?? '')
+      const limit = Math.min(Number(call.input.limit ?? 6) || 6, 12)
+      const results = searchTemplates(query, limit)
+      if (results.length === 0) return fail('搜索模板', '模板库为空')
+      const list = results
+        .map((m) => `- [${m.id}] ${m.title}（${m.category}｜${m.tags.join(' ')}）\n  url: ${m.url}`)
+        .join('\n')
+      return {
+        output: `匹配到 ${results.length} 个模板：\n${list}\n\n从上面挑一个最贴合用户需求的，用 open_template 打开它的 url。`,
+        mutated: false,
+        summary: `找到 ${results.length} 个模板`,
+      }
+    }
+
+    case 'open_template': {
+      const url = String(call.input.url ?? '')
+      if (!/^https?:\/\//.test(url)) return fail('打开模板失败', 'url 必须是 http(s) 链接')
+      await window.slidesApi.openTemplateDeepLink(url)
+      return {
+        output: '已发起打开模板（下载完成后会在新标签页打开，稍等片刻）。',
+        mutated: false,
+        summary: '打开模板',
+      }
+    }
 
     case 'read_slide': {
       const idx = Number(call.input.slideIndex)
