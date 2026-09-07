@@ -1,0 +1,22 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Microsoft YaHei','思源黑体','PingFang SC',sans-serif; background:var(--bg); color:var(--text); width:100%; height:100vh; overflow:hidden; }
+  .page { width:100%; height:100vh; padding:60px 70px; position:relative; }
+  .pagetitle { font-size:30px; font-weight:700; color:var(--primary); margin-bottom:14px; }
+  .pagesub { font-size:15px; color:var(--text-muted); margin-bottom:36px; }
+  
+  .cols { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:16px; }
+  .col { border-radius:12px; padding:28px; }
+  .col.a { background:var(--bg-muted); }
+  .col.b { background:var(--primary); color:#fff; }
+  .col h3 { font-size:20px; font-weight:700; margin-bottom:20px; }
+  .col.a h3 { color:var(--primary); }
+  .col li { list-style:none; padding:9px 0; font-size:15px; line-height:1.5; }
+  .col.b li { opacity:0.92; }
+  .col li::before { content:"• "; color:var(--accent); font-weight:700; }
+
+</style></head><body><div class="page"><h2 class="pagetitle">{{页标题}}</h2><p class="pagesub">{{页副标题}}</p>
+  <div class="cols">
+    <div class="col a"><h3>{{方案甲}}</h3><ul><li>{{甲要点一}}</li><li>{{甲要点二}}</li><li>{{甲要点三}}</li><li>{{甲要点四}}</li></ul></div>
+    <div class="col b"><h3>{{方案乙}}</h3><ul><li>{{乙要点一}}</li><li>{{乙要点二}}</li><li>{{乙要点三}}</li><li>{{乙要点四}}</li></ul></div>
+  </div></div></body></html>

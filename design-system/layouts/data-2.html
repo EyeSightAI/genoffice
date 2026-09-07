@@ -1,0 +1,18 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Microsoft YaHei','思源黑体','PingFang SC',sans-serif; background:var(--bg); color:var(--text); width:100%; height:100vh; overflow:hidden; }
+  .page { width:100%; height:100vh; padding:60px 70px; position:relative; }
+  .pagetitle { font-size:30px; font-weight:700; color:var(--primary); margin-bottom:14px; }
+  .pagesub { font-size:15px; color:var(--text-muted); margin-bottom:36px; }
+  
+  .split { display:flex; gap:36px; margin-top:16px; align-items:center; }
+  .chart { flex:1.2; background:var(--bg-muted); border-radius:12px; height:360px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); }
+  .insight { flex:1; }
+  .insight h3 { font-size:20px; font-weight:700; color:var(--primary); margin-bottom:16px; }
+  .insight p { font-size:15px; color:var(--text-muted); line-height:1.7; margin-bottom:14px; }
+
+</style></head><body><div class="page"><h2 class="pagetitle">{{页标题}}</h2><p class="pagesub">{{页副标题}}</p>
+  <div class="split">
+    <div class="chart">{{图表区域}}</div>
+    <div class="insight"><h3>{{洞察标题}}</h3><p>{{洞察内容一}}</p><p>{{洞察内容二}}</p></div>
+  </div></div></body></html>
