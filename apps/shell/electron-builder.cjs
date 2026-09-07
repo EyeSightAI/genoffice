@@ -538,15 +538,16 @@ if (winSignMode) {
   }
 }
 
-if (updateUrl) {
-  config.publish = [
-    {
-      provider: 'generic',
-      url: updateUrl.replace(/\/+$/, ''),
-      channel: 'latest',
-    },
-  ]
-}
+// UToOffice 更新源：GitHub Releases（github provider，electron-updater 原生支持）。
+// 构建时 `--publish always` + GH_TOKEN 会自动把 latest.yml + 安装包发布到 Releases；
+// 客户端 electron-updater 通过 GitHub API 检查 latest.yml 实现自动更新。
+config.publish = [
+  {
+    provider: 'github',
+    owner: 'EyeSightAI',
+    repo: 'genoffice',
+  },
+]
 
 // CI's "-c.extraMetadata.version=..." CLI override deep-merges with this block,
 // so the version and all injected feature settings survive together.

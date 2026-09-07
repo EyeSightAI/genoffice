@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -45,7 +45,9 @@ jobs:
         run: npm ci
 
       - name: Build Windows installer
-        run: npm run dist:win
+        run: npm run dist:win -- --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: List artifacts
         shell: bash
