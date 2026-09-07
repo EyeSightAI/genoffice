@@ -2588,6 +2588,36 @@ async function handleTemplateImport(templateUrl: string): Promise<void> {
     const u = new URL(templateUrl)
     if (u.protocol !== 'https:' && u.protocol !== 'http:') return
     if (!/\.pptx$/i.test(u.pathname)) return
+
+    // 会员拦截：非会员不能下载模板，引导开通会员
+    const ms = loadMembership(app.getPath('userData'))
+    if (!ms.isPro) {
+      revealShellWindow()
+      const r = await dialog.showMessageBox({
+        type: 'info',
+        title: '会员专属',
+        message: '下载模板需要 UToOffice 会员',
+        detail:
+          '开通会员即可下载全部 600+ 精美 PPT 模板，并解锁「使用当前模板」严格套用与生成质检。',
+        buttons: ['开通会员', '取消'],
+        defaultId: 0,
+        cancelId: 1,
+      })
+      if (r.response === 0) {
+        tabManager?.openHomeTab()
+        setTimeout(() => {
+          void dialog.showMessageBox({
+            type: 'info',
+            title: '开通会员',
+            message: '点击左下角头像 → 账户 → 开通会员',
+            detail: '选择套餐后跳转到支付页面完成购买，付款后卡密会自动发给你。',
+            buttons: ['知道了'],
+          })
+        }, 400)
+      }
+      return
+    }
+
     const res = await fetch(templateUrl)
     if (!res.ok) return
     const buf = Buffer.from(await res.arrayBuffer())
