@@ -395,6 +395,9 @@ const config = {
     ],
   },
   win: {
+    // 固定安装包文件名（不带版本号）：网站「下载 UToOffice」用
+    // releases/latest/download/UToOffice-Setup.exe 永久指向最新版，发版后网站链接不用改
+    artifactName: 'UToOffice-Setup.exe',
     target: [
       {
         target: 'nsis',
