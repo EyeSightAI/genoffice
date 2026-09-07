@@ -781,7 +781,8 @@ const TOOLS: AgentToolDef[] = [
       ' Recommended usage (especially with many pages): pass only topic + approx_pages (+ optional style/context); the system plans the outline internally (auto-batched beyond 12 pages), **auto-searches images** (no advance image_search — the system searches from the planned image_queries keywords internally and fills real URLs back before writing HTML), writes HTML page by page, and lands pages onto the canvas one by one.' +
       ' You don\'t hand-write dozens of pages, and neither "only page 1 got generated" nor "arguments were truncated" can happen — the page count is guaranteed by the system loop.' +
       ' (If you already know each page you may pass core_hook+style+pages directly; pages[].image_queries takes English image-search keywords, searched internally; if you already know real http(s) URLs pass them directly — the system respects existing URLs and does not re-search.)' +
-      ' To add a few pages to an existing deck, pass pages (briefs for just the new pages) + insert_mode:"append".',
+      ' To add a few pages to an existing deck, pass pages (briefs for just the new pages) + insert_mode:"append".' +
+      ' IMPORTANT: all generated page text (titles, body, labels, chart text) must follow the system language directive — for Chinese users write every page text in Simplified Chinese.',
     inputSchema: {
       type: 'object',
       properties: {

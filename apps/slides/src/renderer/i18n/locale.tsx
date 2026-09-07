@@ -19,7 +19,7 @@ export const setModuleLang = (lang: Lang): void => {
 export const t: TFunc = (key, params) => translate(moduleLang, key, params)
 
 const AI_LANG_DIRECTIVES: Record<Lang, string> = {
-  zh: '\n\n用与用户消息相同的语言回复；无法判断用户消息的语言时，用简体中文回复。',
+  zh: '\n\n所有回复和生成的内容（包括 PPT 页面文字、标题、正文、图表文字）一律使用简体中文；除非用户明确要求其他语言。',
   en: "\n\nReply in the same language as the user's message; if it cannot be determined, reply in English.",
   ja: '\n\nユーザーのメッセージと同じ言語で返信してください。言語を判別できない場合は日本語で返信してください。',
   ko: '\n\n사용자 메시지와 같은 언어로 답변하세요. 언어를 판단할 수 없으면 한국어로 답변하세요.',
