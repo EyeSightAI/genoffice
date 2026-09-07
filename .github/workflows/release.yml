@@ -49,6 +49,13 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            apps/shell/release/*.exe
+            apps/shell/release/latest.yml
+
       - name: List artifacts
         shell: bash
         run: ls -la apps/shell/release/ 2>/dev/null || find . -name '*.exe' -path '*release*' 2>/dev/null
