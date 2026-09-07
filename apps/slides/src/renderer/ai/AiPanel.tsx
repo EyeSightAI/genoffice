@@ -397,8 +397,8 @@ export function AiPanel({
 }: AiPanelProps) {
   const { t } = useI18n()
   const [input, setInput] = useState('')
-  /** 「使用当前模板」标签：选中后生成时严格套用当前文件版式（会员专属） */
-  const [useCurrentTemplate, setUseCurrentTemplate] = useState(false)
+  /** 「使用模板库」标签：勾选后 AI 可自动从模板库选模板 / 严格套用当前模板（会员专属） */
+  const [useTemplateLibrary, setUseTemplateLibrary] = useState(false)
   const [isPro, setIsPro] = useState(false)
   const [templateHint, setTemplateHint] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
@@ -517,6 +517,8 @@ export function AiPanel({
   applySlideRef.current = applySlide
   const applyDeckRef = useRef(applyDeck)
   applyDeckRef.current = applyDeck
+  const useTemplateLibraryRef = useRef(useTemplateLibrary)
+  useTemplateLibraryRef.current = useTemplateLibrary
   const onSetSpeakerNotesRef = useRef(onSetSpeakerNotes)
   onSetSpeakerNotesRef.current = onSetSpeakerNotes
   const onPathChangeRef = useRef(onPathChange)
@@ -930,6 +932,7 @@ export function AiPanel({
       getSelectedIds: () => (queueRunResolverRef.current ? [] : selectedRef.current),
       applySlide: (i, updated) => applySlideRef.current(i, updated),
       applyDeck: (all, goTo) => applyDeckRef.current(all, goTo),
+      useTemplateLibrary: () => useTemplateLibraryRef.current,
       setSpeakerNotes: (i, text) =>
         onSetSpeakerNotesRef.current?.(i, text) ?? Promise.resolve(false),
       landGeneratedPages: async (
@@ -1615,10 +1618,12 @@ export function AiPanel({
         // AI Beautify sends the current slide's rendering along, so the model sees what it edits;
         // the note rides on the model instruction only — the chat bubble stays the localized preset text
         let modelInstruction = instruction
-        if (useCurrentTemplate) {
+        if (useTemplateLibrary) {
           modelInstruction +=
-            '\n\n【使用当前模板：严格套用】用户打开了现有 .pptx 作为模板。生成时严格遵守：' +
-            '\n\n【保留模板】logo、背景、配色、字体绝不改动。' +
+            '\n\n【使用模板库：会员专属】' +
+            '\n- 当前文档是空白（无实质内容）时：先调用 search_templates 从模板库匹配最贴合用户需求的模板，再用 open_template 加载它，然后在模板上生成内容。' +
+            '\n- 当前文档是用户自己打开的现有 .pptx 模板时：不要重新选模板，直接严格套用当前模板。' +
+            '\n\n【严格套用（两者通用）】logo、背景、配色、字体绝不改动。' +
             '\n\n【内容适配框体（强制，否则会出现字体重叠/内容不适配）】' +
             '\n- 生成的内容长度必须适配模板现有文本框/占位符的大小：内容偏长就精简文字或减小字号，内容偏短就保留留白；' +
             '\n- 任何文字严禁溢出文本框（内容超过框体高度或宽度即为失败），严禁与其他文字或图片重叠；' +
@@ -2274,18 +2279,18 @@ export function AiPanel({
           {attachNotice && <div className="ai-attach-notice">{attachNotice}</div>}
           <div className="ai-template-chips">
             <button
-              className={`ai-template-chip${useCurrentTemplate ? ' active' : ''}`}
+              className={`ai-template-chip${useTemplateLibrary ? ' active' : ''}`}
               onClick={() => {
                 if (!isPro) {
-                  setTemplateHint('「使用当前模板」为会员专属功能，请先开通会员')
+                  setTemplateHint('「使用模板库」为会员专属功能，请先开通会员')
                   return
                 }
                 setTemplateHint(null)
-                setUseCurrentTemplate((v) => !v)
+                setUseTemplateLibrary((v) => !v)
               }}
-              data-tip={isPro ? '严格套用当前模板的 logo / 版式 / 配色' : '会员专属功能'}
+              data-tip={isPro ? 'AI 自动从模板库选模板，或严格套用你打开的文件' : '会员专属功能'}
             >
-              📄 使用当前模板
+              📄 使用模板库
             </button>
             <button
               className="ai-template-chip ai-template-more"

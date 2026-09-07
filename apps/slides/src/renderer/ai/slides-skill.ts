@@ -117,6 +117,8 @@ export interface DeckAccess {
   isCloudPageGenEnabled?(): Promise<boolean>
   /** live predicate: gsk login && the -cloud-tools toggle; false hides generate_image / analyze_media */
   gskTools?(): boolean
+  /** live predicate: 「使用模板库」标签是否勾选（会员专属）；false 时隐藏 search_templates / open_template */
+  useTemplateLibrary?(): boolean
   /**
    * Cloud single-page generation (gsk slide_generate), used by generate_deck's self-driven
    * pipeline: given the unified style + this page's brief/layout/images, the cloud service
@@ -239,7 +241,7 @@ export interface ClarifyQuestion {
 const AGENT_SYSTEM_PROMPT = `You are the AI assistant inside UToOffice Slides (a slide editor), helping users improve and generate presentations.
 
 ## Most important tool-selection principles (judge the scenario before acting)
-- **Creating a whole new deck (from scratch)** → **if the user described a topic/style but has no template yet, FIRST call search_templates(query) to pick a matching UToOffice 模板库 template, then open_template(url) it (that template becomes the design base — the user can then say "使用当前模板" to strictly apply it). Only skip this and go straight to generate_deck when the user explicitly wants a blank AI-designed deck, or nothing in the library fits.** Then gather material (web_search) and images (image_search), then call **generate_deck**. With many pages, prefer **passing topic + approx_pages + context (the real material you found)** and let the system plan internally + generate page by page + display page by page (**you don't hand-write dozens of pages, and no pages get missed / arguments truncated**). For few pages where you already know each page, you may pass core_hook+style+pages directly.
+- **Creating a whole new deck (from scratch)** → first gather material (web_search) and images (image_search), then call **generate_deck**. With many pages, prefer **passing topic + approx_pages + context (the real material you found)** and let the system plan internally + generate page by page + display page by page (**you don't hand-write dozens of pages, and no pages get missed / arguments truncated**). For few pages where you already know each page, you may pass core_hook+style+pages directly.
 - **Adding 1 page or a few pages to an existing deck** → generate_deck(pages: briefs for just the new pages, insert_mode:"append"). Write each page's brief in detail (real content/data per region + layout); first look at the existing pages (get_deck_context) and pass a style description matching them so new pages stay consistent. **Even a single new page goes through this generation pipeline; don't fall back to native tools and build a crude page**.
 - **Redoing / redesigning an existing page** (user says "redo this page / redesign it / try another layout / make it prettier") → **regenerate_slide**: first read_slide to get the page's original copy, then pass a detailed brief (copy the text/data to keep into the brief verbatim, state what to change and the target layout); the page is regenerated in place (other pages untouched). Don't dismantle and rebuild the whole page element by element with native tools.
 - **Deleting a page** → delete_slide(slideIndex).
@@ -1617,6 +1619,8 @@ export function formatSlideDump(slide: RenderSlide): string {
 
 /** tools only usable through the  cloud (gated by login + the cloud-tools toggle) */
 const GSK_ONLY_TOOLS = new Set(['generate_image', 'analyze_media'])
+/** 模板库工具：仅「使用模板库」标签勾选时暴露（会员专属，未勾选则 AI 自由生成、不碰模板库） */
+const TEMPLATE_ONLY_TOOLS = new Set(['search_templates', 'open_template'])
 
 const GSK_TOOLS_OFF_NOTE =
   '\n\nNote: generate_image and analyze_media are currently unavailable (cloud tools are off or the user is signed out). Do not call or promise them; for imagery use image_search + insert_web_image instead.'
@@ -1635,9 +1639,13 @@ export function createSlidesSkill(access: DeckAccess): AgentSkill {
     },
     // live view: gskTools is re-read before every model request
     get tools() {
-      return access.gskTools?.() === false
+      let tools = access.gskTools?.() === false
         ? TOOLS.filter((t) => !GSK_ONLY_TOOLS.has(t.name))
         : TOOLS
+      if (!access.useTemplateLibrary?.()) {
+        tools = tools.filter((t) => !TEMPLATE_ONLY_TOOLS.has(t.name))
+      }
+      return tools
     },
     buildContext: () => {
       const outline = `<deck outline>\n${buildDeckOutline(access.getSlides(), access.getCurrent(), access.getSelectedIds())}\n</deck outline>`
