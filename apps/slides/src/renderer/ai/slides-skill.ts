@@ -1625,6 +1625,13 @@ const TEMPLATE_ONLY_TOOLS = new Set(['search_templates', 'open_template'])
 const GSK_TOOLS_OFF_NOTE =
   '\n\nNote: generate_image and analyze_media are currently unavailable (cloud tools are off or the user is signed out). Do not call or promise them; for imagery use image_search + insert_web_image instead.'
 
+/** 模板库模式约束：勾选「使用模板库」时追加到 systemPrompt，硬性禁止重新生成绕过模板 */
+const TEMPLATE_LIBRARY_MODE_NOTE =
+  '\n\n## 模板库模式（用户勾选了「使用模板库」标签，会员专属）\n' +
+  '- 首要任务是套用模板库模板，不是从头生成。空白文档：先 search_templates 选模板，再 open_template 加载到当前文档；当前文档已是用户打开的模板：直接套用当前模板。\n' +
+  '- 【禁止重新生成】套用模板后，严禁用 generate_deck 重新生成整套 PPT。模板页数太多需要精简时，用 delete_slide 删掉多余页；内容放不下就精简文字或删减页内项目，绝不重做一套。\n' +
+  '- 【仅无匹配模板时例外】只有 search_templates 确实搜不到满足用户需求的模板时，才允许改用 generate_deck 自己生成。'
+
 export function createSlidesSkill(access: DeckAccess): AgentSkill {
   // The HTML pipeline was already used in this conversation → later calls without an explicit mode default to append.
   // Safety net for when the AI ignores the "pass all pages at once" constraint: separate calls no longer overwrite each other (P0-1).
@@ -1633,9 +1640,11 @@ export function createSlidesSkill(access: DeckAccess): AgentSkill {
     id: 'slides',
     // live like tools: the off-note overrides the prose that still mentions the hidden tools
     get systemPrompt() {
-      return access.gskTools?.() === false
+      let prompt = access.gskTools?.() === false
         ? AGENT_SYSTEM_PROMPT + GSK_TOOLS_OFF_NOTE
         : AGENT_SYSTEM_PROMPT
+      if (access.useTemplateLibrary?.()) prompt += TEMPLATE_LIBRARY_MODE_NOTE
+      return prompt
     },
     // live view: gskTools is re-read before every model request
     get tools() {

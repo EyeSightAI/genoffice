@@ -1620,9 +1620,10 @@ export function AiPanel({
         let modelInstruction = instruction
         if (useTemplateLibrary) {
           modelInstruction +=
-            '\n\n【使用模板库：会员专属】' +
-            '\n- 当前文档是空白（无实质内容）时：先调用 search_templates 从模板库匹配最贴合用户需求的模板，再用 open_template 加载它，然后在模板上生成内容。' +
-            '\n- 当前文档是用户自己打开的现有 .pptx 模板时：不要重新选模板，直接严格套用当前模板。' +
+            '\n\n【使用模板库：会员专属 · 强制规则】' +
+            '\n- 必须先选模板：当前文档空白 → search_templates 选模板 + open_template 加载；当前文档是用户打开的模板 → 直接套用当前模板。' +
+            '\n- 【禁止重新生成】套用模板后，严禁用 generate_deck 重新生成整套 PPT。模板页数太多要精简时，用 delete_slide 删掉多余页；内容放不下就精简文字或删减页内项目，绝不重做一套。' +
+            '\n- 【仅无匹配模板时例外】只有 search_templates 搜不到满足用户需求的模板，才允许 generate_deck 自己生成。' +
             '\n\n【严格套用（两者通用）】logo、背景、配色、字体绝不改动。' +
             '\n\n【内容适配框体（强制，否则会出现字体重叠/内容不适配）】' +
             '\n- 生成的内容长度必须适配模板现有文本框/占位符的大小：内容偏长就精简文字或减小字号，内容偏短就保留留白；' +
