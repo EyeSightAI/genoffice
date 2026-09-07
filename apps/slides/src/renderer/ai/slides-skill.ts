@@ -1240,7 +1240,7 @@ const TOOLS: AgentToolDef[] = [
   {
     name: 'open_template',
     description:
-      '下载并打开一个模板（作为当前模板的底版）。传入 search_templates 返回的某个模板 url（http(s) 链接），系统会唤起 shell 下载该 .pptx 并在新标签页打开，之后用户可「使用当前模板」严格套用。会员未开通时会被拦截。',
+      '下载并加载一个模板到当前文档（替换当前空白文档）。传入 search_templates 返回的某个模板 url（http(s) 链接），系统会下载该 .pptx 并加载到「当前标签页」，之后可直接「使用当前模板」严格套用内容。会员未开通时会被拦截。',
     inputSchema: {
       type: 'object',
       properties: {
@@ -1814,11 +1814,22 @@ async function executeTool(
     case 'open_template': {
       const url = String(call.input.url ?? '')
       if (!/^https?:\/\//.test(url)) return fail('打开模板失败', 'url 必须是 http(s) 链接')
-      await window.slidesApi.openTemplateDeepLink(url)
+      const result = await window.slidesApi.openTemplate(url)
+      if (!result) return fail('打开模板失败', '下载或打开失败')
+      if ('error' in result) {
+        const msg =
+          result.error === 'membership'
+            ? '下载模板需要会员（免费版可浏览，会员解锁下载与严格套用）'
+            : result.error === 'download'
+              ? '模板下载失败（网络或服务器问题）'
+              : '模板打开失败'
+        return fail('打开模板失败', msg)
+      }
+      access.applyDeck(result.slides, 0)
       return {
-        output: '已发起打开模板（下载完成后会在新标签页打开，稍等片刻）。',
-        mutated: false,
-        summary: '打开模板',
+        output: `模板已加载到当前文档（共 ${result.slides.length} 页），现在它就是你正在编辑的文档。可直接「使用当前模板」套用内容，无需再让用户手动切换标签页。`,
+        mutated: true,
+        summary: '模板已加载到当前文档',
       }
     }
 

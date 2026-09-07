@@ -1645,8 +1645,8 @@ export interface SlidesApi {
   membershipStatus: () => Promise<{ isPro: boolean; type?: 'lifetime' | 'year'; expiresAt: number | null }>
   /** Open the UToOffice template library website */
   openTemplateLibrary: () => Promise<void>
-  /** Open (download & apply) a template by its http(s) url via the utooffice:// deep link */
-  openTemplateDeepLink: (url: string) => Promise<void>
+  /** Download a template .pptx and load it into the CURRENT tab (replaces the document). Returns the new deck or an error. */
+  openTemplate: (url: string) => Promise<OpenResult | { error: string } | null>
   /** New blank page (with a specific layout): inserted after slide sourceIndex, rels pointing at the chosen layout */
   addSlideWithLayout: (
     op: AddSlideWithLayoutOp,

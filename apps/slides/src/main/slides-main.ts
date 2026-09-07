@@ -1150,6 +1150,44 @@ export function registerSlidesIpc(): void {
     return openAndBuild(e.sender, path, fitWidthPx)
   })
 
+  // AI 自动选模板：下载模板 .pptx 并加载到「当前标签页」（替换当前文档，AI 对话与模板同页）
+  ipcMain.handle('slides:open-template', async (e, url: string): Promise<OpenResult | { error: string }> => {
+    if (typeof url !== 'string' || !/^https?:\/\//.test(url)) return { error: 'bad-url' }
+    let isPro = false
+    try {
+      const mp = join(app.getPath('userData'), 'membership.json')
+      if (existsSync(mp)) {
+        const raw = JSON.parse(await readFile(mp, 'utf-8')) as { remainDays?: number; expireTime?: string | null }
+        const lifetime = (raw.remainDays ?? 0) >= 9999 || raw.expireTime === '永久'
+        const exp =
+          typeof raw.expireTime === 'string' && raw.expireTime !== '永久'
+            ? Date.parse(raw.expireTime.replace(' ', 'T'))
+            : null
+        const expNum = typeof exp === 'number' && !Number.isNaN(exp) ? exp : null
+        isPro = lifetime || (expNum !== null && expNum > Date.now())
+      }
+    } catch {
+      /* ignore membership read errors */
+    }
+    if (!isPro) return { error: 'membership' }
+    try {
+      const dir = join(app.getPath('userData'), 'templates')
+      mkdirSync(dir, { recursive: true })
+      const name = basename(new URL(url).pathname) || `template-${Date.now()}.pptx`
+      const filePath = join(dir, name)
+      if (!existsSync(filePath)) {
+        const res = await fetch(url)
+        if (!res.ok) return { error: 'download' }
+        const buf = Buffer.from(await res.arrayBuffer())
+        await writeFile(filePath, buf)
+      }
+      const session = sessions.get(e.sender.id)
+      return await openAndBuild(e.sender, filePath, session?.fitWidthPx ?? 1280)
+    } catch {
+      return { error: 'open' }
+    }
+  })
+
   ipcMain.handle('slides:consume-pending-open', async (e, fitWidthPx: number) => {
     // renderer app just mounted: safe to reveal the vibrancy material behind
     // the (now painted) page without flashing raw desktop during load
