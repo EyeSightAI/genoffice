@@ -2583,51 +2583,69 @@ function templateUrlIn(argv: string[]): string | null {
 }
 
 /** 下载网站模板 .pptx 并用 slides 打开（deep link 入口） */
+/** 正在下载的模板 URL（去重：避免重复点击导致重复下载打开） */
+const importingTemplateUrls = new Set<string>()
+
 async function handleTemplateImport(templateUrl: string): Promise<void> {
   try {
     const u = new URL(templateUrl)
     if (u.protocol !== 'https:' && u.protocol !== 'http:') return
     if (!/\.pptx$/i.test(u.pathname)) return
 
-    // 会员拦截：非会员不能下载模板，引导开通会员
-    const ms = loadMembership(app.getPath('userData'))
-    if (!ms.isPro) {
-      revealShellWindow()
-      const r = await dialog.showMessageBox({
-        type: 'info',
-        title: '会员专属',
-        message: '下载模板需要 UToOffice 会员',
-        detail:
-          '开通会员即可下载全部 600+ 精美 PPT 模板，并解锁「使用当前模板」严格套用与生成质检。',
-        buttons: ['开通会员', '取消'],
-        defaultId: 0,
-        cancelId: 1,
-      })
-      if (r.response === 0) {
-        tabManager?.openHomeTab()
-        setTimeout(() => {
-          void dialog.showMessageBox({
-            type: 'info',
-            title: '开通会员',
-            message: '点击左下角头像 → 账户 → 开通会员',
-            detail: '选择套餐后跳转到支付页面完成购买，付款后卡密会自动发给你。',
-            buttons: ['知道了'],
-          })
-        }, 400)
-      }
-      return
-    }
+    // 去重：同一模板正在下载时忽略重复唤起（避免连点导致重复打开）
+    if (importingTemplateUrls.has(templateUrl)) return
+    importingTemplateUrls.add(templateUrl)
 
-    const res = await fetch(templateUrl)
-    if (!res.ok) return
-    const buf = Buffer.from(await res.arrayBuffer())
-    const dir = join(app.getPath('userData'), 'templates')
-    mkdirSync(dir, { recursive: true })
-    const name = basename(u.pathname) || `template-${Date.now()}.pptx`
-    const filePath = join(dir, name)
-    writeFileSync(filePath, buf)
-    revealShellWindow()
-    if (!openDocumentPath(filePath)) tabManager?.openHomeTab()
+    try {
+      // 会员拦截：非会员不能下载模板，引导开通会员
+      const ms = loadMembership(app.getPath('userData'))
+      if (!ms.isPro) {
+        revealShellWindow()
+        const r = await dialog.showMessageBox({
+          type: 'info',
+          title: '会员专属',
+          message: '下载模板需要 UToOffice 会员',
+          detail:
+            '开通会员即可下载全部 600+ 精美 PPT 模板，并解锁「使用当前模板」严格套用与生成质检。',
+          buttons: ['开通会员', '取消'],
+          defaultId: 0,
+          cancelId: 1,
+        })
+        if (r.response === 0) {
+          tabManager?.openHomeTab()
+          setTimeout(() => {
+            void dialog.showMessageBox({
+              type: 'info',
+              title: '开通会员',
+              message: '点击左下角头像 → 账户 → 开通会员',
+              detail: '选择套餐后跳转到支付页面完成购买，付款后卡密会自动发给你。',
+              buttons: ['知道了'],
+            })
+          }, 400)
+        }
+        return
+      }
+
+      // 先聚焦窗口，让用户知道正在处理（避免以为没反应而重复点击）
+      revealShellWindow()
+
+      const dir = join(app.getPath('userData'), 'templates')
+      mkdirSync(dir, { recursive: true })
+      const name = basename(u.pathname) || `template-${Date.now()}.pptx`
+      const filePath = join(dir, name)
+
+      // 缓存：已下载过的模板直接打开，不重复下载
+      if (!existsSync(filePath)) {
+        const res = await fetch(templateUrl)
+        if (!res.ok) return
+        const buf = Buffer.from(await res.arrayBuffer())
+        writeFileSync(filePath, buf)
+      }
+
+      if (!openDocumentPath(filePath)) tabManager?.openHomeTab()
+    } finally {
+      importingTemplateUrls.delete(templateUrl)
+    }
   } catch {
     /* ignore failed import */
   }
