@@ -3230,6 +3230,12 @@ function registerHomeIpc(): void {
     })
   })
 
+  ipcMain.handle(HOME_CHANNELS.openAffiliate, () => {
+    shell.openExternal('https://utooffice-templates.vercel.app/affiliate').catch(() => {
+      // no browser handler available; nothing actionable for the user here
+    })
+  })
+
   ipcMain.handle(HOME_CHANNELS.githubStars, () => fetchGithubStars())
 
   // returning true also counts as "shown": the renderer displays it

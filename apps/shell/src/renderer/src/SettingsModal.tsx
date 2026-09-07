@@ -793,7 +793,7 @@ export function SettingsModal({
                   action={
                     <button
                       className="set-btn"
-                      onClick={() => void window.aiOffice.openGitHubRepo?.()}
+                      onClick={() => void window.aiOffice.openAffiliate?.()}
                     >
                       加入我们
                     </button>
