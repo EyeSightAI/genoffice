@@ -554,6 +554,6 @@ export function registerSlidesOnlyAiIpc(): void {
   )
 
   ipcMain.handle('slides:open-template-library', () => {
-    void shell.openExternal('https://example.com/templates')
+    void shell.openExternal('https://utooffice-templates.vercel.app')
   })
 }
