@@ -294,8 +294,8 @@ interface AiPanelProps {
   onUndo?: () => void
   /** Callback to update the path after AI generation lands on disk (title bar sync) */
   onPathChange?: (path: string) => void
-  /** Overwrite a page's speaker notes (persisted to the pptx, marks the deck dirty) */
-  onSetSpeakerNotes?: (slideIndex: number, text: string) => Promise<boolean>
+  /** Flush pending editor state (e.g. the speaker-notes draft) right before an AI run edits the deck, so a stale draft cannot overwrite what the run writes */
+  onBeforeRun?: () => Promise<void> | void
   /** Generation progress callback (for the canvas top progress bar) */
   onDeckProgress?: (event: DeckProgressEvent | null) => void
   /** Absolute path of the currently open file (for chat history persistence) */
@@ -385,7 +385,7 @@ export function AiPanel({
   onExpand,
   onCollapse,
   onPathChange,
-  onSetSpeakerNotes,
+  onBeforeRun,
   onDeckProgress,
   currentFilePath,
   editQueue,
@@ -395,7 +395,9 @@ export function AiPanel({
   onQueueFocus,
   onQueueConsume,
 }: AiPanelProps) {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
+  // Panel chrome follows the UI language; message text follows its own content (dir=auto below)
+  const isRtl = lang === 'ar' || lang === 'he'
   const [input, setInput] = useState('')
   /** 「使用模板库」标签：勾选后 AI 可自动从模板库选模板 / 严格套用当前模板（会员专属） */
   const [useTemplateLibrary, setUseTemplateLibrary] = useState(false)
@@ -521,6 +523,8 @@ export function AiPanel({
   useTemplateLibraryRef.current = useTemplateLibrary
   const onSetSpeakerNotesRef = useRef(onSetSpeakerNotes)
   onSetSpeakerNotesRef.current = onSetSpeakerNotes
+  const onBeforeRunRef = useRef(onBeforeRun)
+  onBeforeRunRef.current = onBeforeRun
   const onPathChangeRef = useRef(onPathChange)
   onPathChangeRef.current = onPathChange
   const onDeckProgressRef = useRef(onDeckProgress)
@@ -1387,10 +1391,13 @@ export function AiPanel({
           patchLastAssistant({ streaming: false })
           setChat((prev) => [...prev, { role: 'assistant', text: '', streaming: true }])
         },
-        onDone: ({ text, cancelled, turnLimit }) => {
-          const finalText = turnLimit
+        onDone: ({ text, cancelled, turnLimit, truncated }) => {
+          const baseText = turnLimit
             ? [text, tGlobal('aiTurnLimit')].filter(Boolean).join('\n\n')
             : text || (cancelled ? tGlobal('aiStoppedNote') : '')
+          const finalText = truncated
+            ? [baseText, tGlobal('aiTruncatedNote')].filter(Boolean).join('\n\n')
+            : baseText
           const ranTools = runToolsRef.current.length > 0
           setChat((prev) => {
             const next = [...prev]
@@ -1651,6 +1658,7 @@ export function AiPanel({
         }
         // Clear the flag before run: loop.run sets running synchronously, leaving no re-entry window
         runStartingRef.current = false
+        await onBeforeRunRef.current?.()
         if (await window.slidesApi.beginHistoryBatch()) historyBatchActiveRef.current = true
         loop.run(modelInstruction, images)
       })
@@ -1686,8 +1694,8 @@ export function AiPanel({
       runStartedAtRef.current = Date.now()
       setBusy(true)
       queueRunResolverRef.current = resolve
-      void window.slidesApi
-        .beginHistoryBatch()
+      void Promise.resolve(onBeforeRunRef.current?.())
+        .then(() => window.slidesApi.beginHistoryBatch())
         .then((ok) => {
           if (ok) historyBatchActiveRef.current = true
           runStartingRef.current = false
@@ -1898,6 +1906,17 @@ export function AiPanel({
     loopRef.current?.reset()
     setBusy(false)
     setChat([])
+    // Same as docs (#195): the restored transcript is painted above the live
+    // turn, so it must clear too — otherwise the old conversation survives.
+    setHistoricChat([])
+    // Answered clarifications are transcript too: they render under their
+    // original message index, so stale entries would re-attach to unrelated
+    // new messages after an index collision.
+    setClarifyAnswers([])
+    // Unsent composer attachments would otherwise ride into the next chat's
+    // file context (availableAttachments merges sent + live), mirroring docs.
+    setAttachments([])
+    setAttachNotice(null)
     sentAttachmentsRef.current = []
     readAttachmentPathsRef.current.clear()
     inputRef.current?.focus()
@@ -2009,6 +2028,7 @@ export function AiPanel({
       ref={asideRef}
       style={{ width: '100%' }}
       className={`ai-panel${dragOver ? ' ai-panel-dragover' : ''}${resizing ? ' ai-panel-resizing' : ''}`}
+      dir={isRtl ? 'rtl' : undefined}
       onDragOver={(e) => {
         if (e.dataTransfer.types.includes('Files')) {
           e.preventDefault()
@@ -2034,7 +2054,7 @@ export function AiPanel({
           {t('aiPanelTitle')}
         </span>
         <div className="ai-panel-header-actions">
-          {chat.length > 0 && (
+          {(chat.length > 0 || historicChat.length > 0) && (
             <button
               className="ai-header-btn"
               onClick={newChat}
@@ -2067,7 +2087,11 @@ export function AiPanel({
                   <SentAttachments atts={entry.attachments} previews={attachmentPreviews} />
                 )}
                 {entry.tools && entry.tools.length > 0 && <ToolChipList tools={entry.tools} />}
-                {entry.text && <Markdown text={entry.text} />}
+                {entry.text && (
+                  <div dir="auto">
+                    <Markdown text={entry.text} />
+                  </div>
+                )}
               </div>
             ))}
             <div className="ai-history-sep">{t('aiHistorySep')}</div>
@@ -2135,9 +2159,11 @@ export function AiPanel({
                   />
                 </span>
               ) : entry.role === 'assistant' ? (
-                <Markdown text={entry.text} />
+                <div dir="auto">
+                  <Markdown text={entry.text} />
+                </div>
               ) : (
-                entry.text
+                <span dir="auto">{entry.text}</span>
               )}
               {entry.tools && entry.tools.length > 0 && <ToolChipList tools={entry.tools} />}
               {entry.error && (
@@ -2365,6 +2391,7 @@ export function AiPanel({
             <textarea
               ref={inputRef}
               value={input}
+              dir="auto"
               data-slides-ai-input="true"
               data-deck-undo-ready={!busy && !inputEditedSinceRunRef.current ? 'true' : 'false'}
               placeholder={t(deckEmpty ? 'aiInputPlaceholderGen' : 'aiInputPlaceholder')}

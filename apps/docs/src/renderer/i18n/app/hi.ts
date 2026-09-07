@@ -228,6 +228,7 @@ export const hi = {
   appTabRight: 'दायाँ',
   appTabDecimal: 'दशमलव',
   appTabBar: 'बार',
+  appTabClear: 'साफ़ करें',
   appAiSettings: 'AI सेटिंग्स',
   appAccount: ' खाता',
   appChecking: 'जाँच हो रही है…',

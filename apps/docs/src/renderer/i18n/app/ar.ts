@@ -225,6 +225,7 @@ export const ar = {
   appTabRight: 'يمين',
   appTabDecimal: 'عشري',
   appTabBar: 'شريط',
+  appTabClear: 'مسح',
   appAiSettings: 'إعدادات الذكاء الاصطناعي',
   appAccount: 'حساب ',
   appChecking: 'جارٍ التحقق…',

@@ -230,6 +230,7 @@ export const ru = {
   appTabRight: 'По правому краю',
   appTabDecimal: 'По разделителю',
   appTabBar: 'С чертой',
+  appTabClear: 'Очистить',
   appAiSettings: 'Настройки ИИ',
   appAccount: 'Учетная запись ',
   appChecking: 'Проверка…',

@@ -233,6 +233,7 @@ export const pl = {
   appTabRight: 'Prawy',
   appTabDecimal: 'Dziesiętny',
   appTabBar: 'Paskowy',
+  appTabClear: 'Wyczyść',
   appAiSettings: 'Ustawienia AI',
   appAccount: 'Konto ',
   appChecking: 'Sprawdzanie…',
