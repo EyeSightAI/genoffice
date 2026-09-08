@@ -167,7 +167,7 @@ const tMain = createI18n({
     errParseFailed: '文件解析失败',
     errImageNoText: '图片附件不提供文本,已作为图像随用户消息发送,直接看图即可',
     errNotImage: '不是支持的图片类型',
-    errGskNotLoggedIn: '未登录:请点击下方「登录」完成登录后重试',
+    errGskNotLoggedIn: '请先在设置中配置大模型（AI 模型 API Key）',
     errNoApiKey: '未配置 {provider} 的 API Key',
     errAiBusy: 'AI 服务当前繁忙，请稍后重试',
     errNoModel: '未配置模型名称',
@@ -223,8 +223,7 @@ const tMain = createI18n({
     errParseFailed: 'Failed to parse file',
     errImageNoText: 'Image attachments have no text; the image is sent along with the user message',
     errNotImage: 'not a supported image type',
-    errGskNotLoggedIn:
-      'Not signed in to : click “Sign in” below, sign in, then retry',
+    errGskNotLoggedIn: 'Please configure an AI model (API key) in settings first',
     errNoApiKey: 'No API key configured for {provider}',
     errAiBusy: 'The AI service is busy right now — please try again in a moment',
     errNoModel: 'No model name configured',
@@ -283,8 +282,7 @@ const tMain = createI18n({
     errImageNoText:
       '画像添付にはテキストがありません。画像はユーザー メッセージと一緒に送信されるため、そのまま画像をご確認ください',
     errNotImage: 'サポートされていない画像形式です',
-    errGskNotLoggedIn:
-      ' にサインインしていません。下の「 にサインイン」からサインインして再試行してください',
+    errGskNotLoggedIn: 'まず設定で AI モデル（API キー）を設定してください',
     errNoApiKey: '{provider} の API キーが設定されていません',
     errAiBusy: 'AI サービスが混み合っています。しばらくしてからもう一度お試しください',
     errNoModel: 'モデル名が設定されていません',
@@ -345,8 +343,7 @@ const tMain = createI18n({
     errImageNoText:
       '이미지 첨부에는 텍스트가 없습니다. 이미지는 사용자 메시지와 함께 전송되므로 이미지를 직접 확인하세요',
     errNotImage: '지원되는 이미지 형식이 아닙니다',
-    errGskNotLoggedIn:
-      '에 로그인되어 있지 않습니다. 아래 " 로그인"을 눌러 로그인한 뒤 다시 시도하세요',
+    errGskNotLoggedIn: '먼저 설정에서 AI 모델(API 키)을 구성하세요',
     errNoApiKey: '{provider}의 API 키가 설정되지 않았습니다',
     errAiBusy: 'AI 서비스가 혼잡합니다. 잠시 후 다시 시도해 주세요',
     errNoModel: '모델 이름이 설정되지 않았습니다',
@@ -407,8 +404,7 @@ const tMain = createI18n({
     errImageNoText:
       "Les images jointes n'ont pas de texte ; l'image est envoyée avec le message de l'utilisateur",
     errNotImage: "type d'image non pris en charge",
-    errGskNotLoggedIn:
-      'Non connecté à  : cliquez sur « Se connecter à  » ci-dessous, connectez-vous puis réessayez',
+    errGskNotLoggedIn: 'Configurez d\'abord un modèle d\'IA (clé API) dans les paramètres',
     errNoApiKey: 'Aucune clé API configurée pour {provider}',
     errAiBusy: "Le service d'IA est actuellement surchargé — réessayez dans un instant",
     errNoModel: 'Aucun nom de modèle configuré',
@@ -470,8 +466,7 @@ const tMain = createI18n({
     errImageNoText:
       'Bildanlagen enthalten keinen Text; das Bild wird zusammen mit der Benutzernachricht gesendet',
     errNotImage: 'kein unterstützter Bildtyp',
-    errGskNotLoggedIn:
-      'Nicht bei  angemeldet: Klicken Sie unten auf „Bei  anmelden“, melden Sie sich an und versuchen Sie es erneut',
+    errGskNotLoggedIn: 'Bitte zuerst ein KI-Modell (API-Schlüssel) in den Einstellungen konfigurieren',
     errNoApiKey: 'Kein API-Schlüssel für {provider} konfiguriert',
     errAiBusy: 'Der KI-Dienst ist derzeit überlastet — bitte gleich erneut versuchen',
     errNoModel: 'Kein Modellname konfiguriert',
@@ -532,8 +527,7 @@ const tMain = createI18n({
     errImageNoText:
       'Las imágenes adjuntas no tienen texto; la imagen se envía junto con el mensaje del usuario',
     errNotImage: 'no es un tipo de imagen compatible',
-    errGskNotLoggedIn:
-      'No has iniciado sesión en : pulsa «Iniciar sesión en » abajo, inicia sesión y vuelve a intentarlo',
+    errGskNotLoggedIn: 'Configura primero un modelo de IA (clave API) en los ajustes',
     errNoApiKey: 'No hay clave de API configurada para {provider}',
     errAiBusy:
       'El servicio de IA está saturado en este momento; inténtalo de nuevo en unos instantes',
@@ -594,8 +588,7 @@ const tMain = createI18n({
     errImageNoText:
       'รูปภาพแนบไม่มีข้อความ รูปภาพจะถูกส่งไปพร้อมข้อความของผู้ใช้ ให้ดูที่รูปภาพโดยตรง',
     errNotImage: 'ไม่ใช่ชนิดรูปภาพที่รองรับ',
-    errGskNotLoggedIn:
-      'ยังไม่ได้ลงชื่อเข้าใช้ : แตะ “ลงชื่อเข้าใช้ ” ด้านล่าง แล้วลองอีกครั้ง',
+    errGskNotLoggedIn: 'โปรดกำหนดค่าโมเดล AI (คีย์ API) ในการตั้งค่าก่อน',
     errNoApiKey: 'ยังไม่ได้ตั้งค่า API Key ของ {provider}',
     errAiBusy: 'บริการ AI มีผู้ใช้งานจำนวนมากในขณะนี้ โปรดลองอีกครั้งในอีกสักครู่',
     errNoModel: 'ยังไม่ได้กำหนดชื่อโมเดล',
@@ -654,7 +647,7 @@ const tMain = createI18n({
     errParseFailed: 'Gagal mengurai file',
     errImageNoText: 'Lampiran gambar tidak memiliki teks; gambar dikirim bersama pesan pengguna',
     errNotImage: 'bukan jenis gambar yang didukung',
-    errGskNotLoggedIn: 'Belum masuk ke : klik “Masuk ke ” di bawah, lalu coba lagi',
+    errGskNotLoggedIn: 'Konfigurasikan model AI (kunci API) terlebih dahulu di pengaturan',
     errNoApiKey: 'API Key untuk {provider} belum dikonfigurasi',
     errAiBusy: 'Layanan AI sedang sibuk — silakan coba lagi sebentar lagi',
     errNoModel: 'Nama model belum dikonfigurasi',
@@ -714,8 +707,7 @@ const tMain = createI18n({
     errImageNoText:
       'Вложенные изображения не содержат текста; изображение отправляется вместе с сообщением пользователя',
     errNotImage: 'неподдерживаемый тип изображения',
-    errGskNotLoggedIn:
-      'Вы не вошли в : нажмите «Войти в » ниже, войдите и повторите попытку',
+    errGskNotLoggedIn: 'Сначала настройте модель ИИ (ключ API) в настройках',
     errNoApiKey: 'API-ключ для {provider} не настроен',
     errAiBusy: 'Сервис ИИ сейчас перегружен — повторите попытку чуть позже',
     errNoModel: 'Имя модели не настроено',
@@ -774,8 +766,7 @@ const tMain = createI18n({
     errParseFailed: 'فشل تحليل الملف',
     errImageNoText: 'مرفقات الصور لا تحتوي على نص؛ تُرسل الصورة مع رسالة المستخدم',
     errNotImage: 'نوع صورة غير مدعوم',
-    errGskNotLoggedIn:
-      'لم تسجّل الدخول إلى : انقر على «تسجيل الدخول إلى » أدناه ثم أعد المحاولة',
+    errGskNotLoggedIn: 'يرجى تكوين نموذج الذكاء الاصطناعي (مفتاح API) في الإعدادات أولاً',
     errNoApiKey: 'لم يتم تكوين مفتاح API لـ {provider}',
     errAiBusy: 'خدمة الذكاء الاصطناعي مشغولة حاليًا — يرجى المحاولة مرة أخرى بعد قليل',
     errNoModel: 'لم يتم تكوين اسم النموذج',
@@ -833,8 +824,7 @@ const tMain = createI18n({
     errImageNoText:
       'Anexos de imagem não têm texto; a imagem é enviada junto com a mensagem do usuário',
     errNotImage: 'não é um tipo de imagem suportado',
-    errGskNotLoggedIn:
-      'Não conectado ao : clique em “Entrar no ” abaixo, entre e tente novamente',
+    errGskNotLoggedIn: 'Configure primeiro um modelo de IA (chave de API) nas configurações',
     errNoApiKey: 'Nenhuma chave de API configurada para {provider}',
     errAiBusy: 'O serviço de IA está sobrecarregado no momento — tente novamente em instantes',
     errNoModel: 'Nenhum nome de modelo configurado',
@@ -894,8 +884,7 @@ const tMain = createI18n({
     errImageNoText:
       "Gli allegati immagine non hanno testo; l'immagine viene inviata insieme al messaggio dell'utente",
     errNotImage: 'tipo di immagine non supportato',
-    errGskNotLoggedIn:
-      'Accesso a  non effettuato: fai clic su “Accedi a ” qui sotto, accedi e riprova',
+    errGskNotLoggedIn: 'Configura prima un modello AI (chiave API) nelle impostazioni',
     errNoApiKey: 'Nessuna chiave API configurata per {provider}',
     errAiBusy: 'Il servizio IA è momentaneamente sovraccarico — riprova tra poco',
     errNoModel: 'Nessun nome di modello configurato',
@@ -956,8 +945,7 @@ const tMain = createI18n({
     errImageNoText:
       'Załączniki graficzne nie zawierają tekstu; obraz jest wysyłany razem z wiadomością użytkownika',
     errNotImage: 'nieobsługiwany typ obrazu',
-    errGskNotLoggedIn:
-      'Nie zalogowano do : kliknij „Zaloguj się do ” poniżej, zaloguj się i spróbuj ponownie',
+    errGskNotLoggedIn: 'Najpierw skonfiguruj model AI (klucz API) w ustawieniach',
     errNoApiKey: 'Nie skonfigurowano klucza API dla {provider}',
     errAiBusy: 'Usługa AI jest obecnie przeciążona — spróbuj ponownie za chwilę',
     errNoModel: 'Nie skonfigurowano nazwy modelu',
@@ -1017,8 +1005,7 @@ const tMain = createI18n({
     errImageNoText:
       'Afbeeldingsbijlagen bevatten geen tekst; de afbeelding wordt samen met het gebruikersbericht verzonden',
     errNotImage: 'geen ondersteund afbeeldingstype',
-    errGskNotLoggedIn:
-      'Niet aangemeld bij : klik hieronder op “Aanmelden bij ”, meld u aan en probeer het opnieuw',
+    errGskNotLoggedIn: 'Configureer eerst een AI-model (API-sleutel) in de instellingen',
     errNoApiKey: 'Geen API-sleutel geconfigureerd voor {provider}',
     errAiBusy: 'De AI-service is momenteel overbelast — probeer het zo opnieuw',
     errNoModel: 'Geen modelnaam geconfigureerd',
@@ -1078,8 +1065,7 @@ const tMain = createI18n({
     errParseFailed: 'Gagal menghurai fail',
     errImageNoText: 'Lampiran imej tiada teks; imej dihantar bersama mesej pengguna',
     errNotImage: 'bukan jenis imej yang disokong',
-    errGskNotLoggedIn:
-      'Belum log masuk ke : klik “Log masuk ke ” di bawah, kemudian cuba lagi',
+    errGskNotLoggedIn: 'Sila konfigurasikan model AI (kunci API) terlebih dahulu dalam tetapan',
     errNoApiKey: 'Kunci API untuk {provider} belum dikonfigurasikan',
     errAiBusy: 'Perkhidmatan AI sedang sibuk — sila cuba lagi sebentar lagi',
     errNoModel: 'Nama model belum dikonfigurasikan',
@@ -1139,7 +1125,7 @@ const tMain = createI18n({
     errParseFailed: 'ניתוח הקובץ נכשל',
     errImageNoText: 'קבצים מצורפים מסוג תמונה אינם מכילים טקסט; התמונה נשלחת יחד עם הודעת המשתמש',
     errNotImage: 'סוג תמונה שאינו נתמך',
-    errGskNotLoggedIn: 'לא מחובר ל-: לחץ על "התחבר ל-" למטה, התחבר ונסה שוב',
+    errGskNotLoggedIn: 'נא להגדיר תחילה מודל AI (מפתח API) בהגדרות',
     errNoApiKey: 'לא הוגדר מפתח API עבור {provider}',
     errAiBusy: 'שירות ה-AI עמוס כרגע — נסו שוב בעוד רגע',
     errNoModel: 'לא הוגדר שם מודל',
@@ -1196,8 +1182,7 @@ const tMain = createI18n({
     errParseFailed: 'फ़ाइल पार्स करने में विफल',
     errImageNoText: 'छवि अनुलग्नक में टेक्स्ट नहीं होता; छवि उपयोगकर्ता संदेश के साथ भेजी जाती है',
     errNotImage: 'समर्थित छवि प्रकार नहीं है',
-    errGskNotLoggedIn:
-      ' में साइन इन नहीं है: नीचे “ में साइन इन करें” पर क्लिक करें, साइन इन करें और फिर से कोशिश करें',
+    errGskNotLoggedIn: 'कृपया पहले सेटिंग्स में AI मॉडल (API कुंजी) कॉन्फ़िगर करें',
     errNoApiKey: '{provider} के लिए कोई API कुंजी कॉन्फ़िगर नहीं है',
     errAiBusy: 'AI सेवा अभी व्यस्त है — कृपया थोड़ी देर बाद फिर से प्रयास करें',
     errNoModel: 'कोई मॉडल नाम कॉन्फ़िगर नहीं है',
@@ -1257,7 +1242,7 @@ const tMain = createI18n({
     errParseFailed: '檔案解析失敗',
     errImageNoText: '圖片附件不提供文字,已作為影像隨使用者訊息傳送,直接看圖即可',
     errNotImage: '不是支援的圖片類型',
-    errGskNotLoggedIn: '未登入 :請點擊下方「登入 」完成登入後重試',
+    errGskNotLoggedIn: '請先在設定中設定 AI 模型（API 金鑰）',
     errNoApiKey: '未設定 {provider} 的 API Key',
     errAiBusy: 'AI 服務目前繁忙，請稍後重試',
     errNoModel: '未設定模型名稱',
