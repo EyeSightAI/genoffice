@@ -17,6 +17,7 @@ export const en = {
   aiQcPageSkipped: 'Page {n}: automatic layout check skipped',
   aiQcStopped: 'Layout check stopped',
   aiQcCapped: '{count} more page(s) not checked (per-run cap)',
+  aiConfigModel: 'Please configure an AI model (API key) in UToOffice settings first',
   aiGskLoginBtn: 'Sign in',
   aiPanelTitle: '',
   aiOpenAssistant: 'Open AI assistant',

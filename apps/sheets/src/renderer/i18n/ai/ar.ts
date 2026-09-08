@@ -4,6 +4,7 @@ export const ar = {
   aiComposerPlaceholderBuild: 'صف الجدول أو البيانات أو المخطط المطلوب إنشاؤه…',
   aiEmptyBuildTitle: 'دع الذكاء الاصطناعي ينشئ هذا المصنف لك',
   aiEmptyBuildBody: 'صف الجدول أو البيانات أو المخطط الذي تريده — ينشئه الذكاء الاصطناعي مباشرة.',
+  aiConfigModel: 'يرجى تكوين نموذج الذكاء الاصطناعي (مفتاح API) في إعدادات UToOffice أولاً',
   aiGskLoginBtn: 'تسجيل الدخول إلى ',
   aiUndelivered: 'لم يتم الإرسال',
   aiRetry: 'إعادة المحاولة',

@@ -6905,6 +6905,13 @@ body.docs-crop-active
   font-size: 13px;
 }
 
+.ai-msg-hint {
+  margin-top: 6px;
+  color: var(--docs-ai-error);
+  font-size: 13px;
+  opacity: 0.85;
+}
+
 .ai-msg-actions {
   margin-top: 8px;
   display: flex;

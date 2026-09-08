@@ -5,6 +5,7 @@ export const fr = {
   aiEmptyBuildTitle: "Laissez l'IA construire ce classeur pour vous",
   aiEmptyBuildBody:
     "Décrivez le tableau, les données ou le graphique voulu — l'IA les crée directement.",
+  aiConfigModel: 'Configurez d'abord un modèle d'IA (clé API) dans les paramètres UToOffice',
   aiGskLoginBtn: 'Se connecter à ',
   aiUndelivered: 'Non envoyé',
   aiRetry: 'Réessayer',

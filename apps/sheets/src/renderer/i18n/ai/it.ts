@@ -4,6 +4,7 @@ export const it = {
   aiComposerPlaceholderBuild: 'Descrivi la tabella, i dati o il grafico da creare…',
   aiEmptyBuildTitle: "Lascia che l'IA costruisca questa cartella di lavoro",
   aiEmptyBuildBody: 'Descrivi la tabella, i dati o il grafico che ti servono: l’IA li crea subito.',
+  aiConfigModel: 'Configura prima un modello AI (chiave API) nelle impostazioni di UToOffice',
   aiGskLoginBtn: 'Accedi a ',
   aiUndelivered: 'Non inviato',
   aiRetry: 'Riprova',

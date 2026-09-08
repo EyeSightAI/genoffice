@@ -17,6 +17,7 @@ export const pl = {
   aiQcPageSkipped: 'Strona {n}: pominięto automatyczne sprawdzanie układu',
   aiQcStopped: 'Sprawdzanie układu zatrzymane',
   aiQcCapped: 'Pozostałe {count} stron(y) nie sprawdzono (limit na uruchomienie)',
+  aiConfigModel: 'Najpierw skonfiguruj model AI (klucz API) w ustawieniach UToOffice',
   aiGskLoginBtn: 'Zaloguj się do ',
   aiPanelTitle: '',
   aiOpenAssistant: 'Otwórz asystenta AI',

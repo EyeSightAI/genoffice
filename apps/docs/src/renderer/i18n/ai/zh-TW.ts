@@ -8,6 +8,7 @@ export const zhTW = {
   aiStarterPolishAll: '潤飾全文,使語氣更專業',
   aiStarterContinue: '接著現有內容往下寫',
   aiStarterFillTemplate: '找出並填寫文件裡的佔位符',
+  aiConfigModel: '請先在 UToOffice 設定中設定 AI 模型（API 金鑰）',
   aiGskLoginBtn: '登入 ',
   aiPanelTitle: '',
   aiOpenAssistant: '開啟 AI 助手',

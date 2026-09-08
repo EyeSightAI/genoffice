@@ -4,6 +4,7 @@ export const zhTW = {
   aiComposerPlaceholderBuild: '描述要生成的表格、資料或圖表…',
   aiEmptyBuildTitle: '讓 AI 幫你從零建表',
   aiEmptyBuildBody: '描述想要的表格、資料或圖表，AI 直接生成。',
+  aiConfigModel: '請先在 UToOffice 設定中設定 AI 模型（API 金鑰）',
   aiGskLoginBtn: '登入 ',
   aiUndelivered: '未傳送成功',
   aiRetry: '重試',

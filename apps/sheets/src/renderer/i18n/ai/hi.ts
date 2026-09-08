@@ -4,6 +4,7 @@ export const hi = {
   aiComposerPlaceholderBuild: 'बनाने के लिए तालिका, डेटा या चार्ट बताएँ…',
   aiEmptyBuildTitle: 'AI से यह वर्कबुक बनवाएँ',
   aiEmptyBuildBody: 'जो तालिका, डेटा या चार्ट चाहिए बताएँ — AI उसे तुरंत बना देता है।',
+  aiConfigModel: 'कृपया पहले UToOffice सेटिंग्स में AI मॉडल (API कुंजी) कॉन्फ़िगर करें',
   aiGskLoginBtn: ' में साइन इन करें',
   aiUndelivered: 'भेजा नहीं गया',
   aiRetry: 'फिर से कोशिश करें',

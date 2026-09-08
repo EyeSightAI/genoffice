@@ -4,6 +4,7 @@ export const id = {
   aiComposerPlaceholderBuild: 'Jelaskan tabel, data, atau bagan yang akan dibuat…',
   aiEmptyBuildTitle: 'Biarkan AI membangun buku kerja ini untuk Anda',
   aiEmptyBuildBody: 'Jelaskan tabel, data, atau bagan yang Anda perlukan — AI langsung membuatnya.',
+  aiConfigModel: 'Konfigurasikan model AI (kunci API) terlebih dahulu di pengaturan UToOffice',
   aiGskLoginBtn: 'Masuk ke ',
   aiUndelivered: 'Tidak terkirim',
   aiRetry: 'Coba lagi',

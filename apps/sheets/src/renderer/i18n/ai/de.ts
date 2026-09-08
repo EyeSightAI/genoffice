@@ -5,6 +5,7 @@ export const de = {
   aiEmptyBuildTitle: 'Lass die KI diese Arbeitsmappe für dich aufbauen',
   aiEmptyBuildBody:
     'Beschreibe die gewünschte Tabelle, Daten oder Diagramme — die KI erstellt sie direkt.',
+  aiConfigModel: 'Bitte zuerst ein KI-Modell (API-Schlüssel) in den UToOffice-Einstellungen konfigurieren',
   aiGskLoginBtn: 'Bei  anmelden',
   aiUndelivered: 'Nicht gesendet',
   aiRetry: 'Erneut versuchen',

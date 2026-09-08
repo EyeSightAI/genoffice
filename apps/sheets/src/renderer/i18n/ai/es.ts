@@ -5,6 +5,7 @@ export const es = {
   aiEmptyBuildTitle: 'Deja que la IA construya este libro por ti',
   aiEmptyBuildBody:
     'Describe la tabla, los datos o el gráfico que necesitas: la IA los crea directamente.',
+  aiConfigModel: 'Configura primero un modelo de IA (clave API) en los ajustes de UToOffice',
   aiGskLoginBtn: 'Iniciar sesión en ',
   aiUndelivered: 'No enviado',
   aiRetry: 'Reintentar',

@@ -18,6 +18,7 @@ export const de = {
   aiQcPageSkipped: 'Seite {n}: automatische Layoutprüfung übersprungen',
   aiQcStopped: 'Layoutprüfung gestoppt',
   aiQcCapped: '{count} weitere Seite(n) nicht geprüft (Limit pro Lauf)',
+  aiConfigModel: 'Bitte zuerst ein KI-Modell (API-Schlüssel) in den UToOffice-Einstellungen konfigurieren',
   aiGskLoginBtn: 'Bei  anmelden',
   aiPanelTitle: '',
   aiOpenAssistant: 'KI-Assistenten öffnen',

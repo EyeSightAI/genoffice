@@ -17,6 +17,7 @@ export const ko = {
   aiQcPageSkipped: '{n}페이지: 자동 레이아웃 검사 건너뜀',
   aiQcStopped: '레이아웃 검사를 중지했습니다',
   aiQcCapped: '나머지 {count}페이지는 검사하지 않음(회당 상한)',
+  aiConfigModel: '먼저 UToOffice 설정에서 AI 모델(API 키)을 구성하세요',
   aiGskLoginBtn: ' 로그인',
   aiPanelTitle: '',
   aiOpenAssistant: 'AI 도우미 열기',

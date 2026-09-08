@@ -17,6 +17,7 @@ export const hi = {
   aiQcPageSkipped: 'पेज {n}: स्वचालित लेआउट जाँच छोड़ दी गई',
   aiQcStopped: 'लेआउट जाँच रोक दी गई',
   aiQcCapped: 'शेष {count} पेज नहीं जाँचे गए (प्रति रन सीमा)',
+  aiConfigModel: 'कृपया पहले UToOffice सेटिंग्स में AI मॉडल (API कुंजी) कॉन्फ़िगर करें',
   aiGskLoginBtn: ' में साइन इन करें',
   aiPanelTitle: '',
   aiOpenAssistant: 'AI सहायक खोलें',

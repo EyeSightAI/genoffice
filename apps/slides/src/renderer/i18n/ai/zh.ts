@@ -16,6 +16,7 @@ export const zh = {
   aiQcPageSkipped: '第 {n} 页:已跳过自动版式检查',
   aiQcStopped: '版式检查已停止',
   aiQcCapped: '其余 {count} 页未检查(单次上限)',
+  aiConfigModel: '请先在 UToOffice 设置中配置大模型（AI 模型 API Key）',
   aiGskLoginBtn: '登录',
   aiPanelTitle: '',
   aiOpenAssistant: '打开 AI 助手',

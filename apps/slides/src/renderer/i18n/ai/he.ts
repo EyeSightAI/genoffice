@@ -17,6 +17,7 @@ export const he = {
   aiQcPageSkipped: 'עמוד {n}: בדיקת הפריסה האוטומטית דולגה',
   aiQcStopped: 'בדיקת הפריסה הופסקה',
   aiQcCapped: 'עוד {count} עמודים לא נבדקו (מגבלה לכל הרצה)',
+  aiConfigModel: 'נא להגדיר תחילה מודל AI (מפתח API) בהגדרות UToOffice',
   aiGskLoginBtn: 'התחבר ל-',
   aiPanelTitle: '',
   aiOpenAssistant: 'פתיחת עוזר ה-AI',

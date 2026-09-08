@@ -5,6 +5,7 @@ export const nl = {
   aiEmptyBuildTitle: 'Laat AI deze werkmap voor je opbouwen',
   aiEmptyBuildBody:
     'Beschrijf de tabel, gegevens of grafiek die je nodig hebt — AI maakt het direct.',
+  aiConfigModel: 'Configureer eerst een AI-model (API-sleutel) in de UToOffice-instellingen',
   aiGskLoginBtn: 'Aanmelden bij ',
   aiUndelivered: 'Niet verzonden',
   aiRetry: 'Opnieuw proberen',

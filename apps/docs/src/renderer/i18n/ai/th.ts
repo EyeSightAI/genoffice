@@ -8,6 +8,7 @@ export const th = {
   aiStarterPolishAll: 'ขัดเกลาทั้งเอกสารให้น้ำเสียงเป็นมืออาชีพยิ่งขึ้น',
   aiStarterContinue: 'เขียนต่อจากเนื้อหาที่มีอยู่',
   aiStarterFillTemplate: 'ค้นหาและกรอกตัวยึดตำแหน่งในเอกสาร',
+  aiConfigModel: 'โปรดกำหนดค่าโมเดล AI (คีย์ API) ในการตั้งค่า UToOffice ก่อน',
   aiGskLoginBtn: 'ลงชื่อเข้าใช้ ',
   aiPanelTitle: '',
   aiOpenAssistant: 'เปิดผู้ช่วย AI',

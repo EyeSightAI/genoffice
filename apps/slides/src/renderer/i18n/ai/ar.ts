@@ -17,6 +17,7 @@ export const ar = {
   aiQcPageSkipped: 'الصفحة {n}: تم تخطي فحص التخطيط التلقائي',
   aiQcStopped: 'تم إيقاف فحص التخطيط',
   aiQcCapped: '{count} صفحة أخرى لم تُفحص (حد لكل تشغيل)',
+  aiConfigModel: 'يرجى تكوين نموذج الذكاء الاصطناعي (مفتاح API) في إعدادات UToOffice أولاً',
   aiGskLoginBtn: 'تسجيل الدخول إلى ',
   aiPanelTitle: '',
   aiOpenAssistant: 'فتح مساعد الذكاء الاصطناعي',

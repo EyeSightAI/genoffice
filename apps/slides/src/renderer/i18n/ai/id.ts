@@ -17,6 +17,7 @@ export const id = {
   aiQcPageSkipped: 'Halaman {n}: pemeriksaan tata letak otomatis dilewati',
   aiQcStopped: 'Pemeriksaan tata letak dihentikan',
   aiQcCapped: '{count} halaman lagi tidak diperiksa (batas per proses)',
+  aiConfigModel: 'Konfigurasikan model AI (kunci API) terlebih dahulu di pengaturan UToOffice',
   aiGskLoginBtn: 'Masuk ke ',
   aiPanelTitle: '',
   aiOpenAssistant: 'Buka asisten AI',

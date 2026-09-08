@@ -8,6 +8,7 @@ export const hi = {
   aiStarterPolishAll: 'पूरे दस्तावेज़ को अधिक पेशेवर लहजे में निखारें',
   aiStarterContinue: 'दस्तावेज़ जहाँ रुका है वहाँ से आगे लिखें',
   aiStarterFillTemplate: 'दस्तावेज़ के प्लेसहोल्डर ढूँढ़कर भरें',
+  aiConfigModel: 'कृपया पहले UToOffice सेटिंग्स में AI मॉडल (API कुंजी) कॉन्फ़िगर करें',
   aiGskLoginBtn: ' में साइन इन करें',
   aiPanelTitle: '',
   aiOpenAssistant: 'AI सहायक खोलें',

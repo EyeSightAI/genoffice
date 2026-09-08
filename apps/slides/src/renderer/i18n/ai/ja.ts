@@ -17,6 +17,7 @@ export const ja = {
   aiQcPageSkipped: 'ページ {n}:自動レイアウトチェックをスキップ',
   aiQcStopped: 'レイアウトチェックを停止しました',
   aiQcCapped: '残り {count} ページは未チェック(1回の上限)',
+  aiConfigModel: 'まず UToOffice の設定で AI モデル（API キー）を設定してください',
   aiGskLoginBtn: ' にサインイン',
   aiPanelTitle: '',
   aiOpenAssistant: 'AI アシスタントを開く',

@@ -8,6 +8,7 @@ export const id = {
   aiStarterPolishAll: 'Perhalus seluruh dokumen agar nadanya lebih profesional',
   aiStarterContinue: 'Lanjutkan menulis dari bagian akhir dokumen',
   aiStarterFillTemplate: 'Temukan dan isi placeholder di dokumen ini',
+  aiConfigModel: 'Konfigurasikan model AI (kunci API) terlebih dahulu di pengaturan UToOffice',
   aiGskLoginBtn: 'Masuk ke ',
   aiPanelTitle: '',
   aiOpenAssistant: 'Buka asisten AI',

@@ -4,6 +4,7 @@ export const ja = {
   aiComposerPlaceholderBuild: '作りたい表・データ・グラフを入力…',
   aiEmptyBuildTitle: 'AI にシート作りを任せる',
   aiEmptyBuildBody: '欲しい表・データ・グラフを伝えると、AI がその場で作成します。',
+  aiConfigModel: 'まず UToOffice の設定で AI モデル（API キー）を設定してください',
   aiGskLoginBtn: ' にサインイン',
   aiUndelivered: '送信できませんでした',
   aiRetry: '再試行',

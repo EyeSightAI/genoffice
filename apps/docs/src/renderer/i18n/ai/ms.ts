@@ -8,6 +8,7 @@ export const ms = {
   aiStarterPolishAll: 'Perhalusi keseluruhan dokumen dengan nada lebih profesional',
   aiStarterContinue: 'Teruskan menulis dari bahagian akhir dokumen',
   aiStarterFillTemplate: 'Cari dan isi ruang letak dalam dokumen ini',
+  aiConfigModel: 'Sila konfigurasikan model AI (kunci API) terlebih dahulu dalam tetapan UToOffice',
   aiGskLoginBtn: 'Log masuk ke ',
   aiPanelTitle: '',
   aiOpenAssistant: 'Buka pembantu AI',

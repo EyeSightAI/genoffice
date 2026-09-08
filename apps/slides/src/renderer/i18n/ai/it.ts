@@ -17,6 +17,7 @@ export const it = {
   aiQcPageSkipped: 'Pagina {n}: controllo automatico del layout saltato',
   aiQcStopped: 'Controllo del layout interrotto',
   aiQcCapped: 'Altre {count} pagina/e non controllate (limite per esecuzione)',
+  aiConfigModel: 'Configura prima un modello AI (chiave API) nelle impostazioni di UToOffice',
   aiGskLoginBtn: 'Accedi a ',
   aiPanelTitle: '',
   aiOpenAssistant: "Apri l'assistente IA",

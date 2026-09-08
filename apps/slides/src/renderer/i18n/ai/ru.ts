@@ -17,6 +17,7 @@ export const ru = {
   aiQcPageSkipped: 'Страница {n}: автоматическая проверка макета пропущена',
   aiQcStopped: 'Проверка макета остановлена',
   aiQcCapped: 'Ещё {count} стр. не проверено (лимит за один запуск)',
+  aiConfigModel: 'Сначала настройте модель ИИ (ключ API) в настройках UToOffice',
   aiGskLoginBtn: 'Войти в ',
   aiPanelTitle: '',
   aiOpenAssistant: 'Открыть ИИ-помощника',

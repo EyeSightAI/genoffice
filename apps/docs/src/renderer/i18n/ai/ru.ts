@@ -8,6 +8,7 @@ export const ru = {
   aiStarterPolishAll: 'Отшлифуй весь документ, сделав тон более профессиональным',
   aiStarterContinue: 'Продолжи текст с того места, где он обрывается',
   aiStarterFillTemplate: 'Найди и заполни местозаполнители в документе',
+  aiConfigModel: 'Сначала настройте модель ИИ (ключ API) в настройках UToOffice',
   aiGskLoginBtn: 'Войти в ',
   aiPanelTitle: '',
   aiOpenAssistant: 'Открыть ИИ-помощника',

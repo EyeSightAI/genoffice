@@ -8,6 +8,7 @@ export const pt = {
   aiStarterPolishAll: 'Aprimore o documento inteiro com um tom mais profissional',
   aiStarterContinue: 'Continue escrevendo de onde o documento parou',
   aiStarterFillTemplate: 'Encontre e preencha os espaços reservados do documento',
+  aiConfigModel: 'Configure primeiro um modelo de IA (chave de API) nas configurações do UToOffice',
   aiGskLoginBtn: 'Entrar no ',
   aiPanelTitle: '',
   aiOpenAssistant: 'Abrir assistente de IA',

@@ -17,6 +17,7 @@ export const nl = {
   aiQcPageSkipped: 'Pagina {n}: automatische lay-outcontrole overgeslagen',
   aiQcStopped: 'Lay-outcontrole gestopt',
   aiQcCapped: 'Nog {count} pagina(’s) niet gecontroleerd (limiet per run)',
+  aiConfigModel: 'Configureer eerst een AI-model (API-sleutel) in de UToOffice-instellingen',
   aiGskLoginBtn: 'Aanmelden bij ',
   aiPanelTitle: '',
   aiOpenAssistant: 'AI-assistent openen',

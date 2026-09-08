@@ -4,6 +4,7 @@ export const th = {
   aiComposerPlaceholderBuild: 'อธิบายตาราง ข้อมูล หรือแผนภูมิที่จะสร้าง…',
   aiEmptyBuildTitle: 'ให้ AI สร้างเวิร์กบุ๊กนี้ให้คุณ',
   aiEmptyBuildBody: 'อธิบายตาราง ข้อมูล หรือแผนภูมิที่ต้องการ แล้ว AI จะสร้างให้ทันที',
+  aiConfigModel: 'โปรดกำหนดค่าโมเดล AI (คีย์ API) ในการตั้งค่า UToOffice ก่อน',
   aiGskLoginBtn: 'ลงชื่อเข้าใช้ ',
   aiUndelivered: 'ส่งไม่สำเร็จ',
   aiRetry: 'ลองอีกครั้ง',

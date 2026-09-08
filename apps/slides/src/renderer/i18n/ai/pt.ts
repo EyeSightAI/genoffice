@@ -17,6 +17,7 @@ export const pt = {
   aiQcPageSkipped: 'Página {n}: verificação automática de layout ignorada',
   aiQcStopped: 'Verificação de layout interrompida',
   aiQcCapped: 'Mais {count} página(s) não verificada(s) (limite por execução)',
+  aiConfigModel: 'Configure primeiro um modelo de IA (chave de API) nas configurações do UToOffice',
   aiGskLoginBtn: 'Entrar no ',
   aiPanelTitle: '',
   aiOpenAssistant: 'Abrir assistente de IA',

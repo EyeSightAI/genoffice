@@ -4,6 +4,7 @@ export const ms = {
   aiComposerPlaceholderBuild: 'Terangkan jadual, data atau carta untuk dijana…',
   aiEmptyBuildTitle: 'Biarkan AI membina buku kerja ini untuk anda',
   aiEmptyBuildBody: 'Terangkan jadual, data atau carta yang anda perlukan — AI terus menciptanya.',
+  aiConfigModel: 'Sila konfigurasikan model AI (kunci API) terlebih dahulu dalam tetapan UToOffice',
   aiGskLoginBtn: 'Log masuk ke ',
   aiUndelivered: 'Tidak dihantar',
   aiRetry: 'Cuba lagi',

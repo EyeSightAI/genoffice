@@ -17,6 +17,7 @@ export const ms = {
   aiQcPageSkipped: 'Halaman {n}: semakan susun atur automatik dilangkau',
   aiQcStopped: 'Semakan susun atur dihentikan',
   aiQcCapped: '{count} halaman lagi tidak disemak (had setiap larian)',
+  aiConfigModel: 'Sila konfigurasikan model AI (kunci API) terlebih dahulu dalam tetapan UToOffice',
   aiGskLoginBtn: 'Log masuk ke ',
   aiPanelTitle: '',
   aiOpenAssistant: 'Buka pembantu AI',

@@ -4,6 +4,7 @@ export const pl = {
   aiComposerPlaceholderBuild: 'Opisz tabelę, dane lub wykres do utworzenia…',
   aiEmptyBuildTitle: 'Pozwól AI zbudować ten skoroszyt',
   aiEmptyBuildBody: 'Opisz potrzebną tabelę, dane lub wykres — AI utworzy je od razu.',
+  aiConfigModel: 'Najpierw skonfiguruj model AI (klucz API) w ustawieniach UToOffice',
   aiGskLoginBtn: 'Zaloguj się do ',
   aiUndelivered: 'Nie wysłano',
   aiRetry: 'Ponów',

@@ -8,6 +8,7 @@ export const he = {
   aiStarterPolishAll: 'לטש את כל המסמך לטון מקצועי יותר',
   aiStarterContinue: 'המשך לכתוב מהנקודה שבה המסמך נעצר',
   aiStarterFillTemplate: 'מצא ומלא את מצייני המיקום במסמך',
+  aiConfigModel: 'נא להגדיר תחילה מודל AI (מפתח API) בהגדרות UToOffice',
   aiGskLoginBtn: 'התחבר ל-',
   aiPanelTitle: '',
   aiOpenAssistant: 'פתיחת עוזר ה-AI',

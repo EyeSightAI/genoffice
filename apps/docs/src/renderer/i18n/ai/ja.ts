@@ -8,6 +8,7 @@ export const ja = {
   aiStarterPolishAll: '全文を推敲してよりプロフェッショナルな文体に',
   aiStarterContinue: '今の内容の続きを書いて',
   aiStarterFillTemplate: '文書内のプレースホルダーを見つけて埋めて',
+  aiConfigModel: 'まず UToOffice の設定で AI モデル（API キー）を設定してください',
   aiGskLoginBtn: ' にサインイン',
   aiPanelTitle: '',
   aiOpenAssistant: 'AI アシスタントを開く',

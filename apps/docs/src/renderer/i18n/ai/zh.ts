@@ -7,6 +7,7 @@ export const zh = {
   aiStarterPolishAll: '润色全文,使语气更专业',
   aiStarterContinue: '接着现有内容往下写',
   aiStarterFillTemplate: '找出并填写文档里的占位符',
+  aiConfigModel: '请先在 UToOffice 设置中配置大模型（AI 模型 API Key）',
   aiGskLoginBtn: '登录',
   aiPanelTitle: '',
   aiOpenAssistant: '打开 AI 助手',

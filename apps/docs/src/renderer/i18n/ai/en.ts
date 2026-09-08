@@ -8,6 +8,7 @@ export const en = {
   aiStarterPolishAll: 'Polish the whole document for a more professional tone',
   aiStarterContinue: 'Continue writing from where the document leaves off',
   aiStarterFillTemplate: 'Find and fill in the placeholders in this document',
+  aiConfigModel: 'Please configure an AI model (API key) in UToOffice settings first',
   aiGskLoginBtn: 'Sign in',
   aiPanelTitle: '',
   aiOpenAssistant: 'Open AI assistant',

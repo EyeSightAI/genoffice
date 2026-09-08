@@ -8,6 +8,7 @@ export const ar = {
   aiStarterPolishAll: 'حسّن صياغة المستند كاملًا بنبرة أكثر احترافية',
   aiStarterContinue: 'تابع الكتابة من حيث انتهى المستند',
   aiStarterFillTemplate: 'اعثر على العناصر النائبة في المستند واملأها',
+  aiConfigModel: 'يرجى تكوين نموذج الذكاء الاصطناعي (مفتاح API) في إعدادات UToOffice أولاً',
   aiGskLoginBtn: 'تسجيل الدخول إلى ',
   aiPanelTitle: '',
   aiOpenAssistant: 'فتح مساعد الذكاء الاصطناعي',

@@ -17,6 +17,7 @@ export const es = {
   aiQcPageSkipped: 'Página {n}: comprobación automática de diseño omitida',
   aiQcStopped: 'Comprobación de diseño detenida',
   aiQcCapped: '{count} página(s) más sin comprobar (límite por ejecución)',
+  aiConfigModel: 'Configura primero un modelo de IA (clave API) en los ajustes de UToOffice',
   aiGskLoginBtn: 'Iniciar sesión en ',
   aiPanelTitle: '',
   aiOpenAssistant: 'Abrir el asistente de IA',

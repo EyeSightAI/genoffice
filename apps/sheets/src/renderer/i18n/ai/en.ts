@@ -4,6 +4,7 @@ export const en = {
   aiComposerPlaceholderBuild: 'Describe the table, data, or chart to create…',
   aiEmptyBuildTitle: 'Let AI build this workbook for you',
   aiEmptyBuildBody: 'Describe the table, data, or chart you need — AI creates it in place.',
+  aiConfigModel: 'Please configure an AI model (API key) in UToOffice settings first',
   aiGskLoginBtn: 'Sign in',
   aiUndelivered: 'Not sent',
   aiRetry: 'Retry',

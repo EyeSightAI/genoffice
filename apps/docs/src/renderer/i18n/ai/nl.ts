@@ -8,6 +8,7 @@ export const nl = {
   aiStarterPolishAll: 'Werk het hele document bij naar een professionelere toon',
   aiStarterContinue: 'Schrijf verder waar het document ophoudt',
   aiStarterFillTemplate: 'Zoek en vul de tijdelijke aanduidingen in het document in',
+  aiConfigModel: 'Configureer eerst een AI-model (API-sleutel) in de UToOffice-instellingen',
   aiGskLoginBtn: 'Aanmelden bij ',
   aiPanelTitle: '',
   aiOpenAssistant: 'AI-assistent openen',

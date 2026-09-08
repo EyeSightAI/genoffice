@@ -2150,6 +2150,9 @@ export function AiPanel({
               {entry.error && (
                 <div className="ai-msg-error">{t('aiMsgError', { error: entry.error })}</div>
               )}
+              {entry.error && (
+                <div className="ai-msg-hint">{t('aiConfigModel')}</div>
+              )}
               {entry.deckProgress && <DeckProgressCard progress={entry.deckProgress} />}
               {showToolbar && (
                 <div className="ai-msg-toolbar">

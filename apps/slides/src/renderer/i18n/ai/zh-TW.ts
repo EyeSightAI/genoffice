@@ -17,6 +17,7 @@ export const zhTW = {
   aiQcPageSkipped: '第 {n} 頁:已略過自動版式檢查',
   aiQcStopped: '版式檢查已停止',
   aiQcCapped: '其餘 {count} 頁未檢查(單次上限)',
+  aiConfigModel: '請先在 UToOffice 設定中設定 AI 模型（API 金鑰）',
   aiGskLoginBtn: '登入 ',
   aiPanelTitle: '',
   aiOpenAssistant: '開啟 AI 助手',

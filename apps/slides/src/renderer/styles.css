@@ -2396,6 +2396,13 @@ body.vib .slide-list {
   font-size: 13px;
 }
 
+.ai-msg-hint {
+  margin-top: 6px;
+  color: var(--slides-ai-error);
+  font-size: 13px;
+  opacity: 0.85;
+}
+
 .ai-composer {
   padding: 8px 12px 12px;
   background: var(--surface);

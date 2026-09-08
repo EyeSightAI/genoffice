@@ -8,6 +8,7 @@ export const de = {
   aiStarterPolishAll: 'Das ganze Dokument für einen professionelleren Ton überarbeiten',
   aiStarterContinue: 'Dort weiterschreiben, wo das Dokument aufhört',
   aiStarterFillTemplate: 'Platzhalter im Dokument finden und ausfüllen',
+  aiConfigModel: 'Bitte zuerst ein KI-Modell (API-Schlüssel) in den UToOffice-Einstellungen konfigurieren',
   aiGskLoginBtn: 'Bei  anmelden',
   aiPanelTitle: '',
   aiOpenAssistant: 'KI-Assistenten öffnen',

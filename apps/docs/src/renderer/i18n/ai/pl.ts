@@ -8,6 +8,7 @@ export const pl = {
   aiStarterPolishAll: 'Dopracuj cały dokument, nadając mu bardziej profesjonalny ton',
   aiStarterContinue: 'Kontynuuj pisanie od miejsca, w którym kończy się dokument',
   aiStarterFillTemplate: 'Znajdź i uzupełnij symbole zastępcze w dokumencie',
+  aiConfigModel: 'Najpierw skonfiguruj model AI (klucz API) w ustawieniach UToOffice',
   aiGskLoginBtn: 'Zaloguj się do ',
   aiPanelTitle: '',
   aiOpenAssistant: 'Otwórz asystenta AI',
