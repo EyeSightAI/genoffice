@@ -106,7 +106,7 @@ describe('GenOffice Serif KR (Batang-normalized)', () => {
   })
 })
 
-describe('UToOffice Che Latin KR (fixed-pitch half-width)', () => {
+describe('GenOffice Che Latin KR (fixed-pitch half-width)', () => {
   const che = readWoff2(join(FONTS, 'UToOfficeCheLatinKR.woff2'))
 
   it('every printable ASCII advance is exactly 0.5em (probe 2026-08-24: real -Che faces)', () => {
