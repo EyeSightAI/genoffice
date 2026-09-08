@@ -594,7 +594,6 @@ export function AiChatPanel({
             ) : (
               <>
                 {entry.tools.length > 0 && <ToolChipList tools={entry.tools} />}
-                {entry.isError && <div className="ai-msg-hint">{t('aiConfigModel')}</div>}
                 {entry.text ? (
                   <div dir="auto">
                     <Markdown text={entry.text} nav={citationNav} />

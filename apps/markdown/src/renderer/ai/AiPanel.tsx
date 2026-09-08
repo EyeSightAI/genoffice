@@ -672,7 +672,6 @@ export function AiPanel({
                 )
               )}
               {hasTools && <ToolChipList tools={entry.tools!} />}
-              {entry.isError && <div className="ai-msg-hint">{t('aiConfigModel')}</div>}
               {showToolbar && (
                 <div className="ai-msg-toolbar">
                   <button

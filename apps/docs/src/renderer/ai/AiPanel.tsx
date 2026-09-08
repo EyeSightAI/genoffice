@@ -1174,9 +1174,6 @@ export function AiPanel({
               {entry.error && (
                 <div className="ai-msg-error">{t('aiErrorPrefix', { error: entry.error })}</div>
               )}
-              {entry.error && (
-                <div className="ai-msg-hint">{t('aiConfigModel')}</div>
-              )}
               {showToolbar && (
                 <div className="ai-msg-toolbar">
                   {entry.text && (

@@ -682,7 +682,6 @@ export function AiPanel({
               className={`ai-msg ai-msg-assistant${entry.isError ? ' ai-msg-error' : ''}`}
             >
               {hasTools && <ToolChipList tools={entry.tools!} />}
-              {entry.isError && <div className="ai-msg-hint">{t('aiConfigModel')}</div>}
               {entry.text && (
                 <div dir="auto">
                   <Markdown text={entry.text} nav={pdfNav} />
