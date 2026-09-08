@@ -3447,6 +3447,13 @@ button {
   color: var(--pdf-error);
 }
 
+.ai-msg-hint {
+  margin-top: 6px;
+  color: var(--pdf-error);
+  font-size: 13px;
+  opacity: 0.85;
+}
+
 .ai-md p,
 .ai-md ul,
 .ai-md ol {

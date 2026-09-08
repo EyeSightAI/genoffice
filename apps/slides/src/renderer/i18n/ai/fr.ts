@@ -17,7 +17,7 @@ export const fr = {
   aiQcPageSkipped: 'Page {n} : vérification automatique de la mise en page ignorée',
   aiQcStopped: 'Vérification de la mise en page arrêtée',
   aiQcCapped: '{count} page(s) restante(s) non vérifiée(s) (limite par exécution)',
-  aiConfigModel: 'Configurez d'abord un modèle d'IA (clé API) dans les paramètres UToOffice',
+  aiConfigModel: "Configurez d'abord un modèle d'IA (clé API) dans les paramètres UToOffice",
   aiGskLoginBtn: 'Se connecter à ',
   aiPanelTitle: '',
   aiOpenAssistant: "Ouvrir l'assistant IA",
