@@ -339,7 +339,9 @@ function updateFeedBaseUrl(): string | null {
     const value = /^url:\s*['"]?([^'"\s]+)/m.exec(yml)?.[1]
     if (!value) return null
     const url = new URL(value)
-    if (url.protocol !== 'https:' || url.username || url.password) return null
+    // UToOffice 更新源是自己的服务器（http 镜像，国内快）。允许 http/https，
+    // 但仍拒绝带凭据的 URL（防止 feed 里注入账号密码外泄）。
+    if ((url.protocol !== 'https:' && url.protocol !== 'http:') || url.username || url.password) return null
     url.pathname = `${url.pathname.replace(/\/+$/, '')}/`
     url.search = ''
     url.hash = ''

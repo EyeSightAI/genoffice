@@ -565,14 +565,13 @@ if (winSignMode) {
   }
 }
 
-// UToOffice 更新源：GitHub Releases（github provider，electron-updater 原生支持）。
-// 构建时 `--publish always` + GH_TOKEN 会自动把 latest.yml + 安装包发布到 Releases；
-// 客户端 electron-updater 通过 GitHub API 检查 latest.yml 实现自动更新。
+// UToOffice 更新源：自己的服务器镜像（generic provider，国内下载快）。
+// 客户端 electron-updater 从 http://47.109.16.117/update/latest.yml 检查更新并下载安装包，
+// 不再走 GitHub Releases（国内慢/易失败）。服务器 /www/wwwroot/update/ 由发版流程同步。
 config.publish = [
   {
-    provider: 'github',
-    owner: 'EyeSightAI',
-    repo: 'genoffice',
+    provider: 'generic',
+    url: 'http://47.109.16.117/update/',
   },
 ]
 
