@@ -68,7 +68,7 @@ jobs:
           for f in ['apps/shell/release/latest.yml', 'apps/shell/release/UToOffice-Setup.exe']:
               sftp.put(f, '/www/wwwroot/update/' + f.split('/')[-1])
           sftp.close(); t.close()
-          print('服务器镜像同步完成')
+          print('sync to server mirror done')
           "
 
       - name: List artifacts
