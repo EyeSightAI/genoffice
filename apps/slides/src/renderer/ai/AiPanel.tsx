@@ -521,8 +521,6 @@ export function AiPanel({
   applyDeckRef.current = applyDeck
   const useTemplateLibraryRef = useRef(useTemplateLibrary)
   useTemplateLibraryRef.current = useTemplateLibrary
-  const onSetSpeakerNotesRef = useRef(onSetSpeakerNotes)
-  onSetSpeakerNotesRef.current = onSetSpeakerNotes
   const onBeforeRunRef = useRef(onBeforeRun)
   onBeforeRunRef.current = onBeforeRun
   const onPathChangeRef = useRef(onPathChange)
@@ -937,8 +935,6 @@ export function AiPanel({
       applySlide: (i, updated) => applySlideRef.current(i, updated),
       applyDeck: (all, goTo) => applyDeckRef.current(all, goTo),
       useTemplateLibrary: () => useTemplateLibraryRef.current,
-      setSpeakerNotes: (i, text) =>
-        onSetSpeakerNotesRef.current?.(i, text) ?? Promise.resolve(false),
       landGeneratedPages: async (
         pageMarkers: string[],
         mode?: 'replace' | 'append' | 'insert_at',
