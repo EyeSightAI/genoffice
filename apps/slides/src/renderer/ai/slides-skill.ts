@@ -846,7 +846,7 @@ const TOOLS: AgentToolDef[] = [
   {
     name: 'search_templates',
     description:
-      '从 UToOffice 模板库检索匹配的 PPT 模板。用户描述需求（如「年度总结 商务简约」「述职报告 蓝色科技风」）后调用，按标题/标签/分类关键词匹配返回候选模板（含 id/标题/标签/下载链接）。挑出最贴合用户需求的一个，用 open_template 打开它作为后续「使用当前模板」的底版。',
+      '从 UToOffice 模板库检索匹配的 PPT 模板。用户描述需求（如「年度总结 商务简约」「述职报告 蓝色科技风」）后调用，按标题/标签/分类关键词匹配返回候选模板。每个候选含 id/标题/标签/页数/版式结构（如封面、目录、数据页、正文、结束页）/下载链接。请结合用户的真实需求（页数多少、要不要数据图表页、风格偏好）从候选中挑最贴合的一个，用 open_template 打开它作为后续「使用当前模板」的底版。',
     inputSchema: {
       type: 'object',
       properties: {
@@ -877,6 +877,10 @@ interface TemplateMeta {
   tags: string[]
   category: string
   url: string
+  /** 模板总页数（解析 .pptx 得到） */
+  pageCount?: number
+  /** 版式结构（去重后的类型顺序，如 封面/目录/数据页/正文/结束页） */
+  structure?: string[]
 }
 const TEMPLATE_META = templatesMeta as TemplateMeta[]
 
@@ -1523,7 +1527,11 @@ async function executeTool(
       const results = searchTemplates(query, limit)
       if (results.length === 0) return fail('搜索模板', '模板库为空')
       const list = results
-        .map((m) => `- [${m.id}] ${m.title}（${m.category}｜${m.tags.join(' ')}）\n  url: ${m.url}`)
+        .map((m) => {
+          const pages = m.pageCount ? `｜${m.pageCount}页` : ''
+          const struct = m.structure?.length ? `｜版式:${m.structure.join('、')}` : ''
+          return `- [${m.id}] ${m.title}（${m.category}｜${m.tags.join(' ')}${pages}${struct}）\n  url: ${m.url}`
+        })
         .join('\n')
       return {
         output: `匹配到 ${results.length} 个模板：\n${list}\n\n从上面挑一个最贴合用户需求的，用 open_template 打开它的 url。`,
