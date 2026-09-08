@@ -1625,6 +1625,7 @@ export function AiPanel({
           modelInstruction +=
             '\n\n【使用模板库：会员专属 · 强制规则】' +
             '\n- 必须先选模板：当前文档空白 → search_templates 选模板 + open_template 加载；当前文档是用户打开的模板 → 直接套用当前模板。' +
+            '\n- 【跳过问卷】不要调用 ask_clarification 问卷，直接用 search_templates 选模板即可（模板已确定版式/风格）。' +
             '\n- 【禁止重新生成】套用模板后，严禁用 generate_deck 重新生成整套 PPT。模板页数太多要精简时，用 delete_slide 删掉多余页；内容放不下就精简文字或删减页内项目，绝不重做一套。' +
             '\n- 【仅无匹配模板时例外】只有 search_templates 搜不到满足用户需求的模板，才允许 generate_deck 自己生成。' +
             '\n\n【严格套用（两者通用）】logo、背景、配色、字体绝不改动。' +
