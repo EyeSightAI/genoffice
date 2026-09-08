@@ -1132,7 +1132,8 @@ function buildDeckOutline(slides: RenderSlide[], current: number, selectedIds: s
     lines.push(`User selected elements: ${selectedRefs.join(', ')}`)
   }
   slides.forEach((slide, i) => {
-    lines.push(`Page ${i + 1} (slideIndex=${i}):`)
+    const bgLine = formatBackground(slide.background).trim()
+    lines.push(`Page ${i + 1} (slideIndex=${i}) ${bgLine}:`)
     const infos = collectNodeInfos(slide.nodes)
     const fillCount = new Map<string, number>()
     for (const n of infos) {
@@ -1156,6 +1157,17 @@ function buildDeckOutline(slides: RenderSlide[], current: number, selectedIds: s
  * Shared by the read_slide tool and the post-generation layout QC pass (slide-qc.ts), so the
  * QC model maps screenshot pixels back to the same ids/coordinates the edit tools accept.
  */
+/** 页面背景色描述（solid=纯色 / gradient=渐变 / image=图片 / none=无） */
+function formatBackground(bg: RenderSlide['background']): string {
+  if (bg.kind === 'none') return '背景: 无（继承母版，默认白色）\n'
+  if (bg.kind === 'solid') return `背景: 纯色 ${bg.color}\n`
+  if (bg.kind === 'gradient') {
+    const stops = bg.stops.map((s) => s.color).join(' → ')
+    return `背景: 渐变 ${stops}\n`
+  }
+  return '背景: 图片\n'
+}
+
 export function formatSlideDump(slide: RenderSlide): string {
   const infos = collectNodeInfos(slide.nodes)
   const parts = infos.map((n) => {
@@ -1195,7 +1207,8 @@ export function formatSlideDump(slide: RenderSlide): string {
   // Report the real px→EMU factor: render px carry the viewport scale, so ×9525 only
   // holds for decks whose baseline width is exactly the fit width (standard 16:9 at 1280).
   const pxToEmu = +(9525 / slide.scale).toFixed(2)
-  return `Canvas ${slide.widthPx}×${slide.heightPx}px (1 px = ${pxToEmu} EMU)\n${parts.join('\n---\n') || '(no elements on this page)'}${colorNote}`
+  const bg = formatBackground(slide.background)
+  return `Canvas ${slide.widthPx}×${slide.heightPx}px (1 px = ${pxToEmu} EMU)\n${bg}${parts.join('\n---\n') || '(no elements on this page)'}${colorNote}`
 }
 
 /** tools only usable through the  cloud (gated by login + the cloud-tools toggle) */
