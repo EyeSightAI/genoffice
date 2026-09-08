@@ -1206,7 +1206,7 @@ const GSK_TOOLS_OFF_NOTE =
 const TEMPLATE_LIBRARY_MODE_NOTE =
   '\n\n## 模板库模式（用户勾选了「使用模板库」标签，会员专属）\n' +
   '- 首要任务是套用模板库模板，不是从头生成。空白文档：先 search_templates 选模板，再 open_template 加载到当前文档；当前文档已是用户打开的模板：直接套用当前模板。\n' +
-  '- 【跳过 Step 0 Questionnaire】模板库模式下**不要调用 ask_clarification 问卷**（模板已确定版式/配色/风格，问卷无意义且会打断流程）；直接用 search_templates 按用户需求选模板即可。只有搜不到匹配模板、转 generate_deck 自己生成时，才按上游 Step 0 走问卷。\n' +
+  '- 【问卷只问内容，不问风格】选模板后用 ask_clarification 问卷引导用户提供**内容/数据**（项目数据、汇报要点、业务指标、具体内容），但**不要问风格/配色/受众/使用场景**（模板已确定版式与风格）。模板与问卷配合：模板定风格，问卷要内容。' +
   '- 【禁止重新生成】套用模板后，严禁用 generate_deck 重新生成整套 PPT。模板页数太多需要精简时，用 delete_slide 删掉多余页；内容放不下就精简文字或删减页内项目，绝不重做一套。\n' +
   '- 【仅无匹配模板时例外】只有 search_templates 确实搜不到满足用户需求的模板时，才允许改用 generate_deck 自己生成。'
 
