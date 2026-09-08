@@ -74,11 +74,10 @@ if (winArm64 && !process.env.ELECTRON_BUILDER_7Z_FILTER) {
   process.env.ELECTRON_BUILDER_7Z_FILTER = 'BCJ'
 }
 const winArch = winArm64 ? 'arm64' : 'x64'
-// UToOffice：CI 用 MSVC host（Setup Rust 默认 toolchain），cargo build 到 host target = msvc，
-// 且 config.toml 已给 msvc 配 crt-static 静态链接（无需 vcruntime140.dll）。上游用 gnu 是因为
-// 其内部 pipeline 有 MinGW 工具链；我们 fork 的 GitHub Actions 没有，故统一用 msvc 避免 sidecar 缺失。
-const winSidecarTarget = winArm64 ? 'aarch64-pc-windows-msvc' : 'x86_64-pc-windows-msvc'
-const WIN_SIDECAR = `../sheets/native/xlsx-engine/target/${winSidecarTarget}/release/xlsx-sidecar.exe`
+// UToOffice：native:build（cargo build --release 无 --target）build 到 host target（MSVC），
+// sidecar 落在 target/release/（不带 target 三元组子目录）。上游带 --target gnu 所以有
+// target/x86_64-pc-windows-gnu/ 子目录；我们 fork 无 MinGW，直接读 host target 目录即可。
+const WIN_SIDECAR = `../sheets/native/xlsx-engine/target/release/xlsx-sidecar.exe`
 
 // The gsk CLI tree below is copied verbatim from node_modules, and the
 // nested commander path depends on npm's current hoisting layout — fail the
