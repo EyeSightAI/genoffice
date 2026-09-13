@@ -19,7 +19,7 @@ export type AiProviderId =
   | 'opencode-go'
   | 'custom'
 
-/** Genspark account status (gsk login state; the sole auth source for AI features) */
+/** account status (gsk login state; the sole auth source for AI features) */
 export interface GenSparkAccountStatus {
   loggedIn: boolean
   email?: string
@@ -102,7 +102,7 @@ export interface AiMediaSettings {
   provider?: AiMediaProviderId | undefined
 }
 
-/** web/image search backends: Genspark (gsk) or a user key for Serper / Tavily */
+/** web/image search backends:  (gsk) or a user key for Serper / Tavily */
 export type AiSearchProviderId = 'genspark' | 'serper' | 'tavily'
 
 export interface AiSearchProviderMeta {
@@ -123,13 +123,13 @@ export interface AiSettings {
   providers: Record<AiProviderId, AiProviderConfig>
   /**
    * Provider for generate_image / analyze_media. Absent (pre-media settings
-   * files) means Genspark, i.e. the gsk login + gskToolsEnabled gate.
+   * files) means , i.e. the gsk login + gskToolsEnabled gate.
    */
   media?: AiMediaSettings | undefined
-  /** web/image search backend; absent means Genspark (gsk when signed in, then the free chain) */
+  /** web/image search backend; absent means  (gsk when signed in, then the free chain) */
   search?: AiSearchSettings | undefined
   /**
-   * Genspark cloud tools (web/image search via gsk, image generation, media
+   *  cloud tools (web/image search via gsk, image generation, media
    * analysis). Default true; false makes tools skip the gsk backend entirely
    * (search falls back to free sources, gsk-only tools are unavailable).
    * Only meaningful while signed in — signed out, the gsk backend is

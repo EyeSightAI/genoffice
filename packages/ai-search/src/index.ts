@@ -1,5 +1,5 @@
 /**
- * Search utilities (main process) — gsk (Genspark CLI) first, then Serper Google API,
+ * Search utilities (main process) — gsk ( CLI) first, then Serper Google API,
  * then Tavily, with DuckDuckGo as the keyless last resort. Runs in the main process
  * (Node fetch / child process) to avoid renderer CORS; the Serper key reuses SERPER_API_KEY,
  * the Tavily key reuses TAVILY_API_KEY.
@@ -30,7 +30,7 @@ const TAVILY_KEY = () => process.env.TAVILY_API_KEY ?? ''
  * user's key and turn gsk off so the chosen backend runs first.
  */
 export interface SearchOptions {
-  /** false = skip the Genspark backend (cloud tools off, or a BYOK search provider is active) */
+  /** false = skip the  backend (cloud tools off, or a BYOK search provider is active) */
   useGsk?: boolean
   serperKey?: string
   tavilyKey?: string
@@ -139,7 +139,7 @@ export async function webSearch(
   options: boolean | SearchOptions = true,
 ): Promise<WebSearchResponse> {
   const o = normalizeOptions(options)
-  // useGsk=false: the user turned Genspark cloud tools off or picked their own
+  // useGsk=false: the user turned  cloud tools off or picked their own
   // search key — skip straight to the keyed/free backends
   if (o.useGsk && hasGskAuth()) {
     try {

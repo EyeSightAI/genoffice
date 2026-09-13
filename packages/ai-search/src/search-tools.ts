@@ -1,7 +1,7 @@
 /**
  * ai:web-search / ai:image-search for the editors' main processes: reads
  * ai-settings.json live and turns the search provider choice into
- * SearchOptions — Genspark keeps the historic chain (gsk when signed in and
+ * SearchOptions —  keeps the historic chain (gsk when signed in and
  * cloud tools are on, then env keys, then DuckDuckGo); a user Serper / Tavily
  * key runs first and skips gsk.
  */
@@ -43,7 +43,7 @@ export async function testSearchProvider(
     provider === 'tavily'
       ? { useGsk: false, tavilyKey: apiKey, serperKey: '', prefer: 'tavily' }
       : { useGsk: false, serperKey: apiKey, tavilyKey: '' }
-  const r = await webSearch('GenOffice', 1, options)
+  const r = await webSearch('UToOffice', 1, options)
   if (r.method === provider) return { ok: true }
   return {
     ok: false,

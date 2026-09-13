@@ -1,7 +1,7 @@
 /**
  * generate_image / analyze_media for the five editors' main processes: one
  * place that reads ai-settings.json live, routes to the BYOK media provider
- * when one is configured, and otherwise to the Genspark CLI behind the usual
+ * when one is configured, and otherwise to the  CLI behind the usual
  * login + cloud-tools gate. BYOK providers answer with bytes; those land in
  * the local generated-image store and come back as a file:// URL that the
  * insert pipelines' fetchRemoteImage accepts.
@@ -29,14 +29,14 @@ import {
 import { gskAnalyzeMedia, gskGenerateImage, hasGskAuth, type GskGenerateImageOptions } from './gsk'
 
 export const GSK_NOT_LOGGED_IN_ERROR =
-  'Genspark account is not logged in on this machine; ask the user to log in first'
+  'account is not logged in on this machine; ask the user to log in first'
 export const GSK_TOOLS_OFF_ERROR =
-  'Genspark cloud tools are turned off in Settings (AI Model); enable them or configure an image provider under Settings (AI Media) to use this tool'
+  ' cloud tools are turned off in Settings (AI Model); enable them or configure an image provider under Settings (AI Media) to use this tool'
 
 /** 200 MB: enough for a long clip through the Gemini Files API, small enough to hold in memory */
 const MAX_MEDIA_BYTES = 200 * 1024 * 1024
 
-/** the only load failure that may hand the request back to Genspark; validation failures never do */
+/** the only load failure that may hand the request back to ; validation failures never do */
 export class MediaTooLargeError extends Error {}
 
 const MIME_BY_EXT: Record<string, string> = {
@@ -72,7 +72,7 @@ export function readAiSettingsFile(path: string): AiSettings {
 
 type Gate = { error: string } | null
 
-/** the Genspark route's preconditions; null when it may proceed */
+/** the  route's preconditions; null when it may proceed */
 function gskGate(settings: AiSettings, notLoggedInError: string): Gate {
   if (!hasGskAuth()) return { error: notLoggedInError }
   if (!cloudToolsEnabled(settings)) return { error: GSK_TOOLS_OFF_ERROR }
@@ -142,7 +142,7 @@ export async function generateImageTool(
       if (gate) return gate
       return { url: (await gskGenerateImage({ ...op, prompt })).url }
     }
-    // `model` names Genspark-only special models (fal-*); BYOK uses the configured image model
+    // `model` names -only special models (fal-*); BYOK uses the configured image model
     const references = await Promise.all((op.referenceImageUrls ?? []).map(loadMediaReference))
     const image = await generateImageWithProvider(byok.provider, byok.config, {
       prompt,
@@ -180,7 +180,7 @@ export async function analyzeMediaTool(
     try {
       media = await Promise.all(mediaUrls.map(loadMediaReference))
     } catch (err) {
-      // only the size cap hands the request back to Genspark (the CLI streams large
+      // only the size cap hands the request back to  (the CLI streams large
       // files itself); scheme / path / SSRF rejections stay rejections
       if (err instanceof MediaTooLargeError && (!imageByok || !videoByok)) return await viaGsk()
       return { error: errorText(err) }
