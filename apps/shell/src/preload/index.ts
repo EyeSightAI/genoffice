@@ -164,21 +164,6 @@ const homeApi: HomeApi = {
   async accountLogout() {
     await ipcRenderer.invoke(HOME_CHANNELS.accountLogout)
   },
-  async membershipStatus() {
-    const result: unknown = await ipcRenderer.invoke(HOME_CHANNELS.membershipStatus)
-    return (result ?? { plan: 'free', expiresAt: null, isPro: false }) as MembershipStatus
-  },
-  async membershipActivate(card: string) {
-    const result: unknown = await ipcRenderer.invoke(HOME_CHANNELS.membershipActivate, card)
-    return (result ?? { ok: false, error: 'Activation failed' }) as MembershipActivateResult
-  },
-  async membershipPackages() {
-    const result: unknown = await ipcRenderer.invoke(HOME_CHANNELS.membershipPackages)
-    return (Array.isArray(result) ? result : []) as MembershipPackage[]
-  },
-  async membershipOpenPurchase(payUrl: string) {
-    await ipcRenderer.invoke(HOME_CHANNELS.membershipOpenPurchase, payUrl)
-  },
   async getAppVersion() {
     const result: unknown = await ipcRenderer.invoke(HOME_CHANNELS.getAppVersion)
     return typeof result === 'string' ? result : ''
@@ -250,9 +235,6 @@ const homeApi: HomeApi = {
   },
   async openGitHubRepo() {
     await ipcRenderer.invoke(HOME_CHANNELS.openGitHubRepo)
-  },
-  async openAffiliate() {
-    await ipcRenderer.invoke(HOME_CHANNELS.openAffiliate)
   },
   async githubStars() {
     const result: unknown = await ipcRenderer.invoke(HOME_CHANNELS.githubStars)

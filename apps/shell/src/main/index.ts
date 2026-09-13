@@ -210,7 +210,7 @@ import { showErrorDialog } from './error-dialog'
 import { normalizeRecentQuery, pageRecentPaths, statPathEntries } from './recent-files'
 import { isSameFile, isValidRenameName } from './rename-validation'
 import { TabManager } from './tab-manager'
-import { activateMembership, checkMembership, getPackages, loadMembership } from './membership'
+import { loadMembership } from './membership'
 import { applyUpdateChannel, initAutoUpdater } from './updater'
 import { isUpdateChannel, type UpdateChannel } from '../shared/update-api'
 
@@ -2962,21 +2962,6 @@ function registerHomeIpc(): void {
     clearCloudProjectsStore(cloudProjectsStorePath())
   })
 
-  ipcMain.handle(HOME_CHANNELS.membershipStatus, () => loadMembership(app.getPath('userData')))
-
-  ipcMain.handle(HOME_CHANNELS.membershipActivate, async (_event, card: unknown) => {
-    if (typeof card !== 'string' || !card.trim()) return { ok: false, error: '请输入卡密' }
-    return await activateMembership(app.getPath('userData'), card.trim())
-  })
-
-  ipcMain.handle(HOME_CHANNELS.membershipPackages, () => getPackages())
-
-  ipcMain.handle(HOME_CHANNELS.membershipOpenPurchase, (_event, payUrl: unknown) => {
-    if (typeof payUrl === 'string' && payUrl.trim()) {
-      void shell.openExternal(payUrl)
-    }
-  })
-
   ipcMain.handle(HOME_CHANNELS.getAppVersion, (): string => app.getVersion())
 
   ipcMain.handle(HOME_CHANNELS.recents, (_event, query: unknown): RecentPage =>
@@ -3284,12 +3269,6 @@ function registerHomeIpc(): void {
 
   ipcMain.handle(HOME_CHANNELS.openGitHubRepo, () => {
     shell.openExternal(GITHUB_REPO_URL).catch(() => {
-      // no browser handler available; nothing actionable for the user here
-    })
-  })
-
-  ipcMain.handle(HOME_CHANNELS.openAffiliate, () => {
-    shell.openExternal('https://utooffice-templates.vercel.app/affiliate').catch(() => {
       // no browser handler available; nothing actionable for the user here
     })
   })
