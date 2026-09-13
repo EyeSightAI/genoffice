@@ -1,5 +1,16 @@
-import type { AiChatResponse, AiProviderMeta, AiSettings } from '@genoffice/ai-provider'
+import type {
+  AiChatResponse,
+  AiMediaProviderConfig,
+  AiMediaProviderId,
+  AiMediaProviderMeta,
+  AiProviderMeta,
+  AiSearchProviderId,
+  AiSearchProviderMeta,
+  AiSettings,
+  CodexModelCatalog,
+} from '@genoffice/ai-provider'
 import type { UpdateChannel } from './update-api'
+import type { AiPanelPrefs } from '@genoffice/ui/ai-panel-prefs'
 
 /** UI language; kept self-contained here (mirrors Lang in @genoffice/i18n) */
 export type UiLanguage =
@@ -17,6 +28,7 @@ export type UiLanguage =
   | 'pt'
   | 'it'
   | 'pl'
+  | 'cs'
   | 'nl'
   | 'ms'
   | 'he'
@@ -25,6 +37,12 @@ export type UiLanguage =
 
 /** UI theme preference */
 export type UiTheme = 'light' | 'dark' | 'system'
+
+/** shell-wide AutoSave default for every editor; updatedAt is 0 until first set */
+export interface AutoSaveDefault {
+  on: boolean
+  updatedAt: number
+}
 
 /** a recent file entry shown on the home screen; type derives from the extension */
 export interface RecentEntry {
@@ -82,6 +100,8 @@ export interface HomeApi {
   newSlide(opts?: { projectId?: string }): Promise<void>
   /** open a blank markdown editor tab */
   newMarkdown(opts?: { projectId?: string }): Promise<void>
+  /** open a blank html editor tab */
+  newHtml(opts?: { projectId?: string }): Promise<void>
   /** create a blank single-page PDF in the default save folder and open it */
   newPdf(opts?: { projectId?: string }): Promise<void>
   /** drop entries from the recent list (does not touch the files) */
@@ -104,9 +124,9 @@ export interface HomeApi {
   getUpdateChannel(): Promise<UpdateChannel>
   /** switch + persist the update channel; triggers an immediate update check */
   setUpdateChannel(channel: UpdateChannel): Promise<void>
-  /** account status (gsk login state; to be upgraded to a signup/account system later) */
+  /** Genspark account status (gsk login state; to be upgraded to a signup/account system later) */
   accountStatus(): Promise<AccountStatus>
-  /** start  login (opens the browser; accountStatus flips to logged-in on completion); returns whether the launch succeeded */
+  /** start Genspark login (opens the browser; accountStatus flips to logged-in on completion); returns whether the launch succeeded */
   accountLogin(): Promise<boolean>
   /** progress events for the login started via accountLogin; returns an unsubscribe */
   onAccountLogin(handler: (ev: AccountLoginEvent) => void): () => void
@@ -114,14 +134,6 @@ export interface HomeApi {
   openLoginUrl(): Promise<void>
   /** log out (clears the saved API key; the login state is shared globally with the gsk CLI) */
   accountLogout(): Promise<void>
-  /** current membership status (free / pro) */
-  membershipStatus(): Promise<MembershipStatus>
-  /** activate a card key; returns the new status */
-  membershipActivate(card: string): Promise<MembershipActivateResult>
-  /** fetch the purchasable packages (含酷发卡 pay_url) from the auth system */
-  membershipPackages(): Promise<MembershipPackage[]>
-  /** open a package's reseller (酷发卡) purchase page in the default browser */
-  membershipOpenPurchase(payUrl: string): Promise<void>
   /** app version (from package.json / electron app.getVersion) */
   getAppVersion(): Promise<string>
   /** whether the first-run onboarding has been completed or skipped (persisted in userData/app-settings.json) */
@@ -132,11 +144,19 @@ export interface HomeApi {
   getTheme(): Promise<UiTheme>
   /** switch + persist the UI theme; broadcasts 'app:theme-changed' to all web contents */
   setTheme(theme: UiTheme): Promise<void>
+  /** AutoSave default applied by every editor window (persisted in userData/app-settings.json) */
+  getAutoSaveDefault(): Promise<AutoSaveDefault>
+  /** persist the AutoSave default; broadcasts 'app:auto-save-default-changed' to all web contents */
+  setAutoSaveDefault(on: boolean): Promise<void>
   /** whether anonymous usage statistics are enabled (default true in official builds) */
   getAnalyticsEnabled(): Promise<boolean>
   /** persist an explicit analytics opt-in or opt-out */
   setAnalyticsEnabled(enabled: boolean): Promise<boolean>
-  /** effective default save folder for new/untitled files (configured in userData/app-settings.json, falls back to <Documents>/UToOffice) */
+  /** AI panel text size + chat-input spellcheck (persisted in userData/app-settings.json) */
+  getAiPanelPrefs(): Promise<AiPanelPrefs>
+  /** merge + persist; broadcasts 'app:ai-panel-prefs-changed' to all web contents */
+  setAiPanelPrefs(patch: Partial<AiPanelPrefs>): Promise<AiPanelPrefs>
+  /** effective default save folder for new/untitled files (configured in userData/app-settings.json, falls back to <Documents>/GenOffice) */
   getDefaultSaveDir(): Promise<string>
   /** directory picker to change the default save folder; resolves to the new folder, or null when canceled or the pick was unusable */
   pickDefaultSaveDir(): Promise<string | null>
@@ -144,12 +164,10 @@ export interface HomeApi {
   onThemeChanged(handler: (theme: UiTheme) => void): () => void
   /** open the GenTeam community page in the default browser */
   openGenTeam(): Promise<void>
-  /** open the  credit-usage page in the default browser */
+  /** open the Genspark credit-usage page in the default browser */
   openCreditUsage(): Promise<void>
   /** open the public GitHub repository in the default browser */
   openGitHubRepo(): Promise<void>
-  /** open the affiliate (分销合作) page in the default browser */
-  openAffiliate(): Promise<void>
   /** current stargazer count of the public repo (null while offline / rate-limited) */
   githubStars(): Promise<number | null>
   /** whether the one-time "star us" prompt should show now (show:true also counts as shown);
@@ -159,7 +177,7 @@ export interface HomeApi {
   starPromptAction(action: StarPromptAction): Promise<void>
   /** locally stored full cloud project list (instant; null when no store or logged out) */
   cloudProjectsCached(): Promise<CloudProjectsSnapshot | null>
-  /** sync the full list from  and return it (1 request when nothing changed); null when the sync failed */
+  /** sync the full list from Genspark and return it (1 request when nothing changed); null when the sync failed */
   cloudProjectsSync(): Promise<CloudProjectsSnapshot | null>
   /** open a cloud project (relative '/agents?id=...' URL) in the default browser */
   openCloudProject(projectUrl: string): Promise<void>
@@ -169,33 +187,24 @@ export interface HomeApi {
   setAiSettings(settings: AiSettings): Promise<void>
   /** provider catalog with each fixed endpoint's default base URL (empty for genspark/custom) */
   getAiProviders(): AiCatalogEntry[]
+  /** live Codex model catalog discovered through the current or overridden app-server */
+  getCodexModels(cliPath?: string): Promise<CodexModelCatalog>
   /** one-shot round trip against the given (possibly unsaved) settings — the settings-UI connection test */
   testAiSettings(settings: AiSettings): Promise<AiChatResponse>
-}
-
-/** UToOffice membership state (free / pro by card activation). */
-export interface MembershipStatus {
-  plan: 'free' | 'pro'
-  type?: 'lifetime' | 'year'
-  activatedAt?: number
-  expiresAt: number | null
-  isPro: boolean
-}
-
-export interface MembershipActivateResult {
-  ok: boolean
-  status?: MembershipStatus
-  error?: string
-}
-
-/** purchasable package from the auth system (含酷发卡 pay_url). */
-export interface MembershipPackage {
-  goodsId: string
-  name: string
-  price: string
-  validDays: number
-  stock: number
-  payUrl: string
+  /** image generation / media analysis provider catalog */
+  getAiMediaProviders(): AiMediaProviderMeta[]
+  /** credential check for a (possibly unsaved) media provider; genspark reports the gsk login state */
+  testAiMediaSettings(input: {
+    provider: AiMediaProviderId
+    config: AiMediaProviderConfig
+  }): Promise<{ ok: boolean; error?: string }>
+  /** web search provider catalog */
+  getAiSearchProviders(): AiSearchProviderMeta[]
+  /** one minimal query against the given key (genspark reports the gsk login state) */
+  testAiSearchSettings(input: {
+    provider: AiSearchProviderId
+    apiKey: string
+  }): Promise<{ ok: boolean; error?: string }>
 }
 
 export interface AiCatalogEntry extends AiProviderMeta {
@@ -216,7 +225,7 @@ export interface StarPromptShow {
 
 export type CloudProjectKind = 'docs' | 'sheets' | 'slides'
 
-/** a  web project shown in the home cloud section */
+/** a Genspark web project shown in the home cloud section */
 export interface CloudProjectEntry {
   projectId: string
   title: string
@@ -224,7 +233,7 @@ export interface CloudProjectEntry {
   kind: CloudProjectKind | 'other'
   /** creation time, ms since epoch (0 when unparsable) */
   ctimeMs: number
-  /** relative  URL ('/agents?id=...') */
+  /** relative genspark.ai URL ('/agents?id=...') */
   projectUrl: string
 }
 
@@ -242,7 +251,7 @@ export interface AccountStatus {
   /** gsk is installed and logged in */
   loggedIn: boolean
   email?: string
-  /** remaining credits (absent when the balance query failed) */
+  /** remaining Genspark credits (absent when the balance query failed) */
   creditBalance?: number
 }
 
@@ -312,6 +321,7 @@ export const HOME_CHANNELS = {
   newSheet: 'home:new-sheet',
   newSlide: 'home:new-slide',
   newMarkdown: 'home:new-markdown',
+  newHtml: 'home:new-html',
   newPdf: 'home:new-pdf',
   removeRecent: 'home:remove-recent',
   revealPath: 'home:reveal-path',
@@ -328,23 +338,22 @@ export const HOME_CHANNELS = {
   accountLoginEvent: 'home:account-login-event',
   accountLoginOpenUrl: 'home:account-login-open-url',
   accountLogout: 'home:account-logout',
-  membershipStatus: 'home:membership-status',
-  membershipActivate: 'home:membership-activate',
-  membershipOpenPurchase: 'home:membership-open-purchase',
-  membershipPackages: 'home:membership-packages',
   getAppVersion: 'home:get-app-version',
   onboardingSeen: 'home:onboarding-seen',
   setOnboardingSeen: 'home:set-onboarding-seen',
   getTheme: 'home:get-theme',
   setTheme: 'home:set-theme',
+  getAutoSaveDefault: 'home:get-auto-save-default',
+  setAutoSaveDefault: 'home:set-auto-save-default',
   getAnalyticsEnabled: 'home:get-analytics-enabled',
   setAnalyticsEnabled: 'home:set-analytics-enabled',
+  getAiPanelPrefs: 'home:get-ai-panel-prefs',
+  setAiPanelPrefs: 'home:set-ai-panel-prefs',
   getDefaultSaveDir: 'home:get-default-save-dir',
   pickDefaultSaveDir: 'home:pick-default-save-dir',
   openGenTeam: 'home:open-genteam',
   openCreditUsage: 'home:open-credit-usage',
   openGitHubRepo: 'home:open-github-repo',
-  openAffiliate: 'home:open-affiliate',
   githubStars: 'home:github-stars',
   starPromptShouldShow: 'home:star-prompt-should-show',
   starPromptAction: 'home:star-prompt-action',

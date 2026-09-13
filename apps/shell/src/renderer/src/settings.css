@@ -381,6 +381,21 @@
   background: var(--surface);
 }
 
+.set-num {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.set-num-input {
+  width: 64px;
+  min-width: 0;
+  text-align: right;
+}
+
 .set-input:focus {
   outline: none;
   border-color: var(--accent, var(--text-primary));
@@ -448,109 +463,9 @@
   }
 }
 
-/* ── UToOffice membership pane ── */
-
-.set-card-input {
-  flex-shrink: 0;
-  width: 220px;
-  padding: 6px 10px;
-  border: 1px solid var(--border-subtle);
-  border-radius: 6px;
-  font: inherit;
-  font-size: 13px;
-  color: var(--text-primary);
-  background: var(--surface);
-}
-
-.set-card-input:focus {
-  outline: none;
-  border-color: var(--accent, var(--text-primary));
-}
-
-.set-card-input::placeholder {
-  color: var(--text-tertiary, var(--text-secondary));
-}
-
-.set-card-input:disabled {
-  opacity: 0.55;
-}
-
-.set-hint {
-  padding: 6px 0 2px;
-  font-size: 12px;
-  line-height: 1.45;
-  color: var(--text-secondary);
-}
-
-.set-hint-ok {
-  color: var(--success);
-}
-
-.set-hint-err {
-  color: var(--danger);
-}
-
-.set-membership-benefits {
-  margin-top: 14px;
-  padding: 14px 16px;
-  border: 1px solid var(--border-subtle);
-  border-radius: 10px;
-  background: var(--surface-subtle);
-}
-
-.set-membership-title {
-  margin-bottom: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.set-membership-item {
-  padding: 3px 0;
-  font-size: 13px;
-  line-height: 1.5;
-  color: var(--text-secondary);
-}
-.set-membership-packages {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 14px;
-}
-
-.set-package-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 12px 16px;
-  border: 1px solid var(--border-subtle);
-  border-radius: 10px;
-  background: var(--surface-subtle);
-}
-
-.set-package-info {
-  min-width: 0;
-}
-
-.set-package-name {
+.set-pane-subtitle {
+  margin: 28px 0 4px;
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text);
 }
-
-.set-package-meta {
-  margin-top: 2px;
-  font-size: 12px;
-  color: var(--text-secondary);
-}
-
-.set-package-loading,
-.set-package-empty {
-  padding: 12px 0;
-  font-size: 13px;
-  color: var(--text-secondary);
-  text-align: center;
-}
-
-

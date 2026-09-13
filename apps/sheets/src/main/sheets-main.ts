@@ -61,7 +61,6 @@ import {
   chatForProvider,
   defaultAiSettings,
   activeProvider,
-  cloudToolsEnabled,
   maxOutputTokensOf,
   resolveAiSettings,
   setAiUserAgent,
@@ -73,6 +72,7 @@ import {
   type GenSparkAccountStatus,
   type LegacyAiSettings,
 } from '@genoffice/ai-provider'
+import { shutdownCodexAppServers } from '@genoffice/ai-provider/codex-app-server'
 import { csvToXlsxBuffer, decodeCsvBuffer, sheetCsvToXlsxBuffer } from '../gateway/csv-import'
 import {
   ensureGenofficeLogin,
@@ -80,9 +80,9 @@ import {
   gskLoginInfo,
   hasGskAuth,
   setGskProxyUrl,
-  webSearch,
-  imageSearch,
-  gskGenerateImage,
+  webSearchTool,
+  imageSearchTool,
+  generateImageTool,
 } from '@genoffice/ai-search'
 import { parseFileToText } from '@genoffice/file-parse'
 import type { CellEdit, SheetStructuralOps } from '../gateway/xlsx-gateway'
@@ -167,7 +167,7 @@ const tMain = createI18n({
     errParseFailed: '文件解析失败',
     errImageNoText: '图片附件不提供文本,已作为图像随用户消息发送,直接看图即可',
     errNotImage: '不是支持的图片类型',
-    errGskNotLoggedIn: '请先在设置中配置大模型（AI 模型 API Key）',
+    errGskNotLoggedIn: '未登录 Genspark:请点击下方「登录 Genspark」完成登录后重试',
     errNoApiKey: '未配置 {provider} 的 API Key',
     errAiBusy: 'AI 服务当前繁忙，请稍后重试',
     errNoModel: '未配置模型名称',
@@ -223,7 +223,8 @@ const tMain = createI18n({
     errParseFailed: 'Failed to parse file',
     errImageNoText: 'Image attachments have no text; the image is sent along with the user message',
     errNotImage: 'not a supported image type',
-    errGskNotLoggedIn: 'Please configure an AI model (API key) in settings first',
+    errGskNotLoggedIn:
+      'Not signed in to Genspark: click “Sign in to Genspark” below, sign in, then retry',
     errNoApiKey: 'No API key configured for {provider}',
     errAiBusy: 'The AI service is busy right now — please try again in a moment',
     errNoModel: 'No model name configured',
@@ -282,7 +283,8 @@ const tMain = createI18n({
     errImageNoText:
       '画像添付にはテキストがありません。画像はユーザー メッセージと一緒に送信されるため、そのまま画像をご確認ください',
     errNotImage: 'サポートされていない画像形式です',
-    errGskNotLoggedIn: 'まず設定で AI モデル（API キー）を設定してください',
+    errGskNotLoggedIn:
+      'Genspark にサインインしていません。下の「Genspark にサインイン」からサインインして再試行してください',
     errNoApiKey: '{provider} の API キーが設定されていません',
     errAiBusy: 'AI サービスが混み合っています。しばらくしてからもう一度お試しください',
     errNoModel: 'モデル名が設定されていません',
@@ -343,7 +345,8 @@ const tMain = createI18n({
     errImageNoText:
       '이미지 첨부에는 텍스트가 없습니다. 이미지는 사용자 메시지와 함께 전송되므로 이미지를 직접 확인하세요',
     errNotImage: '지원되는 이미지 형식이 아닙니다',
-    errGskNotLoggedIn: '먼저 설정에서 AI 모델(API 키)을 구성하세요',
+    errGskNotLoggedIn:
+      'Genspark에 로그인되어 있지 않습니다. 아래 "Genspark 로그인"을 눌러 로그인한 뒤 다시 시도하세요',
     errNoApiKey: '{provider}의 API 키가 설정되지 않았습니다',
     errAiBusy: 'AI 서비스가 혼잡합니다. 잠시 후 다시 시도해 주세요',
     errNoModel: '모델 이름이 설정되지 않았습니다',
@@ -404,7 +407,8 @@ const tMain = createI18n({
     errImageNoText:
       "Les images jointes n'ont pas de texte ; l'image est envoyée avec le message de l'utilisateur",
     errNotImage: "type d'image non pris en charge",
-    errGskNotLoggedIn: 'Configurez d\'abord un modèle d\'IA (clé API) dans les paramètres',
+    errGskNotLoggedIn:
+      'Non connecté à Genspark : cliquez sur « Se connecter à Genspark » ci-dessous, connectez-vous puis réessayez',
     errNoApiKey: 'Aucune clé API configurée pour {provider}',
     errAiBusy: "Le service d'IA est actuellement surchargé — réessayez dans un instant",
     errNoModel: 'Aucun nom de modèle configuré',
@@ -466,7 +470,8 @@ const tMain = createI18n({
     errImageNoText:
       'Bildanlagen enthalten keinen Text; das Bild wird zusammen mit der Benutzernachricht gesendet',
     errNotImage: 'kein unterstützter Bildtyp',
-    errGskNotLoggedIn: 'Bitte zuerst ein KI-Modell (API-Schlüssel) in den Einstellungen konfigurieren',
+    errGskNotLoggedIn:
+      'Nicht bei Genspark angemeldet: Klicken Sie unten auf „Bei Genspark anmelden“, melden Sie sich an und versuchen Sie es erneut',
     errNoApiKey: 'Kein API-Schlüssel für {provider} konfiguriert',
     errAiBusy: 'Der KI-Dienst ist derzeit überlastet — bitte gleich erneut versuchen',
     errNoModel: 'Kein Modellname konfiguriert',
@@ -527,7 +532,8 @@ const tMain = createI18n({
     errImageNoText:
       'Las imágenes adjuntas no tienen texto; la imagen se envía junto con el mensaje del usuario',
     errNotImage: 'no es un tipo de imagen compatible',
-    errGskNotLoggedIn: 'Configura primero un modelo de IA (clave API) en los ajustes',
+    errGskNotLoggedIn:
+      'No has iniciado sesión en Genspark: pulsa «Iniciar sesión en Genspark» abajo, inicia sesión y vuelve a intentarlo',
     errNoApiKey: 'No hay clave de API configurada para {provider}',
     errAiBusy:
       'El servicio de IA está saturado en este momento; inténtalo de nuevo en unos instantes',
@@ -588,7 +594,8 @@ const tMain = createI18n({
     errImageNoText:
       'รูปภาพแนบไม่มีข้อความ รูปภาพจะถูกส่งไปพร้อมข้อความของผู้ใช้ ให้ดูที่รูปภาพโดยตรง',
     errNotImage: 'ไม่ใช่ชนิดรูปภาพที่รองรับ',
-    errGskNotLoggedIn: 'โปรดกำหนดค่าโมเดล AI (คีย์ API) ในการตั้งค่าก่อน',
+    errGskNotLoggedIn:
+      'ยังไม่ได้ลงชื่อเข้าใช้ Genspark: แตะ “ลงชื่อเข้าใช้ Genspark” ด้านล่าง แล้วลองอีกครั้ง',
     errNoApiKey: 'ยังไม่ได้ตั้งค่า API Key ของ {provider}',
     errAiBusy: 'บริการ AI มีผู้ใช้งานจำนวนมากในขณะนี้ โปรดลองอีกครั้งในอีกสักครู่',
     errNoModel: 'ยังไม่ได้กำหนดชื่อโมเดล',
@@ -647,7 +654,7 @@ const tMain = createI18n({
     errParseFailed: 'Gagal mengurai file',
     errImageNoText: 'Lampiran gambar tidak memiliki teks; gambar dikirim bersama pesan pengguna',
     errNotImage: 'bukan jenis gambar yang didukung',
-    errGskNotLoggedIn: 'Konfigurasikan model AI (kunci API) terlebih dahulu di pengaturan',
+    errGskNotLoggedIn: 'Belum masuk ke Genspark: klik “Masuk ke Genspark” di bawah, lalu coba lagi',
     errNoApiKey: 'API Key untuk {provider} belum dikonfigurasi',
     errAiBusy: 'Layanan AI sedang sibuk — silakan coba lagi sebentar lagi',
     errNoModel: 'Nama model belum dikonfigurasi',
@@ -707,7 +714,8 @@ const tMain = createI18n({
     errImageNoText:
       'Вложенные изображения не содержат текста; изображение отправляется вместе с сообщением пользователя',
     errNotImage: 'неподдерживаемый тип изображения',
-    errGskNotLoggedIn: 'Сначала настройте модель ИИ (ключ API) в настройках',
+    errGskNotLoggedIn:
+      'Вы не вошли в Genspark: нажмите «Войти в Genspark» ниже, войдите и повторите попытку',
     errNoApiKey: 'API-ключ для {provider} не настроен',
     errAiBusy: 'Сервис ИИ сейчас перегружен — повторите попытку чуть позже',
     errNoModel: 'Имя модели не настроено',
@@ -766,7 +774,8 @@ const tMain = createI18n({
     errParseFailed: 'فشل تحليل الملف',
     errImageNoText: 'مرفقات الصور لا تحتوي على نص؛ تُرسل الصورة مع رسالة المستخدم',
     errNotImage: 'نوع صورة غير مدعوم',
-    errGskNotLoggedIn: 'يرجى تكوين نموذج الذكاء الاصطناعي (مفتاح API) في الإعدادات أولاً',
+    errGskNotLoggedIn:
+      'لم تسجّل الدخول إلى Genspark: انقر على «تسجيل الدخول إلى Genspark» أدناه ثم أعد المحاولة',
     errNoApiKey: 'لم يتم تكوين مفتاح API لـ {provider}',
     errAiBusy: 'خدمة الذكاء الاصطناعي مشغولة حاليًا — يرجى المحاولة مرة أخرى بعد قليل',
     errNoModel: 'لم يتم تكوين اسم النموذج',
@@ -824,7 +833,8 @@ const tMain = createI18n({
     errImageNoText:
       'Anexos de imagem não têm texto; a imagem é enviada junto com a mensagem do usuário',
     errNotImage: 'não é um tipo de imagem suportado',
-    errGskNotLoggedIn: 'Configure primeiro um modelo de IA (chave de API) nas configurações',
+    errGskNotLoggedIn:
+      'Não conectado ao Genspark: clique em “Entrar no Genspark” abaixo, entre e tente novamente',
     errNoApiKey: 'Nenhuma chave de API configurada para {provider}',
     errAiBusy: 'O serviço de IA está sobrecarregado no momento — tente novamente em instantes',
     errNoModel: 'Nenhum nome de modelo configurado',
@@ -884,7 +894,8 @@ const tMain = createI18n({
     errImageNoText:
       "Gli allegati immagine non hanno testo; l'immagine viene inviata insieme al messaggio dell'utente",
     errNotImage: 'tipo di immagine non supportato',
-    errGskNotLoggedIn: 'Configura prima un modello AI (chiave API) nelle impostazioni',
+    errGskNotLoggedIn:
+      'Accesso a Genspark non effettuato: fai clic su “Accedi a Genspark” qui sotto, accedi e riprova',
     errNoApiKey: 'Nessuna chiave API configurata per {provider}',
     errAiBusy: 'Il servizio IA è momentaneamente sovraccarico — riprova tra poco',
     errNoModel: 'Nessun nome di modello configurato',
@@ -945,7 +956,8 @@ const tMain = createI18n({
     errImageNoText:
       'Załączniki graficzne nie zawierają tekstu; obraz jest wysyłany razem z wiadomością użytkownika',
     errNotImage: 'nieobsługiwany typ obrazu',
-    errGskNotLoggedIn: 'Najpierw skonfiguruj model AI (klucz API) w ustawieniach',
+    errGskNotLoggedIn:
+      'Nie zalogowano do Genspark: kliknij „Zaloguj się do Genspark” poniżej, zaloguj się i spróbuj ponownie',
     errNoApiKey: 'Nie skonfigurowano klucza API dla {provider}',
     errAiBusy: 'Usługa AI jest obecnie przeciążona — spróbuj ponownie za chwilę',
     errNoModel: 'Nie skonfigurowano nazwy modelu',
@@ -988,6 +1000,67 @@ const tMain = createI18n({
     csvKeepFormatDetail:
       'CSV zachowuje tylko wartości jednego arkusza — formuły, formatowanie i dodatkowe arkusze nie są zapisywane w pliku .csv.',
   },
+  cs: {
+    filterSpreadsheets: 'Tabulky',
+    filterXlsx: 'Sešity Excelu',
+    filterXlsm: 'Sešity Excelu s podporou maker',
+    dlgAddAttachment: 'Přidat přílohy',
+    filterSupported: 'Podporované soubory',
+    filterAll: 'Všechny soubory',
+    errUnsupportedExt: 'soubory .{ext} nejsou podporovány',
+    errNotFile: 'není soubor',
+    errTooLarge: 'překračuje limit {mb} MB',
+    errImageTooLarge: 'obrázek překračuje limit 5 MB',
+    errUnreadable: 'nelze přečíst',
+    errFileTooLarge: 'Soubor překračuje limit velikosti',
+    errParseFailed: 'Soubor se nepodařilo zpracovat',
+    errImageNoText:
+      'Obrázkové přílohy neobsahují text; obrázek se odesílá spolu se zprávou uživatele',
+    errNotImage: 'nepodporovaný typ obrázku',
+    errGskNotLoggedIn:
+      'Nejste přihlášeni ke Genspark: klikněte níže na „Přihlásit se ke Genspark“, přihlaste se a zkuste to znovu',
+    errNoApiKey: 'Pro {provider} není nakonfigurován žádný klíč API',
+    errAiBusy: 'Služba AI je momentálně zaneprázdněna — zkuste to prosím za chvíli znovu',
+    errNoModel: 'Není nakonfigurován název modelu',
+    errImgAbsPath: 'Cesta k obrázku musí být absolutní.',
+    errImgNotFound: 'Soubor obrázku nebyl nalezen: {path}',
+    errImgTooLarge20: 'Obrázek překračuje 20 MB a nelze ho vložit.',
+    errImgBadType: 'Soubor není obrázek PNG/JPEG/GIF.',
+    errDiskChanged: 'Sešit byl po otevření změněn na disku — použijte místo toho Uložit jako.',
+    autosaveFoundTitle: 'Nalezena obnovená verze',
+    autosaveFoundBody:
+      'Z poslední relace existují neuložené změny. Obnovit automaticky uloženou verzi? Uložení po obnovení přepíše původní soubor.',
+    autosaveRestore: 'Obnovit',
+    autosaveDiscard: 'Zahodit',
+    menuFile: 'Soubor',
+    menuOpenWorkbook: 'Otevřít sešit…',
+    menuSave: 'Uložit',
+    menuSaveAs: 'Uložit jako…',
+    menuExportPdf: 'Exportovat PDF…',
+    menuClose: 'Zavřít',
+    menuQuit: 'Ukončit',
+    menuEdit: 'Úpravy',
+    menuUndo: 'Zpět',
+    menuRedo: 'Znovu',
+    closeUnsavedMsg: 'Neuložené změny: {count}',
+    closeUnsavedDetail: 'Pokud zavřete bez uložení, změny budou ztraceny.',
+    btnDontSave: 'Neukládat',
+    btnCancel: 'Zrušit',
+    csvSaveAsNotice:
+      'Soubory CSV nezachovávají formátování — uložením jako .xlsx zachováte všechny změny.',
+    menuExportCsv: 'Exportovat CSV…',
+    filterCsv: 'CSV (oddělený čárkami)',
+    csvFormulaLossMsg: 'Tento list obsahuje vzorce, které formát CSV nezachová.',
+    csvFormulaLossDetail:
+      'CSV zachovává pouze hodnoty — vzorce se nahradí aktuálními výsledky a formátování se ztratí.',
+    csvKeepXlsxBtn: 'Uložit jako .xlsx',
+    csvContinueBtn: 'Pokračovat jako CSV',
+    csvActiveSheetOnlyNotice:
+      'Soubory CSV obsahují jen jeden list — exportován bude pouze aktivní list „{name}“.',
+    csvKeepFormatMsg: 'Pokračovat v ukládání ve formátu CSV?',
+    csvKeepFormatDetail:
+      'CSV zachovává pouze hodnoty jednoho listu — vzorce, formátování a další listy se do souboru .csv neuloží.',
+  },
   nl: {
     filterSpreadsheets: 'Spreadsheets',
     filterXlsx: 'Excel-werkmappen',
@@ -1005,7 +1078,8 @@ const tMain = createI18n({
     errImageNoText:
       'Afbeeldingsbijlagen bevatten geen tekst; de afbeelding wordt samen met het gebruikersbericht verzonden',
     errNotImage: 'geen ondersteund afbeeldingstype',
-    errGskNotLoggedIn: 'Configureer eerst een AI-model (API-sleutel) in de instellingen',
+    errGskNotLoggedIn:
+      'Niet aangemeld bij Genspark: klik hieronder op “Aanmelden bij Genspark”, meld u aan en probeer het opnieuw',
     errNoApiKey: 'Geen API-sleutel geconfigureerd voor {provider}',
     errAiBusy: 'De AI-service is momenteel overbelast — probeer het zo opnieuw',
     errNoModel: 'Geen modelnaam geconfigureerd',
@@ -1065,7 +1139,8 @@ const tMain = createI18n({
     errParseFailed: 'Gagal menghurai fail',
     errImageNoText: 'Lampiran imej tiada teks; imej dihantar bersama mesej pengguna',
     errNotImage: 'bukan jenis imej yang disokong',
-    errGskNotLoggedIn: 'Sila konfigurasikan model AI (kunci API) terlebih dahulu dalam tetapan',
+    errGskNotLoggedIn:
+      'Belum log masuk ke Genspark: klik “Log masuk ke Genspark” di bawah, kemudian cuba lagi',
     errNoApiKey: 'Kunci API untuk {provider} belum dikonfigurasikan',
     errAiBusy: 'Perkhidmatan AI sedang sibuk — sila cuba lagi sebentar lagi',
     errNoModel: 'Nama model belum dikonfigurasikan',
@@ -1125,7 +1200,7 @@ const tMain = createI18n({
     errParseFailed: 'ניתוח הקובץ נכשל',
     errImageNoText: 'קבצים מצורפים מסוג תמונה אינם מכילים טקסט; התמונה נשלחת יחד עם הודעת המשתמש',
     errNotImage: 'סוג תמונה שאינו נתמך',
-    errGskNotLoggedIn: 'נא להגדיר תחילה מודל AI (מפתח API) בהגדרות',
+    errGskNotLoggedIn: 'לא מחובר ל-Genspark: לחץ על "התחבר ל-Genspark" למטה, התחבר ונסה שוב',
     errNoApiKey: 'לא הוגדר מפתח API עבור {provider}',
     errAiBusy: 'שירות ה-AI עמוס כרגע — נסו שוב בעוד רגע',
     errNoModel: 'לא הוגדר שם מודל',
@@ -1182,7 +1257,8 @@ const tMain = createI18n({
     errParseFailed: 'फ़ाइल पार्स करने में विफल',
     errImageNoText: 'छवि अनुलग्नक में टेक्स्ट नहीं होता; छवि उपयोगकर्ता संदेश के साथ भेजी जाती है',
     errNotImage: 'समर्थित छवि प्रकार नहीं है',
-    errGskNotLoggedIn: 'कृपया पहले सेटिंग्स में AI मॉडल (API कुंजी) कॉन्फ़िगर करें',
+    errGskNotLoggedIn:
+      'Genspark में साइन इन नहीं है: नीचे “Genspark में साइन इन करें” पर क्लिक करें, साइन इन करें और फिर से कोशिश करें',
     errNoApiKey: '{provider} के लिए कोई API कुंजी कॉन्फ़िगर नहीं है',
     errAiBusy: 'AI सेवा अभी व्यस्त है — कृपया थोड़ी देर बाद फिर से प्रयास करें',
     errNoModel: 'कोई मॉडल नाम कॉन्फ़िगर नहीं है',
@@ -1242,7 +1318,7 @@ const tMain = createI18n({
     errParseFailed: '檔案解析失敗',
     errImageNoText: '圖片附件不提供文字,已作為影像隨使用者訊息傳送,直接看圖即可',
     errNotImage: '不是支援的圖片類型',
-    errGskNotLoggedIn: '請先在設定中設定 AI 模型（API 金鑰）',
+    errGskNotLoggedIn: '未登入 Genspark:請點擊下方「登入 Genspark」完成登入後重試',
     errNoApiKey: '未設定 {provider} 的 API Key',
     errAiBusy: 'AI 服務目前繁忙，請稍後重試',
     errNoModel: '未設定模型名稱',
@@ -1327,7 +1403,7 @@ interface SessionInfo {
 /** AI create_document content the sheets app cannot build itself — the shell
  * routes it into the docs-owned creation flow (docx opens a fresh docs tab). */
 export interface SheetsAiHostDocumentRequest {
-  type: 'docx' | 'pdf' | 'md'
+  type: 'docx' | 'pdf' | 'md' | 'html'
   title: string
   content: string
 }
@@ -1341,7 +1417,7 @@ interface SheetsRuntimeConfig {
   rendererFile: string
   /** absolute path to the Rust xlsx-sidecar binary */
   sidecarPath?: string | undefined
-  /** Shell router used to open exported/AI-generated files in a new UToOffice tab. */
+  /** Shell router used to open exported/AI-generated files in a new GenOffice tab. */
   openGeneratedPath?: (path: string) => boolean
   /** Host-owned cross-app document creator (the shell routes docx/pdf/md into Docs). */
   createDocument?: (request: SheetsAiHostDocumentRequest) => Promise<WorkbookCreateDocumentResult>
@@ -1391,14 +1467,14 @@ export function uniquePathIn(dir: string, fileName: string): string {
   return candidate
 }
 
-/** Standalone-window fallback for AI docx/pdf/md creation (mirrors pdf-main's
- * createStandaloneDocument): pdf renders in a hidden sandboxed window, md
- * writes the Markdown source; docx needs the Docs app and is refused. */
+/** Standalone-window fallback for AI docx/pdf/md/html creation (mirrors pdf-main's
+ * createStandaloneDocument): pdf renders in a hidden sandboxed window, md/html
+ * write the source as-is; docx needs the Docs app and is refused. */
 async function createStandaloneSheetsDocument(
   request: SheetsAiHostDocumentRequest,
 ): Promise<WorkbookCreateDocumentResult> {
   if (request.type === 'docx') {
-    return { ok: false, error: 'Creating DOCX files requires the UToOffice shell or Docs app.' }
+    return { ok: false, error: 'Creating DOCX files requires the GenOffice shell or Docs app.' }
   }
   const title = sanitizeGeneratedFileBase(request.title)
   try {
@@ -1413,7 +1489,7 @@ async function createStandaloneSheetsDocument(
       openGeneratedFile(path)
       return { ok: true, path }
     }
-    const path = uniquePathIn(configuredDefaultSaveDir(app), `${title}.md`)
+    const path = uniquePathIn(configuredDefaultSaveDir(app), `${title}.${request.type}`)
     await writeFile(path, request.content, 'utf8')
     openGeneratedFile(path)
     return { ok: true, path }
@@ -1697,11 +1773,6 @@ function writeJson(path: string, value: unknown): void {
 
 const SETTINGS_PATH = () => userDataPath('ai-settings.json')
 
-/** live read: the shell settings pane writes the file; every tool call re-checks */
-function gskCloudToolsOn(): boolean {
-  return cloudToolsEnabled(readJson<Partial<AiSettings>>(SETTINGS_PATH(), {}))
-}
-
 // Dev-only automation hooks: a fixed CDP port for driving the app from test
 // scripts, and a workbook path that bypasses the native file dialog.
 const debugPort = app.isPackaged ? undefined : process.env.XLSX_DEBUG_PORT
@@ -1805,7 +1876,7 @@ export async function createSheetsWindow(
     minWidth: 720,
     minHeight: 550,
     show: false,
-    title: 'UToOffice Sheets',
+    title: 'GenOffice Sheets',
     // Traffic lights sit inside the toolbar row.
     ...(process.platform === 'darwin' ? { titleBarStyle: 'hiddenInset' as const } : {}),
     webPreferences: {
@@ -2112,28 +2183,11 @@ export function registerSheetsIpc(): void {
   // owns its channel the way pdf does.
   ipcMain.handle(
     IPC_CHANNELS.aiGenerateImage,
-    async (_event, op: { prompt?: unknown; aspectRatio?: unknown }) => {
-      if (!hasGskAuth())
-        return {
-          error: 'account is not logged in on this machine; ask the user to log in first',
-        }
-      if (!gskCloudToolsOn())
-        return {
-          error:
-            'cloud tools are turned off in Settings (AI Model); enable them to use this tool',
-        }
-      const prompt = String(op?.prompt ?? '').trim()
-      if (!prompt) return { error: 'prompt must not be empty' }
-      try {
-        const r = await gskGenerateImage({
-          prompt,
-          ...(op?.aspectRatio ? { aspectRatio: String(op.aspectRatio) } : {}),
-        })
-        return { url: r.url }
-      } catch (err) {
-        return { error: err instanceof Error ? err.message : String(err) }
-      }
-    },
+    (_event, op: { prompt?: unknown; aspectRatio?: unknown }) =>
+      generateImageTool(SETTINGS_PATH(), {
+        prompt: String(op?.prompt ?? ''),
+        ...(op?.aspectRatio ? { aspectRatio: String(op.aspectRatio) } : {}),
+      }),
   )
 
   ipcMain.on(IPC_CHANNELS.recoveryPromptReply, (event, restore: unknown) => {
@@ -3013,6 +3067,7 @@ let aiIpcRegistered = false
 export function registerSheetsAiIpc(): void {
   if (aiIpcRegistered) return
   aiIpcRegistered = true
+  app.once('before-quit', shutdownCodexAppServers)
 
   // Node fetch (undici) direct connections get reset under VPN/tun setups; retry over Chromium's stack
   setRescueFetch((url, init) => net.fetch(url, init))
@@ -3027,7 +3082,7 @@ export function registerSheetsAiIpc(): void {
     return settings
   })
 
-  // account (gsk login state): the auth source for AI features; the
+  // Genspark account (gsk login state): the auth source for AI features; the
   // frontend uses it to guide sign-in when logged out
   ipcMain.handle(
     IPC_CHANNELS.aiGskStatus,
@@ -3057,13 +3112,13 @@ export function registerSheetsAiIpc(): void {
     if (provider === 'genspark' && config && !config.apiKey) {
       config = { ...config, apiKey: gskApiKey() }
     }
-    if (!config?.apiKey) {
+    if (!config || (provider !== 'codex' && !config.apiKey)) {
       return {
         ok: false,
         error: provider === 'genspark' ? tm('errGskNotLoggedIn') : tm('errNoApiKey', { provider }),
       }
     }
-    if (!config.model) return { ok: false, error: tm('errNoModel') }
+    if (provider !== 'codex' && !config.model) return { ok: false, error: tm('errNoModel') }
     try {
       const result = await chatForProvider(provider, config, request.system, request.user)
       // the one-shot path reports HTTP failures as ok:false with the raw body —
@@ -3085,7 +3140,7 @@ export function registerSheetsAiIpc(): void {
     const maxTokens = request.maxTokens ?? maxOutputTokensOf(request.settings)
     const provider = request.settings.provider as AiProviderId
     let config = request.settings.providers[provider]
-    // 's key never enters the settings file; it is read from the gsk
+    // Genspark's key never enters the settings file; it is read from the gsk
     // login state per request
     if (provider === 'genspark' && config && !config.apiKey) {
       config = { ...config, apiKey: gskApiKey() }
@@ -3093,7 +3148,7 @@ export function registerSheetsAiIpc(): void {
     const send = (chunk: AiStreamChunk) => {
       if (!event.sender.isDestroyed()) event.sender.send(IPC_CHANNELS.aiStreamChunk, chunk)
     }
-    if (!config?.apiKey) {
+    if (!config || (provider !== 'codex' && !config.apiKey)) {
       send({
         requestId,
         type: 'error',
@@ -3101,7 +3156,7 @@ export function registerSheetsAiIpc(): void {
       })
       return
     }
-    if (!config.model) {
+    if (provider !== 'codex' && !config.model) {
       send({ requestId, type: 'error', error: tm('errNoModel') })
       return
     }
@@ -3118,6 +3173,7 @@ export function registerSheetsAiIpc(): void {
     try {
       let stopReason: string | undefined
       await streamForProvider(provider, config, system, messages, tools, maxTokens, {
+        ...(request.sessionId ? { sessionId: request.sessionId } : {}),
         signal: controller.signal,
         onDelta: (text) => send({ requestId, type: 'delta', text }),
         onReasoningDelta: (text) => send({ requestId, type: 'reasoning', text }),
@@ -3168,10 +3224,10 @@ export function registerSheetsAiIpc(): void {
   // (same source as slides/docs)
   ipcMain.handle('ai:web-search', async (_event, query: unknown, maxResults?: unknown) => {
     try {
-      return await webSearch(
+      return await webSearchTool(
+        SETTINGS_PATH(),
         z.string().parse(query),
         typeof maxResults === 'number' ? maxResults : 6,
-        gskCloudToolsOn(),
       )
     } catch (err) {
       return { results: [], method: 'error', error: String(err) }
@@ -3179,10 +3235,10 @@ export function registerSheetsAiIpc(): void {
   })
   ipcMain.handle('ai:image-search', async (_event, query: unknown, maxResults?: unknown) => {
     try {
-      return await imageSearch(
+      return await imageSearchTool(
+        SETTINGS_PATH(),
         z.string().parse(query),
         typeof maxResults === 'number' ? maxResults : 8,
-        gskCloudToolsOn(),
       )
     } catch (err) {
       return { images: [], method: 'error', error: String(err) }
@@ -3287,6 +3343,7 @@ export function registerProjectIpc(): void {
           output?: string
         }>
         attachments?: Array<{ name: string; path?: string; ext?: string; sizeBytes?: number }>
+        scope?: { label: string; text?: string }
       },
     ) => {
       const msg: Parameters<ProjectStore['appendChatMessage']>[2] = {
@@ -3295,6 +3352,8 @@ export function registerProjectIpc(): void {
       }
       if (args.tools) msg.tools = args.tools
       if (args.attachments) msg.attachments = args.attachments
+      if (args.scope) msg.scope = args.scope
+
       getSheetsProjectStore().appendChatMessage(args.projectId, args.chatId, msg)
     },
   )
@@ -3907,7 +3966,7 @@ async function applyMainProcessProxy(): Promise<void> {
   try {
     await app.whenReady()
     // PAC/rule proxies answer per-host: probe the host the login flow, the
-    //  LLM proxy and the gsk CLI actually target
+    // Genspark LLM proxy and the gsk CLI actually target
     const resolved = await electronSession.defaultSession.resolveProxy('https://www.genspark.ai/')
     const m = /PROXY\s+([^;]+)/i.exec(resolved || '')
     if (m?.[1]) {
