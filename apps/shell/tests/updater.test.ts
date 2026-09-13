@@ -385,8 +385,8 @@ describe('manual download fallback', () => {
   })
 
   const winFiles = [
-    { url: 'GenOfficeSetup-v0.2.0.exe' },
-    { url: 'GenOfficeSetup-v0.2.0-arm64.exe' },
+    { url: 'UToOfficeSetup-v0.2.0.exe' },
+    { url: 'UToOfficeSetup-v0.2.0-arm64.exe' },
   ]
 
   it('picks the arm64 installer on Windows arm64', async () => {
@@ -399,7 +399,7 @@ describe('manual download fallback', () => {
       const actions = await failTwiceIntoManual(winFiles)
       actions.onOpenDownload()
       expect(openExternal).toHaveBeenCalledWith(
-        'https://cdn.example.com/win/GenOfficeSetup-v0.2.0-arm64.exe',
+        'https://cdn.example.com/win/UToOfficeSetup-v0.2.0-arm64.exe',
       )
     } finally {
       restoreArch()
@@ -416,7 +416,7 @@ describe('manual download fallback', () => {
       const actions = await failTwiceIntoManual([...winFiles].reverse())
       actions.onOpenDownload()
       expect(openExternal).toHaveBeenCalledWith(
-        'https://cdn.example.com/win/GenOfficeSetup-v0.2.0.exe',
+        'https://cdn.example.com/win/UToOfficeSetup-v0.2.0.exe',
       )
     } finally {
       restoreArch()
@@ -430,10 +430,10 @@ describe('manual download fallback', () => {
     setPlatform('win32')
     const restoreArch = setArch('arm64')
     try {
-      const actions = await failTwiceIntoManual([{ url: 'GenOfficeSetup-v0.2.0.exe' }])
+      const actions = await failTwiceIntoManual([{ url: 'UToOfficeSetup-v0.2.0.exe' }])
       actions.onOpenDownload()
       expect(openExternal).toHaveBeenCalledWith(
-        'https://cdn.example.com/win/GenOfficeSetup-v0.2.0.exe',
+        'https://cdn.example.com/win/UToOfficeSetup-v0.2.0.exe',
       )
     } finally {
       restoreArch()

@@ -298,12 +298,12 @@ describe('findReplace', () => {
   it('replaces every occurrence and keeps marks', () => {
     const editor = createEditor(fixtureDoc())
     const outcome = executeOps(editor, [
-      { op: 'findReplace', find: 'GenSpark', replace: 'Genspark' },
+      { op: 'findReplace', find: 'GenSpark', replace: '' },
     ])
     expect(outcome.ok).toBe(true)
     expect(outcome.results[0].detail).toBe('Replaced 2 occurrence(s)')
     const block = editor.state.doc.child(1)
-    expect(block.textContent).toBe('Genspark intro,Genspark is great')
+    expect(block.textContent).toBe(' intro, is great')
     const boldChild = block.child(block.childCount - 1)
     expect(boldChild.marks.some((m) => m.type.name === 'bold')).toBe(true)
   })
@@ -500,7 +500,7 @@ describe('transaction atomicity and aiChanged', () => {
     const before = JSON.stringify(editor.getJSON())
     const outcome = executeOps(editor, [
       { op: 'setFont', target: { nodeType: 'docHeading' }, color: 'FF0000' },
-      { op: 'findReplace', find: 'GenSpark', replace: 'Genspark' },
+      { op: 'findReplace', find: 'GenSpark', replace: '' },
       { op: 'deleteBlocks', target: { blockIndexes: [3] } },
     ])
     expect(outcome.ok).toBe(true)

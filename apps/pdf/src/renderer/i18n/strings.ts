@@ -4813,7 +4813,7 @@ aiConfigModel: 'Najpierw skonfiguruj model AI (klucz API) w ustawieniach UToOffi
     aiNetworkError:
       'Problém se sítí: službu AI se nepodařilo kontaktovat. Zkontrolujte připojení a zkuste to znovu',
     aiCreditsExhausted:
-      'Vaše kredity Genspark byly vyčerpány. Navštivte genspark.ai/pricing, dobijte je a zkuste to znovu',
+      'Vaše kredity  byly vyčerpány. Navštivte genspark.ai/pricing, dobijte je a zkuste to znovu',
     aiToolReadPages: 'Číst stránky {start}-{end}',
     aiToolSearch: 'Hledat „{query}“ ({count} výskytů)',
     aiToolGoto: 'Přejít na stránku {page}',
@@ -4971,7 +4971,7 @@ aiConfigModel: 'Najpierw skonfiguruj model AI (klucz API) w ustawieniach UToOffi
     removeStamp: 'Kliknutím vyberete tento vodoznak / záhlaví / zápatí',
     props: 'Vlastnosti',
     propsTitle: 'Vlastnosti dokumentu',
-    ribbonAiAssistant: 'Genspark',
+    ribbonAiAssistant: '',
     ribbonAiAssistantTip: 'Otevřít asistenta AI',
     propTitle: 'Název',
     propAuthor: 'Autor',

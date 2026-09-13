@@ -30,7 +30,7 @@ import { ProviderLogo } from './provider-logos'
 import './settings.css'
 
 // ── Settings modal (opened from the account menu) ─────────
-// Genspark-style two-pane dialog: section nav on the left, fields on the right.
+// -style two-pane dialog: section nav on the left, fields on the right.
 // All values go through the existing home IPC; nothing is stored locally.
 
 // sorted by ISO 639 language code — native-script labels have no natural
@@ -302,7 +302,7 @@ function AiModelPane({ t }: { t: TFunc }) {
     baseUrl: undefined,
     cliPath: undefined,
   }
-  const isGenspark = provider === 'genspark'
+  const is = provider === 'genspark'
   const isCodex = provider === 'codex'
 
   const touch = () => {
@@ -388,7 +388,7 @@ function AiModelPane({ t }: { t: TFunc }) {
         />
       </div>
       <div className="set-field-desc set-ai-note">
-        {isGenspark ? t('setAiGensparkHint') : isCodex ? t('setAiCodexHint') : t('setAiByokNote')}
+        {is ? t('setAiHint') : isCodex ? t('setAiCodexHint') : t('setAiByokNote')}
       </div>
       <div className="set-field">
         <div className="set-field-text">
@@ -439,7 +439,7 @@ function AiModelPane({ t }: { t: TFunc }) {
             }}
           />
         </div>
-      ) : !isGenspark ? (
+      ) : !is ? (
         <>
           <div className="set-field">
             <div className="set-field-text">
@@ -518,7 +518,7 @@ function AiModelPane({ t }: { t: TFunc }) {
           role="switch"
           aria-checked={settings.gskToolsEnabled !== false}
           aria-label={t('setAiGskTools')}
-          disabled={isGenspark}
+          disabled={is}
           onClick={() => {
             setSettings({ ...settings, gskToolsEnabled: settings.gskToolsEnabled === false })
             touch()
@@ -828,7 +828,7 @@ function AiMediaPane({ t }: { t: TFunc }) {
         <h4 className="set-pane-subtitle">{title}</h4>
         {providerRow(title, id, options, pick)}
         <div className="set-field-desc set-ai-note">
-          {id === 'genspark' ? t('setAiMediaGensparkHint') : meta.description}
+          {id === 'genspark' ? t('setAiMediaHint') : meta.description}
         </div>
         {id !== 'genspark' && (
           <>
@@ -866,7 +866,7 @@ function AiMediaPane({ t }: { t: TFunc }) {
         )}
         <div className="set-field-desc set-ai-note">
           {search.provider === 'genspark'
-            ? t('setAiSearchGensparkHint')
+            ? t('setAiSearchHint')
             : searchMeta?.imageSearch
               ? t('setAiSearchSerperHint')
               : t('setAiSearchTavilyHint')}
@@ -971,7 +971,7 @@ export interface SettingsModalProps {
   onOpenLoginUrl: () => void
   onCopyLoginUrl: () => void
   onClose: () => void
-  /** closes the modal and launches the Genspark login flow (progress shows on the account entry) */
+  /** closes the modal and launches the  login flow (progress shows on the account entry) */
   onLogin: () => void
   onLogout: () => void
 }
@@ -1137,7 +1137,7 @@ export function SettingsModal({
                         </>
                       )}
                       <button className="set-btn primary" onClick={onLogin}>
-                        {loginWaiting ? t('waitingShort') : t('loginGenspark')}
+                        {loginWaiting ? t('waitingShort') : t('login')}
                       </button>
                     </>
                   )}

@@ -1650,10 +1650,10 @@ export const tMain = createI18n({
       'Obrázkové přílohy neobsahují text; obrázek je odeslán spolu se zprávou uživatele',
     errNotImage: 'nepodporovaný typ obrázku',
     errGskNotLoggedIn:
-      'Nejste přihlášeni ke Genspark: klikněte níže na „Přihlásit se ke Genspark“, přihlaste se a zkuste to znovu',
+      'Nejste přihlášeni ke : klikněte níže na „Přihlásit se ke “, přihlaste se a zkuste to znovu',
     errNoApiKey: 'Pro {provider} není nakonfigurován žádný klíč API',
     errNoModel: 'Není nakonfigurován název modelu',
-    errGskCli: 'gsk není přihlášen: nejprve spusťte gsk login a přihlaste se k účtu Genspark',
+    errGskCli: 'gsk není přihlášen: nejprve spusťte gsk login a přihlaste se k účtu ',
     errNoDeckAppend:
       'Není k čemu přidávat (chybí relace). Vygenerujte první stránku s mode:"replace" nebo přidejte stránky nativními nástroji.',
     errAppendFailed: 'Přidání se nezdařilo: {reason}',
