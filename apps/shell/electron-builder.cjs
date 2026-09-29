@@ -43,7 +43,6 @@ function normalizeHttpsBaseUrl(name, value) {
   }
 }
 
-const updateUrl = process.env.GENOFFICE_UPDATE_URL
 const ga4MeasurementId = process.env.GENOFFICE_GA4_MEASUREMENT_ID
 const ga4ApiSecret = process.env.GENOFFICE_GA4_API_SECRET
 const fontCdnUrl = normalizeHttpsBaseUrl(
@@ -540,9 +539,7 @@ const config = {
       assertUniversalVisionOcr()
     }
     if (context.electronPlatformName === 'win32' && !existsSync(join(__dirname, WIN_SIDECAR))) {
-      throw new Error(
-        `win extraResources source missing: ${WIN_SIDECAR} (cargo build --target ${winSidecarTarget} first)`,
-      )
+      throw new Error(`win extraResources source missing: ${WIN_SIDECAR} (run native:build first)`)
     }
   },
   dmg: {
