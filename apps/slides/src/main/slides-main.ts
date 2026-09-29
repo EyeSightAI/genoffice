@@ -1166,31 +1166,36 @@ export function registerSlidesIpc(): void {
     return openAndBuild(e.sender, path, fitWidthPx)
   })
 
+  // Read the unified WeChat membership state (shell writes userData/wx-login.json; shared across editors).
+  const readWxLoginIsPro = async (): Promise<boolean> => {
+    try {
+      const wp = join(app.getPath('userData'), 'wx-login.json')
+      if (!existsSync(wp)) return false
+      const raw = JSON.parse(await readFile(wp, 'utf-8')) as {
+        isPro?: boolean
+        expireTime?: string | null
+      }
+      if (raw.isPro === true) return true
+      if (typeof raw.expireTime === 'string') {
+        const exp = Date.parse(raw.expireTime.replace(' ', 'T'))
+        if (!Number.isNaN(exp)) return exp > Date.now()
+      }
+      return false
+    } catch {
+      return false
+    }
+  }
+
+  ipcMain.handle('slides:membership-status', async () => ({
+    isPro: await readWxLoginIsPro(),
+  }))
+
   // AI auto-picks template: download template .pptx and load into the current tab (replaces doc, AI chat on same page)
   ipcMain.handle(
     'slides:open-template',
     async (e, url: string): Promise<OpenResult | { error: string }> => {
       if (typeof url !== 'string' || !/^https?:\/\//.test(url)) return { error: 'bad-url' }
-      let isPro = false
-      try {
-        const mp = join(app.getPath('userData'), 'membership.json')
-        if (existsSync(mp)) {
-          const raw = JSON.parse(await readFile(mp, 'utf-8')) as {
-            remainDays?: number
-            expireTime?: string | null
-          }
-          const lifetime = (raw.remainDays ?? 0) >= 9999 || raw.expireTime === '永久'
-          const exp =
-            typeof raw.expireTime === 'string' && raw.expireTime !== '永久'
-              ? Date.parse(raw.expireTime.replace(' ', 'T'))
-              : null
-          const expNum = typeof exp === 'number' && !Number.isNaN(exp) ? exp : null
-          isPro = lifetime || (expNum !== null && expNum > Date.now())
-        }
-      } catch {
-        /* ignore membership read errors */
-      }
-      if (!isPro) return { error: 'membership' }
+      if (!(await readWxLoginIsPro())) return { error: 'membership' }
       try {
         const dir = join(app.getPath('userData'), 'templates')
         mkdirSync(dir, { recursive: true })
