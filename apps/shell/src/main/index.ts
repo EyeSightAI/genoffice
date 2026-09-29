@@ -211,6 +211,14 @@ import { normalizeRecentQuery, pageRecentPaths, statPathEntries } from './recent
 import { isSameFile, isValidRenameName } from './rename-validation'
 import { TabManager } from './tab-manager'
 import { loadMembership } from './membership'
+import {
+  clearWxLogin,
+  createLoginQrcode,
+  fetchMember,
+  pollLogin,
+  readWxLogin,
+  writeWxLogin,
+} from './wx-login'
 import { applyUpdateChannel, initAutoUpdater } from './updater'
 import { isUpdateChannel, type UpdateChannel } from '../shared/update-api'
 
@@ -2916,50 +2924,66 @@ function registerHomeIpc(): void {
   // signed-in means UToOffice's own device-code login; the shared gsk CLI key
   // is only a silent fallback, deliberately not shown here to nudge users onto our key
   ipcMain.handle(HOME_CHANNELS.accountStatus, async () => {
-    if (!loadGenofficeAuth()) return { loggedIn: false }
-    await proxyBootstrap
-    const info = await gskLoginInfo()
-    return info
-      ? { loggedIn: true, email: info.email, creditBalance: info.creditBalance }
-      : { loggedIn: true }
+    const state = readWxLogin(app.getPath('userData'))
+    if (!state) return { loggedIn: false, isPro: false }
+    // 服务器兜底刷新会员状态
+    const member = await fetchMember(state.openid)
+    if (member.isPro !== state.isPro || member.expireTime !== state.expireTime) {
+      writeWxLogin(app.getPath('userData'), {
+        openid: state.openid,
+        expireTime: member.expireTime,
+        isPro: member.isPro,
+      })
+    }
+    return {
+      loggedIn: true,
+      openid: state.openid,
+      expireTime: member.expireTime,
+      isPro: member.isPro,
+    }
   })
 
-  // login progress is streamed to the requesting renderer; the auth URL is
-  // kept main-side so the "open manually" rescue never opens a renderer-supplied URL
-  let pendingLoginUrl = ''
+  // 微信扫码登录：生成小程序码 → main 侧轮询 → 绑定成功查会员
   ipcMain.handle(HOME_CHANNELS.accountLogin, async (event) => {
     analytics.track('login_click')
     const sender = event.sender
-    pendingLoginUrl = ''
-    await proxyBootstrap
     const send = (payload: AccountLoginEvent) => {
       if (!sender.isDestroyed()) sender.send(HOME_CHANNELS.accountLoginEvent, payload)
     }
-    // open the browser on the first url event only; later events refresh the rescue URL
-    let opened = false
-    const launched = startGenofficeLogin((progress) => {
-      if (progress.url) {
-        pendingLoginUrl = progress.url
-        if (!opened) {
-          opened = true
-          void shell.openExternal(progress.url)
-        }
+    // 1. 生成登录小程序码
+    const qr = await createLoginQrcode()
+    if (!qr) {
+      send({ phase: 'error', error: 'network' })
+      return false
+    }
+    send({ phase: 'qrcode', qrcode: qr.qrcode, token: qr.token })
+    // 2. 轮询（最多 5 分钟）
+    const deadline = Date.now() + 5 * 60 * 1000
+    while (Date.now() < deadline) {
+      await new Promise((r) => setTimeout(r, 2000))
+      const openid = await pollLogin(qr.token)
+      if (openid) {
+        const member = await fetchMember(openid)
+        writeWxLogin(app.getPath('userData'), {
+          openid,
+          expireTime: member.expireTime,
+          isPro: member.isPro,
+        })
+        analytics.track('login_success')
+        send({ phase: 'success' })
+        return true
       }
-      if (progress.phase === 'success') analytics.track('login_success')
-      send(progress)
-    })
-    if (launched) send({ phase: 'launched' })
-    return launched
+    }
+    send({ phase: 'expired', error: 'expired' })
+    return false
   })
 
   ipcMain.handle(HOME_CHANNELS.accountLoginOpenUrl, () => {
-    if (pendingLoginUrl) void shell.openExternal(pendingLoginUrl)
+    // 微信扫码登录不需要浏览器打开 URL，保留空实现以兼容旧 renderer
   })
 
   ipcMain.handle(HOME_CHANNELS.accountLogout, async () => {
-    await genofficeLogout()
-    // the cloud projects cache belongs to the account that just signed out
-    clearCloudProjectsStore(cloudProjectsStorePath())
+    clearWxLogin(app.getPath('userData'))
   })
 
   ipcMain.handle(HOME_CHANNELS.getAppVersion, (): string => app.getVersion())

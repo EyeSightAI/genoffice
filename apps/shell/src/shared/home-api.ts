@@ -248,19 +248,24 @@ export interface CloudProjectsSnapshot {
 }
 
 export interface AccountStatus {
-  /** gsk is installed and logged in */
+  /** 微信扫码已登录 */
   loggedIn: boolean
-  email?: string
-  /** remaining credits (absent when the balance query failed) */
-  creditBalance?: number
+  /** 微信 openid（登录后） */
+  openid?: string
+  /** 会员到期时间 'YYYY-MM-DD HH:mm:ss'，null = 未开通会员 */
+  expireTime?: string | null
+  /** 是否会员（未过期） */
+  isPro: boolean
 }
 
-/** login flow progress pushed from main (gsk login CLI output) */
+/** login flow progress pushed from main (微信扫码登录) */
 export interface AccountLoginEvent {
-  phase: 'launched' | 'url' | 'success' | 'error'
-  url?: string
-  expiresInSec?: number
-  /** 'network' | 'expired' | raw CLI error text */
+  phase: 'launched' | 'qrcode' | 'success' | 'expired' | 'error'
+  /** 登录二维码 base64（phase=qrcode 时） */
+  qrcode?: string
+  /** 登录 token（phase=qrcode 时，main 内部用于轮询） */
+  token?: string
+  /** 'network' | 'expired' | 其他错误文案 */
   error?: string
 }
 

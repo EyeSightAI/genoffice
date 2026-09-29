@@ -963,15 +963,12 @@ function AiStatusPill({ status }: { status: AiStatus | null }) {
 export interface SettingsModalProps {
   status: AccountStatus | null
   loggingOut: boolean
-  /** browser sign-in in progress (spinner shows on the account entry) */
+  /** 登录等待中（二维码已显示） */
   loginWaiting: boolean
-  /** device auth URL while waiting — rescue actions when the browser did not auto-open */
-  loginUrl: string | null
-  urlCopied: boolean
-  onOpenLoginUrl: () => void
-  onCopyLoginUrl: () => void
+  /** 登录二维码 base64（微信扫码登录） */
+  loginQrcode: string | null
   onClose: () => void
-  /** closes the modal and launches the  login flow (progress shows on the account entry) */
+  /** 关闭弹窗并启动登录流程（二维码显示在账号入口） */
   onLogin: () => void
   onLogout: () => void
 }
@@ -980,10 +977,7 @@ export function SettingsModal({
   status,
   loggingOut,
   loginWaiting,
-  loginUrl,
-  urlCopied,
-  onOpenLoginUrl,
-  onCopyLoginUrl,
+  loginQrcode,
   onClose,
   onLogin,
   onLogout,
@@ -1058,7 +1052,8 @@ export function SettingsModal({
   }
 
   const loggedIn = status?.loggedIn ?? false
-  const email = status?.email ?? ''
+  const isPro = status?.isPro ?? false
+  const expireTime = status?.expireTime ?? null
 
   return (
     <div
@@ -1099,47 +1094,21 @@ export function SettingsModal({
             {section === 'account' && (
               <>
                 <h3 className="set-pane-title">{t('setSecAccount')}</h3>
-                <Field label={t('setEmail')} value={loggedIn ? email : t('setNotLoggedIn')} />
-                {loggedIn && (
-                  <Field
-                    label={t('credits')}
-                    value={
-                      status?.creditBalance === undefined
-                        ? '—'
-                        : Math.floor(status.creditBalance).toLocaleString('en-US')
-                    }
-                    action={
-                      <button
-                        className="set-btn"
-                        data-tip={t('creditsTip')}
-                        onClick={() => void window.aiOffice.openCreditUsage?.()}
-                      >
-                        {t('setViewUsage')}
-                      </button>
-                    }
-                  />
-                )}
+                <Field
+                  label={t('setMemberExpire')}
+                  value={
+                    loggedIn ? (isPro ? (expireTime ?? '—') : t('setNotMember')) : t('setNotLoggedIn')
+                  }
+                />
                 <div className="set-pane-footer">
                   {loggedIn ? (
                     <button className="set-btn danger" disabled={loggingOut} onClick={onLogout}>
                       {loggingOut ? t('loggingOut') : t('logout')}
                     </button>
                   ) : (
-                    <>
-                      {loginWaiting && loginUrl && (
-                        <>
-                          <button className="set-btn" onClick={onOpenLoginUrl}>
-                            {t('loginOpenManually')}
-                          </button>
-                          <button className="set-btn" onClick={onCopyLoginUrl}>
-                            {urlCopied ? t('loginCopied') : t('loginCopyUrl')}
-                          </button>
-                        </>
-                      )}
-                      <button className="set-btn primary" onClick={onLogin}>
-                        {loginWaiting ? t('waitingShort') : t('login')}
-                      </button>
-                    </>
+                    <button className="set-btn primary" onClick={onLogin}>
+                      {loginWaiting ? t('waitingShort') : t('login')}
+                    </button>
                   )}
                 </div>
               </>

@@ -463,11 +463,6 @@ function AccountEntry({
 }) {
   const { t } = useI18n()
   const [status, setStatus] = useState<AccountStatus | null>(null)
-  const [membership, setMembership] = useState<MembershipStatus | null>(null)
-
-  useEffect(() => {
-    void window.aiOffice.membershipStatus?.().then((m) => setMembership(m))
-  }, [])
 
   useEffect(() => {
     onStatusChange?.(status)
@@ -478,9 +473,8 @@ function AccountEntry({
   const [loginError, setLoginError] = useState<
     'timeout' | 'launch' | 'network' | 'expired' | 'failed' | null
   >(null)
-  // auth URL reported by the login CLI — rescue entry when the browser did not open
-  const [authUrl, setAuthUrl] = useState<string | null>(null)
-  const [urlCopied, setUrlCopied] = useState(false)
+  // 登录二维码 base64（微信扫码登录）
+  const [qrcode, setQrcode] = useState<string | null>(null)
   const loginDeadline = useRef(0)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [loggingOut, setLoggingOut] = useState(false)
@@ -499,25 +493,28 @@ function AccountEntry({
     }
   }, [])
 
-  // login progress pushed from main (gsk login CLI output)
+  // login progress pushed from main (微信扫码登录)
   useEffect(() => {
     const off = window.aiOffice.onAccountLogin?.((ev) => {
-      if (ev.phase === 'url') {
-        if (ev.url) setAuthUrl(ev.url)
-        if (ev.expiresInSec) loginDeadline.current = Date.now() + ev.expiresInSec * 1000
+      if (ev.phase === 'qrcode') {
+        if (ev.qrcode) setQrcode(ev.qrcode)
       } else if (ev.phase === 'success') {
         void window.aiOffice.accountStatus().then((s) => {
           if (s.loggedIn) {
             setStatus(s)
             setWaiting(false)
-            setAuthUrl(null)
+            setQrcode(null)
           }
         })
-      } else if (ev.phase === 'error') {
+      } else if (ev.phase === 'error' || ev.phase === 'expired') {
         setWaiting(false)
-        setAuthUrl(null)
+        setQrcode(null)
         setLoginError(
-          ev.error === 'network' ? 'network' : ev.error === 'expired' ? 'expired' : 'failed',
+          ev.phase === 'expired' || ev.error === 'expired'
+            ? 'expired'
+            : ev.error === 'network'
+              ? 'network'
+              : 'failed',
         )
       }
     })
@@ -532,10 +529,10 @@ function AccountEntry({
         if (s.loggedIn) {
           setStatus(s)
           setWaiting(false)
-          setAuthUrl(null)
+          setQrcode(null)
         } else if (Date.now() > loginDeadline.current) {
           setWaiting(false)
-          setAuthUrl(null)
+          setQrcode(null)
           setLoginError('timeout')
         }
       })
@@ -544,8 +541,8 @@ function AccountEntry({
   }, [waiting, loginNonce])
 
   const loggedIn = status?.loggedIn ?? false
-  const email = status?.email ?? ''
-  const initial = email ? email[0].toUpperCase() : loggedIn ? 'G' : '?'
+  const isPro = status?.isPro ?? false
+  const expireTime = status?.expireTime ?? null
   const errorText = loginError
     ? {
         timeout: t('loginTimeout'),
@@ -561,16 +558,15 @@ function AccountEntry({
     statusSeq.current++
     void window.aiOffice.accountLogout().then(() => {
       setLoggingOut(false)
-      setStatus({ loggedIn: false })
+      setStatus({ loggedIn: false, isPro: false })
     })
   }
 
   const startLogin = () => {
-    // clicking again while waiting = relaunch the login (main kills the stale CLI, so the new device code is the live one)
+    // clicking again while waiting = relaunch the login
     setLoginError(null)
     setWaiting(true)
-    setAuthUrl(null)
-    setUrlCopied(false)
+    setQrcode(null)
     loginDeadline.current = Date.now() + LOGIN_MAX_WAIT_MS
     setLoginNonce((n) => n + 1)
     void window.aiOffice.accountLogin().then((launched) => {
@@ -581,19 +577,8 @@ function AccountEntry({
     })
   }
 
-  const openLoginUrl = () => void window.aiOffice.openLoginUrl?.()
-
-  const copyLoginUrl = () => {
-    if (!authUrl) return
-    void navigator.clipboard.writeText(authUrl).then(() => {
-      setUrlCopied(true)
-      window.setTimeout(() => setUrlCopied(false), 2000)
-    })
-  }
-
   const handleClick = () => {
-    // refresh the login state / credit balance; drop the response
-    // when a logout happened while it was in flight
+    // refresh the login state; drop the response when a logout happened while in flight
     const seq = statusSeq.current
     void window.aiOffice.accountStatus?.().then((s) => {
       if (seq === statusSeq.current) setStatus(s)
@@ -608,10 +593,7 @@ function AccountEntry({
           status={status}
           loggingOut={loggingOut}
           loginWaiting={waiting}
-          loginUrl={authUrl}
-          urlCopied={urlCopied}
-          onOpenLoginUrl={openLoginUrl}
-          onCopyLoginUrl={copyLoginUrl}
+          loginQrcode={qrcode}
           onClose={() => setSettingsOpen(false)}
           onLogin={() => {
             setSettingsOpen(false)
@@ -620,50 +602,14 @@ function AccountEntry({
           onLogout={doLogout}
         />
       )}
-      {!settingsOpen && waiting && authUrl && (
+      {!settingsOpen && waiting && qrcode && (
         <div className="login-hint" role="status">
-          <button className="login-hint-open" onClick={openLoginUrl}>
-            {t('loginOpenShort')}
-          </button>
-          <button
-            className={`login-hint-copy${urlCopied ? ' copied' : ''}`}
-            onClick={copyLoginUrl}
-            // static tip: screentips are suppressed from pointerdown until the pointer
-            // leaves the control, so a swapped-in "copied" tip would never show — the
-            // check-mark icon is the visible feedback
-            data-tip={t('loginCopyUrl')}
-            aria-label={urlCopied ? t('loginCopied') : t('loginCopyUrl')}
-          >
-            {urlCopied ? (
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path
-                  d="m3.5 8.5 3 3 6-7"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            ) : (
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <rect
-                  x="5.5"
-                  y="5.5"
-                  width="7"
-                  height="7"
-                  rx="1.5"
-                  stroke="currentColor"
-                  strokeWidth="1.3"
-                />
-                <path
-                  d="M3.5 10.5V5a1.5 1.5 0 0 1 1.5-1.5h5.5"
-                  stroke="currentColor"
-                  strokeWidth="1.3"
-                  strokeLinecap="round"
-                />
-              </svg>
-            )}
-          </button>
+          <img
+            className="login-qrcode"
+            src={`data:image/jpeg;base64,${qrcode}`}
+            alt={t('loginScanTip')}
+          />
+          <span className="login-hint-text">{t('loginScanTip')}</span>
         </div>
       )}
       <button
@@ -671,11 +617,11 @@ function AccountEntry({
         onClick={handleClick}
         aria-haspopup="dialog"
         aria-expanded={settingsOpen}
-        data-tip={membership?.isPro ? '查看会员权益' : '开通会员'}
+        data-tip={isPro ? '查看会员权益' : '开通会员'}
         aria-label={t('settings')}
       >
         <span
-          className={`account-avatar${membership?.isPro ? ' member' : ''}${waiting ? ' waiting' : ''}`}
+          className={`account-avatar${isPro ? ' member' : ''}${waiting ? ' waiting' : ''}`}
         >
           {waiting ? (
             <svg
@@ -712,11 +658,7 @@ function AccountEntry({
         </span>
         <span className="account-text">
           <span className="account-name">
-            {membership?.isPro
-              ? membership.type === 'lifetime'
-                ? '永久会员'
-                : '会员'
-              : '开通会员'}
+            {isPro ? '会员' : '开通会员'}
           </span>
           {!loggedIn && !waiting && errorText && (
             <span className="account-sub error">{errorText}</span>
@@ -848,9 +790,9 @@ export function Home() {
   // single source of account state: AccountEntry reports every change (initial
   // load, login, logout), keeping the greeting name and the nav entry in sync
   const handleAccountStatus = useCallback((s: AccountStatus | null) => {
+    // 微信登录无邮箱，问候语不带名字
     const on = s?.loggedIn ?? false
-    const name = on ? (s?.email ?? '').split('@')[0] : ''
-    setAccountName(name ? name[0].toUpperCase() + name.slice(1) : '')
+    setAccountName(on ? 'UTO' : '')
   }, [])
   const [greetAskKey] = useState(
     () => GREET_ASK_KEYS[Math.floor(Math.random() * GREET_ASK_KEYS.length)]!,
