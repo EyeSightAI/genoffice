@@ -12,6 +12,8 @@ import { normalizeAiPanelPrefs } from '@genoffice/ui/ai-panel-prefs'
 import type {
   AccountLoginEvent,
   AccountStatus,
+  BuyPollResult,
+  BuyQrcodeResult,
   CloudProjectsSnapshot,
   HomeApi,
   RecentEntry,
@@ -23,7 +25,11 @@ import type {
   UiLanguage,
 } from '../shared/home-api'
 import { HOME_CHANNELS, PROJECT_CHANNELS } from '../shared/home-api'
-import type { MembershipActivateResult, MembershipPackage, MembershipStatus } from '../shared/home-api'
+import type {
+  MembershipActivateResult,
+  MembershipPackage,
+  MembershipStatus,
+} from '../shared/home-api'
 import type { TabsApi, TabSummary } from '../shared/tabs-api'
 import { TABS_CHANNELS } from '../shared/tabs-api'
 
@@ -163,6 +169,14 @@ const homeApi: HomeApi = {
   },
   async accountLogout() {
     await ipcRenderer.invoke(HOME_CHANNELS.accountLogout)
+  },
+  async buyQrcode() {
+    const result: unknown = await ipcRenderer.invoke(HOME_CHANNELS.buyQrcode)
+    return (result ?? null) as BuyQrcodeResult | null
+  },
+  async pollBuy(token: string) {
+    const result: unknown = await ipcRenderer.invoke(HOME_CHANNELS.pollBuy, token)
+    return (result ?? { paid: false, expireTime: null }) as BuyPollResult
   },
   async getAppVersion() {
     const result: unknown = await ipcRenderer.invoke(HOME_CHANNELS.getAppVersion)

@@ -971,6 +971,8 @@ export interface SettingsModalProps {
   /** 关闭弹窗并启动登录流程（二维码显示在账号入口） */
   onLogin: () => void
   onLogout: () => void
+  /** 付款成功后刷新会员状态 */
+  onStatusChange?: () => void
 }
 
 export function SettingsModal({
@@ -981,6 +983,7 @@ export function SettingsModal({
   onClose,
   onLogin,
   onLogout,
+  onStatusChange,
 }: SettingsModalProps) {
   const { lang, setLang, t } = useI18n()
   const [section, setSection] = useState<SectionId>('account')
@@ -993,6 +996,9 @@ export function SettingsModal({
   const [channel, setChannel] = useState<'stable' | 'beta'>('stable')
   const [appVersion, setAppVersion] = useState('')
   const [githubStars, setGithubStars] = useState<number | null>(null)
+  const [buyQrcode, setBuyQrcode] = useState<string | null>(null)
+  const [buyToken, setBuyToken] = useState('')
+  const [buyWaiting, setBuyWaiting] = useState(false)
 
   useEffect(() => {
     let alive = true
@@ -1055,6 +1061,34 @@ export function SettingsModal({
   const isPro = status?.isPro ?? false
   const expireTime = status?.expireTime ?? null
 
+  // 开通会员：生成付款码 → 轮询支付结果
+  const startBuy = async () => {
+    setBuyWaiting(true)
+    setBuyQrcode(null)
+    const qr = await window.aiOffice.buyQrcode?.()
+    if (!qr) {
+      setBuyWaiting(false)
+      return
+    }
+    setBuyToken(qr.token)
+    setBuyQrcode(qr.qrcode)
+    const deadline = Date.now() + 5 * 60 * 1000
+    while (Date.now() < deadline) {
+      await new Promise((r) => setTimeout(r, 2000))
+      const result = await window.aiOffice.pollBuy?.(qr.token)
+      if (result?.paid) {
+        setBuyWaiting(false)
+        setBuyQrcode(null)
+        setBuyToken('')
+        onStatusChange?.()
+        return
+      }
+    }
+    setBuyWaiting(false)
+    setBuyQrcode(null)
+    setBuyToken('')
+  }
+
   return (
     <div
       className="set-overlay"
@@ -1106,15 +1140,36 @@ export function SettingsModal({
                 />
                 <div className="set-pane-footer">
                   {loggedIn ? (
-                    <button className="set-btn danger" disabled={loggingOut} onClick={onLogout}>
-                      {loggingOut ? t('loggingOut') : t('logout')}
-                    </button>
+                    <>
+                      {!isPro && (
+                        <button
+                          className="set-btn primary"
+                          onClick={startBuy}
+                          disabled={buyWaiting}
+                        >
+                          {buyWaiting ? '等待付款…' : '开通会员'}
+                        </button>
+                      )}
+                      <button className="set-btn danger" disabled={loggingOut} onClick={onLogout}>
+                        {loggingOut ? t('loggingOut') : t('logout')}
+                      </button>
+                    </>
                   ) : (
                     <button className="set-btn primary" onClick={onLogin}>
                       {loginWaiting ? t('waitingShort') : t('login')}
                     </button>
                   )}
                 </div>
+                {buyQrcode && (
+                  <div className="buy-qrcode-box">
+                    <img
+                      className="buy-qrcode-img"
+                      src={`data:image/jpeg;base64,${buyQrcode}`}
+                      alt="付款码"
+                    />
+                    <span className="buy-qrcode-tip">请用微信扫码付款</span>
+                  </div>
+                )}
               </>
             )}
             {section === 'aiModel' && <AiModelPane t={t} />}

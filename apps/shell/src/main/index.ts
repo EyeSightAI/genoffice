@@ -213,8 +213,10 @@ import { TabManager } from './tab-manager'
 import { loadMembership } from './membership'
 import {
   clearWxLogin,
+  createBuyQrcode,
   createLoginQrcode,
   fetchMember,
+  pollBuy,
   pollLogin,
   readWxLogin,
   writeWxLogin,
@@ -3003,6 +3005,17 @@ function registerHomeIpc(): void {
 
   ipcMain.handle(HOME_CHANNELS.accountLogout, async () => {
     clearWxLogin(app.getPath('userData'))
+  })
+
+  ipcMain.handle(HOME_CHANNELS.buyQrcode, async () => {
+    const qr = await createBuyQrcode()
+    if (!qr) return null
+    return { token: qr.token, qrcode: qr.qrcode }
+  })
+
+  ipcMain.handle(HOME_CHANNELS.pollBuy, async (_event, token: string) => {
+    const r = await pollBuy(token)
+    return { paid: r.paid, expireTime: r.expireTime }
   })
 
   ipcMain.handle(HOME_CHANNELS.getAppVersion, (): string => app.getVersion())

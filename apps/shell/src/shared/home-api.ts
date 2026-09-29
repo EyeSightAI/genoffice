@@ -134,6 +134,10 @@ export interface HomeApi {
   openLoginUrl(): Promise<void>
   /** log out (clears the saved API key; the login state is shared globally with the gsk CLI) */
   accountLogout(): Promise<void>
+  /** generate the "buy membership" payment QR code (open the mini-program buy page) */
+  buyQrcode(): Promise<BuyQrcodeResult | null>
+  /** poll the payment QR code for a completed purchase */
+  pollBuy(token: string): Promise<BuyPollResult>
   /** app version (from package.json / electron app.getVersion) */
   getAppVersion(): Promise<string>
   /** whether the first-run onboarding has been completed or skipped (persisted in userData/app-settings.json) */
@@ -269,6 +273,18 @@ export interface AccountLoginEvent {
   error?: string
 }
 
+/** 购买（开通会员）付款码 */
+export interface BuyQrcodeResult {
+  token: string
+  qrcode: string
+}
+
+/** 购买轮询结果 */
+export interface BuyPollResult {
+  paid: boolean
+  expireTime: string | null
+}
+
 export interface RenameResult {
   ok: boolean
   /** the new absolute path when ok */
@@ -343,6 +359,8 @@ export const HOME_CHANNELS = {
   accountLoginEvent: 'home:account-login-event',
   accountLoginOpenUrl: 'home:account-login-open-url',
   accountLogout: 'home:account-logout',
+  buyQrcode: 'home:buy-qrcode',
+  pollBuy: 'home:poll-buy',
   getAppVersion: 'home:get-app-version',
   onboardingSeen: 'home:onboarding-seen',
   setOnboardingSeen: 'home:set-onboarding-seen',

@@ -600,6 +600,9 @@ function AccountEntry({
             startLogin()
           }}
           onLogout={doLogout}
+          onStatusChange={() => {
+            void window.aiOffice.accountStatus?.().then((s) => setStatus(s))
+          }}
         />
       )}
       {!settingsOpen && waiting && qrcode && (

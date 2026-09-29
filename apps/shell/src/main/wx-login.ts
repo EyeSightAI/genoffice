@@ -121,6 +121,33 @@ export async function fetchProducts(): Promise<ProductInfo[]> {
   }
 }
 
+/** 生成「开通会员」付款码 */
+export async function createBuyQrcode(): Promise<WxLoginQrcode | null> {
+  try {
+    const resp = await apiGet('/api/wx/buy_qrcode')
+    if (resp.code !== 0) return null
+    const d = resp.data as { token?: string; qrcode?: string }
+    if (!d.token || !d.qrcode) return null
+    return { token: d.token, qrcode: d.qrcode }
+  } catch {
+    return null
+  }
+}
+
+/** 轮询付款码：已付款返回到期时间 */
+export async function pollBuy(
+  token: string,
+): Promise<{ paid: boolean; expireTime: string | null }> {
+  try {
+    const resp = await apiGet(`/api/wx/poll_buy?token=${encodeURIComponent(token)}`)
+    if (resp.code !== 0) return { paid: false, expireTime: null }
+    const d = resp.data as { paid?: boolean; expire_time?: string | null }
+    return { paid: d.paid === true, expireTime: d.expire_time ?? null }
+  } catch {
+    return { paid: false, expireTime: null }
+  }
+}
+
 // ── 本地状态 ─────────────────────────────────────────────
 
 function statePath(userDataDir: string): string {
