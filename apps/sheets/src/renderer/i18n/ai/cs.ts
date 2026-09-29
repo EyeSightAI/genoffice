@@ -5,6 +5,7 @@ export const cs = {
   aiEmptyBuildTitle: 'Nechte AI sestavit tento sešit za vás',
   aiEmptyBuildBody:
     'Popište tabulku, data nebo graf, které potřebujete — AI je vytvoří přímo na místě.',
+  aiConfigModel: 'Nejprve prosím nakonfigurujte model AI (klíč API) v nastavení UToOffice',
   aiGskLoginBtn: 'Přihlásit se ke ',
   aiUndelivered: 'Neodesláno',
   aiRetry: 'Zkusit znovu',

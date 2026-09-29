@@ -18,6 +18,7 @@ export const cs = {
   aiQcPageSkipped: 'Stránka {n}: automatická kontrola rozložení přeskočena',
   aiQcStopped: 'Kontrola rozložení zastavena',
   aiQcCapped: 'Dalších {count} stránek nebylo zkontrolováno (limit na jedno spuštění)',
+  aiConfigModel: 'Nejprve prosím nakonfigurujte model AI (klíč API) v nastavení UToOffice',
   aiGskLoginBtn: 'Přihlásit se ke ',
   aiPanelTitle: '',
   aiOpenAssistant: 'Otevřít asistenta AI',

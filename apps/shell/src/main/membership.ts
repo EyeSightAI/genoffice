@@ -25,7 +25,6 @@ import { createHash } from 'node:crypto'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import * as os from 'node:os'
-import type { MembershipPackage, MembershipStatus } from '../shared/home-api'
 
 const SERVER_BASE = 'http://47.109.16.117:8088'
 const APP_KEY = '73379542474545c4b1ab8913647dea32'
@@ -39,6 +38,23 @@ interface StoredMembership {
   remainDays: number
   activatedAt: number
   lastCheck: number
+}
+
+interface MembershipStatus {
+  plan: 'free' | 'pro'
+  type?: 'lifetime' | 'year'
+  activatedAt?: number
+  expiresAt: number | null
+  isPro: boolean
+}
+
+interface MembershipPackage {
+  goodsId: string
+  name: string
+  price: string
+  validDays: number
+  stock: number
+  payUrl: string
 }
 
 function membershipPath(userDataDir: string): string {
