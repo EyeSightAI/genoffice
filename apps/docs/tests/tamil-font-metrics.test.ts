@@ -9,7 +9,7 @@ import { describe, expect, it } from 'vitest'
 import { advanceEm, readWoff2 } from './helpers/woff2-metrics'
 
 const FONTS = join(__dirname, '../src/renderer/fonts')
-const tamil = readWoff2(join(FONTS, 'UToOfficeTamil-Regular.woff2'))
+const tamil = readWoff2(join(FONTS, 'GenOfficeTamil-Regular.woff2'))
 
 describe('GenOffice Tamil (Latha-normalized)', () => {
   it('space and digits match Latha', () => {

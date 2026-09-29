@@ -89,7 +89,7 @@ function stubMetricsCanvas(ascent: number, descent: number) {
 function mountBlankFace() {
   const style = document.createElement('style')
   style.textContent =
-    "@font-face { font-family: 'GenOffice PUA Blank'; src: url('./UToOfficePUABlank.woff2') format('woff2'); }"
+    "@font-face { font-family: 'GenOffice PUA Blank'; src: url('./GenOfficePUABlank.woff2') format('woff2'); }"
   document.head.appendChild(style)
 }
 
@@ -101,7 +101,7 @@ describe('docStyleCss grid strut face', () => {
     expect(css).toContain("@font-face { font-family:'GenOffice Grid Strut'")
     expect(css).toContain('ascent-override:114.3%')
     expect(css).toContain('descent-override:28.6%')
-    expect(css).toContain('UToOfficePUABlank.woff2')
+    expect(css).toContain('GenOfficePUABlank.woff2')
     expect(css).toContain(
       ".doc-page .doc-grid-strut { font-family:'GenOffice Grid Strut',var(--doc-grid-strut-tail,serif) }",
     )
