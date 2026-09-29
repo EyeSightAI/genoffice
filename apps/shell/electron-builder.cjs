@@ -234,7 +234,7 @@ function assertModuleTreesPresent() {
 const config = {
   appId: 'com.utooffice.app',
   productName: 'UToOffice',
-  // UToOffice deep link（网站模板库「用 UToOffice 打开」→ utooffice://import?url=...）
+  // UToOffice deep link (website template library "open with UToOffice" -> utooffice://import?url=...)
   protocols: [
     {
       name: 'UToOffice',
@@ -433,8 +433,8 @@ const config = {
     ],
   },
   win: {
-    // 固定安装包文件名（不带版本号）：网站「下载 UToOffice」用
-    // releases/latest/download/UToOffice-Setup.exe 永久指向最新版，发版后网站链接不用改
+    // fixed installer filename (no version): used by the website "Download UToOffice"
+    // releases/latest/download/UToOffice-Setup.exe always points to the latest; website link needs no change after release
     artifactName: 'UToOffice-Setup.exe',
     target: [
       {

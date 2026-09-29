@@ -2589,12 +2589,12 @@ async function handleTemplateImport(templateUrl: string): Promise<void> {
     if (u.protocol !== 'https:' && u.protocol !== 'http:') return
     if (!/\.pptx$/i.test(u.pathname)) return
 
-    // 去重：同一模板正在下载时忽略重复唤起（避免连点导致重复打开）
+    // dedup: ignore repeated triggers while the same template is downloading
     if (importingTemplateUrls.has(templateUrl)) return
     importingTemplateUrls.add(templateUrl)
 
     try {
-      // 会员拦截：非会员不能下载模板，引导开通会员
+      // membership gate: non-members cannot download templates; guide them to subscribe
       const ms = loadMembership(app.getPath('userData'))
       if (!ms.isPro) {
         revealShellWindow()
@@ -2623,7 +2623,7 @@ async function handleTemplateImport(templateUrl: string): Promise<void> {
         return
       }
 
-      // 先聚焦窗口，让用户知道正在处理（避免以为没反应而重复点击）
+      // focus the window first so the user sees it is working (avoid repeat clicks)
       revealShellWindow()
 
       const dir = join(app.getPath('userData'), 'templates')
@@ -2631,7 +2631,7 @@ async function handleTemplateImport(templateUrl: string): Promise<void> {
       const name = basename(u.pathname) || `template-${Date.now()}.pptx`
       const filePath = join(dir, name)
 
-      // 缓存：已下载过的模板直接打开，不重复下载
+      // cache: already-downloaded templates open directly, no re-download
       if (!existsSync(filePath)) {
         const res = await fetch(templateUrl)
         if (!res.ok) return
@@ -2927,7 +2927,7 @@ function registerHomeIpc(): void {
   ipcMain.handle(HOME_CHANNELS.accountStatus, async () => {
     const state = readWxLogin(app.getPath('userData'))
     if (!state) return { loggedIn: false, isPro: false }
-    // 服务器兜底刷新会员状态
+    // server fallback: refresh membership status
     const member = await fetchMember(state.openid)
     if (member.isPro !== state.isPro || member.expireTime !== state.expireTime) {
       writeWxLogin(app.getPath('userData'), {
@@ -2944,21 +2944,21 @@ function registerHomeIpc(): void {
     }
   })
 
-  // 微信扫码登录：生成小程序码 → main 侧轮询 → 绑定成功查会员
+  // WeChat scan login: generate QR code -> main polls -> bind then query membership
   ipcMain.handle(HOME_CHANNELS.accountLogin, async (event) => {
     analytics.track('login_click')
     const sender = event.sender
     const send = (payload: AccountLoginEvent) => {
       if (!sender.isDestroyed()) sender.send(HOME_CHANNELS.accountLoginEvent, payload)
     }
-    // 1. 生成登录小程序码
+    // 1. generate login QR code
     const qr = await createLoginQrcode()
     if (!qr) {
       send({ phase: 'error', error: 'network' })
       return false
     }
     send({ phase: 'qrcode', qrcode: qr.qrcode, token: qr.token })
-    // 2. 轮询（最多 5 分钟）
+    // 2. poll (up to 5 minutes)
     const deadline = Date.now() + 5 * 60 * 1000
     while (Date.now() < deadline) {
       await new Promise((r) => setTimeout(r, 2000))
@@ -2980,7 +2980,7 @@ function registerHomeIpc(): void {
   })
 
   ipcMain.handle(HOME_CHANNELS.accountLoginOpenUrl, () => {
-    // 微信扫码登录不需要浏览器打开 URL，保留空实现以兼容旧 renderer
+    // WeChat scan login needs no browser URL; keep empty impl for old-renderer compat
   })
 
   ipcMain.handle(HOME_CHANNELS.accountLogout, async () => {
@@ -3314,7 +3314,7 @@ function registerHomeIpc(): void {
   // returning true also counts as "shown": the renderer displays it
   // unconditionally, so no separate mark-shown round-trip is needed
   ipcMain.handle(HOME_CHANNELS.starPromptShouldShow, (): StarPromptShow => {
-    // UToOffice：商业产品不再弹「去 GitHub 点 Star」（开源项目习惯），永久关闭
+    // UToOffice: commercial product no longer prompts "star on GitHub" (OSS habit), permanently off
     return { show: false, docOpens: 0 }
   })
 
@@ -4393,7 +4393,7 @@ app.whenReady().then(async () => {
   installDockMenu()
   initAutoUpdater(() => shellWindow, currentUpdateChannel())
 
-  // UToOffice deep link（网站模板库「用 UToOffice 打开」）
+  // UToOffice deep link (website template library "open with UToOffice")
   if (process.platform !== 'linux') app.setAsDefaultProtocolClient('utooffice')
   if (pendingTemplateUrl) {
     void handleTemplateImport(pendingTemplateUrl)

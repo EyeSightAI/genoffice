@@ -35,7 +35,7 @@ const LIFETIME_DAYS = 9999
 interface StoredMembership {
   deviceId: string
   code: string
-  expireTime: string | null // 'YYYY-MM-DD HH:mm:ss' 或 '永久'
+  expireTime: string | null // 'YYYY-MM-DD HH:mm:ss' or 'permanent'
   remainDays: number
   activatedAt: number
   lastCheck: number

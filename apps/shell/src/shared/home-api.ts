@@ -252,24 +252,24 @@ export interface CloudProjectsSnapshot {
 }
 
 export interface AccountStatus {
-  /** 微信扫码已登录 */
+  /** logged in via WeChat scan */
   loggedIn: boolean
-  /** 微信 openid（登录后） */
+  /** WeChat openid (after login) */
   openid?: string
-  /** 会员到期时间 'YYYY-MM-DD HH:mm:ss'，null = 未开通会员 */
+  /** membership expiry 'YYYY-MM-DD HH:mm:ss', null = not subscribed */
   expireTime?: string | null
-  /** 是否会员（未过期） */
+  /** is member (not expired) */
   isPro: boolean
 }
 
 /** login flow progress pushed from main (WeChat scan login) */
 export interface AccountLoginEvent {
   phase: 'launched' | 'qrcode' | 'success' | 'expired' | 'error'
-  /** 登录二维码 base64（phase=qrcode 时） */
+  /** login QR code base64 (phase=qrcode) */
   qrcode?: string
-  /** 登录 token（phase=qrcode 时，main 内部用于轮询） */
+  /** login token (phase=qrcode, main polls with it) */
   token?: string
-  /** 'network' | 'expired' | 其他错误文案 */
+  /** 'network' | 'expired' | other error text */
   error?: string
 }
 

@@ -18,12 +18,12 @@ const TIMEOUT_MS = 15000
 
 export interface WxLoginQrcode {
   token: string
-  qrcode: string // base64 JPEG，前端用 data:image/jpeg;base64,xxx 显示
+  qrcode: string // base64 JPEG, rendered via data:image/jpeg;base64,xxx
 }
 
 export interface MemberInfo {
   openid: string
-  expireTime: string | null // 'YYYY-MM-DD HH:mm:ss' 或 null（未开通）
+  expireTime: string | null // 'YYYY-MM-DD HH:mm:ss' or null (not subscribed)
   isPro: boolean
 }
 
