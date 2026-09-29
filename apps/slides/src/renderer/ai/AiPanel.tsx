@@ -403,13 +403,13 @@ export function AiPanel({
   // Panel chrome follows the UI language; message text follows its own content (dir=auto below)
   const isRtl = lang === 'ar' || lang === 'he'
   const [input, setInput] = useState('')
-  /** 「使用模板库」标签：勾选后 AI 可自动从模板库选模板 / 严格套用当前模板（会员专属） */
+  /** "Use template library" tab: when checked AI may auto-pick from library / strictly apply current template (members only) */
   const [useTemplateLibrary, setUseTemplateLibrary] = useState(false)
   const [isPro, setIsPro] = useState(false)
   const [templateHint, setTemplateHint] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
 
-  // 加载会员状态（「使用当前模板」标签是否解锁）
+  // load membership (whether the "use current template" tab is unlocked)
   useEffect(() => {
     void window.slidesApi.membershipStatus?.().then((s) => setIsPro(s?.isPro ?? false))
   }, [])

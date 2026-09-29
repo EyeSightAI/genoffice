@@ -9,7 +9,6 @@ import iconMd from './assets/file-md.svg'
 import iconHtml from './assets/file-html.svg'
 import type {
   AccountStatus,
-  MembershipStatus,
   HomeApi,
   ProjectHomeApi,
   ProjectSummaryEntry,
@@ -473,7 +472,7 @@ function AccountEntry({
   const [loginError, setLoginError] = useState<
     'timeout' | 'launch' | 'network' | 'expired' | 'failed' | null
   >(null)
-  // 登录二维码 base64（微信扫码登录）
+  // login QR code base64 (WeChat scan login)
   const [qrcode, setQrcode] = useState<string | null>(null)
   const loginDeadline = useRef(0)
   const [settingsOpen, setSettingsOpen] = useState(false)
@@ -493,7 +492,7 @@ function AccountEntry({
     }
   }, [])
 
-  // login progress pushed from main (微信扫码登录)
+  // login progress pushed from main (WeChat scan login)
   useEffect(() => {
     const off = window.aiOffice.onAccountLogin?.((ev) => {
       if (ev.phase === 'qrcode') {
@@ -542,7 +541,6 @@ function AccountEntry({
 
   const loggedIn = status?.loggedIn ?? false
   const isPro = status?.isPro ?? false
-  const expireTime = status?.expireTime ?? null
   const errorText = loginError
     ? {
         timeout: t('loginTimeout'),
@@ -593,7 +591,6 @@ function AccountEntry({
           status={status}
           loggingOut={loggingOut}
           loginWaiting={waiting}
-          loginQrcode={qrcode}
           onClose={() => setSettingsOpen(false)}
           onLogin={() => {
             setSettingsOpen(false)
@@ -789,7 +786,7 @@ export function Home() {
   // single source of account state: AccountEntry reports every change (initial
   // load, login, logout), keeping the greeting name and the nav entry in sync
   const handleAccountStatus = useCallback((s: AccountStatus | null) => {
-    // 微信登录无邮箱，问候语不带名字
+    // WeChat login has no email; greeting omits the name
     const on = s?.loggedIn ?? false
     setAccountName(on ? 'UTO' : '')
   }, [])

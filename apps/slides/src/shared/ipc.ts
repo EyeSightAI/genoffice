@@ -1656,8 +1656,12 @@ export interface SlidesApi {
   loadStyleTemplate: (
     name: string,
   ) => Promise<{ ok: boolean; styleSkill?: string; topic?: string; error?: string }>
-  /** UToOffice membership status（会员 = 解锁「使用当前模板」+ 模板库下载） */
-  membershipStatus: () => Promise<{ isPro: boolean; type?: 'lifetime' | 'year'; expiresAt: number | null }>
+  /** UToOffice membership status (member = unlock "use current template" + library download) */
+  membershipStatus: () => Promise<{
+    isPro: boolean
+    type?: 'lifetime' | 'year'
+    expiresAt: number | null
+  }>
   /** Open the UToOffice template library website */
   openTemplateLibrary: () => Promise<void>
   /** Download a template .pptx and load it into the CURRENT tab (replaces the document). Returns the new deck or an error. */

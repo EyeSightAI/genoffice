@@ -262,7 +262,7 @@ export interface AccountStatus {
   isPro: boolean
 }
 
-/** login flow progress pushed from main (微信扫码登录) */
+/** login flow progress pushed from main (WeChat scan login) */
 export interface AccountLoginEvent {
   phase: 'launched' | 'qrcode' | 'success' | 'expired' | 'error'
   /** 登录二维码 base64（phase=qrcode 时） */
@@ -273,13 +273,13 @@ export interface AccountLoginEvent {
   error?: string
 }
 
-/** 购买（开通会员）付款码 */
+/** Buy membership payment QR code */
 export interface BuyQrcodeResult {
   token: string
   qrcode: string
 }
 
-/** 购买轮询结果 */
+/** Buy poll result */
 export interface BuyPollResult {
   paid: boolean
   expireTime: string | null

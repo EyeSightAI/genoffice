@@ -1,7 +1,7 @@
 /**
  * UToOffice membership: online card-key activation against the auth system.
  *
- * Backend: FastAPI multi-app authorization system (see 卡密系统对接文档.md).
+ * Backend: FastAPI multi-app authorization system (see the card-key system doc).
  *   - base  : http://47.109.16.117:8088
  *   - app_key: 73379542474545c4b1ab8913647dea32 (UToOffice app)
  *
@@ -10,11 +10,11 @@
  *   activate  -> POST /api/auth/activate  { app_key, device_id, auth_code }
  *   check     -> POST /api/auth/check     { app_key, device_id }
  *
- * "一机一码" (max_device=1): a card is bound to one device_id. Re-activating
- * on a new machine re-binds (换机) and the server returns the original expiry.
+ * "one machine one code" (max_device=1): a card is bound to one device_id. Re-activating
+ * on a new machine re-binds and the server returns the original expiry.
  *
- * valid_days == 9999  => lifetime ("永久"). Server returns expire_time as
- * "永久" for lifetime cards, or "YYYY-MM-DD HH:mm:ss" otherwise.
+ * valid_days == 9999  => lifetime. Server returns expire_time as
+ * "permanent" for lifetime cards, or "YYYY-MM-DD HH:mm:ss" otherwise.
  *
  * Local state is cached at userData/membership.json (device_id + expiry) so
  * the app starts offline-tolerant; server is the source of truth.
@@ -122,7 +122,7 @@ async function apiPost(path: string, body: Record<string, unknown>): Promise<Api
   return (await res.json()) as ApiResp
 }
 
-/** expire_time string -> ms epoch (null for "永久" / missing). */
+/** expire_time string -> ms epoch (null for "permanent" / missing). */
 function parseExpire(expireTime: unknown): number | null {
   if (typeof expireTime !== 'string') return null
   if (expireTime === '永久') return null
@@ -201,7 +201,7 @@ export async function checkMembership(userDataDir: string): Promise<MembershipSt
     if (d.activated === true) {
       writeStore(userDataDir, {
         deviceId,
-        code: typeof d.code === 'string' ? d.code : prev?.code ?? '',
+        code: typeof d.code === 'string' ? d.code : (prev?.code ?? ''),
         expireTime: typeof d.expire_time === 'string' ? d.expire_time : null,
         remainDays: typeof d.remain_days === 'number' ? d.remain_days : 0,
         activatedAt: prev?.activatedAt || Date.now(),
@@ -215,7 +215,7 @@ export async function checkMembership(userDataDir: string): Promise<MembershipSt
   }
 }
 
-/** Fetch purchasable packages (含酷发卡 pay_url). */
+/** Fetch purchasable packages (with kufaka pay_url). */
 export async function getPackages(): Promise<MembershipPackage[]> {
   try {
     const resp = await apiPost('/api/v1/goods/cate', { appid: APP_KEY })

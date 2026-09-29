@@ -66,29 +66,18 @@ import {
   LAST_RUN_VERSION_KEY,
   STAR_PROMPT_KEY,
   asStarPromptState,
-  isUpgradeLaunch,
-  shouldShowStarPrompt,
-  shouldShowUpgradeStarPrompt,
   withDocOpen,
   withFirstRun,
   withResolved,
-  withShown,
 } from './star-prompt'
 import {
-  clearCloudProjectsStore,
   cloudProjectExternalUrl,
   readCloudProjectsStore,
   syncCloudProjects,
 } from './cloud-projects'
 import { handleDroppedFiles } from './dropped-files'
 import { ProjectStore } from '@genoffice/project-store'
-import {
-  genofficeLogout,
-  gskLoginInfo,
-  loadGenofficeAuth,
-  setGskProxyUrl,
-  startGenofficeLogin,
-} from '@genoffice/ai-search'
+import { setGskProxyUrl } from '@genoffice/ai-search'
 
 import {
   buildDocsMenu,
@@ -477,15 +466,6 @@ const readStarPrompt = () =>
   asStarPromptState(readAppSettings(APP_SETTINGS_PATH())[STAR_PROMPT_KEY])
 const writeStarPrompt = (state: ReturnType<typeof readStarPrompt>) =>
   writeAppSetting(APP_SETTINGS_PATH(), STAR_PROMPT_KEY, state)
-
-/** set at startup when this is the first launch after an upgrade; consumed by
- * the first starPromptShouldShow query of the session */
-let upgradeStarPromptPending = false
-
-/** a granted show, cached for the session: repeated queries (React StrictMode
- * double-effects, AppFrame remounts) must return the same answer instead of
- * burning another lifetime show or flipping to a snoozed "false" */
-let starPromptSessionGrant: StarPromptShow | null = null
 
 /** every successful document open counts toward the prompt's value threshold */
 function recordStarPromptDocOpen(): void {
@@ -2584,7 +2564,7 @@ const OPEN_DIALOG_EXTENSIONS = [
   'htm',
 ]
 
-/** 从 argv 解析 utooffice://import?url=xxx 的模板下载地址 */
+/** Parse template download URL from argv (utooffice://import?url=xxx) */
 function templateUrlIn(argv: string[]): string | null {
   for (const arg of argv) {
     if (!arg.startsWith('utooffice://')) continue
@@ -2599,8 +2579,8 @@ function templateUrlIn(argv: string[]): string | null {
   return null
 }
 
-/** 下载网站模板 .pptx 并用 slides 打开（deep link 入口） */
-/** 正在下载的模板 URL（去重：避免重复点击导致重复下载打开） */
+/** Download website template .pptx and open in slides (deep link entry) */
+/** Template URL currently downloading (dedup) */
 const importingTemplateUrls = new Set<string>()
 
 async function handleTemplateImport(templateUrl: string): Promise<void> {
@@ -3340,9 +3320,6 @@ function registerHomeIpc(): void {
 
   ipcMain.handle(HOME_CHANNELS.starPromptAction, (_event, action: unknown) => {
     if (action !== 'starred' && action !== 'later') return
-    // the card was reacted to — drop the session grant so a later query (new
-    // shell window on macOS) re-evaluates the real rules (snooze / resolved)
-    starPromptSessionGrant = null
     // 'later' needs no write: the display was already counted by the query
     if (action === 'starred') writeStarPrompt(withResolved(readStarPrompt()))
   })
@@ -4251,9 +4228,6 @@ function installDockMenu(): void {
 // Prefer proxy env vars (terminal launch); a packaged app launched from Finder inherits no shell
 // env vars, so fall back to the system HTTP proxy. The renderer uses Chromium's system proxy and
 // is unaffected. Same bootstrap as slides-main startSlidesStandalone.
-// awaited by login IPC so the first status probe / login click cannot race the proxy resolution
-let proxyBootstrap: Promise<void> = Promise.resolve()
-
 async function installMainProcessProxy(): Promise<void> {
   let proxyUrl = [
     process.env.HTTPS_PROXY,
@@ -4383,7 +4357,7 @@ app.whenReady().then(async () => {
     }
   }
 
-  proxyBootstrap = installMainProcessProxy()
+  void installMainProcessProxy()
   app.setAccessibilitySupportEnabled(true)
   // Settle the shared uiLang from saved settings BEFORE any tab renderer can
   // ask 'app:get-language': the editor handlers return the i18n module's
@@ -4405,11 +4379,6 @@ app.whenReady().then(async () => {
         ? (settings[LAST_RUN_VERSION_KEY] as string)
         : null
     const currentVersion = app.getVersion()
-    upgradeStarPromptPending = isUpgradeLaunch(
-      prevVersion,
-      currentVersion,
-      settings.onboardingSeen === true,
-    )
     if (prevVersion !== currentVersion)
       writeAppSetting(APP_SETTINGS_PATH(), LAST_RUN_VERSION_KEY, currentVersion)
   } catch {

@@ -25,11 +25,6 @@ import type {
   UiLanguage,
 } from '../shared/home-api'
 import { HOME_CHANNELS, PROJECT_CHANNELS } from '../shared/home-api'
-import type {
-  MembershipActivateResult,
-  MembershipPackage,
-  MembershipStatus,
-} from '../shared/home-api'
 import type { TabsApi, TabSummary } from '../shared/tabs-api'
 import { TABS_CHANNELS } from '../shared/tabs-api'
 

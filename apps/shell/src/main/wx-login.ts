@@ -1,14 +1,14 @@
 /**
- * wx-login.ts — 微信扫码登录 + 统一会员模块（插拔式，独立于上游源码）
+ * wx-login.ts — WeChat scan login + unified membership module (pluggable, independent of upstream)
  *
- * 与服务器 auth-system 的 /api/wx/* /api/member/* /api/products 对接：
- *   - createLoginQrcode(): 生成登录小程序码（scene=token）
- *   - pollLogin(token):    轮询 token 是否被微信绑定（返回 openid）
- *   - fetchMember(openid): 查会员到期时间
- *   - fetchProducts():     查 UTO 产品列表
+ * Talks to auth-system /api/wx/* /api/member/* /api/products:
+ *   - createLoginQrcode(): generate login QR code (scene=token)
+ *   - pollLogin(token):    poll token for WeChat binding (returns openid)
+ *   - fetchMember(openid): fetch membership expiry
+ *   - fetchProducts():     fetch UTO product list
  *
- * 本地状态存 userData/wx-login.json（openid + 到期时间），启动离线可用；
- * 服务器是唯一真相来源。
+ * Local state is cached at userData/wx-login.json (openid + expiry), offline-tolerant;
+ * the server is the source of truth.
  */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
@@ -56,7 +56,7 @@ async function apiGet(path: string): Promise<ApiResp> {
   return (await res.json()) as ApiResp
 }
 
-/** 生成登录小程序码 */
+/** Generate login QR code */
 export async function createLoginQrcode(): Promise<WxLoginQrcode | null> {
   try {
     const resp = await apiGet('/api/wx/qrcode')
@@ -69,7 +69,7 @@ export async function createLoginQrcode(): Promise<WxLoginQrcode | null> {
   }
 }
 
-/** 轮询 token：已绑定返回 openid，未绑定返回 null，过期返回 'EXPIRED' */
+/** Poll token: openid when bound, null when not, 'EXPIRED' when expired */
 export async function pollLogin(token: string): Promise<string | null> {
   try {
     const resp = await apiGet(`/api/wx/poll?token=${encodeURIComponent(token)}`)
@@ -82,7 +82,7 @@ export async function pollLogin(token: string): Promise<string | null> {
   }
 }
 
-/** 查会员到期时间 */
+/** Fetch membership expiry */
 export async function fetchMember(openid: string): Promise<MemberInfo> {
   try {
     const resp = await apiGet(`/api/member/info?openid=${encodeURIComponent(openid)}`)
@@ -98,7 +98,7 @@ export async function fetchMember(openid: string): Promise<MemberInfo> {
   }
 }
 
-/** 查产品列表 */
+/** Fetch product list */
 export async function fetchProducts(): Promise<ProductInfo[]> {
   try {
     const resp = await apiGet('/api/products')
@@ -121,7 +121,7 @@ export async function fetchProducts(): Promise<ProductInfo[]> {
   }
 }
 
-/** 生成「开通会员」付款码 */
+/** Generate buy-membership payment QR code */
 export async function createBuyQrcode(): Promise<WxLoginQrcode | null> {
   try {
     const resp = await apiGet('/api/wx/buy_qrcode')
@@ -134,7 +134,7 @@ export async function createBuyQrcode(): Promise<WxLoginQrcode | null> {
   }
 }
 
-/** 轮询付款码：已付款返回到期时间 */
+/** Poll payment QR code: expiry when paid */
 export async function pollBuy(
   token: string,
 ): Promise<{ paid: boolean; expireTime: string | null }> {
@@ -148,7 +148,7 @@ export async function pollBuy(
   }
 }
 
-// ── 本地状态 ─────────────────────────────────────────────
+// ── Local state ─────────────────────────────────────────────
 
 function statePath(userDataDir: string): string {
   return join(userDataDir, 'wx-login.json')

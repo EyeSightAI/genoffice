@@ -2832,7 +2832,7 @@ function RibbonInner({
           </div>
         ) : tab === 'home' ? (
           <>
-            {/* ---- AI 助手 (first slot: entry + one-click AI actions) ---- */}
+            {/* ---- AI Assistant (first slot: entry + one-click AI actions) ---- */}
             <div className="ribbon-group">
               <div className="ribbon-group-items">
                 <button

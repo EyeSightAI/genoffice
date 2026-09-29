@@ -74,9 +74,9 @@ if (winArm64 && !process.env.ELECTRON_BUILDER_7Z_FILTER) {
   process.env.ELECTRON_BUILDER_7Z_FILTER = 'BCJ'
 }
 const winArch = winArm64 ? 'arm64' : 'x64'
-// UToOffice：native:build（cargo build --release 无 --target）build 到 host target（MSVC），
-// sidecar 落在 target/release/（不带 target 三元组子目录）。上游带 --target gnu 所以有
-// target/x86_64-pc-windows-gnu/ 子目录；我们 fork 无 MinGW，直接读 host target 目录即可。
+// UToOffice: native:build (cargo build --release without --target) builds to the host target (MSVC);
+// the sidecar lands in target/release/ (no target-triple subdir). Upstream passes --target gnu hence
+// a target/x86_64-pc-windows-gnu/ subdir; our fork has no MinGW, so read the host target dir directly.
 const WIN_SIDECAR = `../sheets/native/xlsx-engine/target/release/xlsx-sidecar.exe`
 
 // The gsk CLI tree below is copied verbatim from node_modules, and the
@@ -584,9 +584,10 @@ if (winSignMode) {
   }
 }
 
-// UToOffice 更新源：自己的服务器镜像（generic provider，国内下载快）。
-// 客户端 electron-updater 从 http://47.109.16.117/update/latest.yml 检查更新并下载安装包，
-// 不再走 GitHub Releases（国内慢/易失败）。服务器 /www/wwwroot/update/ 由发版流程同步。
+// UToOffice update source: our own server mirror (generic provider, fast in China).
+// The client (electron-updater) checks http://47.109.16.117/update/latest.yml for updates and
+// downloads the installer, no longer via GitHub Releases (slow/unreliable in China).
+// The server /www/wwwroot/update/ is synced by the release flow.
 config.publish = [
   {
     provider: 'generic',

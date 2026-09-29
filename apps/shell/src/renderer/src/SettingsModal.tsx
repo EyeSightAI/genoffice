@@ -963,15 +963,13 @@ function AiStatusPill({ status }: { status: AiStatus | null }) {
 export interface SettingsModalProps {
   status: AccountStatus | null
   loggingOut: boolean
-  /** 登录等待中（二维码已显示） */
+  /** waiting for login (QR code shown) */
   loginWaiting: boolean
-  /** 登录二维码 base64（微信扫码登录） */
-  loginQrcode: string | null
   onClose: () => void
-  /** 关闭弹窗并启动登录流程（二维码显示在账号入口） */
+  /** close modal and start login (QR shows at account entry) */
   onLogin: () => void
   onLogout: () => void
-  /** 付款成功后刷新会员状态 */
+  /** refresh membership after payment */
   onStatusChange?: () => void
 }
 
@@ -979,7 +977,6 @@ export function SettingsModal({
   status,
   loggingOut,
   loginWaiting,
-  loginQrcode,
   onClose,
   onLogin,
   onLogout,
@@ -997,7 +994,6 @@ export function SettingsModal({
   const [appVersion, setAppVersion] = useState('')
   const [githubStars, setGithubStars] = useState<number | null>(null)
   const [buyQrcode, setBuyQrcode] = useState<string | null>(null)
-  const [buyToken, setBuyToken] = useState('')
   const [buyWaiting, setBuyWaiting] = useState(false)
 
   useEffect(() => {
@@ -1061,7 +1057,7 @@ export function SettingsModal({
   const isPro = status?.isPro ?? false
   const expireTime = status?.expireTime ?? null
 
-  // 开通会员：生成付款码 → 轮询支付结果
+  // buy membership: generate payment QR -> poll result
   const startBuy = async () => {
     setBuyWaiting(true)
     setBuyQrcode(null)
@@ -1070,7 +1066,6 @@ export function SettingsModal({
       setBuyWaiting(false)
       return
     }
-    setBuyToken(qr.token)
     setBuyQrcode(qr.qrcode)
     const deadline = Date.now() + 5 * 60 * 1000
     while (Date.now() < deadline) {
@@ -1079,14 +1074,12 @@ export function SettingsModal({
       if (result?.paid) {
         setBuyWaiting(false)
         setBuyQrcode(null)
-        setBuyToken('')
         onStatusChange?.()
         return
       }
     }
     setBuyWaiting(false)
     setBuyQrcode(null)
-    setBuyToken('')
   }
 
   return (
