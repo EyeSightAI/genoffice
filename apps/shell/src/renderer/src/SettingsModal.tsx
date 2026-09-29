@@ -1097,7 +1097,11 @@ export function SettingsModal({
                 <Field
                   label={t('setMemberExpire')}
                   value={
-                    loggedIn ? (isPro ? (expireTime ?? '—') : t('setNotMember')) : t('setNotLoggedIn')
+                    loggedIn
+                      ? isPro
+                        ? (expireTime ?? '—')
+                        : t('setNotMember')
+                      : t('setNotLoggedIn')
                   }
                 />
                 <div className="set-pane-footer">

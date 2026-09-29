@@ -620,9 +620,7 @@ function AccountEntry({
         data-tip={isPro ? '查看会员权益' : '开通会员'}
         aria-label={t('settings')}
       >
-        <span
-          className={`account-avatar${isPro ? ' member' : ''}${waiting ? ' waiting' : ''}`}
-        >
+        <span className={`account-avatar${isPro ? ' member' : ''}${waiting ? ' waiting' : ''}`}>
           {waiting ? (
             <svg
               className="account-spinner"
@@ -657,9 +655,7 @@ function AccountEntry({
           )}
         </span>
         <span className="account-text">
-          <span className="account-name">
-            {isPro ? '会员' : '开通会员'}
-          </span>
+          <span className="account-name">{isPro ? '会员' : '开通会员'}</span>
           {!loggedIn && !waiting && errorText && (
             <span className="account-sub error">{errorText}</span>
           )}
@@ -1808,11 +1804,7 @@ export function Home() {
         <AccountEntry onStatusChange={handleAccountStatus} />
       </aside>
 
-      {selectedProjectId ? (
-        renderProjectContent()
-      ) : (
-        renderGlobalContent()
-      )}
+      {selectedProjectId ? renderProjectContent() : renderGlobalContent()}
 
       {confirmDelete && (
         <div className="modal-overlay" onClick={() => setConfirmDelete(null)}>

@@ -182,8 +182,7 @@ export const strings = {
     setAiMediaHint: '生图与图片/视频解析使用 账号登录。',
     setAiImageModel: '生图模型',
     setAiAnalysisModel: '解析模型',
-    setAiSearchHint:
-      '网页与图片搜索使用 账号登录；未登录或关闭云工具时改用免费来源。',
+    setAiSearchHint: '网页与图片搜索使用 账号登录；未登录或关闭云工具时改用免费来源。',
     setAiSearchSerperHint: 'Serper 用你的 key 同时提供网页与图片搜索。',
     setAiSearchTavilyHint: 'Tavily 用你的 key 提供网页搜索；图片搜索改用免费来源。',
     setAiCapImage: '生图',
@@ -486,8 +485,7 @@ export const strings = {
     cloudSortRecent: '新しい順',
     cloudSortOldest: '古い順',
     cloudRefresh: '更新',
-    cloudLoginHint:
-      ' アカウントにサインインすると、Web で作成したプロジェクトを表示できます。',
+    cloudLoginHint: ' アカウントにサインインすると、Web で作成したプロジェクトを表示できます。',
     cloudEmpty: 'Web のプロジェクトはまだありません。',
     cloudError: '読み込みに失敗しました。後でもう一度お試しください。',
     cloudRetry: '再試行',
@@ -600,8 +598,7 @@ export const strings = {
     loginOpenShort: 'ログインページを手動で開く',
     loginCopyUrl: 'ログインリンクをコピー',
     loginCopied: 'コピーしました',
-    loginNetworkError:
-      ' に接続できません。ネットワークまたはプロキシ設定を確認してください',
+    loginNetworkError: ' に接続できません。ネットワークまたはプロキシ設定を確認してください',
     loginExpired: 'サインインの有効期限が切れました。クリックして再試行',
     loginFailed: 'サインインに失敗しました。クリックして再試行',
     loggingOut: 'サインアウトしています…',
@@ -980,8 +977,7 @@ export const strings = {
     cloudSortRecent: 'Récents',
     cloudSortOldest: 'Plus anciens',
     cloudRefresh: 'Actualiser',
-    cloudLoginHint:
-      'Connectez-vous à votre compte  pour voir les projets créés sur le web.',
+    cloudLoginHint: 'Connectez-vous à votre compte  pour voir les projets créés sur le web.',
     cloudEmpty: 'Aucun projet web pour le moment.',
     cloudError: 'Échec du chargement. Réessayez plus tard.',
     cloudRetry: 'Réessayer',
@@ -1094,8 +1090,7 @@ export const strings = {
     loginOpenShort: 'Ouvrir la page de connexion',
     loginCopyUrl: 'Copier le lien de connexion',
     loginCopied: 'Copié',
-    loginNetworkError:
-      'Impossible de joindre  — vérifiez votre réseau ou vos paramètres de proxy',
+    loginNetworkError: 'Impossible de joindre  — vérifiez votre réseau ou vos paramètres de proxy',
     loginExpired: 'L’autorisation a expiré — cliquez pour réessayer',
     loginFailed: 'Échec de la connexion — cliquez pour réessayer',
     loggingOut: 'Déconnexion…',
@@ -1349,8 +1344,7 @@ export const strings = {
     loginOpenShort: 'Anmeldeseite manuell öffnen',
     loginCopyUrl: 'Anmeldelink kopieren',
     loginCopied: 'Kopiert',
-    loginNetworkError:
-      ' ist nicht erreichbar — prüfen Sie Netzwerk- oder Proxy-Einstellungen',
+    loginNetworkError: ' ist nicht erreichbar — prüfen Sie Netzwerk- oder Proxy-Einstellungen',
     loginExpired: 'Die Autorisierung ist abgelaufen — klicken Sie zum Wiederholen',
     loginFailed: 'Anmeldung fehlgeschlagen — klicken Sie zum Wiederholen',
     loggingOut: 'Abmelden…',
@@ -1410,8 +1404,7 @@ export const strings = {
     setAiMaxTokensDesc:
       'Ausgabe-Budget pro Durchlauf. Denk-Modelle verbrauchen es beim Reasoning; ist es erschöpft, kommt eine leere Antwort zurück — dann diesen Wert erhöhen.',
     setSecAiMedia: 'KI-Medien & Suche',
-    setAiMediaHint:
-      'Bildgenerierung und Bild-/Videoanalyse nutzen deine -Anmeldung.',
+    setAiMediaHint: 'Bildgenerierung und Bild-/Videoanalyse nutzen deine -Anmeldung.',
     setAiImageModel: 'Bildmodell',
     setAiAnalysisModel: 'Analysemodell',
     setAiSearchHint:
@@ -1488,8 +1481,7 @@ export const strings = {
     cloudSortRecent: 'Recientes',
     cloudSortOldest: 'Más antiguos',
     cloudRefresh: 'Actualizar',
-    cloudLoginHint:
-      'Inicia sesión en tu cuenta de  para ver los proyectos creados en la web.',
+    cloudLoginHint: 'Inicia sesión en tu cuenta de  para ver los proyectos creados en la web.',
     cloudEmpty: 'Aún no hay proyectos en la web.',
     cloudError: 'Error al cargar. Inténtalo más tarde.',
     cloudRetry: 'Reintentar',
@@ -1603,8 +1595,7 @@ export const strings = {
     loginOpenShort: 'Abrir página de inicio de sesión',
     loginCopyUrl: 'Copiar enlace de inicio de sesión',
     loginCopied: 'Copiado',
-    loginNetworkError:
-      'No se puede conectar con  — compruebe su red o la configuración del proxy',
+    loginNetworkError: 'No se puede conectar con  — compruebe su red o la configuración del proxy',
     loginExpired: 'La autorización ha caducado — haga clic para reintentar',
     loginFailed: 'Error al iniciar sesión — haga clic para reintentar',
     loggingOut: 'Cerrando sesión…',
@@ -1909,8 +1900,7 @@ export const strings = {
     setAiMaxTokensDesc:
       'งบผลลัพธ์ต่อหนึ่งรอบ โมเดลแบบใช้เหตุผลจะใช้ส่วนหนึ่งไปกับการคิด หากงบหมด คำตอบอาจกลับมาว่างเปล่า ให้เพิ่มค่านี้',
     setSecAiMedia: 'สื่อ AI และการค้นหา',
-    setAiMediaHint:
-      'การสร้างภาพและการวิเคราะห์ภาพ/วิดีโอใช้การลงชื่อเข้าใช้  ของคุณ',
+    setAiMediaHint: 'การสร้างภาพและการวิเคราะห์ภาพ/วิดีโอใช้การลงชื่อเข้าใช้  ของคุณ',
     setAiImageModel: 'โมเดลสร้างภาพ',
     setAiAnalysisModel: 'โมเดลวิเคราะห์',
     setAiSearchHint:
@@ -2097,8 +2087,7 @@ export const strings = {
     loginOpenShort: 'Buka halaman login secara manual',
     loginCopyUrl: 'Salin tautan login',
     loginCopied: 'Disalin',
-    loginNetworkError:
-      'Tidak dapat terhubung ke  — periksa jaringan atau pengaturan proxy Anda',
+    loginNetworkError: 'Tidak dapat terhubung ke  — periksa jaringan atau pengaturan proxy Anda',
     loginExpired: 'Otorisasi kedaluwarsa — klik untuk mencoba lagi',
     loginFailed: 'Login gagal — klik untuk mencoba lagi',
     loggingOut: 'Keluar…',
@@ -2156,8 +2145,7 @@ export const strings = {
     setAiMaxTokensDesc:
       'Anggaran keluaran untuk satu giliran. Model penalaran memakainya untuk berpikir; jika habis, balasan datang kosong — naikkan nilai ini.',
     setSecAiMedia: 'Media & Pencarian AI',
-    setAiMediaHint:
-      'Pembuatan gambar dan analisis gambar/video menggunakan login  Anda.',
+    setAiMediaHint: 'Pembuatan gambar dan analisis gambar/video menggunakan login  Anda.',
     setAiImageModel: 'Model gambar',
     setAiAnalysisModel: 'Model analisis',
     setAiSearchHint:
@@ -2405,8 +2393,7 @@ export const strings = {
     setAiMaxTokensDesc:
       'Бюджет вывода за один ход. Модели рассуждений тратят его на размышления: если бюджет иссякнет, ответ придёт пустым — увеличьте значение.',
     setSecAiMedia: 'Медиа и поиск ИИ',
-    setAiMediaHint:
-      'Генерация изображений и анализ изображений/видео используют ваш вход в .',
+    setAiMediaHint: 'Генерация изображений и анализ изображений/видео используют ваш вход в .',
     setAiImageModel: 'Модель изображений',
     setAiAnalysisModel: 'Модель анализа',
     setAiSearchHint:
@@ -2893,8 +2880,7 @@ export const strings = {
     setAiMaxTokensDesc:
       'Orçamento de saída por turno. Modelos de raciocínio gastam-no pensando; se esgotar, a resposta vem vazia — aumente este valor.',
     setSecAiMedia: 'Mídia e busca de IA',
-    setAiMediaHint:
-      'A geração de imagens e a análise de imagens/vídeos usam o seu login do .',
+    setAiMediaHint: 'A geração de imagens e a análise de imagens/vídeos usam o seu login do .',
     setAiImageModel: 'Modelo de imagem',
     setAiAnalysisModel: 'Modelo de análise',
     setAiSearchHint:
@@ -3073,8 +3059,7 @@ export const strings = {
     loginOpenShort: 'Apri la pagina di accesso',
     loginCopyUrl: 'Copia il link di accesso',
     loginCopied: 'Copiato',
-    loginNetworkError:
-      'Impossibile raggiungere  — controlla la rete o le impostazioni del proxy',
+    loginNetworkError: 'Impossibile raggiungere  — controlla la rete o le impostazioni del proxy',
     loginExpired: 'Autorizzazione scaduta — fai clic per riprovare',
     loginFailed: 'Accesso non riuscito — fai clic per riprovare',
     loggingOut: 'Disconnessione…',
@@ -3372,8 +3357,7 @@ export const strings = {
     setAiMaxTokensDesc:
       'Budżet wyjścia na jedną turę. Modele rozumowania zużywają go na myślenie; gdy się wyczerpie, odpowiedź przychodzi pusta — zwiększ tę wartość.',
     setSecAiMedia: 'Media i wyszukiwanie AI',
-    setAiMediaHint:
-      'Generowanie obrazów i analiza obrazów/wideo korzystają z logowania .',
+    setAiMediaHint: 'Generowanie obrazów i analiza obrazów/wideo korzystają z logowania .',
     setAiImageModel: 'Model obrazów',
     setAiAnalysisModel: 'Model analizy',
     setAiSearchHint:
@@ -3603,8 +3587,7 @@ export const strings = {
     setAiMaxTokensDesc:
       'Rozpočet výstupu na jeden tah. Modely s uvažováním jeho část spotřebují na přemýšlení, takže po vyčerpání rozpočtu může být odpověď prázdná; v takovém případě hodnotu zvyšte.',
     setSecAiMedia: 'AI média a vyhledávání',
-    setAiMediaHint:
-      'Generování obrázků a analýza obrázků/videí používají vaše přihlášení ke .',
+    setAiMediaHint: 'Generování obrázků a analýza obrázků/videí používají vaše přihlášení ke .',
     setAiImageModel: 'Model pro obrázky',
     setAiAnalysisModel: 'Model pro analýzu',
     setAiSearchHint:
@@ -3688,8 +3671,7 @@ export const strings = {
     cloudSortRecent: 'Recent',
     cloudSortOldest: 'Oudste',
     cloudRefresh: 'Vernieuwen',
-    cloudLoginHint:
-      'Log in op je -account om projecten te zien die je op het web hebt gemaakt.',
+    cloudLoginHint: 'Log in op je -account om projecten te zien die je op het web hebt gemaakt.',
     cloudEmpty: 'Nog geen webprojecten.',
     cloudError: 'Laden mislukt. Probeer het later opnieuw.',
     cloudRetry: 'Opnieuw proberen',
@@ -3854,8 +3836,7 @@ export const strings = {
     setAiMaxTokensDesc:
       'Uitvoerbudget voor één beurt. Redeneermodellen geven dit uit aan denken; is het op, dan komt een leeg antwoord terug — verhoog deze waarde.',
     setSecAiMedia: 'AI-media en zoeken',
-    setAiMediaHint:
-      'Afbeeldingen genereren en afbeelding-/video-analyse gebruiken je -aanmelding.',
+    setAiMediaHint: 'Afbeeldingen genereren en afbeelding-/video-analyse gebruiken je -aanmelding.',
     setAiImageModel: 'Afbeeldingsmodel',
     setAiAnalysisModel: 'Analysemodel',
     setAiSearchHint:
@@ -4033,8 +4014,7 @@ export const strings = {
     loginOpenShort: 'Buka halaman log masuk secara manual',
     loginCopyUrl: 'Salin pautan log masuk',
     loginCopied: 'Disalin',
-    loginNetworkError:
-      'Tidak dapat menyambung ke  — semak rangkaian atau tetapan proksi anda',
+    loginNetworkError: 'Tidak dapat menyambung ke  — semak rangkaian atau tetapan proksi anda',
     loginExpired: 'Kebenaran telah tamat tempoh — klik untuk cuba lagi',
     loginFailed: 'Log masuk gagal — klik untuk cuba lagi',
     loggingOut: 'Sedang log keluar…',
@@ -4095,8 +4075,7 @@ export const strings = {
     setAiMaxTokensDesc:
       'Belanjawan output untuk satu pusingan. Model penaakulan menghabiskannya untuk berfikir; jika habis, balasan datang kosong — tingkatkan nilai ini.',
     setSecAiMedia: 'Media & Carian AI',
-    setAiMediaHint:
-      'Penjanaan imej dan analisis imej/video menggunakan log masuk  anda.',
+    setAiMediaHint: 'Penjanaan imej dan analisis imej/video menggunakan log masuk  anda.',
     setAiImageModel: 'Model imej',
     setAiAnalysisModel: 'Model analisis',
     setAiSearchHint:
@@ -4566,8 +4545,7 @@ export const strings = {
     setAiMaxTokensDesc:
       'एक टर्न का आउटपुट बजट। रीज़निंग मॉडल इसका कुछ हिस्सा सोचने में खर्च करते हैं; बजट खत्म होने पर उत्तर खाली आ सकता है — ऐसा हो तो इसे बढ़ाएँ।',
     setSecAiMedia: 'AI मीडिया और खोज',
-    setAiMediaHint:
-      'इमेज जनरेशन और इमेज/वीडियो विश्लेषण आपके  साइन-इन का उपयोग करते हैं।',
+    setAiMediaHint: 'इमेज जनरेशन और इमेज/वीडियो विश्लेषण आपके  साइन-इन का उपयोग करते हैं।',
     setAiImageModel: 'इमेज मॉडल',
     setAiAnalysisModel: 'विश्लेषण मॉडल',
     setAiSearchHint:
@@ -4802,8 +4780,7 @@ export const strings = {
     setAiMediaHint: '生圖與圖片/影片解析使用  帳號登入。',
     setAiImageModel: '生圖模型',
     setAiAnalysisModel: '解析模型',
-    setAiSearchHint:
-      '網頁與圖片搜尋使用  帳號登入；未登入或關閉雲端工具時改用免費來源。',
+    setAiSearchHint: '網頁與圖片搜尋使用  帳號登入；未登入或關閉雲端工具時改用免費來源。',
     setAiSearchSerperHint: 'Serper 用你的 key 同時提供網頁與圖片搜尋。',
     setAiSearchTavilyHint: 'Tavily 用你的 key 提供網頁搜尋；圖片搜尋改用免費來源。',
     setAiCapImage: '生圖',
