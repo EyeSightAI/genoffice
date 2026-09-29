@@ -52,7 +52,6 @@ describe('Settings AI panel preferences', () => {
       setAiPanelPrefs,
       getUpdateChannel: async () => 'stable',
       getAppVersion: async () => '1.0.0',
-      githubStars: async () => null,
     } as unknown as HomeApi
 
     await act(async () => {
@@ -109,7 +108,6 @@ describe('Settings AI panel preferences', () => {
       setAiPanelPrefs,
       getUpdateChannel: async () => 'stable',
       getAppVersion: async () => '1.0.0',
-      githubStars: async () => null,
     } as unknown as HomeApi
 
     await act(async () => {

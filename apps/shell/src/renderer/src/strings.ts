@@ -190,8 +190,8 @@ export const strings = {
     setAiGskTools: '云工具',
     setAiGskToolsDesc:
       '服务商选择  时，网页搜索、生图与媒体解析经  云端并消耗积分；关闭后搜索改用免费来源， 生图工具不可用。',
-    setGithub: '开源项目',
-    starOnGitHub: '去 GitHub 点 Star',
+    setGithub: '加入我们',
+    starOnGitHub: '访问官网',
     starPromptTitle: '喜欢 UToOffice 吗？',
     starPromptTitleN: '你已经用 UToOffice 打开了 {n} 个文档',
     starPromptBody: 'UToOffice 是免费开源软件。到 GitHub 给我们一个 Star，是对团队最好的支持。',
@@ -421,8 +421,8 @@ export const strings = {
     setAiGskTools: 'cloud tools',
     setAiGskToolsDesc:
       'Web search, image generation and media analysis run through  and use credits while their provider is set to ; when off, search uses free sources and the  image tools are unavailable.',
-    setGithub: 'Open Source',
-    starOnGitHub: 'Star on GitHub',
+    setGithub: 'Join Us',
+    starOnGitHub: 'Visit Site',
     starPromptTitle: 'Enjoying UToOffice?',
     starPromptTitleN: "You've opened {n} documents with UToOffice",
     starPromptBody:
@@ -664,8 +664,8 @@ export const strings = {
     setAiGskTools: ' クラウドツール',
     setAiGskToolsDesc:
       'プロバイダーが  のとき、Web 検索・画像生成・メディア解析は  経由でクレジットを消費します。オフにすると検索は無料ソースを使い、 の画像ツールは利用できません。',
-    setGithub: 'オープンソース',
-    starOnGitHub: 'GitHub でスターを付ける',
+    setGithub: '参加する',
+    starOnGitHub: '公式サイトへ',
     starPromptTitle: 'UToOffice はいかがですか？',
     starPromptTitleN: 'UToOffice で {n} 件のドキュメントを開きました',
     starPromptBody:
@@ -905,8 +905,8 @@ export const strings = {
     setAiGskTools: ' 클라우드 도구',
     setAiGskToolsDesc:
       '제공자가 일 때 웹 검색, 이미지 생성, 미디어 분석은 를 거쳐 크레딧을 사용합니다. 끄면 검색은 무료 소스를 사용하고  이미지 도구는 사용할 수 없습니다.',
-    setGithub: '오픈 소스',
-    starOnGitHub: 'GitHub에서 스타 누르기',
+    setGithub: '참여하기',
+    starOnGitHub: '사이트 방문',
     starPromptTitle: 'UToOffice가 마음에 드시나요?',
     starPromptTitleN: 'UToOffice로 문서를 {n}개 열어보셨네요',
     starPromptBody:
@@ -1153,8 +1153,8 @@ export const strings = {
     setAiGskTools: 'Outils cloud ',
     setAiGskToolsDesc:
       "Lorsque leur fournisseur est , la recherche web, la génération d'images et l'analyse de médias passent par  et consomment des crédits ; désactivé, la recherche utilise des sources gratuites et les outils d'image  sont indisponibles.",
-    setGithub: 'Open source',
-    starOnGitHub: 'Mettre une étoile sur GitHub',
+    setGithub: 'Join Us',
+    starOnGitHub: 'Visiter le site',
     starPromptTitle: 'UToOffice vous plaît ?',
     starPromptTitleN: 'Vous avez ouvert {n} documents avec UToOffice',
     starPromptBody:
@@ -1403,8 +1403,8 @@ export const strings = {
     setAiGskTools: '-Cloud-Tools',
     setAiGskToolsDesc:
       'Steht ihr Anbieter auf , laufen Websuche, Bildgenerierung und Medienanalyse über  und verbrauchen Credits; ausgeschaltet nutzt die Suche kostenlose Quellen und die -Bildwerkzeuge sind nicht verfügbar.',
-    setGithub: 'Open Source',
-    starOnGitHub: 'Auf GitHub Stern geben',
+    setGithub: 'Join Us',
+    starOnGitHub: 'Website besuchen',
     starPromptTitle: 'Gefällt Ihnen UToOffice?',
     starPromptTitleN: 'Sie haben {n} Dokumente mit UToOffice geöffnet',
     starPromptBody:
@@ -1652,8 +1652,8 @@ export const strings = {
     setAiGskTools: 'Herramientas en la nube de ',
     setAiGskToolsDesc:
       'Cuando su proveedor es , la búsqueda web, la generación de imágenes y el análisis de medios pasan por  y consumen créditos; desactivado, la búsqueda usa fuentes gratuitas y las herramientas de imagen de  no están disponibles.',
-    setGithub: 'Código abierto',
-    starOnGitHub: 'Dar una estrella en GitHub',
+    setGithub: 'Únete a nosotros',
+    starOnGitHub: 'Visitar sitio',
     starPromptTitle: '¿Te gusta UToOffice?',
     starPromptTitleN: 'Has abierto {n} documentos con UToOffice',
     starPromptBody:
@@ -1893,8 +1893,8 @@ export const strings = {
     setAiGskTools: 'เครื่องมือคลาวด์ ',
     setAiGskToolsDesc:
       'เมื่อผู้ให้บริการตั้งเป็น  การค้นหาเว็บ การสร้างภาพ และการวิเคราะห์สื่อจะผ่าน  และใช้เครดิต เมื่อปิด การค้นหาจะใช้แหล่งข้อมูลฟรีและเครื่องมือภาพของ  จะใช้ไม่ได้',
-    setGithub: 'โอเพนซอร์ส',
-    starOnGitHub: 'กดดาวบน GitHub',
+    setGithub: 'เข้าร่วมกับเรา',
+    starOnGitHub: 'เยี่ยมชมเว็บไซต์',
     starPromptTitle: 'ชอบ UToOffice ไหม?',
     starPromptTitleN: 'คุณเปิดเอกสารด้วย UToOffice ไปแล้ว {n} ไฟล์',
     starPromptBody:
@@ -2135,8 +2135,8 @@ export const strings = {
     setAiGskTools: 'Alat cloud ',
     setAiGskToolsDesc:
       'Saat penyedianya disetel ke , pencarian web, pembuatan gambar, dan analisis media berjalan lewat  dan memakai kredit; jika dimatikan, pencarian memakai sumber gratis dan alat gambar  tidak tersedia.',
-    setGithub: 'Sumber Terbuka',
-    starOnGitHub: 'Beri Bintang di GitHub',
+    setGithub: 'Bergabung',
+    starOnGitHub: 'Kunjungi situs',
     starPromptTitle: 'Suka UToOffice?',
     starPromptTitleN: 'Anda telah membuka {n} dokumen dengan UToOffice',
     starPromptBody:
@@ -2380,8 +2380,8 @@ export const strings = {
     setAiGskTools: 'Облачные инструменты ',
     setAiGskToolsDesc:
       'Когда провайдером выбран , веб-поиск, генерация изображений и анализ медиа идут через  и расходуют кредиты; при выключении поиск использует бесплатные источники, а инструменты изображений  недоступны.',
-    setGithub: 'Открытый код',
-    starOnGitHub: 'Поставить звезду на GitHub',
+    setGithub: 'Присоединиться',
+    starOnGitHub: 'Посетить сайт',
     starPromptTitle: 'Нравится UToOffice?',
     starPromptTitleN: 'Вы уже открыли {n} документов в UToOffice',
     starPromptBody:
@@ -2623,8 +2623,8 @@ export const strings = {
     setAiGskTools: 'أدوات  السحابية',
     setAiGskToolsDesc:
       'عندما يكون المزوّد ، يمر البحث في الويب وتوليد الصور وتحليل الوسائط عبر  ويستهلك الرصيد؛ عند الإيقاف يستخدم البحث مصادر مجانية وتصبح أدوات صور  غير متاحة.',
-    setGithub: 'مفتوح المصدر',
-    starOnGitHub: 'ضع نجمة على GitHub',
+    setGithub: 'انضم إلينا',
+    starOnGitHub: 'زيارة الموقع',
     starPromptTitle: 'هل أعجبك UToOffice؟',
     starPromptTitleN: 'لقد فتحت {n} من المستندات في UToOffice',
     starPromptBody: 'UToOffice مجاني ومفتوح المصدر. نجمة على GitHub هي أفضل دعم للفريق.',
@@ -2861,8 +2861,8 @@ export const strings = {
     setAiGskTools: 'Ferramentas na nuvem ',
     setAiGskToolsDesc:
       'Quando o provedor é o , a busca na web, a geração de imagens e a análise de mídia passam pelo  e consomem créditos; desativado, a busca usa fontes gratuitas e as ferramentas de imagem do  ficam indisponíveis.',
-    setGithub: 'Código aberto',
-    starOnGitHub: 'Dar uma estrela no GitHub',
+    setGithub: 'Junte-se a nós',
+    starOnGitHub: 'Visitar site',
     starPromptTitle: 'Gostando do UToOffice?',
     starPromptTitleN: 'Você já abriu {n} documentos com o UToOffice',
     starPromptBody:
@@ -3097,8 +3097,8 @@ export const strings = {
     setAiGskTools: 'Strumenti cloud ',
     setAiGskToolsDesc:
       "Quando il provider è , la ricerca web, la generazione di immagini e l'analisi dei media passano da  e consumano crediti; se disattivato, la ricerca usa fonti gratuite e gli strumenti immagine di  non sono disponibili.",
-    setGithub: 'Open source',
-    starOnGitHub: 'Metti una stella su GitHub',
+    setGithub: 'Join Us',
+    starOnGitHub: 'Visita il sito',
     starPromptTitle: 'Ti piace UToOffice?',
     starPromptTitleN: 'Hai aperto {n} documenti con UToOffice',
     starPromptBody:
@@ -3332,8 +3332,8 @@ export const strings = {
     setAiGskTools: 'Narzędzia chmurowe ',
     setAiGskToolsDesc:
       'Gdy dostawcą jest , wyszukiwanie w sieci, generowanie obrazów i analiza mediów przechodzą przez  i zużywają kredyty; po wyłączeniu wyszukiwanie używa darmowych źródeł, a narzędzia obrazów  są niedostępne.',
-    setGithub: 'Open source',
-    starOnGitHub: 'Gwiazdka na GitHubie',
+    setGithub: 'Join Us',
+    starOnGitHub: 'Odwiedź stronę',
     starPromptTitle: 'Podoba Ci się UToOffice?',
     starPromptTitleN: 'Otwarto już {n} dokumentów w UToOffice',
     starPromptBody:
@@ -3559,8 +3559,8 @@ export const strings = {
     setAiGskTools: 'Cloudové nástroje ',
     setAiGskToolsDesc:
       'Webové vyhledávání, generování obrázků a analýza médií běží přes  a čerpají kredity, pokud je jejich poskytovatel nastaven na ; při vypnutí vyhledávání používá bezplatné zdroje a obrázkové nástroje  nejsou dostupné.',
-    setGithub: 'Open source',
-    starOnGitHub: 'Dát hvězdičku na GitHubu',
+    setGithub: 'Join Us',
+    starOnGitHub: 'Navštívit web',
     starPromptTitle: 'Líbí se vám UToOffice?',
     starPromptTitleN: 'V UToOffice jste otevřeli už {n} dokumentů',
     starPromptBody:
@@ -3805,8 +3805,8 @@ export const strings = {
     setAiGskTools: '-cloudtools',
     setAiGskToolsDesc:
       'Staat de provider op , dan lopen zoeken op het web, afbeeldingen genereren en media-analyse via  en kosten ze credits; uitgeschakeld gebruikt zoeken gratis bronnen en zijn de -afbeeldingstools niet beschikbaar.',
-    setGithub: 'Open source',
-    starOnGitHub: 'Geef een ster op GitHub',
+    setGithub: 'Join Us',
+    starOnGitHub: 'Bezoek site',
     starPromptTitle: 'Bevalt UToOffice?',
     starPromptTitleN: 'Je hebt al {n} documenten geopend met UToOffice',
     starPromptBody:
@@ -4041,8 +4041,8 @@ export const strings = {
     setAiGskTools: 'Alat awan ',
     setAiGskToolsDesc:
       'Apabila pembekalnya ditetapkan kepada , carian web, penjanaan imej dan analisis media melalui  dan menggunakan kredit; apabila dimatikan, carian menggunakan sumber percuma dan alat imej  tidak tersedia.',
-    setGithub: 'Sumber Terbuka',
-    starOnGitHub: 'Beri Bintang di GitHub',
+    setGithub: 'Bergabung',
+    starOnGitHub: 'Kunjungi situs',
     starPromptTitle: 'Suka UToOffice?',
     starPromptTitleN: 'Anda telah membuka {n} dokumen dengan UToOffice',
     starPromptBody:
@@ -4271,8 +4271,8 @@ export const strings = {
     setAiGskTools: 'כלי הענן של ',
     setAiGskToolsDesc:
       'כשהספק מוגדר ל-, חיפוש באינטרנט, יצירת תמונות וניתוח מדיה עוברים דרך  וצורכים קרדיטים; כשהוא כבוי החיפוש משתמש במקורות חינמיים וכלי התמונות של  אינם זמינים.',
-    setGithub: 'קוד פתוח',
-    starOnGitHub: 'תנו כוכב ב-GitHub',
+    setGithub: 'הצטרפו אלינו',
+    starOnGitHub: 'בקרו באתר',
     starPromptTitle: 'נהנים מ-UToOffice?',
     starPromptTitleN: 'פתחת {n} מסמכים עם UToOffice',
     starPromptBody: 'UToOffice חינמי ובקוד פתוח. כוכב ב-GitHub הוא התמיכה הטובה ביותר בצוות.',
@@ -4505,8 +4505,8 @@ export const strings = {
     setAiGskTools: ' क्लाउड टूल',
     setAiGskToolsDesc:
       'जब प्रदाता  हो, वेब खोज, इमेज जनरेशन और मीडिया विश्लेषण  से होकर चलते हैं और क्रेडिट खर्च करते हैं; बंद होने पर खोज मुफ़्त स्रोत उपयोग करती है और  इमेज टूल उपलब्ध नहीं रहते।',
-    setGithub: 'ओपन सोर्स',
-    starOnGitHub: 'GitHub पर स्टार दें',
+    setGithub: 'जुड़ें',
+    starOnGitHub: 'साइट देखें',
     starPromptTitle: 'UToOffice पसंद आ रहा है?',
     starPromptTitleN: 'आपने UToOffice में {n} दस्तावेज़ खोले हैं',
     starPromptBody:
@@ -4731,8 +4731,8 @@ export const strings = {
     setAiGskTools: ' 雲端工具',
     setAiGskToolsDesc:
       '服務商選擇  時，網頁搜尋、生圖與媒體解析經  雲端並消耗點數；關閉後搜尋改用免費來源， 生圖工具不可用。',
-    setGithub: '開源專案',
-    starOnGitHub: '到 GitHub 給我們一顆星',
+    setGithub: '加入我們',
+    starOnGitHub: '造訪官網',
     starPromptTitle: '喜歡 UToOffice 嗎？',
     starPromptTitleN: '你已經用 UToOffice 開啟了 {n} 個文件',
     starPromptBody: 'UToOffice 是免費的開源軟體。到 GitHub 給我們一顆星，是對團隊最好的支持。',
