@@ -82,6 +82,14 @@ function typeInto(textarea: HTMLTextAreaElement, text: string) {
 beforeAll(() => {
   // jsdom has no scrollTo; the panel auto-scrolls its chat log
   Element.prototype.scrollTo ??= () => {}
+  // mock the preload bridge: AiPanel queries membership/gsk status on mount
+  Object.defineProperty(window, 'slidesApi', {
+    configurable: true,
+    value: {
+      membershipStatus: vi.fn(async () => ({ isPro: false })),
+      aiGskStatus: vi.fn(async () => ({ loggedIn: false })),
+    },
+  })
 })
 
 describe('AiPanel collapse (slides)', () => {
