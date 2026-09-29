@@ -481,14 +481,19 @@ function AccountEntry({
   // report logged-in) is discarded instead of resurrecting the UI
   const statusSeq = useRef(0)
 
-  // query login state once on mount
+  // query login state on mount + periodically (so refunds/expiry propagate without restart)
   useEffect(() => {
     let alive = true
-    void window.aiOffice.accountStatus?.().then((s) => {
-      if (alive) setStatus(s)
-    })
+    const refresh = () => {
+      void window.aiOffice.accountStatus?.().then((s) => {
+        if (alive) setStatus(s)
+      })
+    }
+    refresh()
+    const timer = setInterval(refresh, 5 * 60 * 1000)
     return () => {
       alive = false
+      clearInterval(timer)
     }
   }, [])
 

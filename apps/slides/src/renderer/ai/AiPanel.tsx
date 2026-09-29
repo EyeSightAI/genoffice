@@ -409,9 +409,21 @@ export function AiPanel({
   const [templateHint, setTemplateHint] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
 
-  // load membership (whether the "use current template" tab is unlocked)
+  // load membership (whether the "use current template" tab is unlocked); refresh periodically
+  // so a refund/expiry propagates without restarting the editor
   useEffect(() => {
-    void window.slidesApi.membershipStatus?.().then((s) => setIsPro(s?.isPro ?? false))
+    let alive = true
+    const refresh = () => {
+      void window.slidesApi.membershipStatus?.().then((s) => {
+        if (alive) setIsPro(s?.isPro ?? false)
+      })
+    }
+    refresh()
+    const timer = setInterval(refresh, 5 * 60 * 1000)
+    return () => {
+      alive = false
+      clearInterval(timer)
+    }
   }, [])
   const [chat, setChat] = useState<ChatEntry[]>([])
   /** Past conversation restored from JSONL (read-only transcript, not fed to the model) */
