@@ -354,10 +354,8 @@ function updateFeedBaseUrl(): string | null {
     const value = /^url:\s*['"]?([^'"\s]+)/m.exec(yml)?.[1]
     if (!value) return null
     const url = new URL(value)
-    // UToOffice update source is our own server (http mirror, fast in China). http/https allowed,
-    // but credential-bearing URLs are still rejected (prevents account/password leakage via feed).
-    if ((url.protocol !== 'https:' && url.protocol !== 'http:') || url.username || url.password)
-      return null
+    // The update feed base must be HTTPS (credentials would leak over plain HTTP).
+    if (url.protocol !== 'https:' || url.username || url.password) return null
     url.pathname = `${url.pathname.replace(/\/+$/, '')}/`
     url.search = ''
     url.hash = ''

@@ -581,14 +581,14 @@ if (winSignMode) {
   }
 }
 
-// UToOffice update source: our own server mirror (generic provider, fast in China).
-// The client (electron-updater) checks http://47.109.16.117/update/latest.yml for updates and
+// UToOffice update source: our own HTTPS server mirror (generic provider, fast in China).
+// The client (electron-updater) checks https://uto-office.cn/update/latest.yml for updates and
 // downloads the installer, no longer via GitHub Releases (slow/unreliable in China).
 // The server /www/wwwroot/update/ is synced by the release flow.
 config.publish = [
   {
     provider: 'generic',
-    url: 'http://47.109.16.117/update/',
+    url: 'https://uto-office.cn/update/',
   },
 ]
 

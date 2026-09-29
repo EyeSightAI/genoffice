@@ -465,7 +465,7 @@ describe('manual download fallback', () => {
     const actions = await failTwiceIntoManual(macFiles)
     actions.onOpenDownload()
     expect(openExternal).toHaveBeenCalledWith(
-      'https://github.com/genspark-ai/genoffice/releases/latest',
+      'https://github.com/EyeSightAI/genoffice/releases/latest',
     )
   })
 
@@ -476,7 +476,7 @@ describe('manual download fallback', () => {
     ])
     actions.onOpenDownload()
     expect(openExternal).toHaveBeenCalledWith(
-      'https://github.com/genspark-ai/genoffice/releases/latest',
+      'https://github.com/EyeSightAI/genoffice/releases/latest',
     )
   })
 })
