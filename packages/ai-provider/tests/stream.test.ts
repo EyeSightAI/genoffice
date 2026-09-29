@@ -933,7 +933,7 @@ describe('streamForProvider: 200 + non-stream JSON instead of SSE', () => {
           candidates: [
             {
               content: {
-                parts: [{ text: 'Out of quota, visit https://www.genspark.ai to top up.' }],
+                parts: [{ text: 'Out of quota, visit https://www.genspark.ai/pricing to top up.' }],
               },
             },
           ],
