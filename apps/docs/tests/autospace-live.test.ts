@@ -206,12 +206,12 @@ describe('hangul-space advance', () => {
 
   it('draws the wrapped space from the fixed half-width (0.5em) space face', () => {
     const rule = /\.doc-hangul-space\s*\{([^}]*)\}/.exec(read('../src/renderer/styles.css'))
-    expect(rule?.[1]).toContain("font-family: 'UToOffice Hangul Space'")
-    const face = /font-family: 'UToOffice Hangul Space';([^}]*)\}/.exec(
+    expect(rule?.[1]).toContain("font-family: 'GenOffice Hangul Space'")
+    const face = /font-family: 'GenOffice Hangul Space';([^}]*)\}/.exec(
       read('../src/renderer/fonts/fonts.css'),
     )
-    // UToOfficeCheLatinKR advances every glyph 0.5em (tools/build-kr-che-latin-font.py)
-    expect(face?.[1]).toContain('UToOfficeCheLatinKR.woff2')
+    // GenOfficeCheLatinKR advances every glyph 0.5em (tools/build-kr-che-latin-font.py)
+    expect(face?.[1]).toContain('GenOfficeCheLatinKR.woff2')
     expect(face?.[1]).toContain('unicode-range: U+0020;')
   })
 })

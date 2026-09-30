@@ -654,10 +654,10 @@ describe('cssFontFamily', () => {
     // DFKai-SB is missing on Word for Mac: Microsoft YaHei wholesale, with the
     // Latin alias for YaHei's digit widths
     expect(cssFontFamily('\u6a19\u6977\u9ad4')).toBe(
-      "'\u6a19\u6977\u9ad4','Microsoft YaHei','UToOffice YaHei Latin','PingFang SC','Noto Sans CJK SC',sans-serif",
+      "'\u6a19\u6977\u9ad4','Microsoft YaHei','GenOffice YaHei Latin','PingFang SC','Noto Sans CJK SC',sans-serif",
     )
     expect(cssFontFamily('DFKai-SB')).toBe(
-      "'DFKai-SB','Microsoft YaHei','UToOffice YaHei Latin','PingFang SC','Noto Sans CJK SC',sans-serif",
+      "'DFKai-SB','Microsoft YaHei','GenOffice YaHei Latin','PingFang SC','Noto Sans CJK SC',sans-serif",
     )
     expect(lineHeightFactor('DFKai-SB')).toBe(1.7143)
     expect(cssFontFamily('楷体_GB2312')).toBe(
@@ -908,7 +908,7 @@ describe('cssFontFamily', () => {
       "'Batang','GenOffice Batang','GenOffice Serif KR','GenOffice Myungjo','Noto Serif KR',serif",
     )
     expect(cssFontFamily('微軟正黑體')).toBe(
-      "'微軟正黑體','Microsoft JhengHei','PingFang TC','UToOffice Heiti TC','Noto Sans TC',sans-serif",
+      "'微軟正黑體','Microsoft JhengHei','PingFang TC','GenOffice Heiti TC','Noto Sans TC',sans-serif",
     )
     expect(cssFontFamily('新細明體')).toBe(
       "'\u65b0\u7d30\u660e\u9ad4','PMingLiU GO','GenOffice MingLiU','GenOffice Fullwidth TC','GenOffice Songti TC','Songti TC','Noto Serif TC',serif",
@@ -957,10 +957,10 @@ describe('cssFontFamily', () => {
 
     it('Tamil declares lead the bundled Latha-metric face', () => {
       expect(cssFontFamily('Latha')).toBe(
-        "'Latha','UToOffice Tamil','InaiMathi','Tamil MN','Tamil Sangam MN',sans-serif",
+        "'Latha','GenOffice Tamil','InaiMathi','Tamil MN','Tamil Sangam MN',sans-serif",
       )
       expect(cssFontFamily('Noto Sans Tamil')).toBe(
-        "'Noto Sans Tamil','UToOffice Tamil','InaiMathi','Tamil MN','Tamil Sangam MN',sans-serif",
+        "'Noto Sans Tamil','GenOffice Tamil','InaiMathi','Tamil MN','Tamil Sangam MN',sans-serif",
       )
     })
   })
@@ -1347,7 +1347,7 @@ describe('Korean line metrics', () => {
     // factor exactly 1.500 = hhea/typo); the bundled Latin subset leads
     expect(lineHeightFactor('Poppins')).toBe(1.5)
     expect(cssFontFamily('Poppins')).toBe(
-      "'Poppins','UToOffice Poppins','Noto Sans CJK SC',sans-serif",
+      "'Poppins','GenOffice Poppins','Noto Sans CJK SC',sans-serif",
     )
   })
 

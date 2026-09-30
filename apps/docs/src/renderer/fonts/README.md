@@ -66,7 +66,7 @@ chain order; advances are 1.0em everywhere, so line breaking is unchanged.
 | ------------------------------------ | ----------------------------------------------------------- |
 | GenOffice Serif KR (subset woff2)    | Batang-metric stand-in for Korean serif families            |
 | GenOffice Sans KR (subset woff2)     | fallback for Korean sans families (Malgun etc.)             |
-| UToOffice Che Latin KR (ASCII woff2) | half-width Latin for BatangChe/GulimChe/DotumChe/GungsuhChe |
+| GenOffice Che Latin KR (ASCII woff2) | half-width Latin for BatangChe/GulimChe/DotumChe/GungsuhChe |
 
 Source: Noto Serif/Sans CJK KR Regular from [notofonts/noto-cjk](https://github.com/notofonts/noto-cjk)
 (SIL OFL 1.1), subset with fonttools to the 2,350 KS X 1001 syllables + jamo
@@ -84,7 +84,7 @@ ink widths and side bearings of Batang/Malgun
 (`tools/normalize-kr-latin-metrics.py`,
 `tools/scale-kr-sans-latin-ink.py`).
 
-`UToOfficeCheLatinKR.woff2` is an ASCII-only derivative of GenOffice Sans KR.
+`GenOfficeCheLatinKR.woff2` is an ASCII-only derivative of GenOffice Sans KR.
 `tools/build-kr-che-latin-font.py` gives its Noto-derived outlines fixed 0.5em
 advances and transforms them to measured DotumChe ink boxes. Microsoft Office
 fonts are build-time measurement references only; no Microsoft outlines are
@@ -109,16 +109,16 @@ Batang-normalized subset above ships 1.0/0.333/0.596 — +6.4% per hangul line.
 Subset to the same ranges as the KR fallbacks (KS X 1001 syllables + jamo +
 Basic Latin/punctuation/fullwidth forms), advances **unmodified**
 (`tools/build-gothic-kr-font.py`) and checked in as
-`UToOfficeGothicKR-Regular-subset.woff2`. Renamed per OFL (the upstream
+`GenOfficeGothicKR-Regular-subset.woff2`. Renamed per OFL (the upstream
 Reserved Font Names include "Nanum" and "NanumGothic"; subsetting is a
 modification). The exact NHN copyright/Reserved Font Name notice and the full
 OFL 1.1 text are in `LICENSE-OFL.txt`.
 
-### UToOffice UI Kana JP
+### GenOffice UI Kana JP
 
 | Font                                      | Role                                                |
 | ----------------------------------------- | --------------------------------------------------- |
-| UToOffice UI Kana JP (Regular/Bold woff2) | Meiryo UI-advance kana/JP punctuation for the alias |
+| GenOffice UI Kana JP (Regular/Bold woff2) | Meiryo UI-advance kana/JP punctuation for the alias |
 
 Source: Noto Sans JP variable font from [notofonts/noto-cjk](https://github.com/notofonts/noto-cjk)
 (SIL OFL 1.1), instanced at wght 400/700. Word for Mac renders Meiryo UI with
@@ -137,7 +137,7 @@ outlines are modified).
 
 | Font                             | Role                                 |
 | -------------------------------- | ------------------------------------ |
-| UToOffice Poppins (subset woff2) | real face for Poppins-declaring docs |
+| GenOffice Poppins (subset woff2) | real face for Poppins-declaring docs |
 
 Source: Poppins Regular/Bold from [google/fonts](https://github.com/google/fonts/tree/main/ofl/poppins)
 (SIL OFL 1.1). Poppins is an M365 cloud font: Word downloads the real face and
@@ -155,7 +155,7 @@ order. Italic synthesizes oblique from these faces.
 
 | Font                    | Role                                     |
 | ----------------------- | ---------------------------------------- |
-| UToOffice Tamil (woff2) | Latha-metric stand-in for Tamil families |
+| GenOffice Tamil (woff2) | Latha-metric stand-in for Tamil families |
 
 Source: Noto Sans Tamil Regular from [notofonts](https://github.com/notofonts/notofonts.github.io)
 (SIL OFL 1.1). Word substitutes missing Tamil families with Latha; Chromium's
