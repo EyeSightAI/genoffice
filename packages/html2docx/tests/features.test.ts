@@ -837,7 +837,9 @@ test('preserves short literal markers on list items', async () => {
     `<!doctype html><html><head><style>
       ol { list-style:none; padding:0; }
       li { position:relative; padding-left:36px; }
+      li::before { position:absolute; left:8px; color:#1e40af; }
       li:nth-child(1)::before { content:"① "; }
+      li:nth-child(2)::before { content:"② "; }
     </style></head><body>
       <ol><li>First choice</li><li>Second choice</li></ol>
     </body></html>`,
