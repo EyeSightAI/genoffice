@@ -393,7 +393,7 @@ export function AiPanel({
   useEffect(() => {
     let alive = true
     const refresh = () => {
-      void window.slidesApi.membershipStatus?.().then((s) => {
+      void window.slidesApi?.membershipStatus?.().then((s) => {
         if (alive) setIsPro(s?.isPro ?? false)
       })
     }
