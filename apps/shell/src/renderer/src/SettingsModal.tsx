@@ -32,7 +32,7 @@ import { IntegrationsPane, skillUpdateDue } from './IntegrationsPane'
 import './settings.css'
 
 // ── Settings modal (opened from the account menu) ─────────
-// Genspark-style two-pane dialog: section nav on the left, fields on the right.
+// -style two-pane dialog: section nav on the left, fields on the right.
 // All values go through the existing home IPC; nothing is stored locally.
 
 // sorted by ISO 639 language code — native-script labels have no natural
@@ -328,7 +328,7 @@ function AiModelPane({ t }: { t: TFunc }) {
   // endpoint itself. Keyed on the catalog's `needsBaseUrl` flag rather than on
   // the literal 'custom' id, so it follows the slot rather than the name, and
   // stays a no-op while any other provider is selected — a local server saved
-  // months ago is never contacted while Genspark is in use.
+  // months ago is never contacted while  is in use.
   const endpointProvider = catalog.find(
     (entry) => entry.id === settings?.provider && entry.needsBaseUrl,
   )?.id
@@ -391,7 +391,7 @@ function AiModelPane({ t }: { t: TFunc }) {
     baseUrl: undefined,
     cliPath: undefined,
   }
-  const isGenspark = provider === 'genspark'
+  const is = provider === 'genspark'
   const isCodex = provider === 'codex'
 
   const touch = () => {
@@ -500,7 +500,7 @@ function AiModelPane({ t }: { t: TFunc }) {
         />
       </div>
       <div className="set-field-desc set-ai-note">
-        {isGenspark ? t('setAiGensparkHint') : isCodex ? t('setAiCodexHint') : t('setAiByokNote')}
+        {is ? t('setAiHint') : isCodex ? t('setAiCodexHint') : t('setAiByokNote')}
       </div>
       <div className="set-field">
         <div className="set-field-text">
@@ -551,7 +551,7 @@ function AiModelPane({ t }: { t: TFunc }) {
             }}
           />
         </div>
-      ) : !isGenspark ? (
+      ) : !is ? (
         <>
           <div className="set-field">
             <div className="set-field-text">
@@ -630,7 +630,7 @@ function AiModelPane({ t }: { t: TFunc }) {
           role="switch"
           aria-checked={settings.gskToolsEnabled !== false}
           aria-label={t('setAiGskTools')}
-          disabled={isGenspark}
+          disabled={is}
           onClick={() => {
             setSettings({ ...settings, gskToolsEnabled: settings.gskToolsEnabled === false })
             touch()
@@ -1031,7 +1031,7 @@ function AiMediaPane({
         {subhead(cap, title)}
         {providerRow(title, id, options, pick)}
         <div className="set-field-desc set-ai-note">
-          {id === 'genspark' ? t('setAiMediaGensparkHint') : meta.description}
+          {id === 'genspark' ? t('setAiMediaHint') : meta.description}
         </div>
         {id !== 'genspark' && (
           <>
@@ -1080,7 +1080,7 @@ function AiMediaPane({
         )}
         <div className="set-field-desc set-ai-note">
           {search.provider === 'genspark'
-            ? t('setAiSearchGensparkHint')
+            ? t('setAiSearchHint')
             : search.provider === 'parallel'
               ? t('setAiSearchParallelHint')
               : search.provider === 'serply'
@@ -1221,7 +1221,7 @@ export interface SettingsModalProps {
   onClose: () => void
   /** the Jev search settings were saved; the home search re-judges or drops its current order */
   onFileSearchChange?: () => void
-  /** closes the modal and launches the Genspark login flow (progress shows on the account entry) */
+  /** closes the modal and launches the  login flow (progress shows on the account entry) */
   onLogin: () => void
   onLogout: () => void
   /** an installed skill is older than the bundled one: dot on the Integrations entry */
@@ -1437,7 +1437,7 @@ export function SettingsModal({
                         </>
                       )}
                       <button className="set-btn primary" onClick={onLogin}>
-                        {loginWaiting ? t('waitingShort') : t('loginGenspark')}
+                        {loginWaiting ? t('waitingShort') : t('login')}
                       </button>
                     </>
                   )}
@@ -1648,8 +1648,8 @@ export function SettingsModal({
                   label={t('setGithub')}
                   value={
                     githubStars === null
-                      ? 'github.com/genspark-ai/genoffice'
-                      : `github.com/genspark-ai/genoffice · ★ ${formatStars(githubStars)}`
+                      ? 'github.com/EyeSightAI/genoffice'
+                      : `github.com/EyeSightAI/genoffice · ★ ${formatStars(githubStars)}`
                   }
                   action={
                     <button

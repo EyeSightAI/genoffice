@@ -88,7 +88,7 @@ function makeAccess(opts?: {
       if (opts?.cloudDown)
         return {
           ok: false,
-          error: 'tool_cli /slide_generate failed: the Genspark CLI requires a paid plan',
+          error: 'tool_cli /slide_generate failed: the  CLI requires a paid plan',
         }
       if (failPages.has(args.pageIndex)) return { ok: false, error: 'mock fail' }
       if (failAttempts[args.pageIndex] && failAttempts[args.pageIndex] > 0) {
@@ -287,7 +287,7 @@ describe('generate_deck local page generation (cloud/gsk unavailable)', () => {
     expect(res.output).toContain('https://img.example/broken.jpg')
   })
 
-  it('cloud fails (e.g. Genspark free plan) → falls back to the local pipeline and still produces the deck', async () => {
+  it('cloud fails (e.g.  free plan) → falls back to the local pipeline and still produces the deck', async () => {
     const { access, localPageCalls, getPages } = makeAccess({ cloudDown: true })
     const skill = createSlidesSkill(access)
     const res = (await skill.executeTool(deckCall(3))) as { output: string }

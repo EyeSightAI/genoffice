@@ -103,7 +103,7 @@ describe('genoffice capabilities', () => {
   })
 
   it.each(['tavily', 'parallel'])(
-    '%s does not advertise Genspark image search when signed in',
+    '%s does not advertise  image search when signed in',
     async (provider) => {
       vi.spyOn(aiSearch, 'hasGskAuth').mockReturnValue(true)
       const settings = settingsFile(tempDir(), {

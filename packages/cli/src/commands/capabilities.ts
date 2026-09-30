@@ -11,8 +11,8 @@ import type { CommandDef } from '../registry'
 import { appLaunch } from '../resources'
 
 /**
- * What the cloud commands can do on this machine, decided from GenOffice's
- * own settings without a network call: a Genspark login with cloud tools on,
+ * What the cloud commands can do on this machine, decided from UToOffice's
+ * own settings without a network call: a  login with cloud tools on,
  * a BYOK key, or explicitly selected free Parallel search. Unkeyed fallbacks in the
  * default chain (free Parallel MCP, DuckDuckGo) do not count as configured. Agents
  * check this once before planning work that needs photos or web facts.
@@ -20,7 +20,7 @@ import { appLaunch } from '../resources'
 export const capabilitiesCommand: CommandDef = {
   name: 'capabilities',
   summary:
-    'Report which cloud features (search, image search, image generation, media analysis) are configured in GenOffice, and whether the app is installed.',
+    'Report which cloud features (search, image search, image generation, media analysis) are configured in UToOffice, and whether the app is installed.',
   usage: 'capabilities',
   async run(_args, ctx) {
     await prepareCloud(ctx.env)

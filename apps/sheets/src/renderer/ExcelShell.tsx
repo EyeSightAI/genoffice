@@ -2518,7 +2518,7 @@ function Ribbon({
             <GensparkMark size={26} />
           </span>
           <span>
-            <strong>Genspark AI</strong>
+            <strong>AI 助手</strong>
           </span>
         </button>
         <button

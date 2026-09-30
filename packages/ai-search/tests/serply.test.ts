@@ -9,7 +9,7 @@ const webResponse = () =>
   Response.json({
     results: [
       {
-        title: 'GenOffice',
+        title: 'UToOffice',
         link: 'https://genoffice.ai/',
         description: 'A free, open-source office suite.',
       },
@@ -50,7 +50,7 @@ describe('Serply web search', () => {
     expect(r).toEqual({
       results: [
         {
-          title: 'GenOffice',
+          title: 'UToOffice',
           url: 'https://genoffice.ai/',
           snippet: 'A free, open-source office suite.',
         },

@@ -95,7 +95,7 @@ export interface AppLaunch {
   args: string[]
 }
 
-/** How to start the GenOffice GUI: the app binary that hosts this CLI, an installed app, or the dev checkout. */
+/** How to start the UToOffice GUI: the app binary that hosts this CLI, an installed app, or the dev checkout. */
 export function appLaunch(env: NodeJS.ProcessEnv = process.env): AppLaunch | null {
   if (env.GENOFFICE_APP_BIN) return { command: env.GENOFFICE_APP_BIN, args: [] }
   if (packagedResourcesDir() && process.versions.electron) {
@@ -122,24 +122,24 @@ function installedAppBinaries(
     case 'darwin':
       return [
         ...(shipped ? [shipped] : []),
-        '/Applications/GenOffice.app/Contents/MacOS/GenOffice',
-        join(homedir(), 'Applications/GenOffice.app/Contents/MacOS/GenOffice'),
+        '/Applications/UToOffice.app/Contents/MacOS/UToOffice',
+        join(homedir(), 'Applications/UToOffice.app/Contents/MacOS/UToOffice'),
       ]
     case 'win32':
       return [
         ...(shipped ? [shipped] : []),
-        env.LOCALAPPDATA ? join(env.LOCALAPPDATA, 'Programs', 'GenOffice', 'GenOffice.exe') : '',
-        env.ProgramFiles ? join(env.ProgramFiles, 'GenOffice', 'GenOffice.exe') : '',
+        env.LOCALAPPDATA ? join(env.LOCALAPPDATA, 'Programs', 'UToOffice', 'UToOffice.exe') : '',
+        env.ProgramFiles ? join(env.ProgramFiles, 'UToOffice', 'UToOffice.exe') : '',
       ].filter(Boolean)
     default:
-      return [...(shipped ? [shipped] : []), '/opt/GenOffice/genoffice', '/usr/bin/genoffice']
+      return [...(shipped ? [shipped] : []), '/opt/UToOffice/genoffice', '/usr/bin/genoffice']
   }
 }
 
 export function appBinaryForResources(resources: string, platform: NodeJS.Platform): string {
   const install = dirname(resources)
-  if (platform === 'darwin') return join(install, 'MacOS', 'GenOffice')
-  if (platform === 'win32') return join(install, 'GenOffice.exe')
+  if (platform === 'darwin') return join(install, 'MacOS', 'UToOffice')
+  if (platform === 'win32') return join(install, 'UToOffice.exe')
   return join(install, 'genoffice')
 }
 

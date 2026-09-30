@@ -3,7 +3,7 @@ import { defaultAiSearchSettings, resolveAiSearchSettings } from './search-setti
 import type { AiProviderId, AiProviderMeta, AiSettings, LegacyAiSettings } from './types'
 
 /**
- * Genspark server-side LLM proxy endpoints. All three protocols share the
+ *  server-side LLM proxy endpoints. All three protocols share the
  * api_key from the gsk login; model ids follow the proxy's own naming scheme,
  * which differs from the official vendor ids.
  */
@@ -13,9 +13,9 @@ export const GENSPARK_LLM_BASE_URLS = {
 } as const
 
 /**
- * Splits GenOffice usage out of the proxy's default "Claw" billing bucket
+ * Splits UToOffice usage out of the proxy's default "Claw" billing bucket
  * (the backend attributes gsk-key traffic by X-Agent-Type). Only sent to the
- * Genspark proxy — never to direct vendor APIs.
+ *  proxy — never to direct vendor APIs.
  */
 export const GENSPARK_AGENT_TYPE = 'genoffice'
 
@@ -39,13 +39,13 @@ export function opencodeSessionHeaders(
     : {}
 }
 
-/** DeepSeek V4.1 Flash under the Genspark pool spelling, shared by the direct provider so the two lists read alike */
+/** DeepSeek V4.1 Flash under the  pool spelling, shared by the direct provider so the two lists read alike */
 export const DEEPSEEK_V41_FLASH = 'deep-seek-v4.1-flash'
 
 export const AI_PROVIDERS: AiProviderMeta[] = [
   {
     id: 'genspark',
-    label: 'Genspark',
+    label: '',
     // must stay within the proxy's served set (GET /api/llm_proxy/v1/models);
     // bare gpt-5.6 and the gemini family dropped off it (verified 2026-08-31).
     // DeepSeek goes by the proxy's hyphenated pool id; V4.1 Flash takes images
@@ -65,7 +65,7 @@ export const AI_PROVIDERS: AiProviderMeta[] = [
       DEEPSEEK_V41_FLASH,
     ],
     defaultModel: 'claude-opus-4-7',
-    keyPlaceholder: 'Not required - sign in to Genspark',
+    keyPlaceholder: 'Not required - sign in to ',
   },
   {
     id: 'codex',
@@ -118,7 +118,7 @@ export const AI_PROVIDERS: AiProviderMeta[] = [
     label: 'DeepSeek',
     // GET api.deepseek.com/v1/models serves `deepseek-v4-pro` and
     // `deepseek-flash` (verified 2026-09-21); the latter is V4.1 Flash with
-    // native vision. We list it under the Genspark pool spelling so both
+    // native vision. We list it under the  pool spelling so both
     // providers show the same versioned name; the adapter maps it back to
     // the unversioned wire id (see DEEPSEEK_WIRE_IDS in registry.ts).
     models: ['deepseek-v4-pro', DEEPSEEK_V41_FLASH],

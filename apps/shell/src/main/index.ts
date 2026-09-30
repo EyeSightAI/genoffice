@@ -340,7 +340,7 @@ import { applyUpdateChannel, checkForUpdatesNow, initAutoUpdater } from './updat
 import { isUpdateChannel, type UpdateChannel } from '../shared/update-api'
 
 /**
- * GenOffice unified shell: ONE Electron app, ONE BrowserWindow, hosting the
+ * UToOffice unified shell: ONE Electron app, ONE BrowserWindow, hosting the
  * docs and sheets modules as WebContentsView tabs behind a WPS-style tab
  * strip. The shell owns the lifecycle — single-instance lock, file-
  * association routing by extension, and per-active-tab menu switching.
@@ -350,13 +350,13 @@ import { isUpdateChannel, type UpdateChannel } from '../shared/update-api'
 
 // ANY unpacked run (`npm run shell`, `npm run dev`, `npx electron .`) must not
 // share the installed app's userData or single-instance lock — otherwise a dev
-// run silently quits and forwards its argv to the running installed GenOffice.
+// run silently quits and forwards its argv to the running installed UToOffice.
 // GENOFFICE_USER_DATA: test drivers point this at a scratch dir so an
 // automated instance can run alongside the dev instance (separate lock).
 if (!app.isPackaged)
   app.setPath(
     'userData',
-    process.env.GENOFFICE_USER_DATA ?? join(app.getPath('appData'), 'GenOffice Dev'),
+    process.env.GENOFFICE_USER_DATA ?? join(app.getPath('appData'), 'UToOffice Dev'),
   )
 
 /**
@@ -371,7 +371,7 @@ if (headlessArgv.kind !== 'none') {
   app.dock?.hide()
 }
 
-// The product rename from "AI Office" to GenOffice changed the userData path; migrate old user data once
+// The product rename from "AI Office" to UToOffice changed the userData path; migrate old user data once
 if (app.isPackaged) {
   const oldDir = join(app.getPath('appData'), 'AI Office')
   const newDir = app.getPath('userData')
@@ -620,14 +620,12 @@ function initAnalytics(): void {
 }
 
 // ---- first-run onboarding ----
-// The GenTeam community page opened from the onboarding's second slide.
-// Stable short link served by the genoffice.ai site; it 302s to the tokened
-// invite link, which stays out of this repo and rotates server-side.
-const GENTEAM_URL = 'https://genoffice.ai/join'
+// The community/join page opened from the onboarding's second slide.
+const GENTEAM_URL = 'https://uto-office.cn/'
 
-// Genspark credit-usage page opened from the account menu's credits row.
+//  credit-usage page opened from the account menu's credits row.
 // Kept main-side so the renderer never supplies the URL.
-const CREDIT_USAGE_URL = 'https://www.genspark.ai/credit-usage'
+const CREDIT_USAGE_URL = 'https://uto-office.cn/'
 
 // ---- "star us on GitHub" prompt (see star-prompt.ts for the rules) ----
 
@@ -664,7 +662,7 @@ let cachedGithubStars: number | null = null
 async function fetchGithubStars(): Promise<number | null> {
   if (cachedGithubStars !== null) return cachedGithubStars
   try {
-    const response = await fetch('https://api.github.com/repos/genspark-ai/genoffice', {
+    const response = await fetch('https://api.github.com/repos/EyeSightAI/genoffice', {
       headers: { Accept: 'application/vnd.github+json' },
       signal: AbortSignal.timeout(5000),
     })
@@ -2872,7 +2870,7 @@ function createShellWindow(): void {
     height: 900,
     minWidth: 720,
     minHeight: 550,
-    title: 'GenOffice',
+    title: 'UToOffice',
     // vibrancy: editor modules punch translucent regions (e.g. the slides
     // thumbnail pane) through to the desktop
     ...(process.platform === 'darwin'
@@ -3353,7 +3351,7 @@ function newDocTab(): void {
 
 /** MCP: open a blank docs tab and return its webContents id, for the visible-editor bridge */
 function openBlankDocsTabForMcp(): number {
-  if (!tabManager) throw new Error('GenOffice is not ready')
+  if (!tabManager) throw new Error('UToOffice is not ready')
   const tabId = tabManager.openDocsTab(undefined, { newBlank: true })
   const view = tabManager.docsTabs().find((t) => t.id === tabId)
   if (!view) throw new Error('the new document tab could not be opened')
@@ -3370,7 +3368,7 @@ function openBlankDocsTabForMcp(): number {
  * marking is skipped, the file name is the agent's business.
  */
 async function openBlankSheetsTabForMcp(): Promise<number> {
-  if (!tabManager) throw new Error('GenOffice is not ready')
+  if (!tabManager) throw new Error('UToOffice is not ready')
   const filePath = uniquePathIn(defaultSaveDir(), `${tm('untitledSheet')}.xlsx`)
   writeFileSync(filePath, await blankXlsxBuffer())
   const tabId = tabManager.openSheetsTab(filePath)
@@ -3441,7 +3439,7 @@ function abandonBlankTabForMcp(
 
 /** MCP: open a blank slides tab and return its webContents id, for the visible-deck bridge */
 function openBlankSlidesTabForMcp(): number {
-  if (!tabManager) throw new Error('GenOffice is not ready')
+  if (!tabManager) throw new Error('UToOffice is not ready')
   const tabId = tabManager.openSlidesTab()
   const view = tabManager.slidesTabs().find((t) => t.id === tabId)
   if (!view) throw new Error('the new presentation tab could not be opened')
@@ -3536,7 +3534,7 @@ function statEntries(paths: string[]): RecentEntry[] {
 }
 
 function registerHomeIpc(): void {
-  // signed-in means GenOffice's own device-code login; the shared gsk CLI key
+  // signed-in means UToOffice's own device-code login; the shared gsk CLI key
   // is only a silent fallback, deliberately not shown here to nudge users onto our key
   ipcMain.handle(HOME_CHANNELS.accountStatus, async () => {
     if (!loadGenofficeAuth()) return { loggedIn: false }
@@ -5231,7 +5229,7 @@ async function installMainProcessProxy(): Promise<void> {
   if (!proxyUrl) {
     try {
       // PAC/rule proxies answer per-host: probe the host the login flow, the
-      // Genspark LLM proxy and the gsk CLI actually target
+      //  LLM proxy and the gsk CLI actually target
       const resolved = await session.defaultSession.resolveProxy('https://www.genspark.ai/')
       const m = /PROXY\s+([^;\s]+)/.exec(resolved)
       if (m) proxyUrl = `http://${m[1]}`
@@ -5407,7 +5405,7 @@ app.whenReady().then(async () => {
     app.quit()
     return
   }
-  // another GenOffice-family app re-logging in rotates the shared key; the
+  // another UToOffice-family app re-logging in rotates the shared key; the
   // home page re-reads its account status. A logout that leaves only the
   // gsk CLI fallback key is not a login
   stopAuthWatch = watchGskApiKey(() => {

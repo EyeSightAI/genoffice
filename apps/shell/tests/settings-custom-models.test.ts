@@ -86,7 +86,7 @@ function installApi(settings: AiSettings): void {
     getAiProviders: () => [
       {
         id: 'genspark',
-        label: 'Genspark',
+        label: '',
         models: [],
         defaultModel: '',
         keyPlaceholder: 'k',
@@ -319,7 +319,7 @@ describe('the fold', () => {
     await answer(0, ['alpha', 'beta'])
     expect(modelBox()).toBeNull()
 
-    await pickProvider('Genspark')
+    await pickProvider('')
     expect(modelBox()).not.toBeNull() // genspark still has no model list
   })
 })
@@ -458,7 +458,7 @@ describe('request discipline', () => {
     await tick()
     expect(calls).toHaveLength(1) // out, and holding
 
-    await pickProvider('Genspark')
+    await pickProvider('')
     await answer(0, ['alpha', 'beta']) // the endpoint answers too late to matter
 
     await pickProvider('Custom')

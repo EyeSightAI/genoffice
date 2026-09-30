@@ -12,7 +12,7 @@ import {
 
 /** argv as Electron delivers it: binary first, then the app's own switches. */
 const argv = (...rest: string[]): string[] => [
-  '/Applications/GenOffice.app/Contents/MacOS/GenOffice',
+  '/Applications/UToOffice.app/Contents/MacOS/UToOffice',
   ...rest,
 ]
 

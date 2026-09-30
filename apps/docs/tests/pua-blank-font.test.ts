@@ -8,7 +8,7 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { advanceEm, readWoff2 } from './helpers/woff2-metrics'
 
-const font = readWoff2(join(__dirname, '../src/renderer/fonts/GenOfficePUABlank.woff2'))
+const font = readWoff2(join(__dirname, '../src/renderer/fonts/UToOfficePUABlank.woff2'))
 
 describe('GenOffice PUA Blank', () => {
   it('covers the whole BMP Private Use Area at a 1em advance', () => {

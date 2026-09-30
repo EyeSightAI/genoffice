@@ -1838,7 +1838,7 @@ export function App() {
 
   // window title follows the document, so the OS window list and Switch Window show file names
   useEffect(() => {
-    document.title = doc ? doc.fileName : 'GenOffice Docs'
+    document.title = doc ? doc.fileName : 'UToOffice Docs'
   }, [doc])
 
   useEffect(() => window.desktop.onTeardown?.(() => setTornDown(true)), [])
@@ -2126,7 +2126,7 @@ export function App() {
         bootHandledRef.current = true
         // A failed open (corrupt file etc.) falls back to a blank document —
         // otherwise the tab shows "Opening…" forever with only a status-bar
-        // line explaining why (github.com/genspark-ai/genoffice issue #102).
+        // line explaining why (github.com/EyeSightAI/genoffice issue #102).
         // 'password': the prompt is up; its cancel path lands on blank instead.
         const outcome = pending ? await loadFile(pending) : 'canceled'
         if (outcome === 'canceled') await resetFile()
@@ -2588,7 +2588,7 @@ export function App() {
       window.desktop.onZoteroRequest(async (request) => {
         try {
           const activeEditor = editorRef.current
-          if (!activeEditor) throw new Error('No active GenOffice document')
+          if (!activeEditor) throw new Error('No active UToOffice document')
           const controller =
             zoteroControllerRef.current ??
             new ZoteroDocumentController(activeEditor, {

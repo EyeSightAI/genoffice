@@ -86,7 +86,7 @@ const PASTE_MIME_EXT: Record<string, string> = {
   'image/webp': 'webp',
 }
 
-/** File-type icons for attachment cards (Genspark attachment icon set); exts the
+/** File-type icons for attachment cards ( attachment icon set); exts the
  *  attachment allowlist doesn't accept yet are mapped ahead so they light up when added */
 const ATTACHMENT_CARD_ICON_GROUPS: [icon: string, exts: string[]][] = [
   [fileWordIcon, ['doc', 'docx']],
@@ -222,7 +222,7 @@ interface ChatEntry {
   text: string
   error?: string
   streaming?: boolean
-  /** the run failed because Genspark is signed out — render an inline sign-in button */
+  /** the run failed because  is signed out — render an inline sign-in button */
   loginRequired?: boolean
   tools?: ToolActivity[]
   /** Generation progress card (only one per turn, replaced in real time) */
@@ -389,7 +389,7 @@ export function AiPanel({
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null)
   const [attachments, setAttachments] = useState<AttachmentMeta[]>([])
   const [attachNotice, setAttachNotice] = useState<string | null>(null)
-  /** data-URL previews for image attachments, keyed by path (Genspark composer thumbnails) */
+  /** data-URL previews for image attachments, keyed by path ( composer thumbnails) */
   const [attachmentPreviews, setAttachmentPreviews] = useState<Record<string, string>>({})
   /** image paths with a read already issued — one readAttachmentImage per attach, even while pending */
   const previewRequestedRef = useRef(new Set<string>())
@@ -1009,8 +1009,8 @@ export function AiPanel({
         })
       },
       isCloudPageGenEnabled: async () => {
-        // Cloud page generation runs on Genspark's own slide model and spends
-        // Genspark credits, so it is gated by the "Genspark cloud tools" toggle
+        // Cloud page generation runs on 's own slide model and spends
+        // credits, so it is gated by the "cloud tools" toggle
         // plus the main-process account status only — the chat provider does not
         // gate it (search/media gate per capability, not per chat provider). A
         // free-plan or credits-exhausted account is covered by the mid-run

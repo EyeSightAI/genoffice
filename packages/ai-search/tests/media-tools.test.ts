@@ -10,14 +10,14 @@ import { generateImageTool, GSK_RMBG_MODEL } from '../src/media-tools'
 import { gskGenerateImage } from '../src/gsk'
 
 const gskGen = vi.mocked(gskGenerateImage)
-// nonexistent settings file → defaults: no BYOK media provider, cloud tools on → Genspark route
+// nonexistent settings file → defaults: no BYOK media provider, cloud tools on →  route
 const SETTINGS = '/nonexistent/ai-settings.json'
 
 beforeEach(() => {
   gskGen.mockReset()
 })
 
-describe('generateImageTool transparentBackground (Genspark route)', () => {
+describe('generateImageTool transparentBackground ( route)', () => {
   it('chains a fal-bria-rmbg pass over the generated image and returns the stripped URL', async () => {
     gskGen
       .mockResolvedValueOnce({ url: 'https://cdn/x/opaque.png', taskId: '1' })
@@ -75,7 +75,7 @@ describe('generateImageTool transparentBackground (Genspark route)', () => {
   })
 })
 
-describe('generateImageTool reference budget (Genspark route)', () => {
+describe('generateImageTool reference budget ( route)', () => {
   it('rejects too many reference images with the BYOK wording, before calling the CLI', async () => {
     gskGen.mockResolvedValue({ url: 'https://cdn/x/out.png', taskId: '1' })
     const referenceImageUrls = Array.from({ length: 13 }, (_, i) => `https://cdn/x/${i}.png`)

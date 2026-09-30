@@ -8,8 +8,8 @@ import type {
 export const AI_SEARCH_PROVIDERS: AiSearchProviderMeta[] = [
   {
     id: 'genspark',
-    label: 'Genspark',
-    keyPlaceholder: 'Not required - sign in to Genspark',
+    label: '',
+    keyPlaceholder: 'Not required - sign in to ',
     imageSearch: true,
   },
   { id: 'serper', label: 'Serper', keyPlaceholder: 'Serper API key', imageSearch: true },
@@ -43,7 +43,7 @@ export function resolveAiSearchSettings(
   return { provider: stored.provider ?? defaults.provider, providers }
 }
 
-/** Parallel can run keylessly; other custom providers require a key or fall back to Genspark. */
+/** Parallel can run keylessly; other custom providers require a key or fall back to . */
 export function activeSearchProvider(settings: Pick<AiSettings, 'search'>): AiSearchProviderId {
   const search = settings.search
   if (!search || search.provider === 'genspark') return 'genspark'

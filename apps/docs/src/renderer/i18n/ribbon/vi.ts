@@ -137,7 +137,7 @@ export const vi = {
   ribbonStylePaneTip: 'Ngăn kiểu: duyệt tất cả các kiểu, tạo hoặc cập nhật kiểu từ vùng chọn',
   ribbonMoreStyles: 'Thêm kiểu',
   ribbonGroupStyles: 'Kiểu',
-  ribbonAiAssistant: 'Genspark',
+  ribbonAiAssistant: '',
   ribbonAiAssistantTip: 'Mở trợ lý AI',
   ribbonRemoveTableStyleTip: 'Xóa kiểu bảng',
   ribbonNoStyle: 'Không có kiểu',
