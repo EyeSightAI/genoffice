@@ -961,7 +961,12 @@ export function AiPanel({
         if (res && typeof res === 'object' && 'error' in res && typeof res.error === 'string') {
           return { ok: false, error: res.error }
         }
-        return { ok: true }
+        // Success: res is OpenResult {path, slides, size}; replace the current deck with the template's pages
+        if (res && 'slides' in res && Array.isArray(res.slides)) {
+          applyDeckRef.current(res.slides, 0)
+          return { ok: true }
+        }
+        return { ok: false, error: 'empty result' }
       },
       landGeneratedPages: async (
         pageMarkers: string[],
