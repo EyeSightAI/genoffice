@@ -242,8 +242,12 @@ export interface HomeApi {
   onAccountLogin(handler: (ev: AccountLoginEvent) => void): () => void
   /** re-open the pending login auth URL in the default browser (rescue when auto-open failed) */
   openLoginUrl(): Promise<void>
-  /** log out (clears the saved API key; the login state is shared globally with the gsk CLI) */
+  /** log out (clears the WeChat login state) */
   accountLogout(): Promise<void>
+  /** generate the "buy membership" payment QR code (mini-program buy page, scene=token) */
+  buyQrcode(): Promise<BuyQrcodeResult | null>
+  /** poll the payment QR code for a completed purchase */
+  pollBuy(token: string): Promise<BuyPollResult>
   /** app version (from package.json / electron app.getVersion) */
   getAppVersion(): Promise<string>
   /** whether the first-run onboarding has been completed or skipped (persisted in userData/app-settings.json) */
@@ -379,20 +383,37 @@ export interface CloudProjectsSnapshot {
 }
 
 export interface AccountStatus {
-  /** gsk is installed and logged in */
+  /** logged in via WeChat scan */
   loggedIn: boolean
-  email?: string
-  /** remaining credits (absent when the balance query failed) */
-  creditBalance?: number
+  /** WeChat openid (after login) */
+  openid?: string
+  /** membership expiry 'YYYY-MM-DD HH:mm:ss', null = not subscribed */
+  expireTime?: string | null
+  /** is member (not expired) */
+  isPro: boolean
 }
 
-/** login flow progress pushed from main (gsk login CLI output) */
+/** login flow progress pushed from main (WeChat scan login) */
 export interface AccountLoginEvent {
-  phase: 'launched' | 'url' | 'success' | 'error'
-  url?: string
-  expiresInSec?: number
-  /** 'network' | 'expired' | raw CLI error text */
+  phase: 'launched' | 'qrcode' | 'success' | 'expired' | 'error'
+  /** login QR code base64 (phase=qrcode) */
+  qrcode?: string
+  /** login token (phase=qrcode, main polls with it) */
+  token?: string
+  /** 'network' | 'expired' | other error text */
   error?: string
+}
+
+/** Buy membership payment QR code */
+export interface BuyQrcodeResult {
+  token: string
+  qrcode: string
+}
+
+/** Buy poll result */
+export interface BuyPollResult {
+  paid: boolean
+  expireTime: string | null
 }
 
 export interface RenameResult {
@@ -506,6 +527,8 @@ export const HOME_CHANNELS = {
   accountLoginEvent: 'home:account-login-event',
   accountLoginOpenUrl: 'home:account-login-open-url',
   accountLogout: 'home:account-logout',
+  buyQrcode: 'home:buy-qrcode',
+  pollBuy: 'home:poll-buy',
   getAppVersion: 'home:get-app-version',
   onboardingSeen: 'home:onboarding-seen',
   setOnboardingSeen: 'home:set-onboarding-seen',

@@ -1213,17 +1213,14 @@ export interface SettingsModalProps {
   loggingOut: boolean
   /** browser sign-in in progress (spinner shows on the account entry) */
   loginWaiting: boolean
-  /** device auth URL while waiting — rescue actions when the browser did not auto-open */
-  loginUrl: string | null
-  urlCopied: boolean
-  onOpenLoginUrl: () => void
-  onCopyLoginUrl: () => void
   onClose: () => void
   /** the Jev search settings were saved; the home search re-judges or drops its current order */
   onFileSearchChange?: () => void
-  /** closes the modal and launches the  login flow (progress shows on the account entry) */
+  /** closes the modal and launches the login flow (progress shows on the account entry) */
   onLogin: () => void
   onLogout: () => void
+  /** membership state changed (after a completed purchase); refresh account status */
+  onStatusChange?: () => void
   /** an installed skill is older than the bundled one: dot on the Integrations entry */
   skillUpdateDue?: boolean
   onSkillUpdateDue?: (due: boolean) => void
@@ -1235,14 +1232,11 @@ export function SettingsModal({
   status,
   loggingOut,
   loginWaiting,
-  loginUrl,
-  urlCopied,
-  onOpenLoginUrl,
-  onCopyLoginUrl,
   onClose,
   onFileSearchChange,
   onLogin,
   onLogout,
+  onStatusChange,
   skillUpdateDue: updateDue = false,
   onSkillUpdateDue,
   target,
@@ -1260,6 +1254,8 @@ export function SettingsModal({
   const [aiPrefs, setAiPrefs] = useState<AiPanelPrefs>(DEFAULT_AI_PANEL_PREFS)
   const [channel, setChannel] = useState<'stable' | 'beta'>('stable')
   const [appVersion, setAppVersion] = useState('')
+  const [buyQrcode, setBuyQrcode] = useState<string | null>(null)
+  const [buyWaiting, setBuyWaiting] = useState(false)
   const [githubStars, setGithubStars] = useState<number | null>(null)
 
   useEffect(() => {
@@ -1355,7 +1351,33 @@ export function SettingsModal({
   })()
 
   const loggedIn = status?.loggedIn ?? false
-  const email = status?.email ?? ''
+  const isPro = status?.isPro ?? false
+  const expireTime = status?.expireTime ?? null
+
+  // buy membership: generate payment QR -> poll result
+  const startBuy = async () => {
+    setBuyWaiting(true)
+    setBuyQrcode(null)
+    const qr = await window.aiOffice.buyQrcode?.()
+    if (!qr) {
+      setBuyWaiting(false)
+      return
+    }
+    setBuyQrcode(qr.qrcode)
+    const deadline = Date.now() + 5 * 60 * 1000
+    while (Date.now() < deadline) {
+      await new Promise((r) => setTimeout(r, 2000))
+      const result = await window.aiOffice.pollBuy?.(qr.token)
+      if (result?.paid) {
+        setBuyWaiting(false)
+        setBuyQrcode(null)
+        onStatusChange?.()
+        return
+      }
+    }
+    setBuyWaiting(false)
+    setBuyQrcode(null)
+  }
 
   return (
     <div
@@ -1399,49 +1421,48 @@ export function SettingsModal({
             {section === 'account' && (
               <>
                 <h3 className="set-pane-title">{t('setSecAccount')}</h3>
-                <Field label={t('setEmail')} value={loggedIn ? email : t('setNotLoggedIn')} />
-                {loggedIn && (
-                  <Field
-                    label={t('credits')}
-                    value={
-                      status?.creditBalance === undefined
-                        ? '—'
-                        : Math.floor(status.creditBalance).toLocaleString('en-US')
-                    }
-                    action={
-                      <button
-                        className="set-btn"
-                        data-tip={t('creditsTip')}
-                        onClick={() => void window.aiOffice.openCreditUsage?.()}
-                      >
-                        {t('setViewUsage')}
-                      </button>
-                    }
-                  />
-                )}
+                <Field
+                  label={t('setMemberExpire')}
+                  value={
+                    loggedIn
+                      ? isPro
+                        ? (expireTime ?? '—')
+                        : t('setNotMember')
+                      : t('setNotLoggedIn')
+                  }
+                />
                 <div className="set-pane-footer">
                   {loggedIn ? (
-                    <button className="set-btn danger" disabled={loggingOut} onClick={onLogout}>
-                      {loggingOut ? t('loggingOut') : t('logout')}
-                    </button>
-                  ) : (
                     <>
-                      {loginWaiting && loginUrl && (
-                        <>
-                          <button className="set-btn" onClick={onOpenLoginUrl}>
-                            {t('loginOpenManually')}
-                          </button>
-                          <button className="set-btn" onClick={onCopyLoginUrl}>
-                            {urlCopied ? t('loginCopied') : t('loginCopyUrl')}
-                          </button>
-                        </>
+                      {!isPro && (
+                        <button
+                          className="set-btn primary"
+                          onClick={startBuy}
+                          disabled={buyWaiting}
+                        >
+                          {buyWaiting ? '等待付款…' : '开通会员'}
+                        </button>
                       )}
-                      <button className="set-btn primary" onClick={onLogin}>
-                        {loginWaiting ? t('waitingShort') : t('login')}
+                      <button className="set-btn danger" disabled={loggingOut} onClick={onLogout}>
+                        {loggingOut ? t('loggingOut') : t('logout')}
                       </button>
                     </>
+                  ) : (
+                    <button className="set-btn primary" onClick={onLogin}>
+                      {loginWaiting ? t('waitingShort') : t('login')}
+                    </button>
                   )}
                 </div>
+                {buyQrcode && (
+                  <div className="buy-qrcode-box">
+                    <img
+                      className="buy-qrcode-img"
+                      src={`data:image/jpeg;base64,${buyQrcode}`}
+                      alt="付款码"
+                    />
+                    <span className="buy-qrcode-tip">请用微信扫码付款</span>
+                  </div>
+                )}
               </>
             )}
             {section === 'aiModel' && <AiModelPane t={t} />}

@@ -6246,7 +6246,7 @@ export default function App() {
         <div className="ribbon-body" data-ribbon-body="">
           {ribbonTab === 'home' && (
             <>
-              {/* ---- AI 助手 (first slot: entry + one-click AI actions, docs parity) ---- */}
+              {/* ---- AI assistant (first slot: entry + one-click AI actions, docs parity) ---- */}
               <div className="ribbon-group">
                 <div className="ribbon-group-items">
                   <button

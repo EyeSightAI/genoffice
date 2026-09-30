@@ -118,6 +118,17 @@ import {
 } from '@genoffice/ai-search'
 
 import {
+  clearWxLogin,
+  createBuyQrcode,
+  createLoginQrcode,
+  fetchMember,
+  pollBuy,
+  pollLogin,
+  readWxLogin,
+  writeWxLogin,
+} from './wx-login'
+
+import {
   buildDocsMenu,
   configureDocsRuntime,
   docsFileRenamed,
@@ -3537,50 +3548,77 @@ function registerHomeIpc(): void {
   // signed-in means UToOffice's own device-code login; the shared gsk CLI key
   // is only a silent fallback, deliberately not shown here to nudge users onto our key
   ipcMain.handle(HOME_CHANNELS.accountStatus, async () => {
-    if (!loadGenofficeAuth()) return { loggedIn: false }
-    await proxyBootstrap
-    const info = await gskLoginInfo()
-    return info
-      ? { loggedIn: true, email: info.email, creditBalance: info.creditBalance }
-      : { loggedIn: true }
+    const state = readWxLogin(app.getPath('userData'))
+    if (!state) return { loggedIn: false, isPro: false }
+    // server fallback: refresh membership status
+    const member = await fetchMember(state.openid)
+    if (member.isPro !== state.isPro || member.expireTime !== state.expireTime) {
+      writeWxLogin(app.getPath('userData'), {
+        openid: state.openid,
+        expireTime: member.expireTime,
+        isPro: member.isPro,
+      })
+    }
+    return {
+      loggedIn: true,
+      openid: state.openid,
+      expireTime: member.expireTime,
+      isPro: member.isPro,
+    }
   })
 
-  // login progress is streamed to the requesting renderer; the auth URL is
-  // kept main-side so the "open manually" rescue never opens a renderer-supplied URL
-  let pendingLoginUrl = ''
+  // WeChat scan login: generate QR code -> main polls -> bind then query membership
   ipcMain.handle(HOME_CHANNELS.accountLogin, async (event) => {
     analytics.track('login_click')
     const sender = event.sender
-    pendingLoginUrl = ''
-    await proxyBootstrap
     const send = (payload: AccountLoginEvent) => {
       if (!sender.isDestroyed()) sender.send(HOME_CHANNELS.accountLoginEvent, payload)
     }
-    // open the browser on the first url event only; later events refresh the rescue URL
-    let opened = false
-    const launched = startGenofficeLogin((progress) => {
-      if (progress.url) {
-        pendingLoginUrl = progress.url
-        if (!opened) {
-          opened = true
-          void shell.openExternal(progress.url)
-        }
+    // 1. generate login QR code
+    const qr = await createLoginQrcode()
+    if (!qr) {
+      send({ phase: 'error', error: 'network' })
+      return false
+    }
+    send({ phase: 'qrcode', qrcode: qr.qrcode, token: qr.token })
+    // 2. poll (up to 5 minutes)
+    const deadline = Date.now() + 5 * 60 * 1000
+    while (Date.now() < deadline) {
+      await new Promise((r) => setTimeout(r, 2000))
+      const openid = await pollLogin(qr.token)
+      if (openid) {
+        const member = await fetchMember(openid)
+        writeWxLogin(app.getPath('userData'), {
+          openid,
+          expireTime: member.expireTime,
+          isPro: member.isPro,
+        })
+        analytics.track('login_success')
+        send({ phase: 'success' })
+        return true
       }
-      if (progress.phase === 'success') analytics.track('login_success')
-      send(progress)
-    })
-    if (launched) send({ phase: 'launched' })
-    return launched
+    }
+    send({ phase: 'expired', error: 'expired' })
+    return false
   })
 
   ipcMain.handle(HOME_CHANNELS.accountLoginOpenUrl, () => {
-    if (pendingLoginUrl) void shell.openExternal(pendingLoginUrl)
+    // WeChat scan login needs no browser URL; keep empty impl for old-renderer compat
   })
 
   ipcMain.handle(HOME_CHANNELS.accountLogout, async () => {
-    await genofficeLogout()
-    // the cloud projects cache belongs to the account that just signed out
-    clearCloudProjectsStore(cloudProjectsStorePath())
+    clearWxLogin(app.getPath('userData'))
+  })
+
+  ipcMain.handle(HOME_CHANNELS.buyQrcode, async () => {
+    const qr = await createBuyQrcode()
+    if (!qr) return null
+    return { token: qr.token, qrcode: qr.qrcode }
+  })
+
+  ipcMain.handle(HOME_CHANNELS.pollBuy, async (_event, token: string) => {
+    const r = await pollBuy(token)
+    return { paid: r.paid, expireTime: r.expireTime }
   })
 
   ipcMain.handle(HOME_CHANNELS.getAppVersion, (): string => app.getVersion())
