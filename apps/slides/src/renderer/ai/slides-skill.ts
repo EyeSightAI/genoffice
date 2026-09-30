@@ -638,7 +638,8 @@ const TOOLS: AgentToolDef[] = [
       properties: {
         query: {
           type: 'string',
-          description: 'Topic/scene/style keywords (Chinese works, e.g. "年终总结" or "商务 述职").',
+          description:
+            'Topic/scene/style keywords (Chinese works, e.g. "年终总结" or "商务 述职").',
         },
         maxResults: { type: 'integer', description: 'Max templates to return, default 8' },
       },
@@ -2566,8 +2567,7 @@ async function executeTool(
           `- ${m.id} · ${m.title} · ${m.category} · ${m.pageCount}页 · 版式:${m.structure.join('/')} · ${m.url}`,
       )
       return {
-        output:
-          `Matched ${results.length} templates:\n${lines.join('\n')}\n\nPick the best fit and call open_template with its url to load it.`,
+        output: `Matched ${results.length} templates:\n${lines.join('\n')}\n\nPick the best fit and call open_template with its url to load it.`,
         mutated: false,
         summary: t('aiSumListTemplates', { count: results.length }),
       }
