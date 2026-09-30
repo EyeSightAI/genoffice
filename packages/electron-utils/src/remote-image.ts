@@ -74,7 +74,7 @@ export function remoteImageHeaders(rawUrl: string): Record<string, string> {
   }
   try {
     const host = new URL(rawUrl).hostname.toLowerCase()
-    if (host === 'uto-office.cn' || host.endsWith('.uto-office.cn')) {
+    if (host === 'genspark.ai' || host.endsWith('.genspark.ai')) {
       headers.Referer = 'https://www.genspark.ai/'
     }
   } catch {
