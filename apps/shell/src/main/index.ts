@@ -26,7 +26,7 @@ import {
   webContents,
 } from 'electron'
 import type { MenuItemConstructorOptions, NativeImage, WebContents } from 'electron'
-import { atomicWriteFile } from './atomic-write'
+import { atomicCopyFile, atomicWriteFile } from './atomic-write'
 import { tabStripOverlay } from './title-bar-overlay'
 import menuDocxIcon1x from './assets/menu-docx.png?asset'
 import menuDocxIcon2x from './assets/menu-docx@2x.png?asset'
@@ -3298,7 +3298,7 @@ async function newSheetTab(): Promise<void> {
     const tempDir = join(app.getPath('temp'), 'genoffice-new', randomUUID())
     mkdirSync(tempDir, { recursive: true })
     const backingPath = join(tempDir, basename(suggestedPath))
-    writeFileSync(backingPath, await blankXlsxBuffer())
+    await atomicWriteFile(backingPath, await blankXlsxBuffer())
     // the first Save As starts from the name the file would have had
     markSheetsUnsavedNew(backingPath, suggestedPath, tempDir)
     // eligible for content-derived auto-rename after the first AI generation
@@ -3311,7 +3311,7 @@ async function newSheetTab(): Promise<void> {
   } catch (err) {
     console.warn('[shell] temp workbook create failed, writing to the default folder:', err)
     try {
-      writeFileSync(suggestedPath, await blankXlsxBuffer())
+      await atomicWriteFile(suggestedPath, await blankXlsxBuffer())
       markSheetsUntitledPath(suggestedPath)
       // route directly (not via openDocumentPath) so creating a sheet emits
       // only file_new — the file_open event is reserved for opening existing files
@@ -3374,7 +3374,7 @@ function openBlankDocsTabForMcp(): number {
 async function openBlankSheetsTabForMcp(): Promise<number> {
   if (!tabManager) throw new Error('UToOffice is not ready')
   const filePath = uniquePathIn(defaultSaveDir(), `${tm('untitledSheet')}.xlsx`)
-  writeFileSync(filePath, await blankXlsxBuffer())
+  await atomicWriteFile(filePath, await blankXlsxBuffer())
   const tabId = tabManager.openSheetsTab(filePath)
   const view = tabManager.sheetsTabs().find((t) => t.id === tabId)
   if (!view) {
@@ -3811,7 +3811,7 @@ function registerHomeIpc(): void {
       const target = join(dir, `${base} ${tm('copySuffix')}${i === 1 ? '' : ` ${i}`}${ext}`)
       if (existsSync(target)) continue
       try {
-        await atomicWriteFile(target, readFileSync(path))
+        await atomicCopyFile(path, target)
       } catch (err) {
         showErrorDialog(shellWindow, tm('errNewTabFailed'), err)
         return
