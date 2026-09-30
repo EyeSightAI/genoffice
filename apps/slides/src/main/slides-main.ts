@@ -1387,6 +1387,62 @@ export function registerSlidesIpc(): void {
     return openAndBuild(e.sender, path, fitWidthPx)
   })
 
+  // Read the unified WeChat membership state (shell writes userData/wx-login.json; shared across editors).
+  const readWxLoginIsPro = async (): Promise<boolean> => {
+    try {
+      const wp = join(app.getPath('userData'), 'wx-login.json')
+      if (!existsSync(wp)) return false
+      const raw = JSON.parse(await readFile(wp, 'utf-8')) as {
+        isPro?: boolean
+        expireTime?: string | null
+      }
+      if (raw.isPro === true) return true
+      if (typeof raw.expireTime === 'string') {
+        const exp = Date.parse(raw.expireTime.replace(' ', 'T'))
+        if (!Number.isNaN(exp)) return exp > Date.now()
+      }
+      return false
+    } catch {
+      return false
+    }
+  }
+
+  ipcMain.handle('slides:membership-status', async () => ({
+    isPro: await readWxLoginIsPro(),
+  }))
+
+  // Open the template-library website in the default browser (the "More templates" CTA)
+  ipcMain.handle('slides:open-template-library', () => {
+    shell.openExternal('https://utooffice-templates.vercel.app').catch(() => {
+      // no browser handler available; nothing actionable for the user here
+    })
+  })
+
+  // AI auto-picks template: download template .pptx and load into the current tab (replaces doc, AI chat on same page)
+  ipcMain.handle(
+    'slides:open-template',
+    async (e, url: string): Promise<OpenResult | { error: string }> => {
+      if (typeof url !== 'string' || !/^https?:\/\//.test(url)) return { error: 'bad-url' }
+      if (!(await readWxLoginIsPro())) return { error: 'membership' }
+      try {
+        const dir = join(app.getPath('userData'), 'templates')
+        mkdirSync(dir, { recursive: true })
+        const name = basename(new URL(url).pathname) || `template-${Date.now()}.pptx`
+        const filePath = join(dir, name)
+        if (!existsSync(filePath)) {
+          const res = await fetch(url)
+          if (!res.ok) return { error: 'download' }
+          const buf = Buffer.from(await res.arrayBuffer())
+          await writeFile(filePath, buf)
+        }
+        const session = sessions.get(e.sender.id)
+        return await openAndBuild(e.sender, filePath, session?.fitWidthPx ?? 1280)
+      } catch {
+        return { error: 'open' }
+      }
+    },
+  )
+
   ipcMain.handle('slides:consume-pending-open', async (e, fitWidthPx: number) => {
     // renderer app just mounted: safe to reveal the vibrancy material behind
     // the (now painted) page without flashing raw desktop during load

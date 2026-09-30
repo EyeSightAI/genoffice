@@ -383,6 +383,27 @@ export function AiPanel({
   // must honor it like the shared AiComposer does.
   const { spellcheck } = useAiPanelPrefs()
   const [busy, setBusy] = useState(false)
+  /** "Use template library" tab: when checked AI may auto-pick from library / strictly apply current template (members only) */
+  const [useTemplateLibrary, setUseTemplateLibrary] = useState(false)
+  const [isPro, setIsPro] = useState(false)
+  const [templateHint, setTemplateHint] = useState<string | null>(null)
+
+  // load membership (whether the "use current template" tab is unlocked); refresh periodically
+  // so a refund/expiry propagates without restarting the editor
+  useEffect(() => {
+    let alive = true
+    const refresh = () => {
+      void window.slidesApi.membershipStatus?.().then((s) => {
+        if (alive) setIsPro(s?.isPro ?? false)
+      })
+    }
+    refresh()
+    const timer = setInterval(refresh, 5 * 60 * 1000)
+    return () => {
+      alive = false
+      clearInterval(timer)
+    }
+  }, [])
   const [chat, setChat] = useState<ChatEntry[]>([])
   /** Past conversation restored from JSONL (read-only transcript, not fed to the model) */
   const [historicChat, setHistoricChat] = useState<ChatEntry[]>([])
@@ -493,6 +514,8 @@ export function AiPanel({
   applySlideRef.current = applySlide
   const applyDeckRef = useRef(applyDeck)
   applyDeckRef.current = applyDeck
+  const useTemplateLibraryRef = useRef(useTemplateLibrary)
+  useTemplateLibraryRef.current = useTemplateLibrary
   const onBeforeRunRef = useRef(onBeforeRun)
   onBeforeRunRef.current = onBeforeRun
   const onPathChangeRef = useRef(onPathChange)
@@ -911,6 +934,19 @@ export function AiPanel({
       getSelectedIds: () => (queueRunResolverRef.current ? [] : selectedRef.current),
       applySlide: (i, updated) => applySlideRef.current(i, updated),
       applyDeck: (all, goTo) => applyDeckRef.current(all, goTo),
+      useTemplateLibrary: () => useTemplateLibraryRef.current,
+      openTemplate: async (url: string) => {
+        const res = await window.slidesApi.openTemplate(url)
+        if (res && typeof res === 'object' && 'error' in res && typeof res.error === 'string') {
+          return { ok: false, error: res.error }
+        }
+        // Success: res is OpenResult {path, slides, size}; replace the current deck with the template's pages
+        if (res && 'slides' in res && Array.isArray(res.slides)) {
+          applyDeckRef.current(res.slides, 0)
+          return { ok: true }
+        }
+        return { ok: false, error: 'empty result' }
+      },
       landGeneratedPages: async (
         pageMarkers: string[],
         mode?: 'replace' | 'append' | 'insert_at',
@@ -1664,6 +1700,31 @@ export function AiPanel({
         // AI Beautify sends the current slide's rendering along, so the model sees what it edits;
         // the note rides on the model instruction only — the chat bubble stays the localized preset text
         let modelInstruction = instruction
+        if (useTemplateLibrary) {
+          modelInstruction +=
+            '\n\n【使用模板库：会员专属 · 强制规则】' +
+            '\n- 必须先选模板：当前文档空白 → search_templates 选模板 + open_template 加载；当前文档是用户打开的模板 → 直接套用当前模板。' +
+            '\n- 【问卷只问内容】选模板后可用 ask_clarification 问卷引导用户提供内容/数据（项目数据、汇报要点），但不要问风格/配色/受众（模板已确定）。' +
+            '\n- 【禁止重新生成】套用模板后，严禁用 generate_deck 重新生成整套 PPT。模板页数太多要精简时，把要删的页一次性放进一个 apply_ops 批量（多个 deleteSlide op，每页一个），op 按 slideIndex 从大到小排列（先删索引大的页，前面页索引不变），一次调用删完，不要反复规划索引或逐页删；至少保留一页。内容放不下就精简文字或删减页内项目，绝不重做一套。' +
+            '\n- 【仅无匹配模板时例外】只有 search_templates 搜不到满足用户需求的模板，才允许 generate_deck 自己生成。' +
+            '\n\n【严格套用（两者通用）】logo、背景、配色、字体绝不改动。' +
+            '\n\n【内容适配框体（强制，否则会出现字体重叠/内容不适配）】' +
+            '\n- 生成的内容长度必须适配模板现有文本框/占位符的大小：内容偏长就精简文字或减小字号，内容偏短就保留留白；' +
+            '\n- 任何文字严禁溢出文本框（内容超过框体高度或宽度即为失败），严禁与其他文字或图片重叠；' +
+            '\n- 每页生成后必须检查该页的 <layout-audit> 结果：只要有 overflow / overlap / out-of-bounds，立即修复，直到 audit ✅ 通过才允许进入下一页。' +
+            '\n\n【内容要有设计感】' +
+            '\n- 每页要有清晰的视觉层次（大标题 → 要点 → 细节），禁止平铺文字；' +
+            '\n- 善用留白、对齐、强调色块、图标，避免纯文字堆砌；' +
+            '\n- 关键信息用大数字/加粗/色块突出，形成视觉焦点。' +
+            '\n\n【排版适配内容类型】（不同内容用对应排版，禁止所有页同一种布局）' +
+            '\n- 多个并列要点 → 三列卡片或图标列表；' +
+            '\n- 对比关系 → 左右两列对照；' +
+            '\n- 数据指标 → 大数字突出或图表；' +
+            '\n- 时间/步骤 → 时间线或流程图；' +
+            '\n- 金句/结论 → 居中大字引用；' +
+            '\n- 单一重点 → 居中强调。' +
+            '\n\n【其他】每页不重复同一版式；按内容增减页内项目；只整理美化内容，不重新设计版式。'
+        }
         if (opts?.slideShot && settingsSupportVision(settingsRef.current)) {
           const shot = await captureSlideShot(currentRef.current)
           if (shot) {
@@ -2326,6 +2387,30 @@ export function AiPanel({
             />
           )}
           {attachNotice && <div className="ai-attach-notice">{attachNotice}</div>}
+          <div className="ai-template-chips">
+            <button
+              className={`ai-template-chip${useTemplateLibrary ? ' active' : ''}`}
+              onClick={() => {
+                if (!isPro) {
+                  setTemplateHint('「使用模板库」为会员专属功能，请先开通会员')
+                  return
+                }
+                setTemplateHint(null)
+                setUseTemplateLibrary((v) => !v)
+              }}
+              data-tip={isPro ? 'AI 自动从模板库选模板，或严格套用你打开的文件' : '会员专属功能'}
+            >
+              📄 使用模板库
+            </button>
+            <button
+              className="ai-template-chip ai-template-more"
+              onClick={() => void window.slidesApi.openTemplateLibrary?.()}
+              data-tip="去网站模板库挑选精美模板"
+            >
+              更多模板 ›
+            </button>
+          </div>
+          {templateHint && <div className="ai-template-hint">{templateHint}</div>}
           <div className="ai-input-box">
             {attachments.length > 0 && (
               <div className="ai-attachments" onScroll={onAttachmentsScroll}>

@@ -12,6 +12,18 @@ import { auditSlideLayout, formatAudit } from '@genoffice/pipelines/slides/layou
 import { runLayoutScript, type LayoutScriptElement } from './layout-script'
 import { t } from '../i18n/locale'
 import systemPrompt from './prompts/system.md?raw'
+import templatesMeta from './templates-meta.json'
+
+/** One entry in the editable PPT template library (search_templates' data source). */
+export interface TemplateMeta {
+  id: string
+  title: string
+  tags: string[]
+  category: string
+  url: string
+  pageCount: number
+  structure: string[]
+}
 
 /**
  * Slides capability as an AgentSkill: deck outline context + three tools (read structure /
@@ -81,6 +93,8 @@ export interface DeckAccess {
   applySlide(slideIndex: number, updated: RenderSlide): void
   /** Replace the whole deck (after adding/removing slides) and jump to the goTo slide */
   applyDeck(slides: RenderSlide[], goTo?: number): void
+  /** Whether the "use template library" toggle is checked (members-only; drives template pick / strict template apply). */
+  useTemplateLibrary?(): boolean
   /**
    * Generation progress callback (optional): called by generate_deck stages; the UI updates
    * the progress card and top progress bar in real time. Passed only through renderer
@@ -221,6 +235,8 @@ export interface DeckAccess {
   loadStyleTemplate?(
     name: string,
   ): Promise<{ ok: boolean; styleSkill?: string; topic?: string; error?: string }>
+  /** Download a template-library .pptx and load it into the current document (members-only). */
+  openTemplate?(url: string): Promise<{ ok: boolean; error?: string }>
   fitWidthPx: number
   /** Base retry backoff in ms for single-page generation failures (default 2000; tests pass 0 to disable backoff) */
   retryBackoffMs?: number
@@ -655,6 +671,35 @@ const TOOLS: AgentToolDef[] = [
     inputSchema: { type: 'object', properties: {}, required: [] },
   },
   {
+    name: 'search_templates',
+    description:
+      'Search the editable PPT template library (a catalog of ready-made .pptx templates). Returns matching templates with id/title/category/tags/pageCount/structure and the url to load. Use when the user wants to build a deck on a template; after picking one, call open_template with its url.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        query: {
+          type: 'string',
+          description:
+            'Topic/scene/style keywords (Chinese works, e.g. "年终总结" or "商务 述职").',
+        },
+        maxResults: { type: 'integer', description: 'Max templates to return, default 8' },
+      },
+      required: ['query'],
+    },
+  },
+  {
+    name: 'open_template',
+    description:
+      'Download a template .pptx from the library and load it into the current document (replaces the current deck). Pass the url returned by search_templates. Requires membership.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        url: { type: 'string', description: 'Template file url from search_templates' },
+      },
+      required: ['url'],
+    },
+  },
+  {
     name: 'edit_chart',
     description:
       'Modify a chart (including charts from imported files; first edit converts it to editable automatically): change type/data/colors/chart elements. kind options: bar/barStacked/line/area/pie/doughnut. colorScheme: default/colorful/colorful2/mono-accent1..6 (theme-derived); legacy keys blue/warm/cool/mono still work.',
@@ -1077,6 +1122,11 @@ export function createSlidesSkill(access: DeckAccess): AgentSkill {
     // live view: the predicates are re-read before every model request
     get tools() {
       const hidden = hiddenMediaTools(access)
+      // Template-library tools are members-only and gated on the "use template library" toggle
+      if (!access.useTemplateLibrary?.()) {
+        hidden.add('search_templates')
+        hidden.add('open_template')
+      }
       return hidden.size ? TOOLS.filter((t) => !hidden.has(t.name)) : TOOLS
     },
     buildContext: () => {
@@ -2618,7 +2668,80 @@ async function executeTool(
       }
     }
 
+    case 'search_templates': {
+      const query = String(call.input.query ?? '').trim()
+      if (!query) return fail('search_templates', 'query must not be empty')
+      const maxResults = Number(call.input.maxResults ?? 8) || 8
+      const results = searchTemplateLibrary(query, maxResults)
+      if (results.length === 0) {
+        return {
+          output:
+            'No template matched those keywords. Try broader/more generic keywords (e.g. "工作总结" instead of a long sentence).',
+          mutated: false,
+          summary: t('aiSumTemplatesEmpty'),
+        }
+      }
+      const lines = results.map(
+        (m) =>
+          `- ${m.id} · ${m.title} · ${m.category} · ${m.pageCount}页 · 版式:${m.structure.join('/')} · ${m.url}`,
+      )
+      return {
+        output: `Matched ${results.length} templates:\n${lines.join('\n')}\n\nPick the best fit and call open_template with its url to load it.`,
+        mutated: false,
+        summary: t('aiSumListTemplates', { count: results.length }),
+      }
+    }
+
+    case 'open_template': {
+      const url = String(call.input.url ?? '').trim()
+      if (!url) return fail('open_template', 'url must not be empty')
+      if (!access.openTemplate)
+        return fail('open_template', 'The current environment does not support opening templates')
+      const r = await access.openTemplate(url)
+      if (!r.ok) return fail('open_template', r.error ?? 'Failed to open template')
+      return {
+        output:
+          'Template loaded into the current document. Now apply the user content onto it (fill text/figures; keep logo/colors/fonts/layout; never regenerate the whole deck).',
+        mutated: true,
+        summary: 'Loaded template',
+      }
+    }
+
     default:
       return fail(call.name, `Unknown tool: ${call.name}`)
   }
+}
+
+/**
+ * Keyword search over the editable template library. Scores each template by
+ * term hits across title/category/tags/structure (title > category > tags >
+ * structure), returns the top matches. Fallback: no terms → return templates in
+ * catalog order so the model still has candidates to pick from.
+ */
+function searchTemplateLibrary(query: string, maxResults: number): TemplateMeta[] {
+  const meta = templatesMeta as TemplateMeta[]
+  const terms = query
+    .split(/[\s,，、/]+/)
+    .map((s) => s.trim().toLowerCase())
+    .filter((s) => s.length > 0)
+  if (terms.length === 0) return meta.slice(0, maxResults)
+  const scored = meta.map((m) => {
+    let score = 0
+    const title = m.title.toLowerCase()
+    const category = (m.category || '').toLowerCase()
+    const tags = (m.tags || []).map((x) => x.toLowerCase())
+    const structure = (m.structure || []).map((x) => x.toLowerCase())
+    for (const term of terms) {
+      if (title.includes(term)) score += 5
+      if (category.includes(term)) score += 4
+      if (tags.some((x) => x.includes(term))) score += 3
+      if (structure.some((x) => x.includes(term))) score += 1
+    }
+    return { m, score }
+  })
+  return scored
+    .filter((x) => x.score > 0)
+    .sort((a, b) => b.score - a.score || a.m.id.localeCompare(b.m.id))
+    .slice(0, maxResults)
+    .map((x) => x.m)
 }
