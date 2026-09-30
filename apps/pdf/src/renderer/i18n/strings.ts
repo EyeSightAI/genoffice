@@ -115,6 +115,42 @@ const localizedFillFormStrings = {
     formPlaceStaticHint: '點擊放置；選取後可移動或縮放',
     formXfaWarning: '此 PDF 包含 XFA；目前僅支援 AcroForm，儲存時可能無法保留 XFA 資料',
   },
+  vi: {
+    ribbonTabFillForm: 'Điền biểu mẫu',
+    formPreviousField: 'Trường trước',
+    formNextField: 'Trường tiếp theo',
+    insertText: 'Chèn văn bản',
+    insertTextHint: 'Chèn văn bản có thể tìm kiếm vào PDF',
+    insertTextTitle: 'Chèn văn bản',
+    editInsertedText: 'Sửa văn bản đã chèn',
+    deleteInsertedText: 'Xóa văn bản đã chèn',
+    insertedTextDeleted: 'Đã xóa văn bản đã chèn',
+    textInsertSkipped: 'Không thể lưu văn bản đã chèn trên trang: {pages}',
+    textInsertNoFont:
+      'Không có phông chữ nào đã cài có thể vẽ văn bản này trong PDF (không hỗ trợ emoji và ký hiệu đặc biệt)',
+    formComplete: 'Hoàn tất điền',
+    formMissingRequired: 'Còn {count} trường bắt buộc chưa điền',
+    formCompleteDone: 'Biểu mẫu đã được kiểm tra và hoàn tất',
+    formSignField: 'Bấm để ký',
+    formAddText: 'Thêm văn bản',
+    formAddTextHint: 'Nhập văn bản, rồi bấm vào trang để đặt',
+    formAddTextTitle: 'Thêm văn bản vào PDF',
+    formEditText: 'Sửa văn bản',
+    formAddTextPlaceholder: 'Nhập văn bản cần đặt',
+    formTextSize: 'Cỡ chữ',
+    formTextColor: 'Màu',
+    formTextAlign: 'Căn chỉnh',
+    formAlignLeft: 'Trái',
+    formAlignCenter: 'Giữa',
+    formAlignRight: 'Phải',
+    formAddCheck: 'Dấu kiểm',
+    formAddCheckHint: 'Bấm vào trang để đặt dấu kiểm',
+    formAddCross: 'Dấu X',
+    formAddCrossHint: 'Bấm vào trang để đặt dấu X',
+    formPlaceStaticHint: 'Bấm để đặt; chọn kết quả để di chuyển hoặc đổi kích cỡ',
+    formXfaWarning:
+      'PDF này chứa XFA. Chỉ hỗ trợ AcroForm; khi lưu có thể không giữ được dữ liệu XFA.',
+  },
   cs: {
     ribbonTabFillForm: 'Vyplnit formulář',
     formPreviousField: 'Předchozí pole',
@@ -641,8 +677,7 @@ export const strings = {
     aiOverloadedError: 'The AI service is busy right now — please try again in a moment',
     aiNetworkError:
       'Network problem: could not reach the AI service. Check your connection and try again',
-    aiCreditsExhausted:
-      'Your credits have run out. Visit uto-office.cn to top up, then try again',
+    aiCreditsExhausted: 'Your credits have run out. Visit uto-office.cn to top up, then try again',
     aiToolReadPages: 'Read pages {start}-{end}',
     aiToolSearch: 'Search "{query}" ({count} hits)',
     aiToolGoto: 'Go to page {page}',
@@ -824,13 +859,13 @@ export const strings = {
     propModified: 'Modified',
   },
   vi: {
-    ...fillFormStringsFor('en'),
+    ...fillFormStringsFor('vi'),
     ribbonTabHome: 'Trang chủ',
     ribbonTabAnnotate: 'Chú thích',
     ribbonTabEdit: 'Chỉnh sửa',
     ribbonTabPage: 'Trang',
     ribbonCollapse: 'Thu gọn Ribbon',
-    ribbonPin: 'Ghim Ribbon',
+    ribbonExpand: 'Mở rộng Ribbon',
     ribbonTabView: 'Xem',
     aiSummarizeBtn: 'Tóm tắt bằng AI',
     aiKeyPointsBtn: 'Ý chính bằng AI',
@@ -1988,8 +2023,7 @@ export const strings = {
     aiOverloadedError: "Le service d'IA est actuellement surchargé — réessayez dans un instant",
     aiNetworkError:
       'Problème réseau : impossible de joindre le service IA. Vérifiez votre connexion et réessayez',
-    aiCreditsExhausted:
-      'Vos crédits  sont épuisés. Rechargez sur uto-office.cn puis réessayez',
+    aiCreditsExhausted: 'Vos crédits  sont épuisés. Rechargez sur uto-office.cn puis réessayez',
     aiToolReadPages: 'Lire les pages {start}-{end}',
     aiToolSearch: 'Rechercher « {query} » ({count} occurrences)',
     aiToolGoto: 'Aller à la page {page}',
@@ -3009,8 +3043,7 @@ export const strings = {
     aiOverloadedError: 'บริการ AI มีผู้ใช้งานจำนวนมากในขณะนี้ โปรดลองอีกครั้งในอีกสักครู่',
     aiNetworkError:
       'เครือข่ายมีปัญหา ไม่สามารถเชื่อมต่อบริการ AI ได้ โปรดตรวจสอบการเชื่อมต่อแล้วลองใหม่',
-    aiCreditsExhausted:
-      'เครดิต  ของคุณหมดแล้ว โปรดเติมเครดิตที่ uto-office.cn แล้วลองใหม่',
+    aiCreditsExhausted: 'เครดิต  ของคุณหมดแล้ว โปรดเติมเครดิตที่ uto-office.cn แล้วลองใหม่',
     aiToolReadPages: 'อ่านหน้า {start}-{end}',
     aiToolSearch: 'ค้นหา "{query}" ({count} แห่ง)',
     aiToolGoto: 'ไปที่หน้า {page}',
@@ -3344,8 +3377,7 @@ export const strings = {
     aiOverloadedError: 'Layanan AI sedang sibuk — silakan coba lagi sebentar lagi',
     aiNetworkError:
       'Masalah jaringan: tidak dapat terhubung ke layanan AI. Periksa koneksi Anda lalu coba lagi',
-    aiCreditsExhausted:
-      'Kredit  Anda telah habis. Isi ulang di uto-office.cn lalu coba lagi',
+    aiCreditsExhausted: 'Kredit  Anda telah habis. Isi ulang di uto-office.cn lalu coba lagi',
     aiToolReadPages: 'Baca halaman {start}-{end}',
     aiToolSearch: 'Cari "{query}" ({count} temuan)',
     aiToolGoto: 'Ke halaman {page}',
@@ -3682,8 +3714,7 @@ export const strings = {
     aiOverloadedError: 'Сервис ИИ сейчас перегружен — повторите попытку чуть позже',
     aiNetworkError:
       'Проблема с сетью: не удалось подключиться к сервису ИИ. Проверьте подключение и повторите попытку',
-    aiCreditsExhausted:
-      'Кредиты  исчерпаны. Пополните баланс на uto-office.cn и повторите попытку',
+    aiCreditsExhausted: 'Кредиты  исчерпаны. Пополните баланс на uto-office.cn и повторите попытку',
     aiToolReadPages: 'Чтение страниц {start}-{end}',
     aiToolSearch: 'Поиск «{query}» ({count} совпадений)',
     aiToolGoto: 'Перейти на страницу {page}',
@@ -4019,8 +4050,7 @@ export const strings = {
     aiOverloadedError: 'خدمة الذكاء الاصطناعي مشغولة حاليًا — يرجى المحاولة مرة أخرى بعد قليل',
     aiNetworkError:
       'مشكلة في الشبكة: تعذّر الوصول إلى خدمة الذكاء الاصطناعي. تحقق من الاتصال وحاول مجددًا',
-    aiCreditsExhausted:
-      'نفدت أرصدة  لديك. يرجى إعادة الشحن عبر uto-office.cn ثم المحاولة مجددًا',
+    aiCreditsExhausted: 'نفدت أرصدة  لديك. يرجى إعادة الشحن عبر uto-office.cn ثم المحاولة مجددًا',
     aiToolReadPages: 'قراءة الصفحات {start}-{end}',
     aiToolSearch: 'بحث عن "{query}" ({count} نتيجة)',
     aiToolGoto: 'الانتقال إلى الصفحة {page}',
@@ -4355,8 +4385,7 @@ export const strings = {
       'O serviço de IA está sobrecarregado no momento — tente novamente em instantes',
     aiNetworkError:
       'Problema de rede: não foi possível conectar ao serviço de IA. Verifique sua conexão e tente novamente',
-    aiCreditsExhausted:
-      'Seus créditos  acabaram. Recarregue em uto-office.cn e tente novamente',
+    aiCreditsExhausted: 'Seus créditos  acabaram. Recarregue em uto-office.cn e tente novamente',
     aiToolReadPages: 'Ler páginas {start}-{end}',
     aiToolSearch: 'Pesquisar "{query}" ({count} ocorrências)',
     aiToolGoto: 'Ir para a página {page}',
@@ -4695,8 +4724,7 @@ export const strings = {
     aiOverloadedError: 'Il servizio IA è momentaneamente sovraccarico — riprova tra poco',
     aiNetworkError:
       'Problema di rete: impossibile raggiungere il servizio IA. Controlla la connessione e riprova',
-    aiCreditsExhausted:
-      'I tuoi crediti  sono esauriti. Ricarica su uto-office.cn e riprova',
+    aiCreditsExhausted: 'I tuoi crediti  sono esauriti. Ricarica su uto-office.cn e riprova',
     aiToolReadPages: 'Leggi le pagine {start}-{end}',
     aiToolSearch: 'Cerca "{query}" ({count} risultati)',
     aiToolGoto: 'Vai alla pagina {page}',
@@ -5712,8 +5740,7 @@ export const strings = {
     aiOverloadedError: 'De AI-service is momenteel overbelast — probeer het zo opnieuw',
     aiNetworkError:
       'Netwerkprobleem: kan de AI-service niet bereiken. Controleer je verbinding en probeer het opnieuw',
-    aiCreditsExhausted:
-      'Je -credits zijn op. Waardeer op via uto-office.cn en probeer het opnieuw',
+    aiCreditsExhausted: 'Je -credits zijn op. Waardeer op via uto-office.cn en probeer het opnieuw',
     aiToolReadPages: "Pagina's {start}-{end} lezen",
     aiToolSearch: 'Zoeken naar "{query}" ({count} resultaten)',
     aiToolGoto: 'Ga naar pagina {page}',
@@ -6050,8 +6077,7 @@ export const strings = {
     aiOverloadedError: 'Perkhidmatan AI sedang sibuk — sila cuba lagi sebentar lagi',
     aiNetworkError:
       'Masalah rangkaian: tidak dapat menghubungi perkhidmatan AI. Semak sambungan anda dan cuba lagi',
-    aiCreditsExhausted:
-      'Kredit  anda telah habis. Tambah nilai di uto-office.cn dan cuba lagi',
+    aiCreditsExhausted: 'Kredit  anda telah habis. Tambah nilai di uto-office.cn dan cuba lagi',
     aiToolReadPages: 'Baca halaman {start}-{end}',
     aiToolSearch: 'Cari "{query}" ({count} padanan)',
     aiToolGoto: 'Pergi ke halaman {page}',
