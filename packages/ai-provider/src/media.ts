@@ -22,9 +22,9 @@ export const DEEPSEEK_MEDIA_BASE_URL = 'https://api.deepseek.com/v1'
 export const AI_MEDIA_PROVIDERS: AiMediaProviderMeta[] = [
   {
     id: 'genspark',
-    label: '',
-    description: 'Image generation, media analysis and search through your  sign-in',
-    keyPlaceholder: 'Not required - sign in to ',
+    label: 'Genspark',
+    description: 'Image generation, media analysis and search through your Genspark sign-in',
+    keyPlaceholder: 'Not required - sign in to Genspark',
     defaultBaseUrl: '',
     imageProtocol: 'openai-images',
     imageModels: [],
