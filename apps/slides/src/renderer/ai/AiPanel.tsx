@@ -956,6 +956,13 @@ export function AiPanel({
       applySlide: (i, updated) => applySlideRef.current(i, updated),
       applyDeck: (all, goTo) => applyDeckRef.current(all, goTo),
       useTemplateLibrary: () => useTemplateLibraryRef.current,
+      openTemplate: async (url: string) => {
+        const res = await window.slidesApi.openTemplate(url)
+        if (res && typeof res === 'object' && 'error' in res && typeof res.error === 'string') {
+          return { ok: false, error: res.error }
+        }
+        return { ok: true }
+      },
       landGeneratedPages: async (
         pageMarkers: string[],
         mode?: 'replace' | 'append' | 'insert_at',
