@@ -892,6 +892,8 @@ async function buildVisualFixture(): Promise<Buffer> {
     `<?xml version="1.0"?>
     <xdr:wsDr xmlns:xdr="http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing"
       xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+      xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart"
+      xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
       <xdr:twoCellAnchor><xdr:from><xdr:col>1</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>2</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:from>
         <xdr:to><xdr:col>7</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>12</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:to>
         <xdr:graphicFrame><xdr:nvGraphicFramePr><xdr:cNvPr id="1" name="Revenue chart"/></xdr:nvGraphicFramePr>
