@@ -1190,6 +1190,13 @@ export function registerSlidesIpc(): void {
     isPro: await readWxLoginIsPro(),
   }))
 
+  // Open the template-library website in the default browser ("更多模板" CTA)
+  ipcMain.handle('slides:open-template-library', () => {
+    shell.openExternal('https://uto-office.cn/templates/').catch(() => {
+      // no browser handler available; nothing actionable for the user here
+    })
+  })
+
   // AI auto-picks template: download template .pptx and load into the current tab (replaces doc, AI chat on same page)
   ipcMain.handle(
     'slides:open-template',

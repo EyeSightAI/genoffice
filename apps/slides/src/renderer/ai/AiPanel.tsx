@@ -2351,7 +2351,7 @@ export function AiPanel({
               onClick={() => void window.slidesApi.openTemplateLibrary?.()}
               data-tip="去网站模板库挑选精美模板"
             >
-              更多 ›
+              更多模板 ›
             </button>
           </div>
           {templateHint && <div className="ai-template-hint">{templateHint}</div>}
