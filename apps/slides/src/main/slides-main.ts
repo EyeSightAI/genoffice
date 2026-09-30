@@ -1190,7 +1190,7 @@ export function registerSlidesIpc(): void {
     isPro: await readWxLoginIsPro(),
   }))
 
-  // Open the template-library website in the default browser ("更多模板" CTA)
+  // Open the template-library website in the default browser (the "More templates" CTA)
   ipcMain.handle('slides:open-template-library', () => {
     shell.openExternal('https://utooffice-templates.vercel.app').catch(() => {
       // no browser handler available; nothing actionable for the user here
