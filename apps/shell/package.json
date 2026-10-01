@@ -16,7 +16,7 @@
     "typecheck": "tsc --noEmit",
     "start": "electron-vite build && electron .",
     "dist:mac": "npm run notices && electron-vite build && electron-builder --mac",
-    "dist:win": "npm run notices && electron-vite build && electron-builder --win",
+    "dist:win": "npm run notices && electron-vite build && electron-builder --win --publish never",
     "dist:linux": "npm run notices && electron-vite build && electron-builder --linux"
   },
   "devDependencies": {
