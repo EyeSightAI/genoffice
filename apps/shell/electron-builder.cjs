@@ -540,6 +540,9 @@ const config = {
     ],
   },
   win: {
+    // fixed installer filename (no version): the website "Download UToOffice"
+    // link (releases/latest/download/UToOffice-Setup.exe) stays stable across releases
+    artifactName: 'UToOffice-Setup.exe',
     target: [
       {
         target: 'nsis',
