@@ -866,3 +866,27 @@
 .set-intg-path {
   text-align: left;
 }
+
+.buy-qrcode-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  margin-top: 12px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.buy-qrcode-img {
+  width: 180px;
+  height: 180px;
+  border-radius: 8px;
+  display: block;
+}
+
+.buy-qrcode-tip {
+  font-size: 13px;
+  color: var(--text-muted);
+}
