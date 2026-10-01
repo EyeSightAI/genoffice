@@ -48,6 +48,7 @@ jobs:
         run: npm run dist:win
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GENOFFICE_UPDATE_URL: https://uto-office.cn/update/
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
