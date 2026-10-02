@@ -70,7 +70,7 @@ export const tMain = createI18n({
     errParseFailed: '文件解析失败',
     errImageNoText: '图片附件不提供文本,已作为图像随用户消息发送,直接看图即可',
     errNotImage: '不是支持的图片类型',
-    errGskNotLoggedIn: '未登录:请点击下方「登录」完成登录后重试',
+    errGskNotLoggedIn: '请先在设置中配置大模型（AI 模型 API Key）',
     errNoApiKey: '未配置 {provider} 的 API Key',
     errNoModel: '未配置模型名称',
     errGskCli: 'gsk 未登录:请先运行 gsk login 登录 账号',
@@ -180,8 +180,7 @@ export const tMain = createI18n({
     errParseFailed: 'Failed to parse file',
     errImageNoText: 'Image attachments have no text; the image is sent along with the user message',
     errNotImage: 'not a supported image type',
-    errGskNotLoggedIn:
-      'Not signed in to : click “Sign in” below, sign in, then retry',
+    errGskNotLoggedIn: 'Not signed in to : click “Sign in” below, sign in, then retry',
     errNoApiKey: 'No API key configured for {provider}',
     errNoModel: 'No model name configured',
     errGskCli: 'gsk not signed in: run gsk login to sign in to your account first',
@@ -527,8 +526,7 @@ export const tMain = createI18n({
       '에 로그인되어 있지 않습니다. 아래 " 로그인"을 눌러 로그인한 뒤 다시 시도하세요',
     errNoApiKey: '{provider}의 API 키가 설정되지 않았습니다',
     errNoModel: '모델 이름이 설정되지 않았습니다',
-    errGskCli:
-      'gsk가 로그인되어 있지 않습니다. 먼저 gsk login을 실행해  계정에 로그인하세요',
+    errGskCli: 'gsk가 로그인되어 있지 않습니다. 먼저 gsk login을 실행해  계정에 로그인하세요',
     errNoDeckAppend:
       '추가할 수 있는 문서가 없습니다(세션 없음). 먼저 mode:"replace"로 첫 페이지를 생성하거나 네이티브 도구로 페이지를 추가하세요.',
     errAppendFailed: '추가 실패: {reason}',
@@ -640,8 +638,7 @@ export const tMain = createI18n({
       'Non connecté à  : cliquez sur « Se connecter à  » ci-dessous, connectez-vous puis réessayez',
     errNoApiKey: 'Aucune clé API configurée pour {provider}',
     errNoModel: 'Aucun nom de modèle configuré',
-    errGskCli:
-      "gsk non connecté : exécutez d'abord gsk login pour vous connecter à votre compte ",
+    errGskCli: "gsk non connecté : exécutez d'abord gsk login pour vous connecter à votre compte ",
     errNoDeckAppend:
       'Aucune présentation à compléter (session inexistante). Générez d\'abord la première page avec mode:"replace" ou ajoutez des pages avec les outils natifs.',
     errAppendFailed: "Échec de l'ajout : {reason}",
@@ -987,8 +984,7 @@ export const tMain = createI18n({
     errImageNoText:
       'สิ่งที่แนบเป็นรูปภาพไม่มีข้อความ รูปถูกส่งไปพร้อมข้อความของผู้ใช้แล้ว โปรดดูรูปโดยตรง',
     errNotImage: 'ไม่ใช่ชนิดรูปภาพที่รองรับ',
-    errGskNotLoggedIn:
-      'ยังไม่ได้ลงชื่อเข้าใช้ : แตะ “ลงชื่อเข้าใช้ ” ด้านล่าง แล้วลองอีกครั้ง',
+    errGskNotLoggedIn: 'ยังไม่ได้ลงชื่อเข้าใช้ : แตะ “ลงชื่อเข้าใช้ ” ด้านล่าง แล้วลองอีกครั้ง',
     errNoApiKey: 'ยังไม่ได้ตั้งค่า API Key ของ {provider}',
     errNoModel: 'ยังไม่ได้ตั้งค่าชื่อโมเดล',
     errGskCli: 'gsk ยังไม่ได้เข้าสู่ระบบ: โปรดรัน gsk login เพื่อเข้าสู่ระบบบัญชี  ก่อน',
@@ -1214,12 +1210,10 @@ export const tMain = createI18n({
     errImageNoText:
       'Вложения-изображения не содержат текста; изображение отправлено вместе с сообщением пользователя, просто посмотрите на него',
     errNotImage: 'неподдерживаемый тип изображения',
-    errGskNotLoggedIn:
-      'Вы не вошли в : нажмите «Войти в » ниже, войдите и повторите попытку',
+    errGskNotLoggedIn: 'Вы не вошли в : нажмите «Войти в » ниже, войдите и повторите попытку',
     errNoApiKey: 'API-ключ для {provider} не настроен',
     errNoModel: 'Не указано имя модели',
-    errGskCli:
-      'gsk не авторизован: сначала выполните gsk login, чтобы войти в учётную запись ',
+    errGskCli: 'gsk не авторизован: сначала выполните gsk login, чтобы войти в учётную запись ',
     errNoDeckAppend:
       'Нет презентации для добавления страниц (сессия отсутствует). Сначала создайте первую страницу с mode:"replace" или добавьте страницы нативными инструментами.',
     errAppendFailed: 'Сбой добавления: {reason}',
@@ -1330,8 +1324,7 @@ export const tMain = createI18n({
     errImageNoText:
       'المرفقات من نوع الصور لا توفر نصًا؛ وقد أُرسلت الصورة مع رسالة المستخدم، يكفي النظر إليها مباشرة',
     errNotImage: 'ليس نوع صورة مدعومًا',
-    errGskNotLoggedIn:
-      'لم تسجّل الدخول إلى : انقر على «تسجيل الدخول إلى » أدناه ثم أعد المحاولة',
+    errGskNotLoggedIn: 'لم تسجّل الدخول إلى : انقر على «تسجيل الدخول إلى » أدناه ثم أعد المحاولة',
     errNoApiKey: 'لم يتم تكوين مفتاح API لـ {provider}',
     errNoModel: 'لم يتم تكوين اسم النموذج',
     errGskCli: 'gsk غير مسجَّل الدخول: شغّل gsk login أولًا لتسجيل الدخول إلى حساب ',
@@ -1442,8 +1435,7 @@ export const tMain = createI18n({
     errImageNoText:
       'Anexos de imagem não têm texto; a imagem é enviada junto com a mensagem do usuário',
     errNotImage: 'não é um tipo de imagem suportado',
-    errGskNotLoggedIn:
-      'Não conectado ao : clique em “Entrar no ” abaixo, entre e tente novamente',
+    errGskNotLoggedIn: 'Não conectado ao : clique em “Entrar no ” abaixo, entre e tente novamente',
     errNoApiKey: 'Nenhuma chave de API configurada para {provider}',
     errNoModel: 'Nenhum nome de modelo configurado',
     errGskCli: 'gsk não conectado: execute gsk login primeiro para entrar na sua conta ',
@@ -1680,8 +1672,7 @@ export const tMain = createI18n({
       'Nie zalogowano do : kliknij „Zaloguj się do ” poniżej, zaloguj się i spróbuj ponownie',
     errNoApiKey: 'Nie skonfigurowano klucza API dla {provider}',
     errNoModel: 'Nie skonfigurowano nazwy modelu',
-    errGskCli:
-      'gsk nie jest zalogowany: najpierw uruchom gsk login, aby zalogować się na konto ',
+    errGskCli: 'gsk nie jest zalogowany: najpierw uruchom gsk login, aby zalogować się na konto ',
     errNoDeckAppend:
       'Brak prezentacji do rozszerzenia (brak sesji). Najpierw wygeneruj pierwszą stronę z mode:"replace" albo dodaj strony narzędziami natywnymi.',
     errAppendFailed: 'Dołączanie nie powiodło się: {reason}',
@@ -1910,8 +1901,7 @@ export const tMain = createI18n({
       'Niet aangemeld bij : klik hieronder op “Aanmelden bij ”, meld u aan en probeer het opnieuw',
     errNoApiKey: 'Geen API-sleutel geconfigureerd voor {provider}',
     errNoModel: 'Geen modelnaam geconfigureerd',
-    errGskCli:
-      'gsk is niet aangemeld: voer eerst gsk login uit om u aan te melden bij uw -account',
+    errGskCli: 'gsk is niet aangemeld: voer eerst gsk login uit om u aan te melden bij uw -account',
     errNoDeckAppend:
       'Geen presentatie om aan toe te voegen (sessie ontbreekt). Genereer eerst de eerste pagina met mode:"replace" of voeg pagina\'s toe met de native tools.',
     errAppendFailed: 'Toevoegen mislukt: {reason}',
@@ -2021,12 +2011,10 @@ export const tMain = createI18n({
     errParseFailed: 'Gagal menghurai fail',
     errImageNoText: 'Lampiran imej tiada teks; imej dihantar bersama mesej pengguna',
     errNotImage: 'bukan jenis imej yang disokong',
-    errGskNotLoggedIn:
-      'Belum log masuk ke : klik “Log masuk ke ” di bawah, kemudian cuba lagi',
+    errGskNotLoggedIn: 'Belum log masuk ke : klik “Log masuk ke ” di bawah, kemudian cuba lagi',
     errNoApiKey: 'Kunci API untuk {provider} belum dikonfigurasikan',
     errNoModel: 'Nama model belum dikonfigurasikan',
-    errGskCli:
-      'gsk belum log masuk: jalankan gsk login dahulu untuk log masuk ke akaun  anda',
+    errGskCli: 'gsk belum log masuk: jalankan gsk login dahulu untuk log masuk ke akaun  anda',
     errNoDeckAppend:
       'Tiada persembahan untuk ditambah (sesi tidak wujud). Jana halaman pertama dengan mode:"replace" dahulu, atau tambah halaman dengan alat asli.',
     errAppendFailed: 'Gagal menambah: {reason}',

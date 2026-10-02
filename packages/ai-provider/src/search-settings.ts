@@ -40,7 +40,12 @@ export function resolveAiSearchSettings(
     const key = stored.providers?.[id]?.apiKey
     if (typeof key === 'string') providers[id] = { apiKey: key.trim() }
   }
-  return { provider: stored.provider ?? defaults.provider, providers }
+  // genspark media/search relied on a Genspark account sign-in, which the
+  // WeChat membership replaced — migrate any stored genspark choice to the
+  // new BYOK default so old installs don't keep showing the "sign in" prompt.
+  const provider =
+    stored.provider === 'genspark' ? defaults.provider : (stored.provider ?? defaults.provider)
+  return { provider, providers }
 }
 
 /** Parallel can run keylessly; other custom providers require a key or fall back to . */

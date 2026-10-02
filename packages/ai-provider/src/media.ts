@@ -261,12 +261,23 @@ export function resolveAiMediaSettings(
     }
   }
   const legacy = stored.provider
-  const analysisProvider = stored.analysisProvider ?? legacy ?? defaults.analysisProvider
+  const migrate = (v: string | undefined, fb: AiMediaProviderId): AiMediaProviderId =>
+    v === 'genspark' ? 'doubao' : ((v as AiMediaProviderId) ?? fb)
+  const analysisProvider = migrate(
+    stored.analysisProvider ?? legacy ?? defaults.analysisProvider,
+    defaults.analysisProvider,
+  )
   return {
-    imageProvider: stored.imageProvider ?? legacy ?? defaults.imageProvider,
+    imageProvider: migrate(
+      stored.imageProvider ?? legacy ?? defaults.imageProvider,
+      defaults.imageProvider,
+    ),
     analysisProvider,
     // a pre-split file used one vendor for all media analysis
-    videoAnalysisProvider: stored.videoAnalysisProvider ?? analysisProvider,
+    videoAnalysisProvider: migrate(
+      stored.videoAnalysisProvider ?? analysisProvider,
+      analysisProvider,
+    ),
     providers,
   }
 }
