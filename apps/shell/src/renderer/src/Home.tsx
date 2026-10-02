@@ -3208,7 +3208,10 @@ export function Home() {
             <span className="nav-label">{t('navStarred')}</span>
             <span className="nav-count">{navCounts.starred}</span>
           </button>
-          {loggedIn && (
+          {/* Genspark cloud projects require a Genspark account sign-in, which the
+              WeChat membership replaced — hide the entry until a first-party
+              cloud store exists. */}
+          {false && (
             <button
               className={`nav-item${cloudMode && !selectedFolder ? ' active' : ''}`}
               onClick={() => {
