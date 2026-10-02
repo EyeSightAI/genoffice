@@ -2387,28 +2387,57 @@ export function AiPanel({
             />
           )}
           {attachNotice && <div className="ai-attach-notice">{attachNotice}</div>}
-          <div className="ai-template-chips">
-            <button
-              className={`ai-template-chip${useTemplateLibrary ? ' active' : ''}`}
-              onClick={() => {
-                if (!isPro) {
-                  setTemplateHint('「使用模板库」为会员专属功能，请先开通会员')
-                  return
-                }
-                setTemplateHint(null)
-                setUseTemplateLibrary((v) => !v)
-              }}
-              data-tip={isPro ? 'AI 自动从模板库选模板，或严格套用你打开的文件' : '会员专属功能'}
-            >
-              {useTemplateLibrary ? '✓' : '📄'} 使用模板库
-            </button>
-            <button
-              className="ai-template-chip ai-template-more"
-              onClick={() => void window.slidesApi.openTemplateLibrary?.()}
-              data-tip="去网站模板库挑选精美模板"
-            >
-              更多模板 ›
-            </button>
+          <div className="ai-template-bar">
+            <div className="ai-template-cards" role="group" aria-label="模板">
+              <button
+                type="button"
+                className={`ai-template-card${useTemplateLibrary ? ' selected' : ''}`}
+                aria-pressed={useTemplateLibrary}
+                onClick={() => {
+                  if (!isPro) {
+                    setTemplateHint('「使用模板库」为会员专属功能，请先开通会员')
+                    return
+                  }
+                  setTemplateHint(null)
+                  setUseTemplateLibrary((v) => !v)
+                }}
+                data-tip={isPro ? 'AI 自动从模板库选模板，或严格套用你打开的文件' : '会员专属功能'}
+              >
+                <span className="ai-template-card-icon" aria-hidden>
+                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                    <rect x="2.5" y="2.5" width="15" height="15" rx="2.5" />
+                    <path d="M2.5 7.5h15M7.5 7.5v10" />
+                  </svg>
+                </span>
+                <span className="ai-template-card-title">使用模板库</span>
+                {useTemplateLibrary && (
+                  <span className="ai-template-card-check" aria-hidden>
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <path d="M2 5.2l2.2 2.2L8 3" />
+                    </svg>
+                  </span>
+                )}
+              </button>
+              <button
+                type="button"
+                className="ai-template-card ai-template-card-more"
+                onClick={() => void window.slidesApi.openTemplateLibrary?.()}
+                data-tip="去网站模板库浏览挑选精美模板"
+              >
+                <span className="ai-template-card-icon" aria-hidden>
+                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                    <rect x="2.5" y="2.5" width="15" height="15" rx="2.5" />
+                    <path d="M6 9.5h8M6 12.5h8" />
+                  </svg>
+                </span>
+                <span className="ai-template-card-title">更多模板</span>
+              </button>
+            </div>
+            {useTemplateLibrary && (
+              <div className="ai-template-note">
+                AI 会自动从模板库选模板，或严格套用你打开的文件
+              </div>
+            )}
           </div>
           {templateHint && <div className="ai-template-hint">{templateHint}</div>}
           <div className="ai-input-box">
