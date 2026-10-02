@@ -1703,7 +1703,7 @@ export function AiPanel({
         if (useTemplateLibrary) {
           modelInstruction +=
             '\n\n【使用模板库：会员专属 · 强制规则】' +
-            '\n- 必须先选模板：当前文档空白 → search_templates 选模板 + open_template 加载；当前文档是用户打开的模板 → 直接套用当前模板。' +
+            '\n- 第一步先看本轮的 <deck outline> 判断当前文档状态，二选一：① 当前文档已有内容（页数 > 1，或任一页有文字/图片/形状元素）→ 说明用户已经打开了一个模板文件，直接套用当前文档，严禁调用 search_templates 再选模板；② 当前文档空白（只有 1 页且无任何元素）→ search_templates 选模板 + open_template 加载。判断只看 deck outline 的页数和元素，不要臆测。' +
             '\n- 【问卷只问内容】选模板后可用 ask_clarification 问卷引导用户提供内容/数据（项目数据、汇报要点），但不要问风格/配色/受众（模板已确定）。' +
             '\n- 【禁止重新生成】套用模板后，严禁用 generate_deck 重新生成整套 PPT。模板页数太多要精简时，把要删的页一次性放进一个 apply_ops 批量（多个 deleteSlide op，每页一个），op 按 slideIndex 从大到小排列（先删索引大的页，前面页索引不变），一次调用删完，不要反复规划索引或逐页删；至少保留一页。内容放不下就精简文字或删减页内项目，绝不重做一套。' +
             '\n- 【仅无匹配模板时例外】只有 search_templates 搜不到满足用户需求的模板，才允许 generate_deck 自己生成。' +

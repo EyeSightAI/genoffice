@@ -63,13 +63,21 @@ jobs:
           python -m pip install paramiko -q
           python -c "
           import paramiko
-          t = paramiko.Transport(('${{ secrets.SERVER_HOST }}', 22))
-          t.connect(username='${{ secrets.SERVER_USER }}', password='${{ secrets.SERVER_PASSWORD }}')
-          sftp = paramiko.SFTPClient.from_transport(t)
+          c = paramiko.SSHClient()
+          c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+          c.connect('${{ secrets.SERVER_HOST }}', username='${{ secrets.SERVER_USER }}', password='${{ secrets.SERVER_PASSWORD }}')
+          sftp = c.open_sftp()
           for f in ['apps/shell/release/latest.yml', 'apps/shell/release/UToOffice-Setup.exe']:
               sftp.put(f, '/www/wwwroot/update/' + f.split('/')[-1])
-          sftp.close(); t.close()
-          print('sync to server mirror done')
+          sftp.close()
+          # server-side post-deploy: upload installer to chengdu OSS (internal, fast)
+          # and point latest.yml url at the OSS installer (packaging overwrites it to relative)
+          stdin, stdout, stderr = c.exec_command('/www/server/pyporject_evn/versions/3.10.14/bin/python3 /www/wwwroot/update/deploy_oss.py')
+          print(stdout.read().decode())
+          err = stderr.read().decode()
+          if err.strip(): print('STDERR:', err)
+          c.close()
+          print('sync + OSS deploy done')
           "
 
       - name: List artifacts
