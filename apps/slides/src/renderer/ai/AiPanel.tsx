@@ -2400,7 +2400,7 @@ export function AiPanel({
               }}
               data-tip={isPro ? 'AI 自动从模板库选模板，或严格套用你打开的文件' : '会员专属功能'}
             >
-              📄 使用模板库
+              {useTemplateLibrary ? '✓' : '📄'} 使用模板库
             </button>
             <button
               className="ai-template-chip ai-template-more"
