@@ -270,6 +270,7 @@ import type {
   RecentPage,
   RenameResult,
   StarPromptShow,
+  TemplateImportStatus,
   UiTheme,
   FileSearchPage,
   FileSearchQuery,
@@ -5282,6 +5283,7 @@ async function installMainProcessProxy(): Promise<void> {
 // ---- lifecycle (the shell is the only owner) ----
 
 let pendingLaunchPaths = collectLaunchPaths(process.argv)
+let pendingTemplateUrl = templateUrlIn(process.argv)
 let controlServer: ControlServer | null = null
 
 // show() does not un-minimize, and on macOS ⌘W destroys the shell window while the
@@ -5299,6 +5301,102 @@ function openLaunchPaths(paths: readonly string[]): void {
   if (!opened) tabManager?.openHomeTab()
 }
 
+/** Parse a template download URL from argv (utooffice://import?url=xxx). */
+function templateUrlIn(argv: readonly string[]): string | null {
+  for (const arg of argv) {
+    if (!arg.startsWith('utooffice://')) continue
+    try {
+      const u = new URL(arg)
+      const url = u.searchParams.get('url')
+      if (url) return url
+    } catch {
+      /* ignore malformed */
+    }
+  }
+  return null
+}
+
+/** Template URLs currently downloading (dedup repeated deep-link triggers). */
+const importingTemplateUrls = new Set<string>()
+
+/** Push template-download progress to the shell renderer (download-toast). */
+function sendTemplateImportStatus(status: TemplateImportStatus): void {
+  if (shellWindow && !shellWindow.isDestroyed()) {
+    shellWindow.webContents.send(HOME_CHANNELS.templateImportStatus, status)
+  }
+}
+
+/**
+ * Download a template-library .pptx and open it in the slides editor (deep-link entry).
+ * The window is focused first, downloads fail loudly (never silently), and the file
+ * opens only after the download completes — so the user always sees a clear result.
+ */
+async function handleTemplateImport(templateUrl: string): Promise<void> {
+  let u: URL
+  try {
+    u = new URL(templateUrl)
+  } catch {
+    return
+  }
+  if (u.protocol !== 'https:' && u.protocol !== 'http:') return
+  if (!/\.pptx$/i.test(u.pathname)) return
+
+  if (importingTemplateUrls.has(templateUrl)) return
+  importingTemplateUrls.add(templateUrl)
+
+  try {
+    // Focus the window first so the user sees it responding (no silent no-op).
+    revealShellWindow()
+
+    // Membership gate: non-members are guided to subscribe instead of downloading.
+    const state = readWxLogin(app.getPath('userData'))
+    if (!state?.isPro) {
+      const r = await dialog.showMessageBox({
+        type: 'info',
+        title: '会员专属',
+        message: '下载模板需要 UToOffice 会员',
+        detail:
+          '开通会员即可下载全部 600+ 精美 PPT 模板，并解锁「使用当前模板」严格套用与生成质检。',
+        buttons: ['开通会员', '取消'],
+        defaultId: 0,
+        cancelId: 1,
+      })
+      if (r.response === 0) tabManager?.openHomeTab()
+      return
+    }
+
+    const dir = join(app.getPath('userData'), 'templates')
+    mkdirSync(dir, { recursive: true })
+    const name = basename(u.pathname) || `template-${Date.now()}.pptx`
+    const filePath = join(dir, name)
+
+    // Download (cached templates open directly). Fail loudly instead of silently.
+    if (!existsSync(filePath)) {
+      sendTemplateImportStatus({ phase: 'downloading', name })
+      const res = await fetch(templateUrl, { signal: AbortSignal.timeout(30000) })
+      if (!res.ok) {
+        sendTemplateImportStatus({
+          phase: 'failed',
+          name,
+          message: '下载模板失败，请检查网络后重试',
+        })
+        showAppWarning('下载模板失败，请检查网络后重试')
+        return
+      }
+      const buf = Buffer.from(await res.arrayBuffer())
+      writeFileSync(filePath, buf)
+    }
+
+    sendTemplateImportStatus({ phase: 'done', name })
+    if (!openDocumentPath(filePath)) tabManager?.openHomeTab()
+  } catch {
+    sendTemplateImportStatus({ phase: 'failed', message: '下载模板失败，请重试' })
+    showAppWarning('下载模板失败，请重试')
+  } finally {
+    importingTemplateUrls.delete(templateUrl)
+  }
+}
+
 // On macOS a file opened from Finder is not in argv; it arrives via the open-file event (before ready).
 // If another instance already holds the lock, this process exits, and the path must ride along in
 // the lock request's additionalData to the surviving instance — so the lock request is deferred
@@ -5314,6 +5412,11 @@ app.on('open-file', (event, filePath) => {
 })
 
 app.on('second-instance', (_event, argv, _cwd, additionalData) => {
+  const templateUrl = templateUrlIn(argv)
+  if (templateUrl) {
+    void handleTemplateImport(templateUrl)
+    return
+  }
   const paths = collectLaunchPaths(argv, additionalData)
   revealShellWindow()
   openLaunchPaths(paths)
@@ -5587,6 +5690,13 @@ app.whenReady().then(async () => {
   installDockMenu()
   setUpdateCheckInvoker(() => void checkForUpdatesNow())
   initAutoUpdater(() => shellWindow, currentUpdateChannel())
+
+  // UToOffice deep link (website template library "open with UToOffice")
+  if (process.platform !== 'linux') app.setAsDefaultProtocolClient('utooffice')
+  if (pendingTemplateUrl) {
+    void handleTemplateImport(pendingTemplateUrl)
+    pendingTemplateUrl = null
+  }
 
   openLaunchPaths(pendingLaunchPaths)
   pendingLaunchPaths = []

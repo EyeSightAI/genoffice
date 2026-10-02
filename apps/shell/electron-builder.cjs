@@ -657,6 +657,12 @@ const config = {
     oneClick: false,
     allowToChangeInstallationDirectory: true,
   },
+  protocols: [
+    {
+      name: 'UToOffice',
+      schemes: ['utooffice'],
+    },
+  ],
   beforePack: async (context) => {
     ensurePlatformHelpers()
     assertExtraResourceSources()

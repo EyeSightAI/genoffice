@@ -2140,3 +2140,22 @@ body.vib .home {
   text-align: right;
   padding-top: 2px;
 }
+
+/* template import download toast (deep link) */
+.template-import-toast {
+  position: fixed;
+  top: 52px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  background: var(--color-bg-page);
+  border: 1px solid var(--color-border-default);
+  box-shadow: var(--shadow-menu);
+  color: var(--text-primary);
+}
+.template-import-failed {
+  color: var(--danger);
+}

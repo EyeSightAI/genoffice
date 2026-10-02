@@ -240,6 +240,8 @@ export interface HomeApi {
   accountLogin(): Promise<boolean>
   /** progress events for the login started via accountLogin; returns an unsubscribe */
   onAccountLogin(handler: (ev: AccountLoginEvent) => void): () => void
+  /** progress events for a template-library download started via deep link */
+  onTemplateImportStatus(handler: (ev: TemplateImportStatus) => void): () => void
   /** re-open the pending login auth URL in the default browser (rescue when auto-open failed) */
   openLoginUrl(): Promise<void>
   /** log out (clears the WeChat login state) */
@@ -404,6 +406,15 @@ export interface AccountLoginEvent {
   error?: string
 }
 
+/** template-library download progress pushed from main (deep-link import) */
+export interface TemplateImportStatus {
+  phase: 'downloading' | 'done' | 'failed'
+  /** template file name (downloading/done) */
+  name?: string
+  /** error text (phase=failed) */
+  message?: string
+}
+
 /** Buy membership payment QR code */
 export interface BuyQrcodeResult {
   token: string
@@ -525,6 +536,7 @@ export const HOME_CHANNELS = {
   accountStatus: 'home:account-status',
   accountLogin: 'home:account-login',
   accountLoginEvent: 'home:account-login-event',
+  templateImportStatus: 'home:template-import-status',
   accountLoginOpenUrl: 'home:account-login-open-url',
   accountLogout: 'home:account-logout',
   buyQrcode: 'home:buy-qrcode',

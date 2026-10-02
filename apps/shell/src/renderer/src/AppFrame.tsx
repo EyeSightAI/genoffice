@@ -3,6 +3,7 @@ import { Home } from './Home'
 import { Onboarding } from './Onboarding'
 import { StarPromptCard } from './StarPromptCard'
 import { TabBar } from './TabBar'
+import type { TemplateImportStatus } from '../../shared/home-api'
 
 interface AppFrameProps {
   /** resolved before first paint (main.tsx) so home never flashes under the overlay */
@@ -13,6 +14,7 @@ export function AppFrame({ initialOnboardingSeen }: AppFrameProps) {
   const [homeActive, setHomeActive] = useState(true)
   const [showOnboarding, setShowOnboarding] = useState(!initialOnboardingSeen)
   const [starPromptDocOpens, setStarPromptDocOpens] = useState<number | null>(null)
+  const [templateImport, setTemplateImport] = useState<TemplateImportStatus | null>(null)
 
   useEffect(() => {
     const applyTabs = (tabs: Awaited<ReturnType<typeof window.aiOfficeTabs.list>>) => {
@@ -36,6 +38,22 @@ export function AppFrame({ initialOnboardingSeen }: AppFrameProps) {
       alive = false
     }
   }, [showOnboarding])
+
+  // template download toast: shows "downloading…" then clears itself on done/failed
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout> | undefined
+    const off = window.aiOffice.onTemplateImportStatus?.((ev) => {
+      setTemplateImport(ev)
+      if (ev.phase === 'done' || ev.phase === 'failed') {
+        if (timer) clearTimeout(timer)
+        timer = setTimeout(() => setTemplateImport(null), 2200)
+      }
+    })
+    return () => {
+      off?.()
+      if (timer) clearTimeout(timer)
+    }
+  }, [])
 
   const finishOnboarding = async (): Promise<boolean> => {
     try {
@@ -61,6 +79,13 @@ export function AppFrame({ initialOnboardingSeen }: AppFrameProps) {
       {showOnboarding && homeActive && <Onboarding onDone={finishOnboarding} />}
       {starPromptDocOpens !== null && !showOnboarding && homeActive && (
         <StarPromptCard docOpens={starPromptDocOpens} onClose={() => setStarPromptDocOpens(null)} />
+      )}
+      {templateImport && (
+        <div className={`template-import-toast template-import-${templateImport.phase}`}>
+          {templateImport.phase === 'downloading' && `正在下载模板 ${templateImport.name ?? ''}…`}
+          {templateImport.phase === 'done' && '模板已下载，正在打开…'}
+          {templateImport.phase === 'failed' && (templateImport.message ?? '下载模板失败')}
+        </div>
       )}
     </div>
   )

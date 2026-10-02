@@ -12,6 +12,7 @@ import { normalizeAiPanelPrefs } from '@genoffice/ui/ai-panel-prefs'
 import type {
   AccountLoginEvent,
   AccountStatus,
+  TemplateImportStatus,
   BuyPollResult,
   BuyQrcodeResult,
   CloudProjectsSnapshot,
@@ -261,6 +262,11 @@ const homeApi: HomeApi = {
     const listener = (_event: IpcRendererEvent, ev: AccountLoginEvent) => handler(ev)
     ipcRenderer.on(HOME_CHANNELS.accountLoginEvent, listener)
     return () => ipcRenderer.removeListener(HOME_CHANNELS.accountLoginEvent, listener)
+  },
+  onTemplateImportStatus(handler) {
+    const listener = (_event: IpcRendererEvent, ev: TemplateImportStatus) => handler(ev)
+    ipcRenderer.on(HOME_CHANNELS.templateImportStatus, listener)
+    return () => ipcRenderer.removeListener(HOME_CHANNELS.templateImportStatus, listener)
   },
   async openLoginUrl() {
     await ipcRenderer.invoke(HOME_CHANNELS.accountLoginOpenUrl)
