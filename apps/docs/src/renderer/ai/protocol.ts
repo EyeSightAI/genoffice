@@ -162,6 +162,9 @@ export const AGENT_SYSTEM_PROMPT = [
   '',
   '# apply_ops guide',
   OPS_GUIDE,
+  '',
+  '## Language',
+  '- Always write content and reply to the user in Chinese (Simplified Chinese) by default. Use another language only when the user explicitly asks for it.',
 ].join('\n')
 
 export { countWords }

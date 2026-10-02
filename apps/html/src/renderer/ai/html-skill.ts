@@ -50,6 +50,9 @@ const SYSTEM_PROMPT = [
   '## Conversation',
   '- Answer questions about the document directly, without editing it.',
   '- Keep replies short; the edits are the deliverable. Summarize what you changed in one or two sentences.',
+  '',
+  '## Language',
+  '- Always write content and reply to the user in Chinese (Simplified Chinese) by default. Use another language only when the user explicitly asks for it.',
 ].join('\n')
 
 export function createDocumentSkill(access: HtmlDocAccess): AgentSkill {
