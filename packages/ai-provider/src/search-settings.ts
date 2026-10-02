@@ -20,7 +20,7 @@ export const AI_SEARCH_PROVIDERS: AiSearchProviderMeta[] = [
 
 export function defaultAiSearchSettings(): AiSearchSettings {
   return {
-    provider: 'genspark',
+    provider: 'parallel',
     providers: {
       serper: { apiKey: '' },
       serply: { apiKey: '' },

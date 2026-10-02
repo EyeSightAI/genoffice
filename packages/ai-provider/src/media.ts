@@ -224,9 +224,9 @@ export function defaultAiMediaSettings(): AiMediaSettings {
     }
   }
   return {
-    imageProvider: 'genspark',
-    analysisProvider: 'genspark',
-    videoAnalysisProvider: 'genspark',
+    imageProvider: 'doubao',
+    analysisProvider: 'doubao',
+    videoAnalysisProvider: 'doubao',
     providers,
   }
 }

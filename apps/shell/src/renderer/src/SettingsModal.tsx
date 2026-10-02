@@ -991,12 +991,17 @@ function AiMediaPane({
         : cap === 'analysis'
           ? t('setAiCapAnalysis')
           : t('setAiCapVideo')
-    const options = mediaCatalog.filter((m) =>
-      cap === 'image'
-        ? !!m.imageProtocol
-        : cap === 'video'
-          ? !!m.analysisProtocol && m.videoAnalysis
-          : !!m.analysisProtocol,
+    // genspark media relies on a Genspark account sign-in, which the WeChat
+    // membership replaced — drop it from the picker so users are not sent to
+    // the upstream Genspark login.
+    const options = mediaCatalog.filter(
+      (m) =>
+        m.id !== 'genspark' &&
+        (cap === 'image'
+          ? !!m.imageProtocol
+          : cap === 'video'
+            ? !!m.analysisProtocol && m.videoAnalysis
+            : !!m.analysisProtocol),
     )
     const current =
       cap === 'image'
@@ -1067,8 +1072,11 @@ function AiMediaPane({
       <div className="set-field-desc set-ai-note">{t('setAiSharedKeyHint')}</div>
       <section>
         {subhead('search', t('setAiCapSearch'))}
-        {providerRow(t('setAiCapSearch'), search.provider, searchCatalog, (v) =>
-          setSearch({ ...search, provider: v as AiSearchSettings['provider'] }),
+        {providerRow(
+          t('setAiCapSearch'),
+          search.provider,
+          searchCatalog.filter((m) => m.id !== 'genspark'),
+          (v) => setSearch({ ...search, provider: v as AiSearchSettings['provider'] }),
         )}
         <div className="set-field-desc set-ai-note">
           {search.provider === 'genspark'
