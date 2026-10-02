@@ -1413,7 +1413,7 @@ export function registerSlidesIpc(): void {
 
   // Open the template-library website in the default browser (the "More templates" CTA)
   ipcMain.handle('slides:open-template-library', () => {
-    shell.openExternal('https://utooffice-templates.vercel.app').catch(() => {
+    shell.openExternal('https://templates.uto-office.cn').catch(() => {
       // no browser handler available; nothing actionable for the user here
     })
   })
