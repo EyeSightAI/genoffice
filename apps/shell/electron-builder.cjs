@@ -654,8 +654,11 @@ const config = {
     fpm: ['--rpm-rpmbuild-define=_build_id_links none'],
   },
   nsis: {
-    oneClick: false,
-    allowToChangeInstallationDirectory: true,
+    // one-click installer: required for silent auto-update (quitAndInstall).
+    // The assisted installer (oneClick: false) breaks silent upgrades — the
+    // running app is uninstalled but the new version never installs, and
+    // --force-run does not relaunch (electron-builder #6312 / #2179).
+    oneClick: true,
   },
   protocols: [
     {
