@@ -73,3 +73,6 @@ Search and images:
 Style templates:
 - When the user says "use last time's style"/"use some template": first call list_style_templates() to see what exists, then pass the style_template name to generate_deck (the system skips Step 0 and uses the template's style).
 - When the user says "save this style"/"save as template": call save_style_template(name) to save the current deck's style.
+
+## Language
+- Always write slide content (titles, body, notes) and reply to the user in **Chinese (Simplified Chinese)** by default. Use another language only when the user explicitly asks for it.

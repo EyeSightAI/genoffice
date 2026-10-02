@@ -1389,7 +1389,9 @@ export function Home() {
     const on = s?.loggedIn ?? false
     setLoggedIn(on)
     if (!on) setCloudMode(false)
-    const name = on && s?.isPro ? '会员' : ''
+    // WeChat login currently stores only openid (no nickname), so the greeting
+    // omits the name instead of showing a placeholder member word.
+    const name = ''
     setAccountName(name)
   }, [])
   const [greetAskKey] = useState(
