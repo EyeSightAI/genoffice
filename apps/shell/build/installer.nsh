@@ -28,6 +28,12 @@
 !macroend
 
 !macro customInstall
+  ; Interactive installs show the user agreement & disclaimer before copying
+  ; files; silent auto-update skips it so background upgrades stay unattended.
+  IfSilent skip_disclaimer
+  MessageBox MB_YESNO|MB_ICONINFORMATION "用户协议与免责声明$\r$\n$\r$\n一、服务说明$\r$\nUTOOffice 是 AI 办公套件（文档/表格/演示/PDF/Markdown/HTML 六合一），仅供合法用途使用。$\r$\n$\r$\n二、会员与收费$\r$\n会员 ¥99/年，UTO 全系产品通用；基础功能永久免费；会员属虚拟商品，一经开通原则上不支持退款。$\r$\n$\r$\n三、免责声明$\r$\n1. AI 生成内容请自行核对重要信息。$\r$\n2. 请自行备份重要文档，因未备份、误操作、设备故障、网络中断造成的损失，本产品不承担责任。$\r$\n3. 本软件按「原样」提供，使用风险自行承担。$\r$\n$\r$\n四、隐私说明$\r$\n1. 文档默认本地存储。$\r$\n2. AI 对话内容发送第三方 AI 服务商处理。$\r$\n3. 会员信息（微信 openid）仅用于身份识别。$\r$\n$\r$\n点击「是」同意并继续安装，点击「否」取消安装。" IDYES skip_disclaimer
+  Abort
+  skip_disclaimer:
   Push "$INSTDIR\resources\cli"
   Call GenOfficeAddToUserPath
   !insertmacro GenOfficeRegisterShellNew "docx" "Word Document"
