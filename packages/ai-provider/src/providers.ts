@@ -370,18 +370,18 @@ export function activeProvider(settings: AiSettings): AiProviderId {
   if (provider === 'uto') return 'uto' // authenticates by openid, no key needed
   const meta = AI_PROVIDERS.find((m) => m.id === provider)
   const config = settings.providers?.[provider]
-  if (!meta || !config) return 'genspark'
+  if (!meta || !config) return 'uto'
   if (meta.needsCliPath) return provider
   // Trim-aware: in-memory settings bypass the trimConfigs applied to
   // persisted files, and a whitespace-only key/URL/model is a 401, not a config.
-  if (!config.model?.trim()) return 'genspark'
+  if (!config.model?.trim()) return 'uto'
   if (meta.needsBaseUrl) {
     // Custom OpenAI-compatible endpoints (Ollama, LM Studio, vLLM) accept
     // anonymous requests: base URL + model suffice, the key stays optional.
-    if (!config.baseUrl?.trim()) return 'genspark'
+    if (!config.baseUrl?.trim()) return 'uto'
     return provider
   }
-  if (!config.apiKey?.trim()) return 'genspark'
+  if (!config.apiKey?.trim()) return 'uto'
   return provider
 }
 
