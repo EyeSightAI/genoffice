@@ -1388,27 +1388,21 @@ export function registerSlidesIpc(): void {
   })
 
   // Read the unified WeChat membership state (shell writes userData/wx-login.json; shared across editors).
-  const readWxLoginIsPro = async (): Promise<boolean> => {
+  const readWxLoginIsMember = async (): Promise<boolean> => {
     try {
       const wp = join(app.getPath('userData'), 'wx-login.json')
       if (!existsSync(wp)) return false
       const raw = JSON.parse(await readFile(wp, 'utf-8')) as {
-        isPro?: boolean
-        expireTime?: string | null
+        isMember?: boolean
       }
-      if (raw.isPro === true) return true
-      if (typeof raw.expireTime === 'string') {
-        const exp = Date.parse(raw.expireTime.replace(' ', 'T'))
-        if (!Number.isNaN(exp)) return exp > Date.now()
-      }
-      return false
+      return raw.isMember === true
     } catch {
       return false
     }
   }
 
   ipcMain.handle('slides:membership-status', async () => ({
-    isPro: await readWxLoginIsPro(),
+    isMember: await readWxLoginIsMember(),
   }))
 
   // Open the template-library website in the default browser (the "More templates" CTA)
@@ -1423,6 +1417,7 @@ export function registerSlidesIpc(): void {
     'slides:open-template',
     async (e, url: string): Promise<OpenResult | { error: string }> => {
       if (typeof url !== 'string' || !/^https?:\/\//.test(url)) return { error: 'bad-url' }
+      if (!(await readWxLoginIsMember())) return { error: 'membership' }
       try {
         const dir = join(app.getPath('userData'), 'templates')
         mkdirSync(dir, { recursive: true })

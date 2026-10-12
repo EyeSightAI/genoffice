@@ -1291,7 +1291,7 @@ export interface SlidesApi {
   openPptx: (fitWidthPx: number) => Promise<OpenResult | null>
   openPptxPath: (path: string, fitWidthPx: number) => Promise<OpenResult | null>
   /** membership status (unified WeChat login, shared across editors) */
-  membershipStatus: () => Promise<{ isPro: boolean }>
+  membershipStatus: () => Promise<{ isMember: boolean }>
   /** open the template-library website in the default browser */
   openTemplateLibrary: () => Promise<void>
   /** download a template-library .pptx and load it into the current tab */

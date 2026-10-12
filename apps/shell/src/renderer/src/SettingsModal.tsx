@@ -266,7 +266,7 @@ function foldModels(providerId: string, models: string[]) {
 }
 
 /** AI model pane: provider / model / key / base URL, saved to userData/ai-settings.json */
-function AiModelPane({ t }: { t: TFunc }) {
+function AiModelPane({ t, isMember }: { t: TFunc; isMember: boolean }) {
   const [catalog, setCatalog] = useState<AiCatalogEntry[]>(
     () => window.aiOffice.getAiProviders?.() ?? [],
   )
@@ -409,6 +409,11 @@ function AiModelPane({ t }: { t: TFunc }) {
     touch()
   }
   const selectProvider = (id: AiSettings['provider']) => {
+    // BYOK (any provider other than the cloud AI) is members-only
+    if (id !== 'uto' && !isMember) {
+      window.alert('自配模型（BYOK）是会员专属功能，请先开通会员（标准版/高级版）')
+      return
+    }
     // cloud tools cannot be off with genspark (chat runs through gsk anyway)
     setSettings({
       ...settings,
@@ -1433,7 +1438,7 @@ export function SettingsModal({
                 </div>
               </>
             )}
-            {section === 'aiModel' && <AiModelPane t={t} />}
+            {section === 'aiModel' && <AiModelPane t={t} isMember={status?.isMember ?? false} />}
             {section === 'aiMedia' && (
               <AiMediaPane
                 t={t}

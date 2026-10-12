@@ -5369,6 +5369,23 @@ async function handleTemplateImport(templateUrl: string): Promise<void> {
     // Focus the window first so the user sees it responding (no silent no-op).
     revealShellWindow()
 
+    // Membership gate: template-library downloads are members-only
+    const state = readWxLogin(app.getPath('userData'))
+    if (!state?.isMember) {
+      const r = await dialog.showMessageBox({
+        type: 'info',
+        title: '会员专属',
+        message: '下载模板需要会员',
+        detail:
+          '开通会员（标准版/高级版）即可下载全部 600+ 精美 PPT 模板，并解锁「使用模板库」自动套用。',
+        buttons: ['开通会员', '取消'],
+        defaultId: 0,
+        cancelId: 1,
+      })
+      if (r.response === 0) tabManager?.openHomeTab()
+      return
+    }
+
     const dir = join(app.getPath('userData'), 'templates')
     mkdirSync(dir, { recursive: true })
     const name = basename(u.pathname) || `template-${Date.now()}.pptx`

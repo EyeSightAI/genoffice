@@ -383,9 +383,27 @@ export function AiPanel({
   // must honor it like the shared AiComposer does.
   const { spellcheck } = useAiPanelPrefs()
   const [busy, setBusy] = useState(false)
-  /** "Use template library" tab: when checked AI may auto-pick from library / strictly apply the current template */
+  /** "Use template library" tab: when checked AI may auto-pick from library / strictly apply the current template (members only) */
   const [useTemplateLibrary, setUseTemplateLibrary] = useState(false)
+  const [isMember, setIsMember] = useState(false)
   const [templateHint, setTemplateHint] = useState<string | null>(null)
+
+  // load membership (whether the "use current template" tab is unlocked); refresh periodically
+  // so a refund/expiry propagates without restarting the editor
+  useEffect(() => {
+    let alive = true
+    const refresh = () => {
+      void window.slidesApi?.membershipStatus?.().then((s) => {
+        if (alive) setIsMember(s?.isMember ?? false)
+      })
+    }
+    refresh()
+    const timer = setInterval(refresh, 5 * 60 * 1000)
+    return () => {
+      alive = false
+      clearInterval(timer)
+    }
+  }, [])
   const [chat, setChat] = useState<ChatEntry[]>([])
   /** Past conversation restored from JSONL (read-only transcript, not fed to the model) */
   const [historicChat, setHistoricChat] = useState<ChatEntry[]>([])
@@ -2379,10 +2397,16 @@ export function AiPanel({
                 className={`ai-template-card${useTemplateLibrary ? ' selected' : ''}`}
                 aria-pressed={useTemplateLibrary}
                 onClick={() => {
+                  if (!isMember) {
+                    setTemplateHint('「使用模板库」为会员专属功能，请先开通会员')
+                    return
+                  }
                   setTemplateHint(null)
                   setUseTemplateLibrary((v) => !v)
                 }}
-                data-tip="AI 自动从模板库选模板，或严格套用你打开的文件"
+                data-tip={
+                  isMember ? 'AI 自动从模板库选模板，或严格套用你打开的文件' : '会员专属功能'
+                }
               >
                 <span className="ai-template-card-icon" aria-hidden>
                   <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
