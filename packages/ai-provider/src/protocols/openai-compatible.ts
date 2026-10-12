@@ -170,6 +170,10 @@ async function openAiCompatibleTurn(
     wd.touch()
     cb.onActivity?.()
   }
+  const identity = options.injectIdentity ? getUtoCloudIdentity() : null
+  if (identity && !identity.openid) {
+    throw new Error('请先登录后使用 AI 功能')
+  }
   const response = await aiFetch(endpointUrl(baseUrl, options.chatPath ?? 'chat/completions'), {
     method: 'POST',
     signal: wd.signal,
@@ -181,7 +185,7 @@ async function openAiCompatibleTurn(
     },
     body: JSON.stringify({
       model: config.model,
-      ...(options.injectIdentity ? getUtoCloudIdentity() : {}),
+      ...(identity ? identity : {}),
       ...(options.useMaxCompletionTokens
         ? { max_completion_tokens: maxTokens }
         : { max_tokens: maxTokens }),
@@ -355,6 +359,10 @@ export async function chatOpenAiCompatible(
   user: string,
   options: OpenAiRequestOptions = {},
 ): Promise<AiChatResponse> {
+  const identity = options.injectIdentity ? getUtoCloudIdentity() : null
+  if (identity && !identity.openid) {
+    return { ok: false, error: '请先登录后使用 AI 功能' }
+  }
   const response = await aiFetch(endpointUrl(baseUrl, options.chatPath ?? 'chat/completions'), {
     method: 'POST',
     signal: wd.signal,
@@ -366,7 +374,7 @@ export async function chatOpenAiCompatible(
     },
     body: JSON.stringify({
       model: config.model,
-      ...(options.injectIdentity ? getUtoCloudIdentity() : {}),
+      ...(identity ? identity : {}),
       messages: [
         { role: 'system', content: system },
         { role: 'user', content: user },
