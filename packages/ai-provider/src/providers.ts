@@ -317,8 +317,8 @@ export const AI_PROVIDERS: AiProviderMeta[] = [
   },
   {
     id: 'uto',
-    label: 'UTO Cloud',
-    models: ['deepseek-flash', 'deepseek-v4-pro'],
+    label: 'UTO 云 AI · DeepSeek Flash',
+    models: ['deepseek-flash'],
     defaultModel: 'deepseek-flash',
     keyPlaceholder: '',
   },

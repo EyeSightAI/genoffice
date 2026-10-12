@@ -385,6 +385,7 @@ function AiModelPane({ t }: { t: TFunc }) {
   }
   const is = provider === 'genspark'
   const isCodex = provider === 'codex'
+  const isUto = provider === 'uto'
 
   const touch = () => {
     setDirty(true)
@@ -543,7 +544,7 @@ function AiModelPane({ t }: { t: TFunc }) {
             }}
           />
         </div>
-      ) : !is ? (
+      ) : !is && !isUto ? (
         <>
           <div className="set-field">
             <div className="set-field-text">
@@ -587,6 +588,10 @@ function AiModelPane({ t }: { t: TFunc }) {
             />
           </div>
         </>
+      ) : isUto ? (
+        <div className="set-field-desc set-ai-note">
+          云端 AI 已自动配置（DeepSeek Flash），无需 API Key，用量按会员积分计费。
+        </div>
       ) : null}
       <div className="set-field">
         <div className="set-field-text">
