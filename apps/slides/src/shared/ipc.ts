@@ -1294,7 +1294,7 @@ export interface SlidesApi {
   membershipStatus: () => Promise<{ isPro: boolean }>
   /** open the template-library website in the default browser */
   openTemplateLibrary: () => Promise<void>
-  /** download a template-library .pptx and load it into the current tab (members-only) */
+  /** download a template-library .pptx and load it into the current tab */
   openTemplate: (url: string) => Promise<OpenResult | { error: string } | null>
   /** Office-private faces referenced by layouts so far; the renderer registers them as FontFaces
    *  (files invisible to Chromium — DFonts/cloud fonts), so drawing uses the measuring font. */

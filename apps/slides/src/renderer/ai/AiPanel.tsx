@@ -383,27 +383,9 @@ export function AiPanel({
   // must honor it like the shared AiComposer does.
   const { spellcheck } = useAiPanelPrefs()
   const [busy, setBusy] = useState(false)
-  /** "Use template library" tab: when checked AI may auto-pick from library / strictly apply current template (members only) */
+  /** "Use template library" tab: when checked AI may auto-pick from library / strictly apply the current template */
   const [useTemplateLibrary, setUseTemplateLibrary] = useState(false)
-  const [isPro, setIsPro] = useState(false)
   const [templateHint, setTemplateHint] = useState<string | null>(null)
-
-  // load membership (whether the "use current template" tab is unlocked); refresh periodically
-  // so a refund/expiry propagates without restarting the editor
-  useEffect(() => {
-    let alive = true
-    const refresh = () => {
-      void window.slidesApi?.membershipStatus?.().then((s) => {
-        if (alive) setIsPro(s?.isPro ?? false)
-      })
-    }
-    refresh()
-    const timer = setInterval(refresh, 5 * 60 * 1000)
-    return () => {
-      alive = false
-      clearInterval(timer)
-    }
-  }, [])
   const [chat, setChat] = useState<ChatEntry[]>([])
   /** Past conversation restored from JSONL (read-only transcript, not fed to the model) */
   const [historicChat, setHistoricChat] = useState<ChatEntry[]>([])
@@ -1702,7 +1684,7 @@ export function AiPanel({
         let modelInstruction = instruction
         if (useTemplateLibrary) {
           modelInstruction +=
-            '\n\n【使用模板库：会员专属 · 强制规则】' +
+            '\n\n【使用模板库 · 强制规则】' +
             '\n- 第一步先看本轮的 <deck outline> 判断当前文档状态，二选一：① 当前文档已有内容（页数 > 1，或任一页有文字/图片/形状元素）→ 说明用户已经打开了一个模板文件，直接套用当前文档，严禁调用 search_templates 再选模板；② 当前文档空白（只有 1 页且无任何元素）→ 走下面的「先调研再选模板」流程。判断只看 deck outline 的页数和元素，不要臆测。' +
             '\n- 【先调研，再选模板（空白文档必做）】不要急着选模板：先 ask_clarification 问卷问清用户的内容和场景（项目数据、汇报要点、使用场合、页数预期），拿到回答后，再 search_templates 用「场景词 + 内容词」的精准关键词搜模板（如「季度 汇报 数据」），对比多个候选的 title/tags/category/structure，选「最贴合用户场景和内容」的那一个——严禁随便选第一个或默认模板。选好后再 open_template 加载。' +
             '\n- 【问卷只问内容】问卷只问内容/数据/场景/页数，绝不要问风格/配色/受众（模板负责风格）。' +
@@ -2397,14 +2379,10 @@ export function AiPanel({
                 className={`ai-template-card${useTemplateLibrary ? ' selected' : ''}`}
                 aria-pressed={useTemplateLibrary}
                 onClick={() => {
-                  if (!isPro) {
-                    setTemplateHint('「使用模板库」为会员专属功能，请先开通会员')
-                    return
-                  }
                   setTemplateHint(null)
                   setUseTemplateLibrary((v) => !v)
                 }}
-                data-tip={isPro ? 'AI 自动从模板库选模板，或严格套用你打开的文件' : '会员专属功能'}
+                data-tip="AI 自动从模板库选模板，或严格套用你打开的文件"
               >
                 <span className="ai-template-card-icon" aria-hidden>
                   <svg width="16" height="16" viewBox="0 0 20 20" fill="none">

@@ -1423,7 +1423,6 @@ export function registerSlidesIpc(): void {
     'slides:open-template',
     async (e, url: string): Promise<OpenResult | { error: string }> => {
       if (typeof url !== 'string' || !/^https?:\/\//.test(url)) return { error: 'bad-url' }
-      if (!(await readWxLoginIsPro())) return { error: 'membership' }
       try {
         const dir = join(app.getPath('userData'), 'templates')
         mkdirSync(dir, { recursive: true })

@@ -93,7 +93,7 @@ export interface DeckAccess {
   applySlide(slideIndex: number, updated: RenderSlide): void
   /** Replace the whole deck (after adding/removing slides) and jump to the goTo slide */
   applyDeck(slides: RenderSlide[], goTo?: number): void
-  /** Whether the "use template library" toggle is checked (members-only; drives template pick / strict template apply). */
+  /** Whether the "use template library" toggle is checked (drives template pick / strict template apply). */
   useTemplateLibrary?(): boolean
   /**
    * Generation progress callback (optional): called by generate_deck stages; the UI updates
@@ -235,7 +235,7 @@ export interface DeckAccess {
   loadStyleTemplate?(
     name: string,
   ): Promise<{ ok: boolean; styleSkill?: string; topic?: string; error?: string }>
-  /** Download a template-library .pptx and load it into the current document (members-only). */
+  /** Download a template-library .pptx and load it into the current document. */
   openTemplate?(url: string): Promise<{ ok: boolean; error?: string }>
   fitWidthPx: number
   /** Base retry backoff in ms for single-page generation failures (default 2000; tests pass 0 to disable backoff) */
@@ -1122,7 +1122,7 @@ export function createSlidesSkill(access: DeckAccess): AgentSkill {
     // live view: the predicates are re-read before every model request
     get tools() {
       const hidden = hiddenMediaTools(access)
-      // Template-library tools are members-only and gated on the "use template library" toggle
+      // Template-library tools are gated on the "use template library" toggle
       if (!access.useTemplateLibrary?.()) {
         hidden.add('search_templates')
         hidden.add('open_template')
