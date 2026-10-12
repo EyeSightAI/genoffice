@@ -1254,8 +1254,6 @@ export function SettingsModal({
   const [aiPrefs, setAiPrefs] = useState<AiPanelPrefs>(DEFAULT_AI_PANEL_PREFS)
   const [channel, setChannel] = useState<'stable' | 'beta'>('stable')
   const [appVersion, setAppVersion] = useState('')
-  const [buyQrcode, setBuyQrcode] = useState<string | null>(null)
-  const [buyWaiting, setBuyWaiting] = useState(false)
 
   useEffect(() => {
     let alive = true
@@ -1347,32 +1345,14 @@ export function SettingsModal({
   })()
 
   const loggedIn = status?.loggedIn ?? false
-  const isPro = status?.isPro ?? false
-  const expireTime = status?.expireTime ?? null
+  const isMember = status?.isMember ?? false
+  const planName = status?.planName ?? '体验版'
+  const quotaTokens = status?.quotaTokens ?? 0
+  const remainingTokens = status?.remainingTokens ?? 0
 
-  // buy membership: generate payment QR -> poll result
-  const startBuy = async () => {
-    setBuyWaiting(true)
-    setBuyQrcode(null)
-    const qr = await window.aiOffice.buyQrcode?.()
-    if (!qr) {
-      setBuyWaiting(false)
-      return
-    }
-    setBuyQrcode(qr.qrcode)
-    const deadline = Date.now() + 5 * 60 * 1000
-    while (Date.now() < deadline) {
-      await new Promise((r) => setTimeout(r, 2000))
-      const result = await window.aiOffice.pollBuy?.(qr.token)
-      if (result?.paid) {
-        setBuyWaiting(false)
-        setBuyQrcode(null)
-        onStatusChange?.()
-        return
-      }
-    }
-    setBuyWaiting(false)
-    setBuyQrcode(null)
+  // open the account-center page (recharge / manage subscription in the browser)
+  const openAccountCenter = async () => {
+    await window.aiOffice.accountOpenCenter?.()
   }
 
   return (
@@ -1417,28 +1397,25 @@ export function SettingsModal({
             {section === 'account' && (
               <>
                 <h3 className="set-pane-title">{t('setSecAccount')}</h3>
-                <Field
-                  label={t('setMemberExpire')}
-                  value={
-                    loggedIn
-                      ? isPro
-                        ? (expireTime ?? '—')
-                        : t('setNotMember')
-                      : t('setNotLoggedIn')
-                  }
-                />
+                {loggedIn ? (
+                  <>
+                    <Field label="套餐" value={planName} />
+                    <Field
+                      label="本月余量"
+                      value={`${Math.floor(remainingTokens / 1000)} / ${Math.floor(
+                        quotaTokens / 1000,
+                      )} 积分`}
+                    />
+                  </>
+                ) : (
+                  <Field label={t('setMemberExpire')} value={t('setNotLoggedIn')} />
+                )}
                 <div className="set-pane-footer">
                   {loggedIn ? (
                     <>
-                      {!isPro && (
-                        <button
-                          className="set-btn primary"
-                          onClick={startBuy}
-                          disabled={buyWaiting}
-                        >
-                          {buyWaiting ? '等待付款…' : '开通会员'}
-                        </button>
-                      )}
+                      <button className="set-btn primary" onClick={openAccountCenter}>
+                        打开账户中心
+                      </button>
                       <button className="set-btn danger" disabled={loggingOut} onClick={onLogout}>
                         {loggingOut ? t('loggingOut') : t('logout')}
                       </button>
@@ -1449,16 +1426,6 @@ export function SettingsModal({
                     </button>
                   )}
                 </div>
-                {buyQrcode && (
-                  <div className="buy-qrcode-box">
-                    <img
-                      className="buy-qrcode-img"
-                      src={`data:image/jpeg;base64,${buyQrcode}`}
-                      alt="付款码"
-                    />
-                    <span className="buy-qrcode-tip">请用微信扫码付款</span>
-                  </div>
-                )}
               </>
             )}
             {section === 'aiModel' && <AiModelPane t={t} />}

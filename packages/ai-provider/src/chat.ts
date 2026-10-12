@@ -43,6 +43,8 @@ export async function chatForProvider(
         return chatOpenAiCompatible(wd, endpoint.baseUrl, config, system, user, {
           omitTemperature: endpoint.omitTemperature,
           bodyExtras: endpoint.bodyExtras,
+          chatPath: endpoint.chatPath,
+          injectIdentity: endpoint.injectIdentity,
         })
     }
   })

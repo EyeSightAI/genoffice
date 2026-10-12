@@ -20,6 +20,7 @@ export type AiProviderId =
   | 'opencode-zen'
   | 'opencode-go'
   | 'custom'
+  | 'uto'
 
 /** account status (gsk login state; the sole auth source for AI features) */
 export interface GenSparkAccountStatus {

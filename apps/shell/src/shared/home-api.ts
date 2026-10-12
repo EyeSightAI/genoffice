@@ -246,10 +246,8 @@ export interface HomeApi {
   openLoginUrl(): Promise<void>
   /** log out (clears the WeChat login state) */
   accountLogout(): Promise<void>
-  /** generate the "buy membership" payment QR code (mini-program buy page, scene=token) */
-  buyQrcode(): Promise<BuyQrcodeResult | null>
-  /** poll the payment QR code for a completed purchase */
-  pollBuy(token: string): Promise<BuyPollResult>
+  /** open the account-center page (post a one-time token; openid stays out of the URL) */
+  accountOpenCenter(): Promise<boolean>
   /** app version (from package.json / electron app.getVersion) */
   getAppVersion(): Promise<string>
   /** whether the first-run onboarding has been completed or skipped (persisted in userData/app-settings.json) */
@@ -385,24 +383,28 @@ export interface CloudProjectsSnapshot {
 }
 
 export interface AccountStatus {
-  /** logged in via WeChat scan */
+  /** logged in via WeChat web scan */
   loggedIn: boolean
   /** WeChat openid (after login) */
   openid?: string
-  /** membership expiry 'YYYY-MM-DD HH:mm:ss', null = not subscribed */
+  /** membership expiry 'YYYY-MM-DD HH:mm:ss', null = not subscribed (kept for compat; UI shows plan + quota) */
   expireTime?: string | null
-  /** is member (not expired) */
-  isPro: boolean
+  /** is a paid member (not free tier) */
+  isMember: boolean
+  /** subscription plan name (free / standard / premium tier) */
+  planName: string
+  /** monthly token quota */
+  quotaTokens: number
+  /** tokens used this month */
+  usedTokens: number
+  /** tokens remaining this month */
+  remainingTokens: number
 }
 
-/** login flow progress pushed from main (WeChat scan login) */
+/** login flow progress pushed from main (WeChat web-scan login) */
 export interface AccountLoginEvent {
-  phase: 'launched' | 'qrcode' | 'success' | 'expired' | 'error'
-  /** login QR code base64 (phase=qrcode) */
-  qrcode?: string
-  /** login token (phase=qrcode, main polls with it) */
-  token?: string
-  /** 'network' | 'expired' | other error text */
+  phase: 'launched' | 'success' | 'error'
+  /** 'network' | other error text */
   error?: string
 }
 
@@ -413,18 +415,6 @@ export interface TemplateImportStatus {
   name?: string
   /** error text (phase=failed) */
   message?: string
-}
-
-/** Buy membership payment QR code */
-export interface BuyQrcodeResult {
-  token: string
-  qrcode: string
-}
-
-/** Buy poll result */
-export interface BuyPollResult {
-  paid: boolean
-  expireTime: string | null
 }
 
 export interface RenameResult {
@@ -539,8 +529,7 @@ export const HOME_CHANNELS = {
   templateImportStatus: 'home:template-import-status',
   accountLoginOpenUrl: 'home:account-login-open-url',
   accountLogout: 'home:account-logout',
-  buyQrcode: 'home:buy-qrcode',
-  pollBuy: 'home:poll-buy',
+  accountOpenCenter: 'home:account-open-center',
   getAppVersion: 'home:get-app-version',
   onboardingSeen: 'home:onboarding-seen',
   setOnboardingSeen: 'home:set-onboarding-seen',

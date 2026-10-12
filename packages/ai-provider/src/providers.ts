@@ -315,6 +315,13 @@ export const AI_PROVIDERS: AiProviderMeta[] = [
     keyPlaceholder: 'API Key',
     needsBaseUrl: true,
   },
+  {
+    id: 'uto',
+    label: 'UTO Cloud',
+    models: ['deepseek-flash', 'deepseek-v4-pro'],
+    defaultModel: 'deepseek-flash',
+    keyPlaceholder: '',
+  },
 ]
 
 /**
@@ -336,7 +343,7 @@ export function defaultAiSettings(
     }
   }
   return {
-    provider: 'genspark',
+    provider: 'uto',
     providers,
     gskToolsEnabled: true,
     media: defaultAiMediaSettings(),
@@ -360,6 +367,7 @@ export function cloudToolsEnabled(settings: Pick<AiSettings, 'gskToolsEnabled'>)
 export function activeProvider(settings: AiSettings): AiProviderId {
   const provider = settings.provider
   if (provider === 'genspark') return 'genspark'
+  if (provider === 'uto') return 'uto' // authenticates by openid, no key needed
   const meta = AI_PROVIDERS.find((m) => m.id === provider)
   const config = settings.providers?.[provider]
   if (!meta || !config) return 'genspark'

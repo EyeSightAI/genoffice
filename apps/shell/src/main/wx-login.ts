@@ -1,14 +1,16 @@
 /**
- * wx-login.ts — WeChat scan login + unified membership module (pluggable, independent of upstream)
+ * wx-login.ts — WeChat scan login (web callback) + unified membership module
+ * (pluggable, independent of upstream)
  *
- * Talks to auth-system /api/wx/* /api/member/* /api/products:
- *   - createLoginQrcode(): generate login QR code (scene=token)
- *   - pollLogin(token):    poll token for WeChat binding (returns openid)
- *   - fetchMember(openid): fetch membership expiry
- *   - fetchProducts():     fetch UTO product list
+ * Talks to auth-system /api/member/* /api/account/*:
+ *   - fetchMember(openid):      fetch membership (plan + quota)
+ *   - fetchAccountToken(openid): get a one-time token for the account-center page
  *
- * Local state is cached at userData/wx-login.json (openid + expiry), offline-tolerant;
- * the server is the source of truth.
+ * Login itself is web-scan based: the main process opens
+ * https://uto-office.cn/account?login=1&cbport=<port> in the browser and a local
+ * loopback HTTP server (login-callback.ts) receives the openid. Local state is
+ * cached at userData/wx-login.json (openid + plan), offline-tolerant; the server
+ * is the source of truth.
  */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
@@ -16,30 +18,24 @@ import { join } from 'node:path'
 const SERVER_BASE = 'https://uto-office.cn'
 const TIMEOUT_MS = 15000
 
-export interface WxLoginQrcode {
-  token: string
-  qrcode: string // base64 JPEG, rendered via data:image/jpeg;base64,xxx
-}
-
 export interface MemberInfo {
   openid: string
-  expireTime: string | null // 'YYYY-MM-DD HH:mm:ss' or null (not subscribed)
-  isPro: boolean
-}
-
-export interface ProductInfo {
-  id: number
-  name: string
-  description: string
-  icon: string
-  sort_order: number
-  entry_type: string
+  expireTime: string | null // kept for backend compat; UI shows plan + quota instead
+  isMember: boolean
+  planName: string
+  quotaTokens: number
+  usedTokens: number
+  remainingTokens: number
 }
 
 export interface WxLoginState {
   openid: string
   expireTime: string | null
-  isPro: boolean
+  isMember: boolean
+  planName: string
+  quotaTokens: number
+  usedTokens: number
+  remainingTokens: number
 }
 
 interface ApiResp {
@@ -56,95 +52,63 @@ async function apiGet(path: string): Promise<ApiResp> {
   return (await res.json()) as ApiResp
 }
 
-/** Generate login QR code */
-export async function createLoginQrcode(): Promise<WxLoginQrcode | null> {
-  try {
-    const resp = await apiGet('/api/wx/qrcode')
-    if (resp.code !== 0) return null
-    const d = resp.data as { token?: string; qrcode?: string }
-    if (!d.token || !d.qrcode) return null
-    return { token: d.token, qrcode: d.qrcode }
-  } catch {
-    return null
-  }
+async function apiPost(path: string, body: unknown): Promise<ApiResp> {
+  const res = await fetch(`${SERVER_BASE}${path}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+    signal: AbortSignal.timeout(TIMEOUT_MS),
+  })
+  return (await res.json()) as ApiResp
 }
 
-/** Poll token: openid when bound, null when not, 'EXPIRED' when expired */
-export async function pollLogin(token: string): Promise<string | null> {
-  try {
-    const resp = await apiGet(`/api/wx/poll?token=${encodeURIComponent(token)}`)
-    if (resp.code !== 0) return null
-    const d = resp.data as { bound?: boolean; expired?: boolean; openid?: string }
-    if (d.bound && d.openid) return d.openid
-    return null
-  } catch {
-    return null
-  }
-}
-
-/** Fetch membership expiry */
+/** Fetch membership plan + quota */
 export async function fetchMember(openid: string): Promise<MemberInfo> {
   try {
     const resp = await apiGet(`/api/member/info?openid=${encodeURIComponent(openid)}`)
-    if (resp.code !== 0) return { openid, expireTime: null, isPro: false }
-    const d = resp.data as { expire_time?: string | null; is_member?: boolean }
+    if (resp.code !== 0) return emptyMember(openid)
+    const d = resp.data as {
+      expire_time?: string | null
+      is_member?: boolean
+      plan_name?: string
+      quota_tokens?: number
+      used_tokens?: number
+      remaining_tokens?: number
+    }
     return {
       openid,
       expireTime: d.expire_time ?? null,
-      isPro: d.is_member === true,
+      isMember: d.is_member === true,
+      planName: d.plan_name ?? '体验版',
+      quotaTokens: d.quota_tokens ?? 0,
+      usedTokens: d.used_tokens ?? 0,
+      remainingTokens: d.remaining_tokens ?? 0,
     }
   } catch {
-    return { openid, expireTime: null, isPro: false }
+    return emptyMember(openid)
   }
 }
 
-/** Fetch product list */
-export async function fetchProducts(): Promise<ProductInfo[]> {
+/** Get a one-time token for the account-center page (openid stays out of the URL) */
+export async function fetchAccountToken(openid: string): Promise<string | null> {
   try {
-    const resp = await apiGet('/api/products')
-    if (resp.code !== 0) return []
-    const arr = resp.data
-    if (!Array.isArray(arr)) return []
-    return arr.map((p) => {
-      const o = p as Record<string, unknown>
-      return {
-        id: Number(o.id ?? 0),
-        name: String(o.name ?? ''),
-        description: String(o.description ?? ''),
-        icon: String(o.icon ?? ''),
-        sort_order: Number(o.sort_order ?? 0),
-        entry_type: String(o.entry_type ?? 'app'),
-      }
-    })
-  } catch {
-    return []
-  }
-}
-
-/** Generate buy-membership payment QR code */
-export async function createBuyQrcode(): Promise<WxLoginQrcode | null> {
-  try {
-    const resp = await apiGet('/api/wx/buy_qrcode')
+    const resp = await apiPost('/api/account/token', { openid })
     if (resp.code !== 0) return null
-    const d = resp.data as { token?: string; qrcode?: string }
-    if (!d.token || !d.qrcode) return null
-    return { token: d.token, qrcode: d.qrcode }
+    return (resp.data as { token?: string }).token ?? null
   } catch {
     return null
   }
 }
 
-/** Poll payment QR code: expiry when paid */
-export async function pollBuy(
-  token: string,
-): Promise<{ paid: boolean; expireTime: string | null }> {
-  try {
-    const resp = await apiGet(`/api/wx/poll_buy?token=${encodeURIComponent(token)}`)
-    if (resp.code !== 0) return { paid: false, expireTime: null }
-    const d = resp.data as { paid?: boolean; expire_time?: string | null }
-    return { paid: d.paid === true, expireTime: d.expire_time ?? null }
-  } catch {
-    return { paid: false, expireTime: null }
+function emptyMember(openid: string): MemberInfo {
+  return {
+    openid,
+    expireTime: null,
+    isMember: false,
+    planName: '体验版',
+    quotaTokens: 0,
+    usedTokens: 0,
+    remainingTokens: 0,
   }
 }
 

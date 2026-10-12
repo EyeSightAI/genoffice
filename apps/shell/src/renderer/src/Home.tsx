@@ -710,11 +710,9 @@ function AccountEntry({
   const [waiting, setWaiting] = useState(false)
   // incremented on login retry, resetting the polling timer
   const [loginNonce, setLoginNonce] = useState(0)
-  const [loginError, setLoginError] = useState<
-    'timeout' | 'launch' | 'network' | 'expired' | 'failed' | null
-  >(null)
-  // login QR code base64 (WeChat scan login)
-  const [qrcode, setQrcode] = useState<string | null>(null)
+  const [loginError, setLoginError] = useState<'timeout' | 'launch' | 'network' | 'failed' | null>(
+    null,
+  )
   const loginDeadline = useRef(0)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [skillUpdate, setSkillUpdate] = useState(false)
@@ -752,35 +750,25 @@ function AccountEntry({
     }
   }, [settingsOpen])
 
-  // login progress pushed from main (WeChat scan login)
+  // login progress pushed from main (WeChat web-scan login)
   useEffect(() => {
     const off = window.aiOffice.onAccountLogin?.((ev) => {
-      if (ev.phase === 'qrcode') {
-        if (ev.qrcode) setQrcode(ev.qrcode)
-      } else if (ev.phase === 'success') {
+      if (ev.phase === 'success') {
         void window.aiOffice.accountStatus().then((s) => {
           if (s.loggedIn) {
             setStatus(s)
             setWaiting(false)
-            setQrcode(null)
           }
         })
-      } else if (ev.phase === 'error' || ev.phase === 'expired') {
+      } else if (ev.phase === 'error') {
         setWaiting(false)
-        setQrcode(null)
-        setLoginError(
-          ev.phase === 'expired' || ev.error === 'expired'
-            ? 'expired'
-            : ev.error === 'network'
-              ? 'network'
-              : 'failed',
-        )
+        setLoginError(ev.error === 'network' ? 'network' : 'failed')
       }
     })
     return off
   }, [])
 
-  // config-file polling stays as the fallback success path (works even if progress events are lost)
+  // status polling stays as the fallback success path (works even if progress events are lost)
   useEffect(() => {
     if (!waiting) return
     const timer = setInterval(() => {
@@ -788,10 +776,8 @@ function AccountEntry({
         if (s.loggedIn) {
           setStatus(s)
           setWaiting(false)
-          setQrcode(null)
         } else if (Date.now() > loginDeadline.current) {
           setWaiting(false)
-          setQrcode(null)
           setLoginError('timeout')
         }
       })
@@ -800,13 +786,12 @@ function AccountEntry({
   }, [waiting, loginNonce])
 
   const loggedIn = status?.loggedIn ?? false
-  const isPro = status?.isPro ?? false
+  const isMember = status?.isMember ?? false
   const errorText = loginError
     ? {
         timeout: t('loginTimeout'),
         launch: t('loginLaunchFailed'),
         network: t('loginNetworkError'),
-        expired: t('loginExpired'),
         failed: t('loginFailed'),
       }[loginError]
     : null
@@ -816,7 +801,14 @@ function AccountEntry({
     statusSeq.current++
     void window.aiOffice.accountLogout().then(() => {
       setLoggingOut(false)
-      setStatus({ loggedIn: false, isPro: false })
+      setStatus({
+        loggedIn: false,
+        isMember: false,
+        planName: '体验版',
+        quotaTokens: 0,
+        usedTokens: 0,
+        remainingTokens: 0,
+      })
     })
   }
 
@@ -824,7 +816,6 @@ function AccountEntry({
     // clicking again while waiting = relaunch the login
     setLoginError(null)
     setWaiting(true)
-    setQrcode(null)
     loginDeadline.current = Date.now() + LOGIN_MAX_WAIT_MS
     setLoginNonce((n) => n + 1)
     void window.aiOffice.accountLogin().then((launched) => {
@@ -870,25 +861,15 @@ function AccountEntry({
           target={target}
         />
       )}
-      {!settingsOpen && waiting && qrcode && (
-        <div className="login-hint" role="status">
-          <img
-            className="login-qrcode"
-            src={`data:image/jpeg;base64,${qrcode}`}
-            alt={t('loginScanTip')}
-          />
-          <span className="login-hint-text">{t('loginScanTip')}</span>
-        </div>
-      )}
       <button
         className="account-btn"
         onClick={handleClick}
         aria-haspopup="dialog"
         aria-expanded={settingsOpen}
-        data-tip={isPro ? '查看会员权益' : '开通会员'}
+        data-tip={isMember ? '查看会员权益' : '开通会员'}
         aria-label={t('settings')}
       >
-        <span className={`account-avatar${isPro ? ' member' : ''}${waiting ? ' waiting' : ''}`}>
+        <span className={`account-avatar${isMember ? ' member' : ''}${waiting ? ' waiting' : ''}`}>
           {waiting ? (
             <svg
               className="account-spinner"
@@ -926,7 +907,7 @@ function AccountEntry({
           )}
         </span>
         <span className="account-text">
-          <span className="account-name">{isPro ? '会员' : '开通会员'}</span>
+          <span className="account-name">{isMember ? '会员' : '开通会员'}</span>
           {!loggedIn && !waiting && errorText && (
             <span className="account-sub error">{errorText}</span>
           )}

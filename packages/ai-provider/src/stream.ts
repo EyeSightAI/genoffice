@@ -44,6 +44,8 @@ export async function streamForProvider(
           omitTemperature: endpoint.omitTemperature,
           useMaxCompletionTokens: endpoint.useMaxCompletionTokens,
           bodyExtras: endpoint.bodyExtras,
+          chatPath: endpoint.chatPath,
+          injectIdentity: endpoint.injectIdentity,
         })
     }
   })

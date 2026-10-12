@@ -1365,10 +1365,8 @@ export function App({
     if (!settings) return false
     const config = settings.providers[settings.provider]
     if (!config?.model) return false
-    // 's key never lands in the settings file; the main process injects
-    // it from the gsk login state. When logged out, requests return an error
-    // guiding sign-in — not intercepted here.
-    return settings.provider === 'genspark' || !!config.apiKey
+    // the genspark/uto providers carry no client key; a BYOK provider needs one
+    return settings.provider === 'genspark' || settings.provider === 'uto' || !!config.apiKey
   }
 
   /** Image attachments read as base64 and sent multimodal with this user message

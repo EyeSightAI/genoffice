@@ -150,7 +150,7 @@ export function registerAiIpc(): void {
     const send = (chunk: AiStreamChunk) => {
       if (!event.sender.isDestroyed()) event.sender.send('ai:stream-chunk', chunk)
     }
-    if (!config || (provider !== 'codex' && !config.apiKey)) {
+    if (!config || (provider !== 'codex' && provider !== 'uto' && !config.apiKey)) {
       send({
         requestId,
         type: 'error',

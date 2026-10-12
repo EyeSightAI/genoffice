@@ -24,6 +24,10 @@ export interface ResolvedEndpoint {
   bodyExtras?: Record<string, unknown>
   /** id to put on the wire when the vendor spells the configured model differently */
   model?: string
+  /** override the chat-completions path suffix (default 'chat/completions'); the UTO proxy serves /ai/chat */
+  chatPath?: string
+  /** inject openid + product from the global UTO cloud identity resolver into the request body */
+  injectIdentity?: boolean
 }
 
 export interface ProviderAdapter {
@@ -319,6 +323,19 @@ export const AI_PROVIDER_ADAPTERS: Record<AiProviderId, ProviderAdapter> = {
         protocol: 'openai-compatible',
         baseUrl: normalizeBaseUrl(config.baseUrl, ''),
         ...(modelHasFixedSampling(config.model) ? { omitTemperature: true } : {}),
+      }
+    },
+  },
+  uto: {
+    meta: metaOf('uto'),
+    capabilities: { auth: 'gsk-login', vision: true },
+    resolveEndpoint() {
+      return {
+        protocol: 'openai-compatible',
+        baseUrl: 'https://uto-office.cn/api',
+        chatPath: 'ai/chat',
+        injectIdentity: true,
+        bodyExtras: DEEPSEEK_NON_THINKING,
       }
     },
   },

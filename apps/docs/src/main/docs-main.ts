@@ -3798,7 +3798,7 @@ export function registerAiIpc(): void {
     const send = (chunk: AiStreamChunk) => {
       if (!event.sender.isDestroyed()) event.sender.send('ai:stream-chunk', chunk)
     }
-    if (!config || (provider !== 'codex' && !config.apiKey)) {
+    if (!config || (provider !== 'codex' && provider !== 'uto' && !config.apiKey)) {
       send({
         requestId,
         type: 'error',
@@ -3971,7 +3971,7 @@ export function registerAiIpc(): void {
     if (provider === 'genspark' && config && !config.apiKey) {
       config = { ...config, apiKey: gskApiKey() }
     }
-    if (!config || (provider !== 'codex' && !config.apiKey)) {
+    if (!config || (provider !== 'codex' && provider !== 'uto' && !config.apiKey)) {
       return {
         ok: false,
         error: provider === 'genspark' ? tm('errGskNotLoggedIn') : tm('errNoApiKey', { provider }),

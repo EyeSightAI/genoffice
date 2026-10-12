@@ -13,8 +13,6 @@ import type {
   AccountLoginEvent,
   AccountStatus,
   TemplateImportStatus,
-  BuyPollResult,
-  BuyQrcodeResult,
   CloudProjectsSnapshot,
   DefaultAppStatus,
   FolderListing,
@@ -274,13 +272,9 @@ const homeApi: HomeApi = {
   async accountLogout() {
     await ipcRenderer.invoke(HOME_CHANNELS.accountLogout)
   },
-  async buyQrcode() {
-    const result: unknown = await ipcRenderer.invoke(HOME_CHANNELS.buyQrcode)
-    return (result ?? null) as BuyQrcodeResult | null
-  },
-  async pollBuy(token: string) {
-    const result: unknown = await ipcRenderer.invoke(HOME_CHANNELS.pollBuy, token)
-    return (result ?? { paid: false, expireTime: null }) as BuyPollResult
+  async accountOpenCenter() {
+    const result: unknown = await ipcRenderer.invoke(HOME_CHANNELS.accountOpenCenter)
+    return result === true
   },
   async getAppVersion() {
     const result: unknown = await ipcRenderer.invoke(HOME_CHANNELS.getAppVersion)

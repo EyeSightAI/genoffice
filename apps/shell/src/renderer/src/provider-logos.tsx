@@ -254,6 +254,19 @@ const LOGOS: Record<AiProviderId, ReactNode> = {
       <circle cx="16" cy="17.5" r="2" />
     </svg>
   ),
+  uto: (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M6.5 18a4 4 0 1 1 .5-7.97A5.5 5.5 0 0 1 17.5 12.5 3.5 3.5 0 0 1 17 18h-10.5z" />
+    </svg>
+  ),
 }
 
 /** Inline brand mark sized by the surrounding .set-provider-logo container. */

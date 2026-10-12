@@ -109,16 +109,9 @@ import { handleDroppedFiles } from './dropped-files'
 import { collectLaunchPaths } from './launch-paths'
 import { loadGenofficeAuth, setGskProxyUrl, watchGskApiKey } from '@genoffice/ai-search'
 
-import {
-  clearWxLogin,
-  createBuyQrcode,
-  createLoginQrcode,
-  fetchMember,
-  pollBuy,
-  pollLogin,
-  readWxLogin,
-  writeWxLogin,
-} from './wx-login'
+import { clearWxLogin, fetchAccountToken, fetchMember, readWxLogin, writeWxLogin } from './wx-login'
+import { startLoginCallback, stopLoginCallback } from './login-callback'
+import { setUtoCloudIdentity } from '@genoffice/ai-provider'
 
 import {
   buildDocsMenu,
@@ -3539,80 +3532,108 @@ function statEntries(paths: string[]): RecentEntry[] {
 }
 
 function registerHomeIpc(): void {
+  // cloud AI proxy authenticates by cached openid; register the resolver once
+  setUtoCloudIdentity({
+    openid: () => readWxLogin(app.getPath('userData'))?.openid ?? null,
+    product: () => 'office',
+  })
   // signed-in means UToOffice's own device-code login; the shared gsk CLI key
   // is only a silent fallback, deliberately not shown here to nudge users onto our key
   ipcMain.handle(HOME_CHANNELS.accountStatus, async () => {
     const state = readWxLogin(app.getPath('userData'))
-    if (!state) return { loggedIn: false, isPro: false }
-    // server fallback: refresh membership status
+    if (!state) {
+      return {
+        loggedIn: false,
+        isMember: false,
+        planName: '体验版',
+        quotaTokens: 0,
+        usedTokens: 0,
+        remainingTokens: 0,
+      }
+    }
+    // server fallback: refresh membership status (plan + quota)
     const member = await fetchMember(state.openid)
-    if (member.isPro !== state.isPro || member.expireTime !== state.expireTime) {
+    if (
+      member.isMember !== state.isMember ||
+      member.planName !== state.planName ||
+      member.remainingTokens !== state.remainingTokens
+    ) {
       writeWxLogin(app.getPath('userData'), {
-        openid: state.openid,
+        openid: member.openid,
         expireTime: member.expireTime,
-        isPro: member.isPro,
+        isMember: member.isMember,
+        planName: member.planName,
+        quotaTokens: member.quotaTokens,
+        usedTokens: member.usedTokens,
+        remainingTokens: member.remainingTokens,
       })
     }
     return {
       loggedIn: true,
       openid: state.openid,
       expireTime: member.expireTime,
-      isPro: member.isPro,
+      isMember: member.isMember,
+      planName: member.planName,
+      quotaTokens: member.quotaTokens,
+      usedTokens: member.usedTokens,
+      remainingTokens: member.remainingTokens,
     }
   })
 
-  // WeChat scan login: generate QR code -> main polls -> bind then query membership
+  // Web-scan login: open the account page in the browser; a local loopback
+  // server receives the openid callback and persists the login state.
   ipcMain.handle(HOME_CHANNELS.accountLogin, async (event) => {
     analytics.track('login_click')
     const sender = event.sender
     const send = (payload: AccountLoginEvent) => {
       if (!sender.isDestroyed()) sender.send(HOME_CHANNELS.accountLoginEvent, payload)
     }
-    // 1. generate login QR code
-    const qr = await createLoginQrcode()
-    if (!qr) {
+    // 1. start the local callback server
+    let cbPort = 0
+    try {
+      cbPort = await startLoginCallback((openid) => {
+        void (async () => {
+          const member = await fetchMember(openid)
+          writeWxLogin(app.getPath('userData'), {
+            openid,
+            expireTime: member.expireTime,
+            isMember: member.isMember,
+            planName: member.planName,
+            quotaTokens: member.quotaTokens,
+            usedTokens: member.usedTokens,
+            remainingTokens: member.remainingTokens,
+          })
+          analytics.track('login_success')
+          send({ phase: 'success' })
+        })()
+      })
+    } catch {
       send({ phase: 'error', error: 'network' })
       return false
     }
-    send({ phase: 'qrcode', qrcode: qr.qrcode, token: qr.token })
-    // 2. poll (up to 5 minutes)
-    const deadline = Date.now() + 5 * 60 * 1000
-    while (Date.now() < deadline) {
-      await new Promise((r) => setTimeout(r, 2000))
-      const openid = await pollLogin(qr.token)
-      if (openid) {
-        const member = await fetchMember(openid)
-        writeWxLogin(app.getPath('userData'), {
-          openid,
-          expireTime: member.expireTime,
-          isPro: member.isPro,
-        })
-        analytics.track('login_success')
-        send({ phase: 'success' })
-        return true
-      }
-    }
-    send({ phase: 'expired', error: 'expired' })
-    return false
+    // 2. open the web login page (browser scan)
+    send({ phase: 'launched' })
+    const url = `https://uto-office.cn/account?login=1&cbport=${cbPort}`
+    await shell.openExternal(url)
+    return true
   })
 
   ipcMain.handle(HOME_CHANNELS.accountLoginOpenUrl, () => {
-    // WeChat scan login needs no browser URL; keep empty impl for old-renderer compat
+    // web-scan login has no stored QR code; the login button relaunches the flow
   })
 
   ipcMain.handle(HOME_CHANNELS.accountLogout, async () => {
     clearWxLogin(app.getPath('userData'))
+    stopLoginCallback()
   })
 
-  ipcMain.handle(HOME_CHANNELS.buyQrcode, async () => {
-    const qr = await createBuyQrcode()
-    if (!qr) return null
-    return { token: qr.token, qrcode: qr.qrcode }
-  })
-
-  ipcMain.handle(HOME_CHANNELS.pollBuy, async (_event, token: string) => {
-    const r = await pollBuy(token)
-    return { paid: r.paid, expireTime: r.expireTime }
+  ipcMain.handle(HOME_CHANNELS.accountOpenCenter, async () => {
+    const state = readWxLogin(app.getPath('userData'))
+    if (!state) return false
+    const token = await fetchAccountToken(state.openid)
+    if (!token) return false
+    await shell.openExternal(`https://uto-office.cn/account?token=${encodeURIComponent(token)}`)
+    return true
   })
 
   ipcMain.handle(HOME_CHANNELS.getAppVersion, (): string => app.getVersion())
@@ -5350,7 +5371,7 @@ async function handleTemplateImport(templateUrl: string): Promise<void> {
 
     // Membership gate: non-members are guided to subscribe instead of downloading.
     const state = readWxLogin(app.getPath('userData'))
-    if (!state?.isPro) {
+    if (!state?.isMember) {
       const r = await dialog.showMessageBox({
         type: 'info',
         title: '会员专属',
