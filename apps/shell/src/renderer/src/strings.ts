@@ -166,9 +166,9 @@ export const strings = {
     // Account
     account: '账号',
     login: '登录',
-    login: '登录  账号',
+    loginGenspark: '登录  账号',
     loggedIn: '已登录',
-    loggedIn: '已登录 ',
+    loggedInGenspark: '已登录 ',
     waitingLogin: '等待浏览器登录…点击可重新拉起登录页',
     waitingShort: '等待登录…',
     loginTimeout: '登录超时,点击重试',
@@ -392,7 +392,7 @@ export const strings = {
     setAiEndpointAdd: '添加端点',
     setAiEndpointRemove: '删除',
     setAiEndpointName: '名称',
-    setAiHint: '使用  账号登录，无需 API key。',
+    setAiGensparkHint: '使用  账号登录，无需 API key。',
     setAiCodexPath: 'Codex 可执行文件',
     setAiCodexPathHint: '仅自定义安装时填写；留空会自动检测。',
     setAiCodexAutoPlaceholder: '留空自动检测（推荐）',
@@ -410,8 +410,8 @@ export const strings = {
     setAiMaxTokensDesc:
       '一次回合的输出预算。推理模型会先消耗预算用于思考，预算用完时回复可能变成空白，遇到这种情况请调大此项。',
     setSecAiMedia: '生图、媒体与搜索',
-    setAiMediaHint: '生图与图片/视频解析使用  账号登录。',
-    setAiSearchHint: '网页与图片搜索使用  账号登录；未登录或关闭云工具时改用免费来源。',
+    setAiMediaGensparkHint: '生图与图片/视频解析使用  账号登录。',
+    setAiSearchGensparkHint: '网页与图片搜索使用  账号登录；未登录或关闭云工具时改用免费来源。',
     setAiSearchSerperHint: 'Serper 用你的 key 同时提供网页与图片搜索。',
     setAiSearchSerplyHint: 'Serply 用你的 key 同时提供网页与图片搜索。',
     setAiSearchSearchApiHint: 'SearchApi 用你的 key 同时提供网页与图片搜索。',
@@ -696,9 +696,9 @@ export const strings = {
     untitled: 'Untitled',
     account: 'Account',
     login: 'Sign in',
-    login: 'Sign in with ',
+    loginGenspark: 'Sign in with ',
     loggedIn: 'Signed in',
-    loggedIn: 'Signed in to ',
+    loggedInGenspark: 'Signed in to ',
     waitingLogin: 'Waiting for browser sign-in… Click to relaunch the sign-in page',
     loginTimeout: 'Sign-in timed out — click to retry',
     loginLaunchFailed: 'Could not start sign-in — click to retry',
@@ -932,7 +932,7 @@ export const strings = {
     setAiEndpointAdd: 'Add endpoint',
     setAiEndpointRemove: 'Remove',
     setAiEndpointName: 'Name',
-    setAiHint: 'Uses your  sign-in; no API key needed.',
+    setAiGensparkHint: 'Uses your  sign-in; no API key needed.',
     setAiCodexPath: 'Codex executable',
     setAiCodexPathHint: 'Only set this for a custom install; leave blank to auto-detect.',
     setAiCodexAutoPlaceholder: 'Auto-detect (recommended)',
@@ -950,8 +950,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'Output budget for one turn. Reasoning models spend part of it thinking, so an answer can come back empty once the budget runs out; raise this value if that happens.',
     setSecAiMedia: 'AI Media & Search',
-    setAiMediaHint: 'Image generation and image/video analysis use your  sign-in.',
-    setAiSearchHint:
+    setAiMediaGensparkHint: 'Image generation and image/video analysis use your  sign-in.',
+    setAiSearchGensparkHint:
       'Web and image search use your  sign-in; signed out or with cloud tools off they fall back to free sources.',
     setAiSearchSerperHint: 'Serper serves both web and image search with your key.',
     setAiSearchSerplyHint: 'Serply serves both web and image search with your key.',
@@ -1243,9 +1243,9 @@ export const strings = {
     untitled: 'Chưa có tiêu đề',
     account: 'Tài khoản',
     login: 'Đăng nhập',
-    login: 'Đăng nhập bằng ',
+    loginGenspark: 'Đăng nhập bằng ',
     loggedIn: 'Đã đăng nhập',
-    loggedIn: 'Đã đăng nhập vào ',
+    loggedInGenspark: 'Đã đăng nhập vào ',
     waitingLogin: 'Đang đợi đăng nhập trên trình duyệt… Nhấp để mở lại trang đăng nhập',
     loginTimeout: 'Hết thời gian chờ đăng nhập — nhấp để thử lại',
     loginLaunchFailed: 'Không thể mở trang đăng nhập — nhấp để thử lại',
@@ -1482,7 +1482,7 @@ export const strings = {
     setAiEndpointAdd: 'Thêm điểm cuối',
     setAiEndpointRemove: 'Xóa',
     setAiEndpointName: 'Tên',
-    setAiHint: 'Sử dụng thông tin đăng nhập  của bạn; không cần khóa API.',
+    setAiGensparkHint: 'Sử dụng thông tin đăng nhập  của bạn; không cần khóa API.',
     setAiCodexPath: 'Tệp thực thi Codex',
     setAiCodexPathHint: 'Chỉ đặt mục này nếu cài đặt tùy chỉnh; để trống để tự động phát hiện.',
     setAiCodexAutoPlaceholder: 'Tự động phát hiện (khuyến nghị)',
@@ -1500,9 +1500,9 @@ export const strings = {
     setAiMaxTokensDesc:
       'Ngân sách đầu ra cho một lượt trao đổi. Các mô hình suy luận dành một phần trong đó để suy nghĩ, do đó câu trả lời có thể trống nếu hết ngân sách; hãy tăng giá trị này nếu gặp tình trạng trên.',
     setSecAiMedia: 'Phương tiện AI & Tìm kiếm',
-    setAiMediaHint:
+    setAiMediaGensparkHint:
       'Tạo hình ảnh và phân tích hình ảnh/video sử dụng thông tin đăng nhập  của bạn.',
-    setAiSearchHint:
+    setAiSearchGensparkHint:
       'Tìm kiếm web và hình ảnh sử dụng thông tin đăng nhập  của bạn; khi đăng xuất hoặc tắt công cụ đám mây, hệ thống sẽ chuyển sang dùng các nguồn miễn phí.',
     setAiSearchSerperHint: 'Serper cung cấp cả tìm kiếm web và hình ảnh bằng khóa của bạn.',
     setAiSearchSerplyHint: 'Serply cung cấp cả tìm kiếm web và hình ảnh bằng key của bạn.',
@@ -1795,9 +1795,9 @@ export const strings = {
     untitled: 'Adsız',
     account: 'Hesap',
     login: 'Giriş yap',
-    login: ' ile giriş yap',
+    loginGenspark: ' ile giriş yap',
     loggedIn: 'Giriş yapıldı',
-    loggedIn: '’a giriş yapıldı',
+    loggedInGenspark: '’a giriş yapıldı',
     waitingLogin: 'Tarayıcıda giriş bekleniyor… Giriş sayfasını yeniden açmak için tıklayın',
     loginTimeout: 'Giriş zaman aşımına uğradı — yeniden denemek için tıklayın',
     loginLaunchFailed: 'Giriş başlatılamadı — yeniden denemek için tıklayın',
@@ -2035,7 +2035,7 @@ export const strings = {
     setAiEndpointAdd: 'Uç nokta ekle',
     setAiEndpointRemove: 'Kaldır',
     setAiEndpointName: 'Ad',
-    setAiHint: ' girişinizi kullanır; API anahtarı gerekmez.',
+    setAiGensparkHint: ' girişinizi kullanır; API anahtarı gerekmez.',
     setAiCodexPath: 'Codex yürütülebilir dosyası',
     setAiCodexPathHint:
       'Yalnızca özel bir kurulum için ayarlayın; otomatik algılama için boş bırakın.',
@@ -2054,8 +2054,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'Tek bir tur için çıktı bütçesi. Akıl yürüten modeller bunun bir kısmını düşünmeye harcar, bu yüzden bütçe bittiğinde yanıt boş dönebilir; böyle olursa bu değeri artırın.',
     setSecAiMedia: 'AI Medya ve Arama',
-    setAiMediaHint: 'Görüntü oluşturma ve görüntü/video analizi  girişinizi kullanır.',
-    setAiSearchHint:
+    setAiMediaGensparkHint: 'Görüntü oluşturma ve görüntü/video analizi  girişinizi kullanır.',
+    setAiSearchGensparkHint:
       'Web ve görüntü araması  girişinizi kullanır; çıkış yapılmışsa veya bulut araçları kapalıysa ücretsiz kaynaklara döner.',
     setAiSearchSerperHint: 'Serper, anahtarınızla hem web hem görüntü aramasını sağlar.',
     setAiSearchSerplyHint: 'Serply, anahtarınızla hem web hem görüntü aramasını sağlar.',
@@ -2356,9 +2356,9 @@ export const strings = {
     // Account
     account: 'アカウント',
     login: 'サインイン',
-    login: ' アカウントでサインイン',
+    loginGenspark: ' アカウントでサインイン',
     loggedIn: 'サインイン済み',
-    loggedIn: ' にサインイン済み',
+    loggedInGenspark: ' にサインイン済み',
     waitingLogin:
       'ブラウザーでのサインインを待っています… クリックするとサインインページを再表示します',
     waitingShort: 'サインイン待ち…',
@@ -2597,7 +2597,7 @@ export const strings = {
     setAiEndpointAdd: 'エンドポイントを追加',
     setAiEndpointRemove: '削除',
     setAiEndpointName: '名前',
-    setAiHint: ' アカウントでサインインするため、API キーは不要です。',
+    setAiGensparkHint: ' アカウントでサインインするため、API キーは不要です。',
     setAiCodexPath: 'Codex 実行ファイル',
     setAiCodexPathHint: 'カスタムインストール時のみ指定します。空欄なら自動検出します。',
     setAiCodexAutoPlaceholder: '自動検出（推奨）',
@@ -2614,8 +2614,8 @@ export const strings = {
     setAiMaxTokensDesc:
       '1 ターンの出力予算です。推論モデルは思考にも消費するため、使い切ると返信が空になることがあります。その場合は値を大きくしてください。',
     setSecAiMedia: 'AI メディアと検索',
-    setAiMediaHint: '画像生成と画像/動画解析は  のサインインを使用します。',
-    setAiSearchHint:
+    setAiMediaGensparkHint: '画像生成と画像/動画解析は  のサインインを使用します。',
+    setAiSearchGensparkHint:
       'Web 検索と画像検索は  のサインインを使用します。サインアウト時やクラウドツールがオフのときは無料ソースにフォールバックします。',
     setAiSearchSerperHint: 'Serper はあなたのキーで Web 検索と画像検索の両方を提供します。',
     setAiSearchSerplyHint: 'Serply はあなたのキーで Web 検索と画像検索の両方を提供します。',
@@ -2916,9 +2916,9 @@ export const strings = {
     // Account
     account: '계정',
     login: '로그인',
-    login: ' 계정으로 로그인',
+    loginGenspark: ' 계정으로 로그인',
     loggedIn: '로그인됨',
-    loggedIn: '에 로그인됨',
+    loggedInGenspark: '에 로그인됨',
     waitingLogin: '브라우저 로그인을 기다리는 중… 클릭하면 로그인 페이지를 다시 엽니다',
     waitingShort: '로그인 대기 중…',
     loginTimeout: '로그인 시간이 초과되었습니다. 클릭하여 다시 시도',
@@ -3150,7 +3150,7 @@ export const strings = {
     setAiEndpointAdd: '엔드포인트 추가',
     setAiEndpointRemove: '삭제',
     setAiEndpointName: '이름',
-    setAiHint: ' 로그인으로 사용하며 API 키가 필요 없습니다.',
+    setAiGensparkHint: ' 로그인으로 사용하며 API 키가 필요 없습니다.',
     setAiCodexPath: 'Codex 실행 파일',
     setAiCodexPathHint: '사용자 지정 설치에만 입력하세요. 비워 두면 자동 감지합니다.',
     setAiCodexAutoPlaceholder: '자동 감지(권장)',
@@ -3167,8 +3167,8 @@ export const strings = {
     setAiMaxTokensDesc:
       '한 턴의 출력 예산입니다. 추론 모델은 생각하는 데 소모하므로 예산이 떨어지면 응답이 비어 올 수 있습니다. 그럴 때 값을 키우세요.',
     setSecAiMedia: 'AI 미디어 및 검색',
-    setAiMediaHint: '이미지 생성과 이미지/동영상 분석은  로그인을 사용합니다.',
-    setAiSearchHint:
+    setAiMediaGensparkHint: '이미지 생성과 이미지/동영상 분석은  로그인을 사용합니다.',
+    setAiSearchGensparkHint:
       '웹 검색과 이미지 검색은  로그인을 사용합니다. 로그아웃 상태거나 클라우드 도구가 꺼져 있으면 무료 소스로 대체됩니다.',
     setAiSearchSerperHint: 'Serper는 내 키로 웹 검색과 이미지 검색을 모두 제공합니다.',
     setAiSearchSerplyHint: 'Serply는 내 키로 웹 검색과 이미지 검색을 모두 제공합니다.',
@@ -3473,9 +3473,9 @@ export const strings = {
     // Account
     account: 'Compte',
     login: 'Se connecter',
-    login: 'Se connecter avec ',
+    loginGenspark: 'Se connecter avec ',
     loggedIn: 'Connecté',
-    loggedIn: 'Connecté à ',
+    loggedInGenspark: 'Connecté à ',
     waitingLogin:
       'En attente de la connexion dans le navigateur… Cliquez pour rouvrir la page de connexion',
     waitingShort: 'En attente…',
@@ -3716,7 +3716,7 @@ export const strings = {
     setAiEndpointAdd: 'Ajouter un point de terminaison',
     setAiEndpointRemove: 'Supprimer',
     setAiEndpointName: 'Nom',
-    setAiHint: 'Utilise votre connexion  ; aucune clé API requise.',
+    setAiGensparkHint: 'Utilise votre connexion  ; aucune clé API requise.',
     setAiCodexPath: 'Exécutable Codex',
     setAiCodexPathHint:
       'À renseigner uniquement pour une installation personnalisée ; sinon, détection automatique.',
@@ -3734,9 +3734,9 @@ export const strings = {
     setAiMaxTokensDesc:
       'Budget de sortie pour un tour. Les modèles à raisonnement le dépensent en réflexion ; quand il est épuisé, la réponse arrive vide : augmentez cette valeur.',
     setSecAiMedia: 'Médias IA et recherche',
-    setAiMediaHint:
+    setAiMediaGensparkHint:
       "La génération d'images et l'analyse d'images/vidéos utilisent votre connexion .",
-    setAiSearchHint:
+    setAiSearchGensparkHint:
       "La recherche web et d'images utilise votre connexion  ; déconnecté ou avec les outils cloud désactivés, elle se rabat sur des sources gratuites.",
     setAiSearchSerperHint:
       "Serper assure la recherche web et la recherche d'images avec votre clé.",
@@ -4049,9 +4049,9 @@ export const strings = {
     // Account
     account: 'Konto',
     login: 'Anmelden',
-    login: 'Mit  anmelden',
+    loginGenspark: 'Mit  anmelden',
     loggedIn: 'Angemeldet',
-    loggedIn: 'Bei  angemeldet',
+    loggedInGenspark: 'Bei  angemeldet',
     waitingLogin:
       'Warten auf Anmeldung im Browser… Klicken Sie, um die Anmeldeseite erneut zu öffnen',
     waitingShort: 'Warten…',
@@ -4291,7 +4291,7 @@ export const strings = {
     setAiEndpointAdd: 'Endpunkt hinzufügen',
     setAiEndpointRemove: 'Entfernen',
     setAiEndpointName: 'Name',
-    setAiHint: 'Nutzt Ihre -Anmeldung; kein API-Schlüssel nötig.',
+    setAiGensparkHint: 'Nutzt Ihre -Anmeldung; kein API-Schlüssel nötig.',
     setAiCodexPath: 'Codex-Programmdatei',
     setAiCodexPathHint:
       'Nur bei einer benutzerdefinierten Installation angeben; leer lassen für automatische Erkennung.',
@@ -4309,8 +4309,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'Ausgabe-Budget pro Durchlauf. Denk-Modelle verbrauchen es beim Reasoning; ist es erschöpft, kommt eine leere Antwort zurück — dann diesen Wert erhöhen.',
     setSecAiMedia: 'KI-Medien & Suche',
-    setAiMediaHint: 'Bildgenerierung und Bild-/Videoanalyse nutzen deine -Anmeldung.',
-    setAiSearchHint:
+    setAiMediaGensparkHint: 'Bildgenerierung und Bild-/Videoanalyse nutzen deine -Anmeldung.',
+    setAiSearchGensparkHint:
       'Web- und Bildsuche nutzen deine -Anmeldung; abgemeldet oder mit ausgeschalteten Cloud-Tools greifen sie auf kostenlose Quellen zurück.',
     setAiSearchSerperHint: 'Serper liefert mit deinem Schlüssel Web- und Bildsuche.',
     setAiSearchSerplyHint: 'Serply liefert mit deinem Schlüssel Web- und Bildsuche.',
@@ -4615,9 +4615,9 @@ export const strings = {
     // Account
     account: 'Cuenta',
     login: 'Iniciar sesión',
-    login: 'Iniciar sesión con ',
+    loginGenspark: 'Iniciar sesión con ',
     loggedIn: 'Sesión iniciada',
-    loggedIn: 'Sesión iniciada en ',
+    loggedInGenspark: 'Sesión iniciada en ',
     waitingLogin:
       'Esperando el inicio de sesión en el navegador… Haga clic para volver a abrir la página de inicio de sesión',
     waitingShort: 'Esperando…',
@@ -4856,7 +4856,7 @@ export const strings = {
     setAiEndpointAdd: 'Añadir endpoint',
     setAiEndpointRemove: 'Eliminar',
     setAiEndpointName: 'Nombre',
-    setAiHint: 'Usa tu inicio de sesión de ; no se necesita clave de API.',
+    setAiGensparkHint: 'Usa tu inicio de sesión de ; no se necesita clave de API.',
     setAiCodexPath: 'Ejecutable de Codex',
     setAiCodexPathHint:
       'Indícalo solo para una instalación personalizada; déjalo vacío para detectarlo automáticamente.',
@@ -4874,9 +4874,9 @@ export const strings = {
     setAiMaxTokensDesc:
       'Presupuesto de salida por turno. Los modelos de razonamiento lo gastan en pensar; si se agota, la respuesta llega vacía: suba este valor.',
     setSecAiMedia: 'Medios de IA y búsqueda',
-    setAiMediaHint:
+    setAiMediaGensparkHint:
       'La generación de imágenes y el análisis de imágenes/vídeos usan tu inicio de sesión de .',
-    setAiSearchHint:
+    setAiSearchGensparkHint:
       'La búsqueda web y de imágenes usa tu inicio de sesión de ; sin sesión o con las herramientas en la nube desactivadas recurre a fuentes gratuitas.',
     setAiSearchSerperHint: 'Serper ofrece búsqueda web y de imágenes con tu clave.',
     setAiSearchSerplyHint: 'Serply ofrece búsqueda web y de imágenes con tu clave.',
@@ -5178,9 +5178,9 @@ export const strings = {
     // Account
     account: 'บัญชี',
     login: 'ลงชื่อเข้าใช้',
-    login: 'ลงชื่อเข้าใช้ด้วย ',
+    loginGenspark: 'ลงชื่อเข้าใช้ด้วย ',
     loggedIn: 'ลงชื่อเข้าใช้แล้ว',
-    loggedIn: 'ลงชื่อเข้าใช้  แล้ว',
+    loggedInGenspark: 'ลงชื่อเข้าใช้  แล้ว',
     waitingLogin: 'กำลังรอการลงชื่อเข้าใช้ในเบราว์เซอร์… คลิกเพื่อเปิดหน้าลงชื่อเข้าใช้อีกครั้ง',
     waitingShort: 'กำลังรอ…',
     loginTimeout: 'การลงชื่อเข้าใช้หมดเวลา — คลิกเพื่อลองอีกครั้ง',
@@ -5410,7 +5410,7 @@ export const strings = {
     setAiEndpointAdd: 'เพิ่มปลายทาง',
     setAiEndpointRemove: 'ลบ',
     setAiEndpointName: 'ชื่อ',
-    setAiHint: 'ใช้การลงชื่อเข้าใช้  ไม่ต้องใช้คีย์ API',
+    setAiGensparkHint: 'ใช้การลงชื่อเข้าใช้  ไม่ต้องใช้คีย์ API',
     setAiCodexPath: 'ไฟล์ปฏิบัติการ Codex',
     setAiCodexPathHint: 'กรอกเฉพาะเมื่อติดตั้งแบบกำหนดเอง เว้นว่างไว้เพื่อค้นหาอัตโนมัติ',
     setAiCodexAutoPlaceholder: 'ค้นหาอัตโนมัติ (แนะนำ)',
@@ -5427,8 +5427,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'งบผลลัพธ์ต่อหนึ่งรอบ โมเดลแบบใช้เหตุผลจะใช้ส่วนหนึ่งไปกับการคิด หากงบหมด คำตอบอาจกลับมาว่างเปล่า ให้เพิ่มค่านี้',
     setSecAiMedia: 'สื่อ AI และการค้นหา',
-    setAiMediaHint: 'การสร้างภาพและการวิเคราะห์ภาพ/วิดีโอใช้การลงชื่อเข้าใช้  ของคุณ',
-    setAiSearchHint:
+    setAiMediaGensparkHint: 'การสร้างภาพและการวิเคราะห์ภาพ/วิดีโอใช้การลงชื่อเข้าใช้  ของคุณ',
+    setAiSearchGensparkHint:
       'การค้นหาเว็บและภาพใช้การลงชื่อเข้าใช้  หากไม่ได้ลงชื่อเข้าใช้หรือปิดเครื่องมือคลาวด์ จะใช้แหล่งข้อมูลฟรีแทน',
     setAiSearchSerperHint: 'Serper ให้บริการค้นหาเว็บและภาพด้วยคีย์ของคุณ',
     setAiSearchSerplyHint: 'Serply ให้บริการค้นหาเว็บและภาพด้วยคีย์ของคุณ',
@@ -5729,9 +5729,9 @@ export const strings = {
     // Account
     account: 'Akun',
     login: 'Masuk',
-    login: 'Masuk dengan ',
+    loginGenspark: 'Masuk dengan ',
     loggedIn: 'Sudah masuk',
-    loggedIn: 'Sudah masuk ke ',
+    loggedInGenspark: 'Sudah masuk ke ',
     waitingLogin: 'Menunggu login di browser… Klik untuk membuka kembali halaman login',
     waitingShort: 'Menunggu…',
     loginTimeout: 'Waktu login habis — klik untuk mencoba lagi',
@@ -5966,7 +5966,7 @@ export const strings = {
     setAiEndpointAdd: 'Tambah endpoint',
     setAiEndpointRemove: 'Hapus',
     setAiEndpointName: 'Nama',
-    setAiHint: 'Menggunakan login ; tanpa kunci API.',
+    setAiGensparkHint: 'Menggunakan login ; tanpa kunci API.',
     setAiCodexPath: 'Berkas eksekusi Codex',
     setAiCodexPathHint: 'Isi hanya untuk instalasi khusus; kosongkan agar terdeteksi otomatis.',
     setAiCodexAutoPlaceholder: 'Deteksi otomatis (disarankan)',
@@ -5983,8 +5983,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'Anggaran keluaran untuk satu giliran. Model penalaran memakainya untuk berpikir; jika habis, balasan datang kosong — naikkan nilai ini.',
     setSecAiMedia: 'Media & Pencarian AI',
-    setAiMediaHint: 'Pembuatan gambar dan analisis gambar/video menggunakan login  Anda.',
-    setAiSearchHint:
+    setAiMediaGensparkHint: 'Pembuatan gambar dan analisis gambar/video menggunakan login  Anda.',
+    setAiSearchGensparkHint:
       'Pencarian web dan gambar memakai login  Anda; saat keluar atau alat cloud dimatikan, keduanya memakai sumber gratis.',
     setAiSearchSerperHint: 'Serper menyediakan pencarian web dan gambar dengan kunci Anda.',
     setAiSearchSerplyHint: 'Serply menyediakan pencarian web dan gambar dengan kunci Anda.',
@@ -6287,9 +6287,9 @@ export const strings = {
     // Account
     account: 'Учётная запись',
     login: 'Войти',
-    login: 'Войти через ',
+    loginGenspark: 'Войти через ',
     loggedIn: 'Вход выполнен',
-    loggedIn: 'Выполнен вход в ',
+    loggedInGenspark: 'Выполнен вход в ',
     waitingLogin: 'Ожидание входа в браузере… Нажмите, чтобы снова открыть страницу входа',
     waitingShort: 'Ожидание…',
     loginTimeout: 'Время входа истекло — нажмите, чтобы повторить',
@@ -6524,7 +6524,7 @@ export const strings = {
     setAiEndpointAdd: 'Добавить эндпоинт',
     setAiEndpointRemove: 'Удалить',
     setAiEndpointName: 'Название',
-    setAiHint: 'Использует вход в ; ключ API не нужен.',
+    setAiGensparkHint: 'Использует вход в ; ключ API не нужен.',
     setAiCodexPath: 'Исполняемый файл Codex',
     setAiCodexPathHint:
       'Указывайте только для нестандартной установки; оставьте пустым для автоопределения.',
@@ -6542,8 +6542,9 @@ export const strings = {
     setAiMaxTokensDesc:
       'Бюджет вывода за один ход. Модели рассуждений тратят его на размышления: если бюджет иссякнет, ответ придёт пустым — увеличьте значение.',
     setSecAiMedia: 'Медиа и поиск ИИ',
-    setAiMediaHint: 'Генерация изображений и анализ изображений/видео используют ваш вход в .',
-    setAiSearchHint:
+    setAiMediaGensparkHint:
+      'Генерация изображений и анализ изображений/видео используют ваш вход в .',
+    setAiSearchGensparkHint:
       'Веб-поиск и поиск изображений используют ваш вход в ; без входа или при выключенных облачных инструментах используются бесплатные источники.',
     setAiSearchSerperHint: 'Serper обеспечивает веб-поиск и поиск изображений с вашим ключом.',
     setAiSearchSerplyHint: 'Serply обеспечивает веб-поиск и поиск изображений с вашим ключом.',
@@ -6846,9 +6847,9 @@ export const strings = {
     // Account
     account: 'الحساب',
     login: 'تسجيل الدخول',
-    login: 'تسجيل الدخول باستخدام ',
+    loginGenspark: 'تسجيل الدخول باستخدام ',
     loggedIn: 'تم تسجيل الدخول',
-    loggedIn: 'تم تسجيل الدخول إلى ',
+    loggedInGenspark: 'تم تسجيل الدخول إلى ',
     waitingLogin: 'في انتظار تسجيل الدخول في المتصفح… انقر لإعادة فتح صفحة تسجيل الدخول',
     waitingShort: 'في الانتظار…',
     loginTimeout: 'انتهت مهلة تسجيل الدخول — انقر لإعادة المحاولة',
@@ -7081,7 +7082,7 @@ export const strings = {
     setAiEndpointAdd: 'إضافة نقطة نهاية',
     setAiEndpointRemove: 'إزالة',
     setAiEndpointName: 'الاسم',
-    setAiHint: 'يستخدم تسجيل الدخول إلى ؛ لا حاجة لمفتاح API.',
+    setAiGensparkHint: 'يستخدم تسجيل الدخول إلى ؛ لا حاجة لمفتاح API.',
     setAiCodexPath: 'ملف Codex التنفيذي',
     setAiCodexPathHint: 'حدده فقط للتثبيت المخصص؛ اتركه فارغًا للاكتشاف التلقائي.',
     setAiCodexAutoPlaceholder: 'اكتشاف تلقائي (موصى به)',
@@ -7098,8 +7099,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'ميزانية الإخراج في الدورة الواحدة. نماذج الاستدلال تصرفها على التفكير، فإذا نفدت جاء الرد فارغًا؛ ارفع هذه القيمة عندئذ.',
     setSecAiMedia: 'وسائط الذكاء الاصطناعي والبحث',
-    setAiMediaHint: 'يستخدم توليد الصور وتحليل الصور/الفيديو تسجيل دخولك إلى .',
-    setAiSearchHint:
+    setAiMediaGensparkHint: 'يستخدم توليد الصور وتحليل الصور/الفيديو تسجيل دخولك إلى .',
+    setAiSearchGensparkHint:
       'يستخدم البحث في الويب والصور تسجيل دخولك إلى ؛ وعند الخروج أو إيقاف الأدوات السحابية يعود إلى مصادر مجانية.',
     setAiSearchSerperHint: 'يوفّر Serper البحث في الويب والصور بمفتاحك.',
     setAiSearchSerplyHint: 'يوفّر Serply البحث في الويب والصور بمفتاحك.',
@@ -7395,9 +7396,9 @@ export const strings = {
     untitled: 'Sem título',
     account: 'Conta',
     login: 'Entrar',
-    login: 'Entrar com a ',
+    loginGenspark: 'Entrar com a ',
     loggedIn: 'Conectado',
-    loggedIn: 'Conectado à ',
+    loggedInGenspark: 'Conectado à ',
     waitingLogin: 'Aguardando o login no navegador… Clique para reabrir a página de login',
     waitingShort: 'Aguardando…',
     loginTimeout: 'O login expirou — clique para tentar novamente',
@@ -7636,7 +7637,7 @@ export const strings = {
     setAiEndpointAdd: 'Adicionar endpoint',
     setAiEndpointRemove: 'Remover',
     setAiEndpointName: 'Nome',
-    setAiHint: 'Usa seu login ; nenhuma chave de API necessária.',
+    setAiGensparkHint: 'Usa seu login ; nenhuma chave de API necessária.',
     setAiCodexPath: 'Executável do Codex',
     setAiCodexPathHint:
       'Preencha apenas para uma instalação personalizada; deixe em branco para detectar automaticamente.',
@@ -7654,8 +7655,9 @@ export const strings = {
     setAiMaxTokensDesc:
       'Orçamento de saída por turno. Modelos de raciocínio gastam-no pensando; se esgotar, a resposta vem vazia — aumente este valor.',
     setSecAiMedia: 'Mídia e busca de IA',
-    setAiMediaHint: 'A geração de imagens e a análise de imagens/vídeos usam o seu login do .',
-    setAiSearchHint:
+    setAiMediaGensparkHint:
+      'A geração de imagens e a análise de imagens/vídeos usam o seu login do .',
+    setAiSearchGensparkHint:
       'A busca na web e de imagens usa o seu login do ; desconectado ou com as ferramentas na nuvem desativadas, recorre a fontes gratuitas.',
     setAiSearchSerperHint: 'O Serper oferece busca na web e de imagens com a sua chave.',
     setAiSearchSerplyHint: 'O Serply oferece busca na web e de imagens com a sua chave.',
@@ -7952,9 +7954,9 @@ export const strings = {
     untitled: 'Senza titolo',
     account: 'Account',
     login: 'Accedi',
-    login: 'Accedi con ',
+    loginGenspark: 'Accedi con ',
     loggedIn: 'Accesso effettuato',
-    loggedIn: 'Accesso effettuato a ',
+    loggedInGenspark: 'Accesso effettuato a ',
     waitingLogin: "In attesa dell'accesso nel browser… Fai clic per riaprire la pagina di accesso",
     waitingShort: 'In attesa…',
     loginTimeout: 'Accesso scaduto — fai clic per riprovare',
@@ -8192,7 +8194,7 @@ export const strings = {
     setAiEndpointAdd: 'Aggiungi endpoint',
     setAiEndpointRemove: 'Rimuovi',
     setAiEndpointName: 'Nome',
-    setAiHint: 'Usa il tuo accesso ; nessuna chiave API richiesta.',
+    setAiGensparkHint: 'Usa il tuo accesso ; nessuna chiave API richiesta.',
     setAiCodexPath: 'Eseguibile Codex',
     setAiCodexPathHint:
       'Compila solo per un’installazione personalizzata; lascia vuoto per il rilevamento automatico.',
@@ -8210,9 +8212,9 @@ export const strings = {
     setAiMaxTokensDesc:
       'Budget di uscita per singolo turno. I modelli di ragionamento lo consumano pensando: se si esaurisce, la risposta arriva vuota; aumentalo.',
     setSecAiMedia: 'Media e ricerca IA',
-    setAiMediaHint:
+    setAiMediaGensparkHint:
       "La generazione di immagini e l'analisi di immagini/video usano il tuo accesso .",
-    setAiSearchHint:
+    setAiSearchGensparkHint:
       'La ricerca web e di immagini usa il tuo accesso ; disconnesso o con gli strumenti cloud disattivati ricorre a fonti gratuite.',
     setAiSearchSerperHint: 'Serper offre ricerca web e di immagini con la tua chiave.',
     setAiSearchSerplyHint: 'Serply offre ricerca web e di immagini con la tua chiave.',
@@ -8508,9 +8510,9 @@ export const strings = {
     untitled: 'Bez tytułu',
     account: 'Konto',
     login: 'Zaloguj się',
-    login: 'Zaloguj się przez ',
+    loginGenspark: 'Zaloguj się przez ',
     loggedIn: 'Zalogowano',
-    loggedIn: 'Zalogowano do ',
+    loggedInGenspark: 'Zalogowano do ',
     waitingLogin:
       'Oczekiwanie na logowanie w przeglądarce… Kliknij, aby ponownie otworzyć stronę logowania',
     waitingShort: 'Oczekiwanie…',
@@ -8747,7 +8749,7 @@ export const strings = {
     setAiEndpointAdd: 'Dodaj punkt końcowy',
     setAiEndpointRemove: 'Usuń',
     setAiEndpointName: 'Nazwa',
-    setAiHint: 'Korzysta z logowania ; klucz API nie jest potrzebny.',
+    setAiGensparkHint: 'Korzysta z logowania ; klucz API nie jest potrzebny.',
     setAiCodexPath: 'Plik wykonywalny Codex',
     setAiCodexPathHint:
       'Ustaw tylko dla instalacji niestandardowej; pozostaw puste, aby wykryć automatycznie.',
@@ -8765,8 +8767,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'Budżet wyjścia na jedną turę. Modele rozumowania zużywają go na myślenie; gdy się wyczerpie, odpowiedź przychodzi pusta — zwiększ tę wartość.',
     setSecAiMedia: 'Media i wyszukiwanie AI',
-    setAiMediaHint: 'Generowanie obrazów i analiza obrazów/wideo korzystają z logowania .',
-    setAiSearchHint:
+    setAiMediaGensparkHint: 'Generowanie obrazów i analiza obrazów/wideo korzystają z logowania .',
+    setAiSearchGensparkHint:
       'Wyszukiwanie w sieci i obrazów korzysta z logowania ; po wylogowaniu lub przy wyłączonych narzędziach chmurowych używa darmowych źródeł.',
     setAiSearchSerperHint: 'Serper zapewnia wyszukiwanie w sieci i obrazów z Twoim kluczem.',
     setAiSearchSerplyHint: 'Serply zapewnia wyszukiwanie w sieci i obrazów z Twoim kluczem.',
@@ -9060,9 +9062,9 @@ export const strings = {
     untitled: 'Bez názvu',
     account: 'Účet',
     login: 'Přihlásit se',
-    login: 'Přihlásit se přes ',
+    loginGenspark: 'Přihlásit se přes ',
     loggedIn: 'Přihlášeno',
-    loggedIn: 'Přihlášeno ke ',
+    loggedInGenspark: 'Přihlášeno ke ',
     waitingLogin:
       'Čeká se na přihlášení v prohlížeči… Kliknutím znovu otevřete přihlašovací stránku',
     loginTimeout: 'Vypršel čas přihlášení — kliknutím to zkusíte znovu',
@@ -9240,7 +9242,7 @@ export const strings = {
     setAiEndpointAdd: 'Přidat koncový bod',
     setAiEndpointRemove: 'Odebrat',
     setAiEndpointName: 'Název',
-    setAiHint: 'Používá vaše přihlášení ke ; klíč API není potřeba.',
+    setAiGensparkHint: 'Používá vaše přihlášení ke ; klíč API není potřeba.',
     setAiCodexPath: 'Spustitelný soubor Codex',
     setAiCodexPathHint:
       'Vyplňte jen u vlastní instalace; prázdné pole znamená automatickou detekci.',
@@ -9259,8 +9261,9 @@ export const strings = {
     setAiMaxTokensDesc:
       'Rozpočet výstupu na jeden tah. Modely s uvažováním jeho část spotřebují na přemýšlení, takže po vyčerpání rozpočtu může být odpověď prázdná; v takovém případě hodnotu zvyšte.',
     setSecAiMedia: 'AI média a vyhledávání',
-    setAiMediaHint: 'Generování obrázků a analýza obrázků/videí používají vaše přihlášení ke .',
-    setAiSearchHint:
+    setAiMediaGensparkHint:
+      'Generování obrázků a analýza obrázků/videí používají vaše přihlášení ke .',
+    setAiSearchGensparkHint:
       'Webové a obrázkové vyhledávání používá vaše přihlášení ke ; při odhlášení nebo vypnutých cloudových nástrojích se použijí bezplatné zdroje.',
     setAiSearchSerperHint: 'Serper zajišťuje webové i obrázkové vyhledávání s vaším klíčem.',
     setAiSearchSerplyHint: 'Serply zajišťuje webové i obrázkové vyhledávání s vaším klíčem.',
@@ -9609,9 +9612,9 @@ export const strings = {
     untitled: 'Naamloos',
     account: 'Account',
     login: 'Inloggen',
-    login: 'Inloggen met ',
+    loginGenspark: 'Inloggen met ',
     loggedIn: 'Ingelogd',
-    loggedIn: 'Ingelogd bij ',
+    loggedInGenspark: 'Ingelogd bij ',
     waitingLogin: 'Wachten op inloggen in de browser… Klik om de inlogpagina opnieuw te openen',
     waitingShort: 'Wachten…',
     loginTimeout: 'Inloggen verlopen — klik om het opnieuw te proberen',
@@ -9847,7 +9850,7 @@ export const strings = {
     setAiEndpointAdd: 'Eindpunt toevoegen',
     setAiEndpointRemove: 'Verwijderen',
     setAiEndpointName: 'Naam',
-    setAiHint: 'Gebruikt je -login; geen API-sleutel nodig.',
+    setAiGensparkHint: 'Gebruikt je -login; geen API-sleutel nodig.',
     setAiCodexPath: 'Codex-uitvoerbaar bestand',
     setAiCodexPathHint:
       'Alleen invullen voor een aangepaste installatie; laat leeg voor automatische detectie.',
@@ -9865,8 +9868,9 @@ export const strings = {
     setAiMaxTokensDesc:
       'Uitvoerbudget voor één beurt. Redeneermodellen geven dit uit aan denken; is het op, dan komt een leeg antwoord terug — verhoog deze waarde.',
     setSecAiMedia: 'AI-media en zoeken',
-    setAiMediaHint: 'Afbeeldingen genereren en afbeelding-/video-analyse gebruiken je -aanmelding.',
-    setAiSearchHint:
+    setAiMediaGensparkHint:
+      'Afbeeldingen genereren en afbeelding-/video-analyse gebruiken je -aanmelding.',
+    setAiSearchGensparkHint:
       'Web- en afbeeldingszoeken gebruiken je -aanmelding; afgemeld of met cloudtools uit vallen ze terug op gratis bronnen.',
     setAiSearchSerperHint: 'Serper levert web- en afbeeldingszoeken met je sleutel.',
     setAiSearchSerplyHint: 'Serply levert web- en afbeeldingszoeken met je sleutel.',
@@ -10161,9 +10165,9 @@ export const strings = {
     untitled: 'Tanpa tajuk',
     account: 'Akaun',
     login: 'Log masuk',
-    login: 'Log masuk dengan ',
+    loginGenspark: 'Log masuk dengan ',
     loggedIn: 'Telah log masuk',
-    loggedIn: 'Telah log masuk ke ',
+    loggedInGenspark: 'Telah log masuk ke ',
     waitingLogin: 'Menunggu log masuk dalam pelayar… Klik untuk membuka semula halaman log masuk',
     waitingShort: 'Menunggu…',
     loginTimeout: 'Log masuk tamat masa — klik untuk cuba lagi',
@@ -10401,7 +10405,7 @@ export const strings = {
     setAiEndpointAdd: 'Tambah titik akhir',
     setAiEndpointRemove: 'Buang',
     setAiEndpointName: 'Nama',
-    setAiHint: 'Menggunakan log masuk ; tiada kunci API diperlukan.',
+    setAiGensparkHint: 'Menggunakan log masuk ; tiada kunci API diperlukan.',
     setAiCodexPath: 'Fail boleh laku Codex',
     setAiCodexPathHint:
       'Isi hanya untuk pemasangan tersuai; biarkan kosong untuk pengesanan automatik.',
@@ -10420,8 +10424,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'Belanjawan output untuk satu pusingan. Model penaakulan menghabiskannya untuk berfikir; jika habis, balasan datang kosong — tingkatkan nilai ini.',
     setSecAiMedia: 'Media & Carian AI',
-    setAiMediaHint: 'Penjanaan imej dan analisis imej/video menggunakan log masuk  anda.',
-    setAiSearchHint:
+    setAiMediaGensparkHint: 'Penjanaan imej dan analisis imej/video menggunakan log masuk  anda.',
+    setAiSearchGensparkHint:
       'Carian web dan imej menggunakan log masuk  anda; apabila log keluar atau alat awan dimatikan, ia menggunakan sumber percuma.',
     setAiSearchSerperHint: 'Serper menyediakan carian web dan imej dengan kunci anda.',
     setAiSearchSerplyHint: 'Serply menyediakan carian web dan imej dengan kunci anda.',
@@ -10713,9 +10717,9 @@ export const strings = {
     untitled: 'ללא שם',
     account: 'חשבון',
     login: 'התחברות',
-    login: 'התחברות עם ',
+    loginGenspark: 'התחברות עם ',
     loggedIn: 'מחובר',
-    loggedIn: 'מחובר ל-',
+    loggedInGenspark: 'מחובר ל-',
     waitingLogin: 'ממתין להתחברות בדפדפן… לחצו כדי לפתוח שוב את דף ההתחברות',
     waitingShort: 'ממתין…',
     loginTimeout: 'פג תוקף ההתחברות — לחצו כדי לנסות שוב',
@@ -10945,7 +10949,7 @@ export const strings = {
     setAiEndpointAdd: 'הוספת נקודת קצה',
     setAiEndpointRemove: 'הסרה',
     setAiEndpointName: 'שם',
-    setAiHint: 'משתמש בכניסת  שלך; אין צורך במפתח API.',
+    setAiGensparkHint: 'משתמש בכניסת  שלך; אין צורך במפתח API.',
     setAiCodexPath: 'קובץ ההפעלה של Codex',
     setAiCodexPathHint: 'יש למלא רק בהתקנה מותאמת; השאר ריק לזיהוי אוטומטי.',
     setAiCodexAutoPlaceholder: 'זיהוי אוטומטי (מומלץ)',
@@ -10962,8 +10966,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'תקציב פלט לסיבוב אחד. מודלי היסק מנצלים חלק ממנו לחשיבה, ואם הוא נגמר התשובה עלולה לחזור ריקה — במקרה כזה העלו את הערך.',
     setSecAiMedia: 'מדיה וחיפוש AI',
-    setAiMediaHint: 'יצירת תמונות וניתוח תמונות/וידאו משתמשים בהתחברות  שלך.',
-    setAiSearchHint:
+    setAiMediaGensparkHint: 'יצירת תמונות וניתוח תמונות/וידאו משתמשים בהתחברות  שלך.',
+    setAiSearchGensparkHint:
       'חיפוש באינטרנט ובתמונות משתמש בהתחברות  שלך; כשלא מחוברים או כשכלי הענן כבויים הוא חוזר למקורות חינמיים.',
     setAiSearchSerperHint: 'Serper מספק חיפוש באינטרנט ובתמונות עם המפתח שלך.',
     setAiSearchSerplyHint: 'Serply מספק חיפוש באינטרנט ובתמונות עם המפתח שלך.',
@@ -11254,9 +11258,9 @@ export const strings = {
     untitled: 'बिना शीर्षक',
     account: 'खाता',
     login: 'साइन इन करें',
-    login: ' से साइन इन करें',
+    loginGenspark: ' से साइन इन करें',
     loggedIn: 'साइन इन हो गया',
-    loggedIn: ' में साइन इन है',
+    loggedInGenspark: ' में साइन इन है',
     waitingLogin:
       'ब्राउज़र में साइन इन की प्रतीक्षा है… साइन इन पेज दोबारा खोलने के लिए क्लिक करें',
     waitingShort: 'प्रतीक्षा में…',
@@ -11490,7 +11494,7 @@ export const strings = {
     setAiEndpointAdd: 'एंडपॉइंट जोड़ें',
     setAiEndpointRemove: 'हटाएँ',
     setAiEndpointName: 'नाम',
-    setAiHint: 'आपके  साइन-इन का उपयोग करता है; API कुंजी की आवश्यकता नहीं।',
+    setAiGensparkHint: 'आपके  साइन-इन का उपयोग करता है; API कुंजी की आवश्यकता नहीं।',
     setAiCodexPath: 'Codex निष्पादन फ़ाइल',
     setAiCodexPathHint: 'केवल कस्टम इंस्टॉलेशन के लिए भरें; स्वतः पहचान के लिए खाली छोड़ें।',
     setAiCodexAutoPlaceholder: 'स्वतः पहचान (अनुशंसित)',
@@ -11508,8 +11512,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'एक टर्न का आउटपुट बजट। रीज़निंग मॉडल इसका कुछ हिस्सा सोचने में खर्च करते हैं; बजट खत्म होने पर उत्तर खाली आ सकता है — ऐसा हो तो इसे बढ़ाएँ।',
     setSecAiMedia: 'AI मीडिया और खोज',
-    setAiMediaHint: 'इमेज जनरेशन और इमेज/वीडियो विश्लेषण आपके  साइन-इन का उपयोग करते हैं।',
-    setAiSearchHint:
+    setAiMediaGensparkHint: 'इमेज जनरेशन और इमेज/वीडियो विश्लेषण आपके  साइन-इन का उपयोग करते हैं।',
+    setAiSearchGensparkHint:
       'वेब और इमेज खोज आपके  साइन-इन का उपयोग करती हैं; साइन-आउट होने पर या क्लाउड टूल बंद होने पर वे मुफ़्त स्रोतों पर लौट जाती हैं।',
     setAiSearchSerperHint: 'Serper आपकी कुंजी से वेब और इमेज खोज दोनों देता है।',
     setAiSearchSerplyHint: 'Serply आपकी कुंजी से वेब और इमेज खोज दोनों देता है।',
@@ -11797,9 +11801,9 @@ export const strings = {
     untitled: '未命名',
     account: '帳號',
     login: '登入',
-    login: '登入  帳號',
+    loginGenspark: '登入  帳號',
     loggedIn: '已登入',
-    loggedIn: '已登入 ',
+    loggedInGenspark: '已登入 ',
     waitingLogin: '正在等待瀏覽器登入…點按可重新開啟登入頁面',
     waitingShort: '等待登入…',
     loginTimeout: '登入逾時，點按重試',
@@ -12023,7 +12027,7 @@ export const strings = {
     setAiEndpointAdd: '新增端點',
     setAiEndpointRemove: '刪除',
     setAiEndpointName: '名稱',
-    setAiHint: '使用  帳號登入，無需 API key。',
+    setAiGensparkHint: '使用  帳號登入，無需 API key。',
     setAiCodexPath: 'Codex 可執行檔',
     setAiCodexPathHint: '僅自訂安裝時填寫；留空會自動偵測。',
     setAiCodexAutoPlaceholder: '留空自動偵測（建議）',
@@ -12041,8 +12045,8 @@ export const strings = {
     setAiMaxTokensDesc:
       '一次回合的輸出預算。推理模型會先消耗預算用於思考，預算用畢時回覆可能變成空白，遇到此情況請調高本項。',
     setSecAiMedia: '生圖、媒體與搜尋',
-    setAiMediaHint: '生圖與圖片/影片解析使用  帳號登入。',
-    setAiSearchHint: '網頁與圖片搜尋使用  帳號登入；未登入或關閉雲端工具時改用免費來源。',
+    setAiMediaGensparkHint: '生圖與圖片/影片解析使用  帳號登入。',
+    setAiSearchGensparkHint: '網頁與圖片搜尋使用  帳號登入；未登入或關閉雲端工具時改用免費來源。',
     setAiSearchSerperHint: 'Serper 用你的 key 同時提供網頁與圖片搜尋。',
     setAiSearchSerplyHint: 'Serply 用你的 key 同時提供網頁與圖片搜尋。',
     setAiSearchSearchApiHint: 'SearchApi 用你的 key 同時提供網頁與圖片搜尋。',

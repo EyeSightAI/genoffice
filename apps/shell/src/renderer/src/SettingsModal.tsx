@@ -686,7 +686,7 @@ function AiModelPane({ t }: { t: TFunc }) {
         />
       </div>
       <div className="set-field-desc set-ai-note">
-        {is ? t('setAiHint') : isCodex ? t('setAiCodexHint') : t('setAiByokNote')}
+        {is ? t('setAiGensparkHint') : isCodex ? t('setAiCodexHint') : t('setAiByokNote')}
       </div>
       {meta?.needsBaseUrl && (
         <>
@@ -1560,7 +1560,7 @@ function AiMediaPane({
         {subhead(cap, title)}
         {providerRow(title, id, options, pick)}
         <div className="set-field-desc set-ai-note">
-          {id === 'genspark' ? t('setAiMediaHint') : meta.description}
+          {id === 'genspark' ? t('setAiMediaGensparkHint') : meta.description}
         </div>
         {id !== 'genspark' && (
           <>
@@ -1609,7 +1609,7 @@ function AiMediaPane({
         )}
         <div className="set-field-desc set-ai-note">
           {search.provider === 'genspark'
-            ? t('setAiSearchHint')
+            ? t('setAiSearchGensparkHint')
             : search.provider === 'parallel'
               ? t('setAiSearchParallelHint')
               : search.provider === 'keenable'
@@ -2066,7 +2066,7 @@ export function SettingsModal({
                         </>
                       )}
                       <button className="set-btn primary" onClick={onLogin}>
-                        {loginWaiting ? t('waitingShort') : t('login')}
+                        {loginWaiting ? t('waitingShort') : t('loginGenspark')}
                       </button>
                     </>
                   )}

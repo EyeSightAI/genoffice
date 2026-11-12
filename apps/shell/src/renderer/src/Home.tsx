@@ -1001,10 +1001,10 @@ function AccountEntry({
         aria-expanded={settingsOpen}
         data-tip={
           loggedIn
-            ? email || t('loggedIn')
+            ? email || t('loggedInGenspark')
             : waiting
               ? t('waitingLogin')
-              : (errorText ?? t('login'))
+              : (errorText ?? t('loginGenspark'))
         }
         aria-label={t('settings')}
       >
@@ -1220,7 +1220,7 @@ function CloudProjectsView() {
         <p className="empty proj-empty">
           <span className="empty-hint">{t('cloudLoginHint')}</span>
           <button className="btn btn-secondary" disabled={loginWaiting} onClick={startLogin}>
-            {loginWaiting ? t('waitingShort') : t('login')}
+            {loginWaiting ? t('waitingShort') : t('loginGenspark')}
           </button>
         </p>
       )
