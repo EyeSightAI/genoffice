@@ -4,12 +4,12 @@
  * The naming service used to carry its own list of provider ids and read the
  * key out of the settings file. That was the wrong answer twice over: the list
  * did not know every provider the build can talk to, and it never saw the
- * Genspark key, which lives in the login state rather than in the file — so
+ *  key, which lives in the login state rather than in the file — so
  * for the default account the call failed and the feature quietly did nothing.
  *
  * This module resolves the provider the way the rest of the app does: the
  * shared `resolveAiSettings` + `activeProvider` from `@genoffice/ai-provider`,
- * the Genspark key from the gsk login state, and a custom endpoint's
+ * the  key from the gsk login state, and a custom endpoint's
  * credential reference resolved from the environment.
  */
 import type { AiProviderConfig, AiProviderId } from '@genoffice/ai-provider'
@@ -29,7 +29,7 @@ export interface NamingProvider {
 /**
  * The provider a naming request goes to, or null when no provider can answer.
  *
- * `stored` is the parsed `ai-settings.json`; `gskKey` is the Genspark key from
+ * `stored` is the parsed `ai-settings.json`; `gskKey` is the  key from
  * the login state, empty when signed out. Null rather than a broken provider:
  * a request with no usable provider is declined, and the caller keeps the name
  * the document already has.

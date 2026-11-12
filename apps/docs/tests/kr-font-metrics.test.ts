@@ -149,7 +149,7 @@ describe('GenOffice Serif KR (Batang-normalized)', () => {
   })
 })
 
-describe('GenOffice Che Latin KR (fixed-pitch half-width)', () => {
+describe('UToOffice Che Latin KR (fixed-pitch half-width)', () => {
   const che = readWoff2(join(FONTS, 'GenOfficeCheLatinKR.woff2'))
 
   it('every printable ASCII advance is exactly 0.5em (probe 2026-08-24: real -Che faces)', () => {
@@ -184,7 +184,7 @@ describe('GenOffice Gothic KR (real source metrics, unmodified)', () => {
       expect(value, `name ID ${nameId}`).not.toMatch(/nanum/i)
     }
     expect(names).toContainEqual({ nameId: 1, value: 'GenOffice Gothic KR' })
-    expect(names).toContainEqual({ nameId: 6, value: 'GenOfficeGothicKR-Regular' })
+    expect(names).toContainEqual({ nameId: 6, value: 'UToOfficeGothicKR-Regular' })
   })
 })
 

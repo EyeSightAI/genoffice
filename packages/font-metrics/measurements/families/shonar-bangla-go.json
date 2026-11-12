@@ -9,7 +9,7 @@
     "date": "2026-11-12",
     "fonts": [
       "Shonar Bangla Regular/Bold (Office CloudFonts cache)",
-      "GenOfficeBengali-Regular/Bold.woff2",
+      "UToOfficeBengali-Regular/Bold.woff2",
       "LiberationSerif-Regular/Bold.ttf"
     ],
     "probe": "hb-shape widths of 207 Bengali paragraphs of a corpus document: Shonar Bangla over GenOffice Bengali 0.687 regular (p10-p90 0.674-0.706), 0.686 bold (0.673-0.700); hmtx of its Latin letters, digits, punctuation, quotes and space over Liberation Serif 0.827 for every glyph in both cuts; Word paces the face at its hhea box (10.5 pt at line 340 auto -> 19.7 pt)"

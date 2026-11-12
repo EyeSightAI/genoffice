@@ -401,11 +401,11 @@ describe('extractGskText', () => {
 })
 
 describe('summarizeGskFailure', () => {
-  // trimmed version of the gateway page Genspark serves for refused calls
+  // trimmed version of the gateway page  serves for refused calls
   const HTML_403 = `<html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Genspark</title>
+    <title></title>
   </head>
   <body>
     <div class="tt">Service unavailable. Please check your internet connection.</div>

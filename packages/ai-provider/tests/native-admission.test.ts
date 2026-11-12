@@ -25,7 +25,7 @@ function recorder(reply: (url: string, init: RequestInit) => Response | Promise<
   return { calls, fetcher }
 }
 
-describe('native admission for Genspark provider requests', () => {
+describe('native admission for  provider requests', () => {
   it('GENOFFICE_NATIVE_WAF=0: no issuer call and the init passes through untouched', async () => {
     process.env.GENOFFICE_NATIVE_WAF = '0'
     const { fetcher } = recorder(() => issued(pass()))
@@ -197,7 +197,7 @@ describe('native admission for Genspark provider requests', () => {
     const headers = new Headers(business.init.headers)
     expect(headers.get('x-genspark-token-pass')).toBe(token)
     expect(headers.get('authorization')).toBe('Bearer gsk-live')
-    expect(headers.get('user-agent')).toBe('GenOffice')
+    expect(headers.get('user-agent')).toBe('UToOffice')
     expect(business.init.body).toBe('{"a":1}')
     expect(business.init.redirect).toBe('error')
   })

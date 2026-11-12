@@ -33,7 +33,7 @@ export interface DocToolDeps {
   /** expose the headless create_docx tool (generation without opening the UI);
    *  default true — the shell passes the user's "background generation" setting */
   background?: boolean
-  /** open a file in the GenOffice UI; wired in M4 (optional in tests) */
+  /** open a file in the UToOffice UI; wired in M4 (optional in tests) */
   openInTab?: (filePath: string) => Promise<void> | void
   /** visible-editor control for the MCP-driven document session (optional in tests) */
   docs?: DocsControl
@@ -268,7 +268,7 @@ function createConvertDocumentTool(deps: DocToolDeps): McpToolDefinition {
   return {
     name: 'convert_document',
     description:
-      'Convert a document to another format with the GenOffice engines and write the result to ' +
+      'Convert a document to another format with the UToOffice engines and write the result to ' +
       'disk without opening the app: pdf → docx/pptx/xlsx/md, legacy .doc/.ppt → modern Open ' +
       'XML, odt/ods/ots → xlsx/docx, hwp/hwpx → docx, md → docx/html, docx → md, xlsx → csv. ' +
       'An unsupported pair is refused with the list of targets the source format supports. ' +
@@ -409,7 +409,7 @@ export function createDocumentTools(deps: DocToolDeps, host: SessionHost): McpTo
     },
     {
       name: 'open_in_genoffice',
-      description: 'Open an existing file in the running GenOffice app, focusing its tab.',
+      description: 'Open an existing file in the running UToOffice app, focusing its tab.',
       inputSchema: {
         path: z.string().describe('absolute path to the file to open'),
       },
@@ -425,11 +425,11 @@ export function createDocumentTools(deps: DocToolDeps, host: SessionHost): McpTo
     {
       name: 'get_app_info',
       description:
-        'Report GenOffice version, the default save folder, the document formats this server can ' +
+        'Report UToOffice version, the default save folder, the document formats this server can ' +
         "generate, and the editor's full open/save/export format matrix per family.",
       inputSchema: {},
       handler: () => ({
-        name: 'GenOffice',
+        name: 'UToOffice',
         version: deps.version,
         defaultSaveDir: deps.defaultSaveDir(),
         // Every format listed here is written by a headless create/read tool, and

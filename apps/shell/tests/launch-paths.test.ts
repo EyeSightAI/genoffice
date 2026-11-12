@@ -6,7 +6,7 @@ describe('collectLaunchPaths', () => {
   it('collects supported argv files in order and removes duplicates', () => {
     expect(
       collectLaunchPaths(
-        ['GenOffice.exe', 'first.docx', 'notes.rtf', 'second.xlsx', 'first.docx'],
+        ['UToOffice.exe', 'first.docx', 'notes.rtf', 'second.xlsx', 'first.docx'],
         undefined,
         () => true,
       ),
@@ -15,20 +15,20 @@ describe('collectLaunchPaths', () => {
 
   it('accepts a .tsv from argv or the second-instance payload', () => {
     expect(
-      collectLaunchPaths(['GenOffice.app', '/data/variants.tsv'], undefined, () => true),
+      collectLaunchPaths(['UToOffice.app', '/data/variants.tsv'], undefined, () => true),
     ).toEqual(['/data/variants.tsv'])
   })
 
   it('accepts the legacy Word .doc/.dot documents in either case', () => {
     expect(
       collectLaunchPaths(
-        ['GenOffice.app', '/tmp/legacy.doc', '/tmp/TEMPLATE.DOT'],
+        ['UToOffice.app', '/tmp/legacy.doc', '/tmp/TEMPLATE.DOT'],
         undefined,
         () => true,
       ),
     ).toEqual(['/tmp/legacy.doc', '/tmp/TEMPLATE.DOT'])
     expect(
-      collectLaunchPaths(['GenOffice.exe'], { launchPaths: ['/tmp/letter.Doc'] }, () => true),
+      collectLaunchPaths(['UToOffice.exe'], { launchPaths: ['/tmp/letter.Doc'] }, () => true),
     ).toEqual(['/tmp/letter.Doc'])
   })
 
@@ -39,36 +39,36 @@ describe('collectLaunchPaths', () => {
    * a path and then thrown away before it ever reached the open route.
    */
   it('accepts the text app extensions from argv', () => {
-    expect(collectLaunchPaths(['GenOffice.app', '/notes.txt'], undefined, () => true)).toEqual([
+    expect(collectLaunchPaths(['UToOffice.app', '/notes.txt'], undefined, () => true)).toEqual([
       '/notes.txt',
     ])
-    expect(collectLaunchPaths(['GenOffice.app', '/data.json'], undefined, () => true)).toEqual([
+    expect(collectLaunchPaths(['UToOffice.app', '/data.json'], undefined, () => true)).toEqual([
       '/data.json',
     ])
-    expect(collectLaunchPaths(['GenOffice.app', '/NOTES.TXT'], undefined, () => true)).toEqual([
+    expect(collectLaunchPaths(['UToOffice.app', '/NOTES.TXT'], undefined, () => true)).toEqual([
       '/NOTES.TXT',
     ])
-    expect(collectLaunchPaths(['GenOffice.app', '/data.json.md'], undefined, () => true)).toEqual([
+    expect(collectLaunchPaths(['UToOffice.app', '/data.json.md'], undefined, () => true)).toEqual([
       '/data.json.md',
     ])
   })
 
   it('accepts the text app extensions from the second-instance payload', () => {
     expect(
-      collectLaunchPaths(['GenOffice.exe'], { launchPaths: ['/notes.txt'] }, () => true),
+      collectLaunchPaths(['UToOffice.exe'], { launchPaths: ['/notes.txt'] }, () => true),
     ).toEqual(['/notes.txt'])
   })
 
   it('still drops a path nothing opens', () => {
     // a file that exists but is not a document the shell can route
-    expect(collectLaunchPaths(['GenOffice.app', '/photo.png'], undefined, () => true)).toEqual([])
-    expect(collectLaunchPaths(['GenOffice.app', '/notes.txt'], undefined, () => false)).toEqual([])
+    expect(collectLaunchPaths(['UToOffice.app', '/photo.png'], undefined, () => true)).toEqual([])
+    expect(collectLaunchPaths(['UToOffice.app', '/notes.txt'], undefined, () => false)).toEqual([])
   })
 
   it('collects argv and second-instance payload files without duplicates', () => {
     expect(
       collectLaunchPaths(
-        ['GenOffice.exe', 'first.docx', 'second.pptx'],
+        ['UToOffice.exe', 'first.docx', 'second.pptx'],
         {
           launchPaths: ['first.docx', 'third.pdf', 42, ''],
           launchPath: 'legacy.md',
@@ -80,14 +80,14 @@ describe('collectLaunchPaths', () => {
 
   it('accepts a legacy launchPath payload', () => {
     expect(
-      collectLaunchPaths(['GenOffice.exe'], { launchPath: 'legacy.docx' }, () => true),
+      collectLaunchPaths(['UToOffice.exe'], { launchPath: 'legacy.docx' }, () => true),
     ).toEqual(['legacy.docx'])
   })
 
   it('falls back to the first existing unsupported argv file', () => {
     expect(
       collectLaunchPaths(
-        ['GenOffice.exe', 'missing.doc', 'legacy.rtf'],
+        ['UToOffice.exe', 'missing.doc', 'legacy.rtf'],
         undefined,
         (path) => path === 'legacy.rtf',
       ),
@@ -96,7 +96,7 @@ describe('collectLaunchPaths', () => {
     // docs route instead of the fallback
     expect(
       collectLaunchPaths(
-        ['GenOffice.exe', 'legacy.doc', 'unsupported.rtf'],
+        ['UToOffice.exe', 'legacy.doc', 'unsupported.rtf'],
         undefined,
         (path) => path === 'legacy.doc' || path === 'unsupported.rtf',
       ),
@@ -104,7 +104,7 @@ describe('collectLaunchPaths', () => {
     // .ppt converts through the slides route since the legacy importer landed
     expect(
       collectLaunchPaths(
-        ['GenOffice.exe', 'legacy.ppt', 'unsupported.rtf'],
+        ['UToOffice.exe', 'legacy.ppt', 'unsupported.rtf'],
         undefined,
         (path) => path === 'legacy.ppt' || path === 'unsupported.rtf',
       ),

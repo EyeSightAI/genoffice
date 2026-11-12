@@ -6,7 +6,7 @@ import { packagedResourcesDir } from './resources'
 
 /**
  * The cloud commands (search / image / media) reuse the editors' provider
- * routing: Genspark when signed in (~/.genoffice/auth.json) and cloud tools
+ * routing:  when signed in (~/.genoffice/auth.json) and cloud tools
  * are on, otherwise the BYOK provider chosen in the app's AI settings. That
  * settings file lives in the shell's Electron userData directory, which genoffice
  * has to locate without Electron.

@@ -85,7 +85,7 @@ export const sheetCommand: CommandDef = {
     {
       name: 'force',
       description:
-        'apply/links: overwrite an existing --out file, or write while GenOffice has the file open',
+        'apply/links: overwrite an existing --out file, or write while UToOffice has the file open',
     },
     {
       name: 'update',
@@ -225,7 +225,7 @@ async function links(
     )
   }
   // --break and --update write, so they honour --out/--force, the allowed
-  // write roots and the "open in GenOffice" guard like apply does
+  // write roots and the "open in UToOffice" guard like apply does
   const writeOutput = () =>
     resolveOutput(flagString(args, 'out'), ctx, {
       fallback: path,

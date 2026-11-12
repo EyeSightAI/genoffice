@@ -4,7 +4,7 @@
  * renders with font-kerning:none unless the document, style or run asks;
  * complex-script runs keep the face's features (Word shapes them in full)
  * (SAS batch 2: unkerned Calibri lines 0.7-1.9px over a cell width wrapped in
- * Word but not in GenOffice).
+ * Word but not in UToOffice).
  */
 import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'

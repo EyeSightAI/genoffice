@@ -581,7 +581,7 @@ describe('headless fill_template / read_docx_properties', () => {
   it('read_docx_properties returns the CLI-reported properties', async () => {
     cli.setDocProperties({
       core: { title: 'Report', author: 'Ada' },
-      app: { application: 'GenOffice' },
+      app: { application: 'UToOffice' },
       custom: { Department: 'Ops' },
     })
     const path = join(dir, 'report.docx')

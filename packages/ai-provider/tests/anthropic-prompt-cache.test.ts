@@ -64,7 +64,7 @@ describe('anthropic prompt-cache breakpoints', () => {
     ])
   })
 
-  it('marks requests to the Genspark proxy', async () => {
+  it('marks requests to the  proxy', async () => {
     const body = await requestBody(GENSPARK_LLM_BASE_URLS.anthropic)
     expect(JSON.stringify(body)).toContain('cache_control')
   })

@@ -10,9 +10,9 @@ import {
 } from '../src/mcp-launch'
 import { tempDir } from './helpers'
 
-const WIN_DIR = 'C:\\Users\\Jane Doe\\AppData\\Local\\Programs\\GenOffice\\resources\\cli'
+const WIN_DIR = 'C:\\Users\\Jane Doe\\AppData\\Local\\Programs\\UToOffice\\resources\\cli'
 const WIN_APP: McpLaunch = {
-  command: `${WIN_DIR}\\..\\..\\GenOffice.exe`,
+  command: `${WIN_DIR}\\..\\..\\UToOffice.exe`,
   args: [`${WIN_DIR}\\genoffice.cjs`, 'mcp'],
   env: { ELECTRON_RUN_AS_NODE: '1' },
 }
@@ -20,15 +20,15 @@ const WIN_APP: McpLaunch = {
 describe('mcp launch entry', () => {
   it('is the absolute launcher on macOS and Linux', () => {
     expect(
-      mcpLaunchFromLauncher('/Applications/GenOffice.app/Contents/Resources/cli/genoffice'),
+      mcpLaunchFromLauncher('/Applications/UToOffice.app/Contents/Resources/cli/genoffice'),
     ).toEqual({
-      command: '/Applications/GenOffice.app/Contents/Resources/cli/genoffice',
+      command: '/Applications/UToOffice.app/Contents/Resources/cli/genoffice',
       args: ['mcp'],
     })
   })
 
   it('uses the absolute launcher while the linked dir is still off the PATH (genoffice#1019)', () => {
-    const launcherDir = '/Applications/GenOffice.app/Contents/Resources/cli'
+    const launcherDir = '/Applications/UToOffice.app/Contents/Resources/cli'
     expect(mcpLaunch({ status: 'present', launcherDir })).toEqual({
       command: 'genoffice',
       args: ['mcp'],
@@ -43,7 +43,7 @@ describe('mcp launch entry', () => {
   })
 
   it('runs the packaged Windows app as Node on the bundle, exactly as the app snippet does', () => {
-    const exists = (p: string) => p === `${WIN_DIR}\\..\\..\\GenOffice.exe`
+    const exists = (p: string) => p === `${WIN_DIR}\\..\\..\\UToOffice.exe`
     const fromCli = mcpLaunchFromLauncher(`${WIN_DIR}\\genoffice.cmd`, { exists })
     expect(fromCli).toEqual(WIN_APP)
     expect(fromCli).toEqual(mcpLaunch({ status: 'missing', launcherDir: WIN_DIR }))
@@ -65,9 +65,9 @@ describe('mcp launch entry', () => {
   })
 
   it('recognises every launcher shape as ours', () => {
-    expect(isGenofficeLauncher('/opt/GenOffice/resources/cli/genoffice')).toBe(true)
-    expect(isGenofficeLauncher('C:\\GenOffice\\resources\\cli\\genoffice.cmd')).toBe(true)
-    expect(isGenofficeLauncher('C:\\Program Files\\GenOffice\\GenOffice.exe')).toBe(true)
+    expect(isGenofficeLauncher('/opt/UToOffice/resources/cli/genoffice')).toBe(true)
+    expect(isGenofficeLauncher('C:\\UToOffice\\resources\\cli\\genoffice.cmd')).toBe(true)
+    expect(isGenofficeLauncher('C:\\Program Files\\UToOffice\\UToOffice.exe')).toBe(true)
     expect(isGenofficeLauncher(WIN_APP.command, WIN_APP.args)).toBe(true)
     expect(
       isGenofficeLauncher('node', ['C:\\src\\packages\\cli\\dist\\genoffice.cjs', 'mcp']),
@@ -135,7 +135,7 @@ describe('mcp launch entry', () => {
       ELECTRON_RUN_AS_NODE: '1',
       GENOFFICE_MCP_COMPACT_SCHEMAS: '1',
     })
-    const exists = (p: string) => p === `${WIN_DIR}\\..\\..\\GenOffice.exe`
+    const exists = (p: string) => p === `${WIN_DIR}\\..\\..\\UToOffice.exe`
     expect(
       mcpLaunch({ status: 'present', launcherDir: WIN_DIR }, { compactSchemas: true }),
     ).toEqual(compact)
@@ -143,11 +143,11 @@ describe('mcp launch entry', () => {
       mcpLaunchFromLauncher(`${WIN_DIR}\\genoffice.cmd`, { exists, compactSchemas: true }),
     ).toEqual(compact)
     expect(
-      mcpLaunchFromLauncher('/Applications/GenOffice.app/Contents/Resources/cli/genoffice', {
+      mcpLaunchFromLauncher('/Applications/UToOffice.app/Contents/Resources/cli/genoffice', {
         compactSchemas: true,
       }),
     ).toEqual({
-      command: '/Applications/GenOffice.app/Contents/Resources/cli/genoffice',
+      command: '/Applications/UToOffice.app/Contents/Resources/cli/genoffice',
       args: ['mcp'],
       env: { GENOFFICE_MCP_COMPACT_SCHEMAS: '1' },
     })
@@ -183,11 +183,11 @@ describe('mcp launch entry', () => {
     })
   })
 
-  it('treats the app snippet entry (GenOffice.exe on genoffice.cjs) as ours, not occupied', () => {
+  it('treats the app snippet entry (UToOffice.exe on genoffice.cjs) as ours, not occupied', () => {
     const home = tempDir()
     const file = join(home, 'mcp.json')
     writeFileSync(file, JSON.stringify({ mcpServers: { genoffice: WIN_APP } }))
-    const posix = { command: '/opt/GenOffice/resources/cli/genoffice', args: ['mcp'] }
+    const posix = { command: '/opt/UToOffice/resources/cli/genoffice', args: ['mcp'] }
     expect(readMcpEntry('cursor', file, posix)).toEqual({
       status: 'stale',
       command: WIN_APP.command,

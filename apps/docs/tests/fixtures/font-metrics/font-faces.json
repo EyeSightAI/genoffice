@@ -3155,10 +3155,10 @@
       "unicode-range": "U+2500-257F"
     }
   ],
-  "GenOffice Che Latin KR": [
+  "UToOffice Che Latin KR": [
     {
       "font-display": "block",
-      "font-family": "'GenOffice Che Latin KR'",
+      "font-family": "'UToOffice Che Latin KR'",
       "font-style": "normal",
       "font-weight": "normal",
       "src": "url('./GenOfficeCheLatinKR.woff2') format('woff2')",

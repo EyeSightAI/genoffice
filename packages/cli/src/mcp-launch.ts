@@ -46,7 +46,7 @@ function compact(launch: McpLaunch, opts: { compactSchemas?: boolean }): McpLaun
 
 function windowsAppLaunch(dir: string): McpLaunch {
   return {
-    command: `${dir}\\..\\..\\GenOffice.exe`,
+    command: `${dir}\\..\\..\\UToOffice.exe`,
     args: [`${dir}\\genoffice.cjs`, 'mcp'],
     env: { ELECTRON_RUN_AS_NODE: '1' },
   }
@@ -63,7 +63,7 @@ export interface LauncherLaunchOptions {
 /**
  * `mcp install`: always the absolute launcher, never the bare name. On Windows
  * the packaged app is run as Node (same entry as the app's snippet); a checkout
- * has no GenOffice.exe beside it and runs the bundle on the system node, as the
+ * has no UToOffice.exe beside it and runs the bundle on the system node, as the
  * bin/genoffice script does.
  */
 export function mcpLaunchFromLauncher(
@@ -75,7 +75,7 @@ export function mcpLaunchFromLauncher(
   const sep = isWindowsPath(launcher) ? '\\' : '/'
   const dir = launcher.slice(0, Math.max(launcher.lastIndexOf('\\'), launcher.lastIndexOf('/')))
   const exists = opts.exists ?? (() => false)
-  if (exists(`${dir}${sep}..${sep}..${sep}GenOffice.exe`))
+  if (exists(`${dir}${sep}..${sep}..${sep}UToOffice.exe`))
     return compact(windowsAppLaunch(dir), opts)
   const bundle = exists(`${dir}${sep}genoffice.cjs`)
     ? `${dir}${sep}genoffice.cjs`

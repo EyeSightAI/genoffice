@@ -59,7 +59,7 @@ describe('provider registry', () => {
       protocol: 'openai-compatible',
       baseUrl: 'https://api.deepseek.com/v1',
     })
-    // a config still carrying the Genspark pool spelling goes out as the vendor id
+    // a config still carrying the  pool spelling goes out as the vendor id
     expect(AI_PROVIDER_ADAPTERS.deepseek.resolveEndpoint(config('deep-seek-v4.1-flash'))).toEqual({
       protocol: 'openai-compatible',
       baseUrl: 'https://api.deepseek.com/v1',

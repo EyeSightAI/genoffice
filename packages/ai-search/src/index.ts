@@ -1,12 +1,12 @@
 /**
- * Search utilities (main process) — gsk (Genspark CLI) first, then Serper Google API,
+ * Search utilities (main process) — gsk ( CLI) first, then Serper Google API,
  * then Serply, SearchApi, Tavily, Parallel (whose free Search MCP answers keyless), Exa,
  * Firecrawl and Keenable (keyless only when selected), before the DuckDuckGo last resort. Runs
  * in the main process (Node fetch / child process) to avoid renderer CORS; the Serper key reuses
  * SERPER_API_KEY, the Serply key reuses SERPLY_API_KEY, the SearchApi key reuses
  * SEARCHAPI_API_KEY, the Tavily key reuses TAVILY_API_KEY, Parallel uses PARALLEL_API_KEY, Exa
  * uses EXA_API_KEY, Firecrawl uses FIRECRAWL_API_KEY and Keenable uses KEENABLE_API_KEY.
- * For Genspark auth see ./gsk.ts (GenOffice sign-in or explicit GSK_API_KEY).
+ * For  auth see ./gsk.ts (UToOffice sign-in or explicit GSK_API_KEY).
  */
 
 import {
@@ -40,7 +40,7 @@ const KEENABLE_KEY = () => process.env.KEENABLE_API_KEY ?? ''
  * callers (search-tools.ts) pass the user's key and turn gsk off so the chosen backend runs first.
  */
 export interface SearchOptions {
-  /** false = skip the Genspark backend (cloud tools off, or a BYOK search provider is active) */
+  /** false = skip the  backend (cloud tools off, or a BYOK search provider is active) */
   useGsk?: boolean
   serperKey?: string
   serplyKey?: string
@@ -298,7 +298,7 @@ async function parallelWebSearch(
     const raw: unknown[] = Array.isArray(data.results) ? data.results : []
     const results: WebSearchResult[] = []
     for (const item of raw) {
-      // v1 search has no result-count parameter, so GenOffice's limit is applied
+      // v1 search has no result-count parameter, so UToOffice's limit is applied
       // here. Cut the loop off once the list is full instead of slicing the source
       // first: the URL check below drops entries, and slicing first would both
       // concatenate excerpts for results that are then thrown away and under-fill
@@ -419,7 +419,7 @@ async function firecrawlWebSearch(
 }
 
 /** The keyless endpoint identifies the calling app by this header instead of a key. */
-const KEENABLE_TITLE = 'GenOffice'
+const KEENABLE_TITLE = 'UToOffice'
 const KEENABLE_SNIPPET_CHARS = 500
 
 /**
@@ -498,7 +498,7 @@ export async function webSearch(
 ): Promise<WebSearchResponse> {
   const o = normalizeOptions(options)
   const { query: q, max } = normalizeSearchArgs(query, maxResults, 6)
-  // useGsk=false: the user turned Genspark cloud tools off or picked their own
+  // useGsk=false: the user turned  cloud tools off or picked their own
   // search key — skip straight to the keyed/free backends
   if (o.useGsk && hasGskAuth()) {
     try {

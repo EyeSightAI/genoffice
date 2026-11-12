@@ -121,12 +121,12 @@ describe('the dsh Cordis patch shape', () => {
 
   it('doubles a single quote in a scalar and rewrites Windows paths in the args too', () => {
     const snippet = mcpSnippet('dsh', {
-      command: 'C:\\Program Files\\GenOffice\\genoffice.exe',
-      args: ['C:\\Program Files\\GenOffice\\genoffice.cjs', "it's"],
+      command: 'C:\\Program Files\\UToOffice\\genoffice.exe',
+      args: ['C:\\Program Files\\UToOffice\\genoffice.cjs', "it's"],
       env: undefined,
     })
-    expect(snippet).toContain('command: C:/Program Files/GenOffice/genoffice.exe')
-    expect(snippet).toContain("args: ['C:/Program Files/GenOffice/genoffice.cjs', 'it''s']")
+    expect(snippet).toContain('command: C:/Program Files/UToOffice/genoffice.exe')
+    expect(snippet).toContain("args: ['C:/Program Files/UToOffice/genoffice.cjs', 'it''s']")
   })
 
   it('leaves the rest of the patch byte for byte', () => {

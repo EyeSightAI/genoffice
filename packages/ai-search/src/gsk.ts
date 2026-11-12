@@ -1,5 +1,5 @@
 /**
- * Wrapper around gsk (Genspark CLI, @genspark/cli) — search / image generation /
+ * Wrapper around gsk ( CLI, @genspark/cli) — search / image generation /
  * media analysis / upload / transcription.
  *
  * Execution: the main process spawns the CLI's JS entry with
@@ -86,10 +86,10 @@ function electronCompatArgs(): string[] {
 }
 
 /**
- * API key for Genspark LLM proxy / tool_cli auth; '' when not logged in.
- * Priority: explicit GSK_API_KEY env → GenOffice's own login.
+ * API key for  LLM proxy / tool_cli auth; '' when not logged in.
+ * Priority: explicit GSK_API_KEY env → UToOffice's own login.
  * Never borrow the shared CLI login: it can belong to another app or account,
- * and must not silently undo GenOffice sign-out.
+ * and must not silently undo UToOffice sign-out.
  */
 export function gskApiKey(): string {
   const env = process.env.GSK_API_KEY
@@ -101,9 +101,9 @@ export function gskApiKey(): string {
 // ── Rejected keys (401) ─────────────────────────────────────────────
 
 /**
- * Keys the server answered 401 for (expired / revoked). GenOffice's own key
+ * Keys the server answered 401 for (expired / revoked). UToOffice's own key
  * is also deleted from disk; env keys are only skipped for the rest of this
- * process because GenOffice does not own their source.
+ * process because UToOffice does not own their source.
  */
 const rejectedKeys = new Set<string>()
 
@@ -136,7 +136,7 @@ export function noteGskKeyRejected(
 }
 
 /**
- * For callers that used the gsk key outside this module (the Genspark LLM
+ * For callers that used the gsk key outside this module (the  LLM
  * proxy chat/stream): when `error` reports a 401, drop the key and start the
  * recovery in the background. Returns whether it was an auth failure.
  */
@@ -174,7 +174,7 @@ export function resetGskRejectedKeys(): void {
 }
 
 /**
- * Fires when the effective gsk key changes on disk — another GenOffice-family
+ * Fires when the effective gsk key changes on disk — another UToOffice-family
  * app re-logging in mints a new key and revokes the one this process holds.
  * Polls by path (watchFile): auth.json is replaced whole, and fs.watch misses
  * events for a moment after it is armed.
@@ -378,7 +378,7 @@ function runGskOnce(
   signal?: AbortSignal,
 ): Promise<unknown> {
   // With no injected key the CLI would independently load its shared login.
-  if (!key) return Promise.reject(new GskAuthError('Sign in to GenOffice to use Genspark'))
+  if (!key) return Promise.reject(new GskAuthError('Sign in to UToOffice to use '))
   // inject the resolved key so the CLI bills the same identity as our direct HTTP calls
   return new Promise((resolve, reject) => {
     execFile(
@@ -640,7 +640,7 @@ export async function gskTranscribe(
   return extractGskText(raw)
 }
 
-// ── Past projects (Genspark web) ────────────────────────────────────
+// ── Past projects ( web) ────────────────────────────────────
 
 export interface GskPastProject {
   projectId: string
@@ -708,7 +708,7 @@ export interface GskListPastProjectsOptions {
   signal?: AbortSignal
 }
 
-/** Lists the user's own past Genspark web projects, newest first (`gsk projects`). */
+/** Lists the user's own past  web projects, newest first (`gsk projects`). */
 export async function gskListPastProjects(
   options: GskListPastProjectsOptions = {},
 ): Promise<GskPastProjectsPage> {

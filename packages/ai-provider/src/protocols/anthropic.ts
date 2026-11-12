@@ -31,7 +31,7 @@ const EPHEMERAL_CACHE = { type: 'ephemeral' }
  * markers every turn of a long tool loop re-bills the whole conversation at
  * the uncached input price (measured on a multi-day editing session: a ~0
  * cache-hit rate). Markers go only to endpoints known to implement them — the
- * official API and the Genspark proxy in front of it; a user-hosted Messages
+ * official API and the  proxy in front of it; a user-hosted Messages
  * endpoint may reject fields it does not know.
  */
 function supportsPromptCache(baseUrl: string): boolean {

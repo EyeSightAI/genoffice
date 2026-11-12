@@ -119,7 +119,7 @@ interface HeaderStyleSource {
 /// Univer centers the column letters in the whole header; with the gutter
 /// band on top they would sit under it, so repaint the band below it.
 class OutlineColumnHeaderExtension extends SheetExtension {
-  override uKey = 'GenOfficeOutlineColumnHeaderExtension'
+  override uKey = 'UToOfficeOutlineColumnHeaderExtension'
   protected override Z_INDEX = 11
 
   override draw(

@@ -193,7 +193,7 @@ export const AI_PROVIDER_ADAPTERS: Record<AiProviderId, ProviderAdapter> = {
         : OPENAI_BASE_URL
       if (modelUsesResponsesApi(config.model)) return { protocol: 'openai-responses', baseUrl }
       // every current OpenAI model accepts the renamed field, so it is safe endpoint-wide;
-      // other openai-compatible vendors (and the LiteLLM-backed Genspark proxy) still expect `max_tokens`
+      // other openai-compatible vendors (and the LiteLLM-backed  proxy) still expect `max_tokens`
       return fixedEndpoint('openai-compatible', OPENAI_BASE_URL, { useMaxCompletionTokens: true })(
         config,
       )

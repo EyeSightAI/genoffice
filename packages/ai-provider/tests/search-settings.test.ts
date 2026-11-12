@@ -252,7 +252,7 @@ describe('Keenable search settings', () => {
     expect(activeSearchProvider({ search: settings })).toBe('keenable')
   })
 
-  it('leaves the default provider on Genspark', () => {
+  it('leaves the default provider on ', () => {
     expect(defaultAiSearchSettings().provider).toBe('genspark')
     expect(activeSearchProvider({ search: defaultAiSearchSettings() })).toBe('genspark')
   })

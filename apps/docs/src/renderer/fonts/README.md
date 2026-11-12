@@ -83,7 +83,7 @@ chain order; advances are 1.0em everywhere, so line breaking is unchanged.
 | ------------------------------------ | ----------------------------------------------------------- |
 | GenOffice Serif KR (subset woff2)    | Batang-metric stand-in for Korean serif families            |
 | GenOffice Sans KR (subset woff2)     | fallback for Korean sans families (Malgun etc.)             |
-| GenOffice Che Latin KR (ASCII woff2) | half-width Latin for BatangChe/GulimChe/DotumChe/GungsuhChe |
+| UToOffice Che Latin KR (ASCII woff2) | half-width Latin for BatangChe/GulimChe/DotumChe/GungsuhChe |
 
 Source: Noto Serif/Sans CJK KR Regular from [notofonts/noto-cjk](https://github.com/notofonts/noto-cjk)
 (SIL OFL 1.1), subset with fonttools to the 2,350 KS X 1001 syllables + jamo
@@ -136,11 +136,11 @@ Reserved Font Names include "Nanum" and "NanumGothic"; subsetting is a
 modification). The exact NHN copyright/Reserved Font Name notice and the full
 OFL 1.1 text are in `LICENSE-OFL.txt`.
 
-### GenOffice UI Kana JP
+### UToOffice UI Kana JP
 
 | Font                                      | Role                                                |
 | ----------------------------------------- | --------------------------------------------------- |
-| GenOffice UI Kana JP (Regular/Bold woff2) | Meiryo UI-advance kana/JP punctuation for the alias |
+| UToOffice UI Kana JP (Regular/Bold woff2) | Meiryo UI-advance kana/JP punctuation for the alias |
 
 Source: Noto Sans JP variable font from [notofonts/noto-cjk](https://github.com/notofonts/noto-cjk)
 (SIL OFL 1.1), instanced at wght 400/700. Word for Mac renders Meiryo UI with
@@ -169,7 +169,7 @@ with the PDF embedding Poppins-Regular/Bold), while the Helvetica-class
 fallback runs ~12.6% narrower per line and 1.172-spaced — a 13-page document
 paginated as 11. Subset to Latin + Latin Extended + punctuation/currency,
 advances and vertical metrics **unmodified** (`tools/build-poppins-font.py`),
-checked in as `GenOfficePoppins-{Regular,Bold}-subset.woff2`. Renamed (no
+checked in as `UToOfficePoppins-{Regular,Bold}-subset.woff2`. Renamed (no
 Reserved Font Name upstream) so a locally installed Poppins wins by chain
 order. Italic synthesizes oblique from these faces.
 
@@ -188,7 +188,7 @@ whose hmtx equals the 1.200 statics glyph for glyph (hhea = typo = win =
 fallback runs ~7% narrower per line and 1.15-spaced. Subset to Latin + Latin
 Extended + punctuation/currency, advances and vertical metrics **unmodified**
 (`tools/build-dm-sans-font.py`), checked in as
-`GenOfficeDMSans-{Regular,Bold}-subset.woff2`. Renamed (no Reserved Font Name
+`UToOfficeDMSans-{Regular,Bold}-subset.woff2`. Renamed (no Reserved Font Name
 of its own upstream) so a locally installed DM Sans wins by chain order.
 Italic synthesizes oblique from these faces.
 
@@ -295,7 +295,7 @@ Every bundled face carries TrueType (glyf) outlines. Chromium's PDF backend
 one lands in the exported PDF as a Type3 path procedure instead of an embedded
 font (no font name in the viewer, unreliable text selection and search).
 Noto Sans/Serif CJK SC and the three Noto-derived KR faces (GenOffice Sans KR,
-GenOffice Serif KR, GenOffice Che Latin KR) come from CFF sources, so the last
+GenOffice Serif KR, UToOffice Che Latin KR) come from CFF sources, so the last
 build step for them is `tools/convert-cff-to-glyf.py`: cu2qu at 1 font unit,
 glyph order, cmap, advances, OS/2, hhea/vhea, name and layout tables carried
 over byte for byte (the script asserts it), VORG dropped with each vertical

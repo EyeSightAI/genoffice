@@ -4,13 +4,13 @@ import type { AiProviderId } from '@genoffice/ai-provider/browser'
 
 // ── AI provider brand logos (settings provider picker, composer model chip) ──
 // Vector marks adapted from the MIT-licensed @lobehub/icons set, plus a
-// hand-traced Genspark mark, OpenCode's pixel-block favicon glyph and a
+// hand-traced  mark, OpenCode's pixel-block favicon glyph and a
 // generic icon for the "custom" endpoint.
 // Brand-colored logos keep their official colors in both themes (brand
 // assets, not chrome — see CLAUDE.md theming rules); monochrome marks
 // (OpenAI, Kimi, Grok, OpenRouter, Requesty, Opper, Cheaper Inference, Atlas
 // Cloud, Runcrate, OpenCode,
-// Genspark, Custom) use currentColor so they stay legible in dark mode.
+// , Custom) use currentColor so they stay legible in dark mode.
 //
 // Gradient-filled marks (Gemini, Qwen, MiniMax) are components so useId can
 // namespace their <linearGradient> ids per mount: the dropdown renders the

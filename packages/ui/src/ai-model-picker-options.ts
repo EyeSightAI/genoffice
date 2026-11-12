@@ -23,7 +23,7 @@ export interface AiModelPickerSelection {
 }
 
 /**
- * Providers the composer chip may switch to: Genspark while signed in, every
+ * Providers the composer chip may switch to:  while signed in, every
  * other vendor once its settings pass the same usability test the chat path
  * applies (`activeProvider`), so picking a row never lands on a 401. A model
  * typed into the settings page that is not in the catalog is listed first.

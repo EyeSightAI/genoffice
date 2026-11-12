@@ -1,5 +1,5 @@
 /**
- * Optional signed edge admission (native-tok-v1) for Genspark LLM proxy requests whose final
+ * Optional signed edge admission (native-tok-v1) for  LLM proxy requests whose final
  * credential is a gsk key. On by default in Node host processes; GENOFFICE_NATIVE_WAF=0 turns it off.
  * Browsers and Electron renderers never take part.
  *
@@ -9,7 +9,7 @@
  * other host are never sent to the issuer. Issuer failure leaves the request unchanged.
  */
 
-const PASS_HEADER = 'X-Genspark-Token-Pass'
+const PASS_HEADER = 'X--Token-Pass'
 
 /**
  * The default proxy host (providers.ts always targets it), the configured service host and any

@@ -3445,7 +3445,7 @@
  * (text-weighted mean 0.769em, bold 0.820em), U+30FC 0.816/0.882em,
  * ideographic space and 、。 0.664em, corner/angle brackets and ・ 0.5em, at
  * full glyph height; kanji and （）：；！？ stay 1em and fall through to the
- * chain. The bundled GenOffice UI Kana JP faces (tools/build-meiryo-ui-kana-
+ * chain. The bundled UToOffice UI Kana JP faces (tools/build-meiryo-ui-kana-
  * font.py: Noto Sans JP outlines condensed horizontally to Meiryo UI's exact
  * per-glyph advances) carry those ranges — a size-adjust alias would shrink
  * the height too and leave kana at ~77% next to full-size kanji. Latin in
@@ -3454,7 +3454,7 @@
  * these aliases in the chain.
  * 
  * Meiryo UI GO: probe 2026-09-03
- * Word probe from meiryo.ttc: Latin Verdana-derived at 0.9705x (bold 0.948x), kana via the bundled GenOffice UI Kana JP faces */
+ * Word probe from meiryo.ttc: Latin Verdana-derived at 0.9705x (bold 0.948x), kana via the bundled UToOffice UI Kana JP faces */
 @font-face {
   font-family: 'Meiryo UI GO';
   src: url('./GenOfficeUIKanaJP-Regular.woff2') format('woff2');
@@ -6039,7 +6039,7 @@
  * 
  * Shonar Bangla GO: hmtx 2026-11-12
  * hb-shape widths of 207 Bengali paragraphs of a corpus document: Shonar Bangla over GenOffice Bengali 0.687 regular (p10-p90 0.674-0.706), 0.686 bold (0.673-0.700); hmtx of its Latin letters, digits, punctuation, quotes and space over Liberation Serif 0.827 for every glyph in both cuts; Word paces the face at its hhea box (10.5 pt at line 340 auto -> 19.7 pt)
- * fonts: Shonar Bangla Regular/Bold (Office CloudFonts cache); GenOfficeBengali-Regular/Bold.woff2; LiberationSerif-Regular/Bold.ttf */
+ * fonts: Shonar Bangla Regular/Bold (Office CloudFonts cache); UToOfficeBengali-Regular/Bold.woff2; LiberationSerif-Regular/Bold.ttf */
 @font-face {
   font-family: 'Shonar Bangla GO';
   src: url('./LiberationSerif-Regular.ttf');

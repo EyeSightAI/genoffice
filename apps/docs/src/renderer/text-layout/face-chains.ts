@@ -53,7 +53,7 @@ export const KO_SERIF = [
   'GenOffice Myungjo',
   'Noto Serif KR',
 ]
-// 'GenOffice *' entries are CJK-only local() aliases (fonts.css): the underlying
+// 'UToOffice *' entries are CJK-only local() aliases (fonts.css): the underlying
 // system faces draw Cyrillic/Greek fullwidth, so those scripts must pass through
 const TC_SANS = ['Microsoft JhengHei', 'PingFang TC', 'GenOffice Heiti TC', 'Noto Sans TC']
 // 'GenOffice Fullwidth TC' (fonts.css): fullwidth U+FF0D/FF0F/FF3C/FF3F/FF5E whose Songti TC glyphs look half-width
@@ -426,7 +426,7 @@ export const FACE_CHAIN_RULES: ChainRule[] = [
         const cheSerif = cheGungsuh || /batang|바탕/i.test(nfkc)
         return [
           [
-            'GenOffice Che Latin KR',
+            'UToOffice Che Latin KR',
             ...(cheGungsuh ? ['GungSeo'] : []),
             ...(cheSerif ? KO_SERIF : KO_SANS),
           ],

@@ -58,7 +58,7 @@ const fontCdnUrl = normalizeHttpsBaseUrl(
 // arm64. Off by default: Intel packages must only ever ship signed with the
 // company certificate (planned dual-track pipeline), so the current release
 // pipeline stays arm64-only and never produces a personally-signed Intel
-// artifact. The downstream layout (feed archive name, GenOffice-intel.dmg
+// artifact. The downstream layout (feed archive name, UToOffice-intel.dmg
 // alias) keys off which dmgs exist, so flipping this flag is the single
 // switch.
 const includeMacX64 = process.env.GENOFFICE_MAC_X64 === '1'
@@ -72,7 +72,7 @@ const includeMacX64 = process.env.GENOFFICE_MAC_X64 === '1'
 const winArm64 = process.env.GENOFFICE_WIN_ARM64 === '1'
 // 7-Zip packs ARM64 executables with its ARM64 branch filter, which the NSIS
 // install-time extractor (Nsis7z) cannot decode: it silently skips
-// GenOffice.exe and every dll (electron-builder#9983). BCJ it can decode.
+// UToOffice.exe and every dll (electron-builder#9983). BCJ it can decode.
 if (winArm64 && !process.env.ELECTRON_BUILDER_7Z_FILTER) {
   process.env.ELECTRON_BUILDER_7Z_FILTER = 'BCJ'
 }
@@ -372,7 +372,7 @@ function ensureThirdPartyNotices() {
 // NSIS makes every declared ProgId the extension's default opener; for the
 // office types that is the point, for plain text/JSON and the legacy Word
 // 97-2003 .doc/.dot it would hijack the system editor, so Windows leaves those
-// out (mac/Linux still declare them for Open With). GenOffice opens .doc/.dot
+// out (mac/Linux still declare them for Open With). UToOffice opens .doc/.dot
 // through its own Open dialog on every platform.
 const WIN_OPEN_WITH_ONLY_EXTS = new Set(['txt', 'json', 'doc', 'dot', 'ppt'])
 const FILE_ASSOCIATIONS = [
@@ -385,7 +385,7 @@ const FILE_ASSOCIATIONS = [
     mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   },
   {
-    // import-only: opens as a converted .docx copy, GenOffice never writes .doc
+    // import-only: opens as a converted .docx copy, UToOffice never writes .doc
     ext: 'doc',
     name: 'Word 97-2003 Document',
     role: 'Editor',
@@ -424,7 +424,7 @@ const FILE_ASSOCIATIONS = [
     mimeType: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
   },
   {
-    // import-only: opens as a converted .pptx copy, GenOffice never writes .ppt
+    // import-only: opens as a converted .pptx copy, UToOffice never writes .ppt
     ext: 'ppt',
     name: 'PowerPoint 97-2003 Presentation',
     role: 'Editor',
@@ -454,7 +454,7 @@ const FILE_ASSOCIATIONS = [
     mimeType: 'text/tab-separated-values',
   },
   {
-    // import-only: opens as a converted .xlsx copy, GenOffice never writes ODF
+    // import-only: opens as a converted .xlsx copy, UToOffice never writes ODF
     ext: 'ods',
     name: 'OpenDocument Spreadsheet',
     role: 'Editor',
@@ -469,7 +469,7 @@ const FILE_ASSOCIATIONS = [
     mimeType: 'application/vnd.oasis.opendocument.spreadsheet-template',
   },
   {
-    // import-only: opens as a converted .docx copy, GenOffice never writes ODF
+    // import-only: opens as a converted .docx copy, UToOffice never writes ODF
     ext: 'odt',
     name: 'OpenDocument Text',
     role: 'Editor',
@@ -484,7 +484,7 @@ const FILE_ASSOCIATIONS = [
     mimeType: 'application/vnd.oasis.opendocument.text-template',
   },
   {
-    // import-only: opens as a converted .docx copy, GenOffice never writes HWPX
+    // import-only: opens as a converted .docx copy, UToOffice never writes HWPX
     ext: 'hwpx',
     name: 'Hancom HWPX Document',
     role: 'Editor',
@@ -500,7 +500,7 @@ const FILE_ASSOCIATIONS = [
     mimeType: 'application/x-hwp',
   },
   {
-    // import-only: opens as a converted .pptx copy, GenOffice never writes ODF
+    // import-only: opens as a converted .pptx copy, UToOffice never writes ODF
     ext: 'odp',
     name: 'OpenDocument Presentation',
     role: 'Editor',
@@ -569,7 +569,7 @@ const FILE_ASSOCIATIONS = [
 
 const config = {
   appId: 'com.genoffice.app',
-  productName: 'GenOffice',
+  productName: 'UToOffice',
   // Resolved from the installed electron package so dependency bumps can
   // never leave a stale hard-coded pin behind (packaging would silently ship
   // the old runtime).
@@ -694,7 +694,7 @@ const config = {
   // build/ as <icon>.icns for the mac CFBundleDocumentTypes entry and
   // <icon>.ico for the NSIS DefaultIcon registry value. Without it both
   // platforms fall back to the app icon, so every associated file shows the
-  // bare GenOffice logo instead of a per-type document icon. The icns/ico
+  // bare UToOffice logo instead of a per-type document icon. The icns/ico
   // pairs are generated from the shell renderer's file-type tiles by
   // tools/gen-file-association-icons.mjs.
   fileAssociations: FILE_ASSOCIATIONS,
@@ -703,8 +703,8 @@ const config = {
     // Two separate arch packages (NOT universal): arm64 keeps the exact
     // artifact names and update-feed entries it always had, x64 (opt-in via
     // GENOFFICE_MAC_X64=1, see includeMacX64 above) adds Intel support with
-    // electron-builder's default arch-less names (GenOffice-<v>.dmg /
-    // GenOffice-<v>-mac.zip). Both zips land in one latest-mac.yml and
+    // electron-builder's default arch-less names (UToOffice-<v>.dmg /
+    // UToOffice-<v>-mac.zip). Both zips land in one latest-mac.yml and
     // electron-updater picks by process.arch. Dual-arch packs ship the same
     // lipo fat xlsx-sidecar (see assertUniversalSidecar above).
     target: [
@@ -720,7 +720,7 @@ const config = {
     // audio-input entitlement, and macOS asks for it with this text
     extendInfo: {
       NSMicrophoneUsageDescription:
-        'GenOffice records your narration when you record a slide show.',
+        'UToOffice records your narration when you record a slide show.',
     },
     notarize: true,
     extraResources: [
@@ -763,7 +763,7 @@ const config = {
     // AppImage (self-contained, any distro) + deb (apt install, pulls in the
     // GTK/NSS runtime deps) + rpm (dnf/zypper install on Fedora / RHEL /
     // openSUSE). Default artifact names are kept on purpose —
-    // GenOffice-<v>.AppImage / genoffice_<v>_amd64.deb — because the public
+    // UToOffice-<v>.AppImage / genoffice_<v>_amd64.deb — because the public
     // README download links and the already-published linux-v0.5.149 release
     // use them. The arm64 targets reuse the ${arch}-templated deb/rpm names
     // (genoffice_<v>_arm64.deb).
@@ -795,7 +795,7 @@ const config = {
     // Electron takes its X11 app_id from package.json "desktopName"
     // (genoffice.desktop); syncDesktopName makes electron-builder name the
     // .desktop file and its StartupWMClass from the same value. Without it
-    // StartupWMClass falls back to productName ("GenOffice"), which does not
+    // StartupWMClass falls back to productName ("UToOffice"), which does not
     // match the "genoffice" WM_CLASS the window actually reports — and X11
     // compares case-sensitively, so the taskbar shows an unlinked window.
     syncDesktopName: true,
@@ -823,7 +823,7 @@ const config = {
   // packageName pins the control Package field to the same value the 0.5.149
   // deb shipped with — apt treats a different Package name as an unrelated
   // install, breaking upgrades. Without it, fpm receives productName
-  // "GenOffice" and only happens to downcase it to the right value.
+  // "UToOffice" and only happens to downcase it to the right value.
   deb: {
     artifactName: 'genoffice_${version}_${arch}.deb',
     packageName: 'genoffice',
@@ -906,7 +906,7 @@ const config = {
 // signed. When CI exports GENOFFICE_WIN_SIGN_MODE ("test" = alpha
 // self-signed PFX, "production" = DigiCert KeyLocker — the two modes of
 // scripts/win-sign.cjs, whose env-var contract applies here too), every
-// binary electron-builder signs for win (GenOffice.exe, the NSIS
+// binary electron-builder signs for win (UToOffice.exe, the NSIS
 // uninstaller, and the installer) goes through that script. The static
 // extraResources binaries (xlsx-sidecar.exe, win-ocr.exe) are signed by the
 // workflow before packaging since electron-builder does not sign
