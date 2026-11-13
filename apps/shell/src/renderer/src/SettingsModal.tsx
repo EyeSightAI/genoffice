@@ -686,7 +686,7 @@ function AiModelPane({ t }: { t: TFunc }) {
         />
       </div>
       <div className="set-field-desc set-ai-note">
-        {is ? t('setAiGensparkHint') : isCodex ? t('setAiCodexHint') : t('setAiByokNote')}
+        {is ? t('setAiHint') : isCodex ? t('setAiCodexHint') : t('setAiByokNote')}
       </div>
       {meta?.needsBaseUrl && (
         <>
@@ -1560,7 +1560,7 @@ function AiMediaPane({
         {subhead(cap, title)}
         {providerRow(title, id, options, pick)}
         <div className="set-field-desc set-ai-note">
-          {id === 'genspark' ? t('setAiMediaGensparkHint') : meta.description}
+          {id === 'genspark' ? t('setAiMediaHint') : meta.description}
         </div>
         {id !== 'genspark' && (
           <>
@@ -1609,7 +1609,7 @@ function AiMediaPane({
         )}
         <div className="set-field-desc set-ai-note">
           {search.provider === 'genspark'
-            ? t('setAiSearchGensparkHint')
+            ? t('setAiSearchHint')
             : search.provider === 'parallel'
               ? t('setAiSearchParallelHint')
               : search.provider === 'keenable'
@@ -2038,7 +2038,7 @@ export function SettingsModal({
                     />
                   </>
                 ) : (
-                  <Field label="会员到期" value={t('setNotLoggedIn')} />
+                  <Field label={t('setMemberExpire')} value={t('setNotLoggedIn')} />
                 )}
                 <div className="set-pane-footer">
                   {loggedIn ? (

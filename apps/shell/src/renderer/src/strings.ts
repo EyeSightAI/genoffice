@@ -166,9 +166,8 @@ export const strings = {
     // Account
     account: '账号',
     login: '登录',
-    loginGenspark: '登录  账号',
+    loginScanTip: '请用微信扫码登录',
     loggedIn: '已登录',
-    loggedInGenspark: '已登录 ',
     waitingLogin: '等待浏览器登录…点击可重新拉起登录页',
     waitingShort: '等待登录…',
     loginTimeout: '登录超时,点击重试',
@@ -392,7 +391,7 @@ export const strings = {
     setAiEndpointAdd: '添加端点',
     setAiEndpointRemove: '删除',
     setAiEndpointName: '名称',
-    setAiGensparkHint: '使用  账号登录，无需 API key。',
+    setAiHint: '使用  账号登录，无需 API key。',
     setAiCodexPath: 'Codex 可执行文件',
     setAiCodexPathHint: '仅自定义安装时填写；留空会自动检测。',
     setAiCodexAutoPlaceholder: '留空自动检测（推荐）',
@@ -410,8 +409,8 @@ export const strings = {
     setAiMaxTokensDesc:
       '一次回合的输出预算。推理模型会先消耗预算用于思考，预算用完时回复可能变成空白，遇到这种情况请调大此项。',
     setSecAiMedia: '生图、媒体与搜索',
-    setAiMediaGensparkHint: '生图与图片/视频解析使用  账号登录。',
-    setAiSearchGensparkHint: '网页与图片搜索使用  账号登录；未登录或关闭云工具时改用免费来源。',
+    setAiMediaHint: '生图与图片/视频解析使用  账号登录。',
+    setAiSearchHint: '网页与图片搜索使用  账号登录；未登录或关闭云工具时改用免费来源。',
     setAiSearchSerperHint: 'Serper 用你的 key 同时提供网页与图片搜索。',
     setAiSearchSerplyHint: 'Serply 用你的 key 同时提供网页与图片搜索。',
     setAiSearchSearchApiHint: 'SearchApi 用你的 key 同时提供网页与图片搜索。',
@@ -439,6 +438,8 @@ export const strings = {
     starPromptLater: '以后再说',
     onbStarHint: '如果你喜欢 UToOffice，欢迎到 GitHub 给我们一个 Star。',
     setEmail: '邮箱',
+    setMemberExpire: '会员到期',
+    setNotMember: '未开通会员',
     setNotLoggedIn: '未登录',
     setViewUsage: '查看用量',
     setChange: '更改',
@@ -696,9 +697,8 @@ export const strings = {
     untitled: 'Untitled',
     account: 'Account',
     login: 'Sign in',
-    loginGenspark: 'Sign in with ',
+    loginScanTip: 'Scan with WeChat to sign in',
     loggedIn: 'Signed in',
-    loggedInGenspark: 'Signed in to ',
     waitingLogin: 'Waiting for browser sign-in… Click to relaunch the sign-in page',
     loginTimeout: 'Sign-in timed out — click to retry',
     loginLaunchFailed: 'Could not start sign-in — click to retry',
@@ -932,7 +932,7 @@ export const strings = {
     setAiEndpointAdd: 'Add endpoint',
     setAiEndpointRemove: 'Remove',
     setAiEndpointName: 'Name',
-    setAiGensparkHint: 'Uses your  sign-in; no API key needed.',
+    setAiHint: 'Uses your  sign-in; no API key needed.',
     setAiCodexPath: 'Codex executable',
     setAiCodexPathHint: 'Only set this for a custom install; leave blank to auto-detect.',
     setAiCodexAutoPlaceholder: 'Auto-detect (recommended)',
@@ -950,8 +950,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'Output budget for one turn. Reasoning models spend part of it thinking, so an answer can come back empty once the budget runs out; raise this value if that happens.',
     setSecAiMedia: 'AI Media & Search',
-    setAiMediaGensparkHint: 'Image generation and image/video analysis use your  sign-in.',
-    setAiSearchGensparkHint:
+    setAiMediaHint: 'Image generation and image/video analysis use your  sign-in.',
+    setAiSearchHint:
       'Web and image search use your  sign-in; signed out or with cloud tools off they fall back to free sources.',
     setAiSearchSerperHint: 'Serper serves both web and image search with your key.',
     setAiSearchSerplyHint: 'Serply serves both web and image search with your key.',
@@ -983,6 +983,8 @@ export const strings = {
     starPromptLater: 'Maybe later',
     onbStarHint: 'If you like UToOffice, give us a star on GitHub.',
     setEmail: 'Email',
+    setMemberExpire: 'Membership expires',
+    setNotMember: 'Not a member',
     setNotLoggedIn: 'Not signed in',
     setViewUsage: 'View usage',
     setChange: 'Change',
@@ -1243,9 +1245,8 @@ export const strings = {
     untitled: 'Chưa có tiêu đề',
     account: 'Tài khoản',
     login: 'Đăng nhập',
-    loginGenspark: 'Đăng nhập bằng ',
+    loginScanTip: 'Scan with WeChat to sign in',
     loggedIn: 'Đã đăng nhập',
-    loggedInGenspark: 'Đã đăng nhập vào ',
     waitingLogin: 'Đang đợi đăng nhập trên trình duyệt… Nhấp để mở lại trang đăng nhập',
     loginTimeout: 'Hết thời gian chờ đăng nhập — nhấp để thử lại',
     loginLaunchFailed: 'Không thể mở trang đăng nhập — nhấp để thử lại',
@@ -1482,7 +1483,7 @@ export const strings = {
     setAiEndpointAdd: 'Thêm điểm cuối',
     setAiEndpointRemove: 'Xóa',
     setAiEndpointName: 'Tên',
-    setAiGensparkHint: 'Sử dụng thông tin đăng nhập  của bạn; không cần khóa API.',
+    setAiHint: 'Sử dụng thông tin đăng nhập  của bạn; không cần khóa API.',
     setAiCodexPath: 'Tệp thực thi Codex',
     setAiCodexPathHint: 'Chỉ đặt mục này nếu cài đặt tùy chỉnh; để trống để tự động phát hiện.',
     setAiCodexAutoPlaceholder: 'Tự động phát hiện (khuyến nghị)',
@@ -1500,9 +1501,9 @@ export const strings = {
     setAiMaxTokensDesc:
       'Ngân sách đầu ra cho một lượt trao đổi. Các mô hình suy luận dành một phần trong đó để suy nghĩ, do đó câu trả lời có thể trống nếu hết ngân sách; hãy tăng giá trị này nếu gặp tình trạng trên.',
     setSecAiMedia: 'Phương tiện AI & Tìm kiếm',
-    setAiMediaGensparkHint:
+    setAiMediaHint:
       'Tạo hình ảnh và phân tích hình ảnh/video sử dụng thông tin đăng nhập  của bạn.',
-    setAiSearchGensparkHint:
+    setAiSearchHint:
       'Tìm kiếm web và hình ảnh sử dụng thông tin đăng nhập  của bạn; khi đăng xuất hoặc tắt công cụ đám mây, hệ thống sẽ chuyển sang dùng các nguồn miễn phí.',
     setAiSearchSerperHint: 'Serper cung cấp cả tìm kiếm web và hình ảnh bằng khóa của bạn.',
     setAiSearchSerplyHint: 'Serply cung cấp cả tìm kiếm web và hình ảnh bằng key của bạn.',
@@ -1534,6 +1535,8 @@ export const strings = {
     starPromptLater: 'Để sau',
     onbStarHint: 'Nếu bạn yêu thích UToOffice, hãy tặng chúng tôi một sao trên GitHub.',
     setEmail: 'Email',
+    setMemberExpire: 'Membership expires',
+    setNotMember: 'Not a member',
     setNotLoggedIn: 'Chưa đăng nhập',
     setViewUsage: 'Xem mức sử dụng',
     setChange: 'Thay đổi',
@@ -1795,9 +1798,8 @@ export const strings = {
     untitled: 'Adsız',
     account: 'Hesap',
     login: 'Giriş yap',
-    loginGenspark: ' ile giriş yap',
+    loginScanTip: 'Scan with WeChat to sign in',
     loggedIn: 'Giriş yapıldı',
-    loggedInGenspark: '’a giriş yapıldı',
     waitingLogin: 'Tarayıcıda giriş bekleniyor… Giriş sayfasını yeniden açmak için tıklayın',
     loginTimeout: 'Giriş zaman aşımına uğradı — yeniden denemek için tıklayın',
     loginLaunchFailed: 'Giriş başlatılamadı — yeniden denemek için tıklayın',
@@ -2035,7 +2037,7 @@ export const strings = {
     setAiEndpointAdd: 'Uç nokta ekle',
     setAiEndpointRemove: 'Kaldır',
     setAiEndpointName: 'Ad',
-    setAiGensparkHint: ' girişinizi kullanır; API anahtarı gerekmez.',
+    setAiHint: ' girişinizi kullanır; API anahtarı gerekmez.',
     setAiCodexPath: 'Codex yürütülebilir dosyası',
     setAiCodexPathHint:
       'Yalnızca özel bir kurulum için ayarlayın; otomatik algılama için boş bırakın.',
@@ -2054,8 +2056,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'Tek bir tur için çıktı bütçesi. Akıl yürüten modeller bunun bir kısmını düşünmeye harcar, bu yüzden bütçe bittiğinde yanıt boş dönebilir; böyle olursa bu değeri artırın.',
     setSecAiMedia: 'AI Medya ve Arama',
-    setAiMediaGensparkHint: 'Görüntü oluşturma ve görüntü/video analizi  girişinizi kullanır.',
-    setAiSearchGensparkHint:
+    setAiMediaHint: 'Görüntü oluşturma ve görüntü/video analizi  girişinizi kullanır.',
+    setAiSearchHint:
       'Web ve görüntü araması  girişinizi kullanır; çıkış yapılmışsa veya bulut araçları kapalıysa ücretsiz kaynaklara döner.',
     setAiSearchSerperHint: 'Serper, anahtarınızla hem web hem görüntü aramasını sağlar.',
     setAiSearchSerplyHint: 'Serply, anahtarınızla hem web hem görüntü aramasını sağlar.',
@@ -2087,6 +2089,8 @@ export const strings = {
     starPromptLater: 'Belki daha sonra',
     onbStarHint: 'UToOffice’i beğendiyseniz GitHub’da bize bir yıldız verin.',
     setEmail: 'E-posta',
+    setMemberExpire: 'Membership expires',
+    setNotMember: 'Not a member',
     setNotLoggedIn: 'Giriş yapılmadı',
     setViewUsage: 'Kullanımı görüntüle',
     setChange: 'Değiştir',
@@ -2356,9 +2360,8 @@ export const strings = {
     // Account
     account: 'アカウント',
     login: 'サインイン',
-    loginGenspark: ' アカウントでサインイン',
+    loginScanTip: 'Scan with WeChat to sign in',
     loggedIn: 'サインイン済み',
-    loggedInGenspark: ' にサインイン済み',
     waitingLogin:
       'ブラウザーでのサインインを待っています… クリックするとサインインページを再表示します',
     waitingShort: 'サインイン待ち…',
@@ -2597,7 +2600,7 @@ export const strings = {
     setAiEndpointAdd: 'エンドポイントを追加',
     setAiEndpointRemove: '削除',
     setAiEndpointName: '名前',
-    setAiGensparkHint: ' アカウントでサインインするため、API キーは不要です。',
+    setAiHint: ' アカウントでサインインするため、API キーは不要です。',
     setAiCodexPath: 'Codex 実行ファイル',
     setAiCodexPathHint: 'カスタムインストール時のみ指定します。空欄なら自動検出します。',
     setAiCodexAutoPlaceholder: '自動検出（推奨）',
@@ -2614,8 +2617,8 @@ export const strings = {
     setAiMaxTokensDesc:
       '1 ターンの出力予算です。推論モデルは思考にも消費するため、使い切ると返信が空になることがあります。その場合は値を大きくしてください。',
     setSecAiMedia: 'AI メディアと検索',
-    setAiMediaGensparkHint: '画像生成と画像/動画解析は  のサインインを使用します。',
-    setAiSearchGensparkHint:
+    setAiMediaHint: '画像生成と画像/動画解析は  のサインインを使用します。',
+    setAiSearchHint:
       'Web 検索と画像検索は  のサインインを使用します。サインアウト時やクラウドツールがオフのときは無料ソースにフォールバックします。',
     setAiSearchSerperHint: 'Serper はあなたのキーで Web 検索と画像検索の両方を提供します。',
     setAiSearchSerplyHint: 'Serply はあなたのキーで Web 検索と画像検索の両方を提供します。',
@@ -2647,6 +2650,8 @@ export const strings = {
     starPromptLater: 'あとで',
     onbStarHint: 'UToOffice が気に入ったら、GitHub でスターをお願いします。',
     setEmail: 'メール',
+    setMemberExpire: 'Membership expires',
+    setNotMember: 'Not a member',
     setNotLoggedIn: '未ログイン',
     setViewUsage: '使用状況を見る',
     setChange: '変更',
@@ -2916,9 +2921,8 @@ export const strings = {
     // Account
     account: '계정',
     login: '로그인',
-    loginGenspark: ' 계정으로 로그인',
+    loginScanTip: 'Scan with WeChat to sign in',
     loggedIn: '로그인됨',
-    loggedInGenspark: '에 로그인됨',
     waitingLogin: '브라우저 로그인을 기다리는 중… 클릭하면 로그인 페이지를 다시 엽니다',
     waitingShort: '로그인 대기 중…',
     loginTimeout: '로그인 시간이 초과되었습니다. 클릭하여 다시 시도',
@@ -3150,7 +3154,7 @@ export const strings = {
     setAiEndpointAdd: '엔드포인트 추가',
     setAiEndpointRemove: '삭제',
     setAiEndpointName: '이름',
-    setAiGensparkHint: ' 로그인으로 사용하며 API 키가 필요 없습니다.',
+    setAiHint: ' 로그인으로 사용하며 API 키가 필요 없습니다.',
     setAiCodexPath: 'Codex 실행 파일',
     setAiCodexPathHint: '사용자 지정 설치에만 입력하세요. 비워 두면 자동 감지합니다.',
     setAiCodexAutoPlaceholder: '자동 감지(권장)',
@@ -3167,8 +3171,8 @@ export const strings = {
     setAiMaxTokensDesc:
       '한 턴의 출력 예산입니다. 추론 모델은 생각하는 데 소모하므로 예산이 떨어지면 응답이 비어 올 수 있습니다. 그럴 때 값을 키우세요.',
     setSecAiMedia: 'AI 미디어 및 검색',
-    setAiMediaGensparkHint: '이미지 생성과 이미지/동영상 분석은  로그인을 사용합니다.',
-    setAiSearchGensparkHint:
+    setAiMediaHint: '이미지 생성과 이미지/동영상 분석은  로그인을 사용합니다.',
+    setAiSearchHint:
       '웹 검색과 이미지 검색은  로그인을 사용합니다. 로그아웃 상태거나 클라우드 도구가 꺼져 있으면 무료 소스로 대체됩니다.',
     setAiSearchSerperHint: 'Serper는 내 키로 웹 검색과 이미지 검색을 모두 제공합니다.',
     setAiSearchSerplyHint: 'Serply는 내 키로 웹 검색과 이미지 검색을 모두 제공합니다.',
@@ -3200,6 +3204,8 @@ export const strings = {
     starPromptLater: '나중에',
     onbStarHint: 'UToOffice가 마음에 들면 GitHub에서 스타를 눌러 주세요.',
     setEmail: '이메일',
+    setMemberExpire: 'Membership expires',
+    setNotMember: 'Not a member',
     setNotLoggedIn: '로그인되지 않음',
     setViewUsage: '사용량 보기',
     setChange: '변경',
@@ -3473,9 +3479,8 @@ export const strings = {
     // Account
     account: 'Compte',
     login: 'Se connecter',
-    loginGenspark: 'Se connecter avec ',
+    loginScanTip: 'Scan with WeChat to sign in',
     loggedIn: 'Connecté',
-    loggedInGenspark: 'Connecté à ',
     waitingLogin:
       'En attente de la connexion dans le navigateur… Cliquez pour rouvrir la page de connexion',
     waitingShort: 'En attente…',
@@ -3716,7 +3721,7 @@ export const strings = {
     setAiEndpointAdd: 'Ajouter un point de terminaison',
     setAiEndpointRemove: 'Supprimer',
     setAiEndpointName: 'Nom',
-    setAiGensparkHint: 'Utilise votre connexion  ; aucune clé API requise.',
+    setAiHint: 'Utilise votre connexion  ; aucune clé API requise.',
     setAiCodexPath: 'Exécutable Codex',
     setAiCodexPathHint:
       'À renseigner uniquement pour une installation personnalisée ; sinon, détection automatique.',
@@ -3734,9 +3739,9 @@ export const strings = {
     setAiMaxTokensDesc:
       'Budget de sortie pour un tour. Les modèles à raisonnement le dépensent en réflexion ; quand il est épuisé, la réponse arrive vide : augmentez cette valeur.',
     setSecAiMedia: 'Médias IA et recherche',
-    setAiMediaGensparkHint:
+    setAiMediaHint:
       "La génération d'images et l'analyse d'images/vidéos utilisent votre connexion .",
-    setAiSearchGensparkHint:
+    setAiSearchHint:
       "La recherche web et d'images utilise votre connexion  ; déconnecté ou avec les outils cloud désactivés, elle se rabat sur des sources gratuites.",
     setAiSearchSerperHint:
       "Serper assure la recherche web et la recherche d'images avec votre clé.",
@@ -3771,6 +3776,8 @@ export const strings = {
     starPromptLater: 'Plus tard',
     onbStarHint: 'Si UToOffice vous plaît, mettez-nous une étoile sur GitHub.',
     setEmail: 'E-mail',
+    setMemberExpire: 'Membership expires',
+    setNotMember: 'Not a member',
     setNotLoggedIn: 'Non connecté',
     setViewUsage: "Voir l'utilisation",
     setChange: 'Modifier',
@@ -4049,9 +4056,8 @@ export const strings = {
     // Account
     account: 'Konto',
     login: 'Anmelden',
-    loginGenspark: 'Mit  anmelden',
+    loginScanTip: 'Scan with WeChat to sign in',
     loggedIn: 'Angemeldet',
-    loggedInGenspark: 'Bei  angemeldet',
     waitingLogin:
       'Warten auf Anmeldung im Browser… Klicken Sie, um die Anmeldeseite erneut zu öffnen',
     waitingShort: 'Warten…',
@@ -4291,7 +4297,7 @@ export const strings = {
     setAiEndpointAdd: 'Endpunkt hinzufügen',
     setAiEndpointRemove: 'Entfernen',
     setAiEndpointName: 'Name',
-    setAiGensparkHint: 'Nutzt Ihre -Anmeldung; kein API-Schlüssel nötig.',
+    setAiHint: 'Nutzt Ihre -Anmeldung; kein API-Schlüssel nötig.',
     setAiCodexPath: 'Codex-Programmdatei',
     setAiCodexPathHint:
       'Nur bei einer benutzerdefinierten Installation angeben; leer lassen für automatische Erkennung.',
@@ -4309,8 +4315,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'Ausgabe-Budget pro Durchlauf. Denk-Modelle verbrauchen es beim Reasoning; ist es erschöpft, kommt eine leere Antwort zurück — dann diesen Wert erhöhen.',
     setSecAiMedia: 'KI-Medien & Suche',
-    setAiMediaGensparkHint: 'Bildgenerierung und Bild-/Videoanalyse nutzen deine -Anmeldung.',
-    setAiSearchGensparkHint:
+    setAiMediaHint: 'Bildgenerierung und Bild-/Videoanalyse nutzen deine -Anmeldung.',
+    setAiSearchHint:
       'Web- und Bildsuche nutzen deine -Anmeldung; abgemeldet oder mit ausgeschalteten Cloud-Tools greifen sie auf kostenlose Quellen zurück.',
     setAiSearchSerperHint: 'Serper liefert mit deinem Schlüssel Web- und Bildsuche.',
     setAiSearchSerplyHint: 'Serply liefert mit deinem Schlüssel Web- und Bildsuche.',
@@ -4342,6 +4348,8 @@ export const strings = {
     starPromptLater: 'Später',
     onbStarHint: 'Wenn Ihnen UToOffice gefällt, geben Sie uns einen Stern auf GitHub.',
     setEmail: 'E-Mail',
+    setMemberExpire: 'Membership expires',
+    setNotMember: 'Not a member',
     setNotLoggedIn: 'Nicht angemeldet',
     setViewUsage: 'Verbrauch anzeigen',
     setChange: 'Ändern',
@@ -4615,9 +4623,8 @@ export const strings = {
     // Account
     account: 'Cuenta',
     login: 'Iniciar sesión',
-    loginGenspark: 'Iniciar sesión con ',
+    loginScanTip: 'Scan with WeChat to sign in',
     loggedIn: 'Sesión iniciada',
-    loggedInGenspark: 'Sesión iniciada en ',
     waitingLogin:
       'Esperando el inicio de sesión en el navegador… Haga clic para volver a abrir la página de inicio de sesión',
     waitingShort: 'Esperando…',
@@ -4856,7 +4863,7 @@ export const strings = {
     setAiEndpointAdd: 'Añadir endpoint',
     setAiEndpointRemove: 'Eliminar',
     setAiEndpointName: 'Nombre',
-    setAiGensparkHint: 'Usa tu inicio de sesión de ; no se necesita clave de API.',
+    setAiHint: 'Usa tu inicio de sesión de ; no se necesita clave de API.',
     setAiCodexPath: 'Ejecutable de Codex',
     setAiCodexPathHint:
       'Indícalo solo para una instalación personalizada; déjalo vacío para detectarlo automáticamente.',
@@ -4874,9 +4881,9 @@ export const strings = {
     setAiMaxTokensDesc:
       'Presupuesto de salida por turno. Los modelos de razonamiento lo gastan en pensar; si se agota, la respuesta llega vacía: suba este valor.',
     setSecAiMedia: 'Medios de IA y búsqueda',
-    setAiMediaGensparkHint:
+    setAiMediaHint:
       'La generación de imágenes y el análisis de imágenes/vídeos usan tu inicio de sesión de .',
-    setAiSearchGensparkHint:
+    setAiSearchHint:
       'La búsqueda web y de imágenes usa tu inicio de sesión de ; sin sesión o con las herramientas en la nube desactivadas recurre a fuentes gratuitas.',
     setAiSearchSerperHint: 'Serper ofrece búsqueda web y de imágenes con tu clave.',
     setAiSearchSerplyHint: 'Serply ofrece búsqueda web y de imágenes con tu clave.',
@@ -4908,6 +4915,8 @@ export const strings = {
     starPromptLater: 'Más tarde',
     onbStarHint: 'Si te gusta UToOffice, danos una estrella en GitHub.',
     setEmail: 'Correo electrónico',
+    setMemberExpire: 'Membership expires',
+    setNotMember: 'Not a member',
     setNotLoggedIn: 'Sesión no iniciada',
     setViewUsage: 'Ver uso',
     setChange: 'Cambiar',
@@ -5178,9 +5187,8 @@ export const strings = {
     // Account
     account: 'บัญชี',
     login: 'ลงชื่อเข้าใช้',
-    loginGenspark: 'ลงชื่อเข้าใช้ด้วย ',
+    loginScanTip: 'Scan with WeChat to sign in',
     loggedIn: 'ลงชื่อเข้าใช้แล้ว',
-    loggedInGenspark: 'ลงชื่อเข้าใช้  แล้ว',
     waitingLogin: 'กำลังรอการลงชื่อเข้าใช้ในเบราว์เซอร์… คลิกเพื่อเปิดหน้าลงชื่อเข้าใช้อีกครั้ง',
     waitingShort: 'กำลังรอ…',
     loginTimeout: 'การลงชื่อเข้าใช้หมดเวลา — คลิกเพื่อลองอีกครั้ง',
@@ -5410,7 +5418,7 @@ export const strings = {
     setAiEndpointAdd: 'เพิ่มปลายทาง',
     setAiEndpointRemove: 'ลบ',
     setAiEndpointName: 'ชื่อ',
-    setAiGensparkHint: 'ใช้การลงชื่อเข้าใช้  ไม่ต้องใช้คีย์ API',
+    setAiHint: 'ใช้การลงชื่อเข้าใช้  ไม่ต้องใช้คีย์ API',
     setAiCodexPath: 'ไฟล์ปฏิบัติการ Codex',
     setAiCodexPathHint: 'กรอกเฉพาะเมื่อติดตั้งแบบกำหนดเอง เว้นว่างไว้เพื่อค้นหาอัตโนมัติ',
     setAiCodexAutoPlaceholder: 'ค้นหาอัตโนมัติ (แนะนำ)',
@@ -5427,8 +5435,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'งบผลลัพธ์ต่อหนึ่งรอบ โมเดลแบบใช้เหตุผลจะใช้ส่วนหนึ่งไปกับการคิด หากงบหมด คำตอบอาจกลับมาว่างเปล่า ให้เพิ่มค่านี้',
     setSecAiMedia: 'สื่อ AI และการค้นหา',
-    setAiMediaGensparkHint: 'การสร้างภาพและการวิเคราะห์ภาพ/วิดีโอใช้การลงชื่อเข้าใช้  ของคุณ',
-    setAiSearchGensparkHint:
+    setAiMediaHint: 'การสร้างภาพและการวิเคราะห์ภาพ/วิดีโอใช้การลงชื่อเข้าใช้  ของคุณ',
+    setAiSearchHint:
       'การค้นหาเว็บและภาพใช้การลงชื่อเข้าใช้  หากไม่ได้ลงชื่อเข้าใช้หรือปิดเครื่องมือคลาวด์ จะใช้แหล่งข้อมูลฟรีแทน',
     setAiSearchSerperHint: 'Serper ให้บริการค้นหาเว็บและภาพด้วยคีย์ของคุณ',
     setAiSearchSerplyHint: 'Serply ให้บริการค้นหาเว็บและภาพด้วยคีย์ของคุณ',
@@ -5460,6 +5468,8 @@ export const strings = {
     starPromptLater: 'ไว้ทีหลัง',
     onbStarHint: 'ถ้าชอบ UToOffice ฝากกดดาวให้เราบน GitHub ด้วยนะ',
     setEmail: 'อีเมล',
+    setMemberExpire: 'Membership expires',
+    setNotMember: 'Not a member',
     setNotLoggedIn: 'ยังไม่ได้เข้าสู่ระบบ',
     setViewUsage: 'ดูการใช้งาน',
     setChange: 'เปลี่ยน',
@@ -5729,9 +5739,8 @@ export const strings = {
     // Account
     account: 'Akun',
     login: 'Masuk',
-    loginGenspark: 'Masuk dengan ',
+    loginScanTip: 'Scan with WeChat to sign in',
     loggedIn: 'Sudah masuk',
-    loggedInGenspark: 'Sudah masuk ke ',
     waitingLogin: 'Menunggu login di browser… Klik untuk membuka kembali halaman login',
     waitingShort: 'Menunggu…',
     loginTimeout: 'Waktu login habis — klik untuk mencoba lagi',
@@ -5966,7 +5975,7 @@ export const strings = {
     setAiEndpointAdd: 'Tambah endpoint',
     setAiEndpointRemove: 'Hapus',
     setAiEndpointName: 'Nama',
-    setAiGensparkHint: 'Menggunakan login ; tanpa kunci API.',
+    setAiHint: 'Menggunakan login ; tanpa kunci API.',
     setAiCodexPath: 'Berkas eksekusi Codex',
     setAiCodexPathHint: 'Isi hanya untuk instalasi khusus; kosongkan agar terdeteksi otomatis.',
     setAiCodexAutoPlaceholder: 'Deteksi otomatis (disarankan)',
@@ -5983,8 +5992,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'Anggaran keluaran untuk satu giliran. Model penalaran memakainya untuk berpikir; jika habis, balasan datang kosong — naikkan nilai ini.',
     setSecAiMedia: 'Media & Pencarian AI',
-    setAiMediaGensparkHint: 'Pembuatan gambar dan analisis gambar/video menggunakan login  Anda.',
-    setAiSearchGensparkHint:
+    setAiMediaHint: 'Pembuatan gambar dan analisis gambar/video menggunakan login  Anda.',
+    setAiSearchHint:
       'Pencarian web dan gambar memakai login  Anda; saat keluar atau alat cloud dimatikan, keduanya memakai sumber gratis.',
     setAiSearchSerperHint: 'Serper menyediakan pencarian web dan gambar dengan kunci Anda.',
     setAiSearchSerplyHint: 'Serply menyediakan pencarian web dan gambar dengan kunci Anda.',
@@ -6016,6 +6025,8 @@ export const strings = {
     starPromptLater: 'Nanti saja',
     onbStarHint: 'Jika Anda menyukai UToOffice, beri kami bintang di GitHub.',
     setEmail: 'Email',
+    setMemberExpire: 'Membership expires',
+    setNotMember: 'Not a member',
     setNotLoggedIn: 'Belum masuk',
     setViewUsage: 'Lihat penggunaan',
     setChange: 'Ubah',
@@ -6287,9 +6298,8 @@ export const strings = {
     // Account
     account: 'Учётная запись',
     login: 'Войти',
-    loginGenspark: 'Войти через ',
+    loginScanTip: 'Scan with WeChat to sign in',
     loggedIn: 'Вход выполнен',
-    loggedInGenspark: 'Выполнен вход в ',
     waitingLogin: 'Ожидание входа в браузере… Нажмите, чтобы снова открыть страницу входа',
     waitingShort: 'Ожидание…',
     loginTimeout: 'Время входа истекло — нажмите, чтобы повторить',
@@ -6524,7 +6534,7 @@ export const strings = {
     setAiEndpointAdd: 'Добавить эндпоинт',
     setAiEndpointRemove: 'Удалить',
     setAiEndpointName: 'Название',
-    setAiGensparkHint: 'Использует вход в ; ключ API не нужен.',
+    setAiHint: 'Использует вход в ; ключ API не нужен.',
     setAiCodexPath: 'Исполняемый файл Codex',
     setAiCodexPathHint:
       'Указывайте только для нестандартной установки; оставьте пустым для автоопределения.',
@@ -6542,9 +6552,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'Бюджет вывода за один ход. Модели рассуждений тратят его на размышления: если бюджет иссякнет, ответ придёт пустым — увеличьте значение.',
     setSecAiMedia: 'Медиа и поиск ИИ',
-    setAiMediaGensparkHint:
-      'Генерация изображений и анализ изображений/видео используют ваш вход в .',
-    setAiSearchGensparkHint:
+    setAiMediaHint: 'Генерация изображений и анализ изображений/видео используют ваш вход в .',
+    setAiSearchHint:
       'Веб-поиск и поиск изображений используют ваш вход в ; без входа или при выключенных облачных инструментах используются бесплатные источники.',
     setAiSearchSerperHint: 'Serper обеспечивает веб-поиск и поиск изображений с вашим ключом.',
     setAiSearchSerplyHint: 'Serply обеспечивает веб-поиск и поиск изображений с вашим ключом.',
@@ -6577,6 +6586,8 @@ export const strings = {
     starPromptLater: 'Позже',
     onbStarHint: 'Если вам нравится UToOffice, поставьте нам звезду на GitHub.',
     setEmail: 'Эл. почта',
+    setMemberExpire: 'Membership expires',
+    setNotMember: 'Not a member',
     setNotLoggedIn: 'Вы не вошли',
     setViewUsage: 'Посмотреть расход',
     setChange: 'Изменить',
@@ -6847,9 +6858,8 @@ export const strings = {
     // Account
     account: 'الحساب',
     login: 'تسجيل الدخول',
-    loginGenspark: 'تسجيل الدخول باستخدام ',
+    loginScanTip: 'Scan with WeChat to sign in',
     loggedIn: 'تم تسجيل الدخول',
-    loggedInGenspark: 'تم تسجيل الدخول إلى ',
     waitingLogin: 'في انتظار تسجيل الدخول في المتصفح… انقر لإعادة فتح صفحة تسجيل الدخول',
     waitingShort: 'في الانتظار…',
     loginTimeout: 'انتهت مهلة تسجيل الدخول — انقر لإعادة المحاولة',
@@ -7082,7 +7092,7 @@ export const strings = {
     setAiEndpointAdd: 'إضافة نقطة نهاية',
     setAiEndpointRemove: 'إزالة',
     setAiEndpointName: 'الاسم',
-    setAiGensparkHint: 'يستخدم تسجيل الدخول إلى ؛ لا حاجة لمفتاح API.',
+    setAiHint: 'يستخدم تسجيل الدخول إلى ؛ لا حاجة لمفتاح API.',
     setAiCodexPath: 'ملف Codex التنفيذي',
     setAiCodexPathHint: 'حدده فقط للتثبيت المخصص؛ اتركه فارغًا للاكتشاف التلقائي.',
     setAiCodexAutoPlaceholder: 'اكتشاف تلقائي (موصى به)',
@@ -7099,8 +7109,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'ميزانية الإخراج في الدورة الواحدة. نماذج الاستدلال تصرفها على التفكير، فإذا نفدت جاء الرد فارغًا؛ ارفع هذه القيمة عندئذ.',
     setSecAiMedia: 'وسائط الذكاء الاصطناعي والبحث',
-    setAiMediaGensparkHint: 'يستخدم توليد الصور وتحليل الصور/الفيديو تسجيل دخولك إلى .',
-    setAiSearchGensparkHint:
+    setAiMediaHint: 'يستخدم توليد الصور وتحليل الصور/الفيديو تسجيل دخولك إلى .',
+    setAiSearchHint:
       'يستخدم البحث في الويب والصور تسجيل دخولك إلى ؛ وعند الخروج أو إيقاف الأدوات السحابية يعود إلى مصادر مجانية.',
     setAiSearchSerperHint: 'يوفّر Serper البحث في الويب والصور بمفتاحك.',
     setAiSearchSerplyHint: 'يوفّر Serply البحث في الويب والصور بمفتاحك.',
@@ -7131,6 +7141,8 @@ export const strings = {
     starPromptLater: 'لاحقًا',
     onbStarHint: 'إذا أعجبك UToOffice، ضع لنا نجمة على GitHub.',
     setEmail: 'البريد الإلكتروني',
+    setMemberExpire: 'Membership expires',
+    setNotMember: 'Not a member',
     setNotLoggedIn: 'لم يتم تسجيل الدخول',
     setViewUsage: 'عرض الاستخدام',
     setChange: 'تغيير',
@@ -7396,9 +7408,8 @@ export const strings = {
     untitled: 'Sem título',
     account: 'Conta',
     login: 'Entrar',
-    loginGenspark: 'Entrar com a ',
+    loginScanTip: 'Scan with WeChat to sign in',
     loggedIn: 'Conectado',
-    loggedInGenspark: 'Conectado à ',
     waitingLogin: 'Aguardando o login no navegador… Clique para reabrir a página de login',
     waitingShort: 'Aguardando…',
     loginTimeout: 'O login expirou — clique para tentar novamente',
@@ -7637,7 +7648,7 @@ export const strings = {
     setAiEndpointAdd: 'Adicionar endpoint',
     setAiEndpointRemove: 'Remover',
     setAiEndpointName: 'Nome',
-    setAiGensparkHint: 'Usa seu login ; nenhuma chave de API necessária.',
+    setAiHint: 'Usa seu login ; nenhuma chave de API necessária.',
     setAiCodexPath: 'Executável do Codex',
     setAiCodexPathHint:
       'Preencha apenas para uma instalação personalizada; deixe em branco para detectar automaticamente.',
@@ -7655,9 +7666,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'Orçamento de saída por turno. Modelos de raciocínio gastam-no pensando; se esgotar, a resposta vem vazia — aumente este valor.',
     setSecAiMedia: 'Mídia e busca de IA',
-    setAiMediaGensparkHint:
-      'A geração de imagens e a análise de imagens/vídeos usam o seu login do .',
-    setAiSearchGensparkHint:
+    setAiMediaHint: 'A geração de imagens e a análise de imagens/vídeos usam o seu login do .',
+    setAiSearchHint:
       'A busca na web e de imagens usa o seu login do ; desconectado ou com as ferramentas na nuvem desativadas, recorre a fontes gratuitas.',
     setAiSearchSerperHint: 'O Serper oferece busca na web e de imagens com a sua chave.',
     setAiSearchSerplyHint: 'O Serply oferece busca na web e de imagens com a sua chave.',
@@ -7689,6 +7699,8 @@ export const strings = {
     starPromptLater: 'Mais tarde',
     onbStarHint: 'Se você gosta do UToOffice, deixe uma estrela no GitHub.',
     setEmail: 'E-mail',
+    setMemberExpire: 'Membership expires',
+    setNotMember: 'Not a member',
     setNotLoggedIn: 'Não conectado',
     setViewUsage: 'Ver uso',
     setChange: 'Alterar',
@@ -7954,9 +7966,8 @@ export const strings = {
     untitled: 'Senza titolo',
     account: 'Account',
     login: 'Accedi',
-    loginGenspark: 'Accedi con ',
+    loginScanTip: 'Scan with WeChat to sign in',
     loggedIn: 'Accesso effettuato',
-    loggedInGenspark: 'Accesso effettuato a ',
     waitingLogin: "In attesa dell'accesso nel browser… Fai clic per riaprire la pagina di accesso",
     waitingShort: 'In attesa…',
     loginTimeout: 'Accesso scaduto — fai clic per riprovare',
@@ -8194,7 +8205,7 @@ export const strings = {
     setAiEndpointAdd: 'Aggiungi endpoint',
     setAiEndpointRemove: 'Rimuovi',
     setAiEndpointName: 'Nome',
-    setAiGensparkHint: 'Usa il tuo accesso ; nessuna chiave API richiesta.',
+    setAiHint: 'Usa il tuo accesso ; nessuna chiave API richiesta.',
     setAiCodexPath: 'Eseguibile Codex',
     setAiCodexPathHint:
       'Compila solo per un’installazione personalizzata; lascia vuoto per il rilevamento automatico.',
@@ -8212,9 +8223,9 @@ export const strings = {
     setAiMaxTokensDesc:
       'Budget di uscita per singolo turno. I modelli di ragionamento lo consumano pensando: se si esaurisce, la risposta arriva vuota; aumentalo.',
     setSecAiMedia: 'Media e ricerca IA',
-    setAiMediaGensparkHint:
+    setAiMediaHint:
       "La generazione di immagini e l'analisi di immagini/video usano il tuo accesso .",
-    setAiSearchGensparkHint:
+    setAiSearchHint:
       'La ricerca web e di immagini usa il tuo accesso ; disconnesso o con gli strumenti cloud disattivati ricorre a fonti gratuite.',
     setAiSearchSerperHint: 'Serper offre ricerca web e di immagini con la tua chiave.',
     setAiSearchSerplyHint: 'Serply offre ricerca web e di immagini con la tua chiave.',
@@ -8246,6 +8257,8 @@ export const strings = {
     starPromptLater: 'Più tardi',
     onbStarHint: 'Se ti piace UToOffice, lasciaci una stella su GitHub.',
     setEmail: 'Email',
+    setMemberExpire: 'Membership expires',
+    setNotMember: 'Not a member',
     setNotLoggedIn: 'Non connesso',
     setViewUsage: 'Vedi utilizzo',
     setChange: 'Cambia',
@@ -8510,9 +8523,8 @@ export const strings = {
     untitled: 'Bez tytułu',
     account: 'Konto',
     login: 'Zaloguj się',
-    loginGenspark: 'Zaloguj się przez ',
+    loginScanTip: 'Scan with WeChat to sign in',
     loggedIn: 'Zalogowano',
-    loggedInGenspark: 'Zalogowano do ',
     waitingLogin:
       'Oczekiwanie na logowanie w przeglądarce… Kliknij, aby ponownie otworzyć stronę logowania',
     waitingShort: 'Oczekiwanie…',
@@ -8749,7 +8761,7 @@ export const strings = {
     setAiEndpointAdd: 'Dodaj punkt końcowy',
     setAiEndpointRemove: 'Usuń',
     setAiEndpointName: 'Nazwa',
-    setAiGensparkHint: 'Korzysta z logowania ; klucz API nie jest potrzebny.',
+    setAiHint: 'Korzysta z logowania ; klucz API nie jest potrzebny.',
     setAiCodexPath: 'Plik wykonywalny Codex',
     setAiCodexPathHint:
       'Ustaw tylko dla instalacji niestandardowej; pozostaw puste, aby wykryć automatycznie.',
@@ -8767,8 +8779,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'Budżet wyjścia na jedną turę. Modele rozumowania zużywają go na myślenie; gdy się wyczerpie, odpowiedź przychodzi pusta — zwiększ tę wartość.',
     setSecAiMedia: 'Media i wyszukiwanie AI',
-    setAiMediaGensparkHint: 'Generowanie obrazów i analiza obrazów/wideo korzystają z logowania .',
-    setAiSearchGensparkHint:
+    setAiMediaHint: 'Generowanie obrazów i analiza obrazów/wideo korzystają z logowania .',
+    setAiSearchHint:
       'Wyszukiwanie w sieci i obrazów korzysta z logowania ; po wylogowaniu lub przy wyłączonych narzędziach chmurowych używa darmowych źródeł.',
     setAiSearchSerperHint: 'Serper zapewnia wyszukiwanie w sieci i obrazów z Twoim kluczem.',
     setAiSearchSerplyHint: 'Serply zapewnia wyszukiwanie w sieci i obrazów z Twoim kluczem.',
@@ -8800,6 +8812,8 @@ export const strings = {
     starPromptLater: 'Później',
     onbStarHint: 'Jeśli podoba Ci się UToOffice, zostaw nam gwiazdkę na GitHubie.',
     setEmail: 'E-mail',
+    setMemberExpire: 'Membership expires',
+    setNotMember: 'Not a member',
     setNotLoggedIn: 'Nie zalogowano',
     setViewUsage: 'Zobacz zużycie',
     setChange: 'Zmień',
@@ -9062,9 +9076,8 @@ export const strings = {
     untitled: 'Bez názvu',
     account: 'Účet',
     login: 'Přihlásit se',
-    loginGenspark: 'Přihlásit se přes ',
+    loginScanTip: 'Scan with WeChat to sign in',
     loggedIn: 'Přihlášeno',
-    loggedInGenspark: 'Přihlášeno ke ',
     waitingLogin:
       'Čeká se na přihlášení v prohlížeči… Kliknutím znovu otevřete přihlašovací stránku',
     loginTimeout: 'Vypršel čas přihlášení — kliknutím to zkusíte znovu',
@@ -9242,7 +9255,7 @@ export const strings = {
     setAiEndpointAdd: 'Přidat koncový bod',
     setAiEndpointRemove: 'Odebrat',
     setAiEndpointName: 'Název',
-    setAiGensparkHint: 'Používá vaše přihlášení ke ; klíč API není potřeba.',
+    setAiHint: 'Používá vaše přihlášení ke ; klíč API není potřeba.',
     setAiCodexPath: 'Spustitelný soubor Codex',
     setAiCodexPathHint:
       'Vyplňte jen u vlastní instalace; prázdné pole znamená automatickou detekci.',
@@ -9261,9 +9274,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'Rozpočet výstupu na jeden tah. Modely s uvažováním jeho část spotřebují na přemýšlení, takže po vyčerpání rozpočtu může být odpověď prázdná; v takovém případě hodnotu zvyšte.',
     setSecAiMedia: 'AI média a vyhledávání',
-    setAiMediaGensparkHint:
-      'Generování obrázků a analýza obrázků/videí používají vaše přihlášení ke .',
-    setAiSearchGensparkHint:
+    setAiMediaHint: 'Generování obrázků a analýza obrázků/videí používají vaše přihlášení ke .',
+    setAiSearchHint:
       'Webové a obrázkové vyhledávání používá vaše přihlášení ke ; při odhlášení nebo vypnutých cloudových nástrojích se použijí bezplatné zdroje.',
     setAiSearchSerperHint: 'Serper zajišťuje webové i obrázkové vyhledávání s vaším klíčem.',
     setAiSearchSerplyHint: 'Serply zajišťuje webové i obrázkové vyhledávání s vaším klíčem.',
@@ -9295,6 +9307,8 @@ export const strings = {
     starPromptLater: 'Možná později',
     onbStarHint: 'Pokud se vám UToOffice líbí, dejte nám hvězdičku na GitHubu.',
     setEmail: 'E-mail',
+    setMemberExpire: 'Membership expires',
+    setNotMember: 'Not a member',
     setNotLoggedIn: 'Nepřihlášeno',
     setViewUsage: 'Zobrazit využití',
     setChange: 'Změnit',
@@ -9612,9 +9626,8 @@ export const strings = {
     untitled: 'Naamloos',
     account: 'Account',
     login: 'Inloggen',
-    loginGenspark: 'Inloggen met ',
+    loginScanTip: 'Scan with WeChat to sign in',
     loggedIn: 'Ingelogd',
-    loggedInGenspark: 'Ingelogd bij ',
     waitingLogin: 'Wachten op inloggen in de browser… Klik om de inlogpagina opnieuw te openen',
     waitingShort: 'Wachten…',
     loginTimeout: 'Inloggen verlopen — klik om het opnieuw te proberen',
@@ -9850,7 +9863,7 @@ export const strings = {
     setAiEndpointAdd: 'Eindpunt toevoegen',
     setAiEndpointRemove: 'Verwijderen',
     setAiEndpointName: 'Naam',
-    setAiGensparkHint: 'Gebruikt je -login; geen API-sleutel nodig.',
+    setAiHint: 'Gebruikt je -login; geen API-sleutel nodig.',
     setAiCodexPath: 'Codex-uitvoerbaar bestand',
     setAiCodexPathHint:
       'Alleen invullen voor een aangepaste installatie; laat leeg voor automatische detectie.',
@@ -9868,9 +9881,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'Uitvoerbudget voor één beurt. Redeneermodellen geven dit uit aan denken; is het op, dan komt een leeg antwoord terug — verhoog deze waarde.',
     setSecAiMedia: 'AI-media en zoeken',
-    setAiMediaGensparkHint:
-      'Afbeeldingen genereren en afbeelding-/video-analyse gebruiken je -aanmelding.',
-    setAiSearchGensparkHint:
+    setAiMediaHint: 'Afbeeldingen genereren en afbeelding-/video-analyse gebruiken je -aanmelding.',
+    setAiSearchHint:
       'Web- en afbeeldingszoeken gebruiken je -aanmelding; afgemeld of met cloudtools uit vallen ze terug op gratis bronnen.',
     setAiSearchSerperHint: 'Serper levert web- en afbeeldingszoeken met je sleutel.',
     setAiSearchSerplyHint: 'Serply levert web- en afbeeldingszoeken met je sleutel.',
@@ -9902,6 +9914,8 @@ export const strings = {
     starPromptLater: 'Later',
     onbStarHint: 'Als UToOffice je bevalt, geef ons dan een ster op GitHub.',
     setEmail: 'E-mail',
+    setMemberExpire: 'Membership expires',
+    setNotMember: 'Not a member',
     setNotLoggedIn: 'Niet ingelogd',
     setViewUsage: 'Verbruik bekijken',
     setChange: 'Wijzigen',
@@ -10165,9 +10179,8 @@ export const strings = {
     untitled: 'Tanpa tajuk',
     account: 'Akaun',
     login: 'Log masuk',
-    loginGenspark: 'Log masuk dengan ',
+    loginScanTip: 'Scan with WeChat to sign in',
     loggedIn: 'Telah log masuk',
-    loggedInGenspark: 'Telah log masuk ke ',
     waitingLogin: 'Menunggu log masuk dalam pelayar… Klik untuk membuka semula halaman log masuk',
     waitingShort: 'Menunggu…',
     loginTimeout: 'Log masuk tamat masa — klik untuk cuba lagi',
@@ -10405,7 +10418,7 @@ export const strings = {
     setAiEndpointAdd: 'Tambah titik akhir',
     setAiEndpointRemove: 'Buang',
     setAiEndpointName: 'Nama',
-    setAiGensparkHint: 'Menggunakan log masuk ; tiada kunci API diperlukan.',
+    setAiHint: 'Menggunakan log masuk ; tiada kunci API diperlukan.',
     setAiCodexPath: 'Fail boleh laku Codex',
     setAiCodexPathHint:
       'Isi hanya untuk pemasangan tersuai; biarkan kosong untuk pengesanan automatik.',
@@ -10424,8 +10437,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'Belanjawan output untuk satu pusingan. Model penaakulan menghabiskannya untuk berfikir; jika habis, balasan datang kosong — tingkatkan nilai ini.',
     setSecAiMedia: 'Media & Carian AI',
-    setAiMediaGensparkHint: 'Penjanaan imej dan analisis imej/video menggunakan log masuk  anda.',
-    setAiSearchGensparkHint:
+    setAiMediaHint: 'Penjanaan imej dan analisis imej/video menggunakan log masuk  anda.',
+    setAiSearchHint:
       'Carian web dan imej menggunakan log masuk  anda; apabila log keluar atau alat awan dimatikan, ia menggunakan sumber percuma.',
     setAiSearchSerperHint: 'Serper menyediakan carian web dan imej dengan kunci anda.',
     setAiSearchSerplyHint: 'Serply menyediakan carian web dan imej dengan kunci anda.',
@@ -10457,6 +10470,8 @@ export const strings = {
     starPromptLater: 'Kemudian',
     onbStarHint: 'Jika anda suka UToOffice, beri kami bintang di GitHub.',
     setEmail: 'E-mel',
+    setMemberExpire: 'Membership expires',
+    setNotMember: 'Not a member',
     setNotLoggedIn: 'Belum log masuk',
     setViewUsage: 'Lihat penggunaan',
     setChange: 'Tukar',
@@ -10717,9 +10732,8 @@ export const strings = {
     untitled: 'ללא שם',
     account: 'חשבון',
     login: 'התחברות',
-    loginGenspark: 'התחברות עם ',
+    loginScanTip: 'Scan with WeChat to sign in',
     loggedIn: 'מחובר',
-    loggedInGenspark: 'מחובר ל-',
     waitingLogin: 'ממתין להתחברות בדפדפן… לחצו כדי לפתוח שוב את דף ההתחברות',
     waitingShort: 'ממתין…',
     loginTimeout: 'פג תוקף ההתחברות — לחצו כדי לנסות שוב',
@@ -10949,7 +10963,7 @@ export const strings = {
     setAiEndpointAdd: 'הוספת נקודת קצה',
     setAiEndpointRemove: 'הסרה',
     setAiEndpointName: 'שם',
-    setAiGensparkHint: 'משתמש בכניסת  שלך; אין צורך במפתח API.',
+    setAiHint: 'משתמש בכניסת  שלך; אין צורך במפתח API.',
     setAiCodexPath: 'קובץ ההפעלה של Codex',
     setAiCodexPathHint: 'יש למלא רק בהתקנה מותאמת; השאר ריק לזיהוי אוטומטי.',
     setAiCodexAutoPlaceholder: 'זיהוי אוטומטי (מומלץ)',
@@ -10966,8 +10980,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'תקציב פלט לסיבוב אחד. מודלי היסק מנצלים חלק ממנו לחשיבה, ואם הוא נגמר התשובה עלולה לחזור ריקה — במקרה כזה העלו את הערך.',
     setSecAiMedia: 'מדיה וחיפוש AI',
-    setAiMediaGensparkHint: 'יצירת תמונות וניתוח תמונות/וידאו משתמשים בהתחברות  שלך.',
-    setAiSearchGensparkHint:
+    setAiMediaHint: 'יצירת תמונות וניתוח תמונות/וידאו משתמשים בהתחברות  שלך.',
+    setAiSearchHint:
       'חיפוש באינטרנט ובתמונות משתמש בהתחברות  שלך; כשלא מחוברים או כשכלי הענן כבויים הוא חוזר למקורות חינמיים.',
     setAiSearchSerperHint: 'Serper מספק חיפוש באינטרנט ובתמונות עם המפתח שלך.',
     setAiSearchSerplyHint: 'Serply מספק חיפוש באינטרנט ובתמונות עם המפתח שלך.',
@@ -10998,6 +11012,8 @@ export const strings = {
     starPromptLater: 'אחר כך',
     onbStarHint: 'אם UToOffice מוצא חן בעיניכם, תנו לנו כוכב ב-GitHub.',
     setEmail: 'אימייל',
+    setMemberExpire: 'Membership expires',
+    setNotMember: 'Not a member',
     setNotLoggedIn: 'לא מחובר',
     setViewUsage: 'הצגת שימוש',
     setChange: 'שינוי',
@@ -11258,9 +11274,8 @@ export const strings = {
     untitled: 'बिना शीर्षक',
     account: 'खाता',
     login: 'साइन इन करें',
-    loginGenspark: ' से साइन इन करें',
+    loginScanTip: 'Scan with WeChat to sign in',
     loggedIn: 'साइन इन हो गया',
-    loggedInGenspark: ' में साइन इन है',
     waitingLogin:
       'ब्राउज़र में साइन इन की प्रतीक्षा है… साइन इन पेज दोबारा खोलने के लिए क्लिक करें',
     waitingShort: 'प्रतीक्षा में…',
@@ -11494,7 +11509,7 @@ export const strings = {
     setAiEndpointAdd: 'एंडपॉइंट जोड़ें',
     setAiEndpointRemove: 'हटाएँ',
     setAiEndpointName: 'नाम',
-    setAiGensparkHint: 'आपके  साइन-इन का उपयोग करता है; API कुंजी की आवश्यकता नहीं।',
+    setAiHint: 'आपके  साइन-इन का उपयोग करता है; API कुंजी की आवश्यकता नहीं।',
     setAiCodexPath: 'Codex निष्पादन फ़ाइल',
     setAiCodexPathHint: 'केवल कस्टम इंस्टॉलेशन के लिए भरें; स्वतः पहचान के लिए खाली छोड़ें।',
     setAiCodexAutoPlaceholder: 'स्वतः पहचान (अनुशंसित)',
@@ -11512,8 +11527,8 @@ export const strings = {
     setAiMaxTokensDesc:
       'एक टर्न का आउटपुट बजट। रीज़निंग मॉडल इसका कुछ हिस्सा सोचने में खर्च करते हैं; बजट खत्म होने पर उत्तर खाली आ सकता है — ऐसा हो तो इसे बढ़ाएँ।',
     setSecAiMedia: 'AI मीडिया और खोज',
-    setAiMediaGensparkHint: 'इमेज जनरेशन और इमेज/वीडियो विश्लेषण आपके  साइन-इन का उपयोग करते हैं।',
-    setAiSearchGensparkHint:
+    setAiMediaHint: 'इमेज जनरेशन और इमेज/वीडियो विश्लेषण आपके  साइन-इन का उपयोग करते हैं।',
+    setAiSearchHint:
       'वेब और इमेज खोज आपके  साइन-इन का उपयोग करती हैं; साइन-आउट होने पर या क्लाउड टूल बंद होने पर वे मुफ़्त स्रोतों पर लौट जाती हैं।',
     setAiSearchSerperHint: 'Serper आपकी कुंजी से वेब और इमेज खोज दोनों देता है।',
     setAiSearchSerplyHint: 'Serply आपकी कुंजी से वेब और इमेज खोज दोनों देता है।',
@@ -11545,6 +11560,8 @@ export const strings = {
     starPromptLater: 'बाद में',
     onbStarHint: 'अगर आपको UToOffice पसंद है, तो हमें GitHub पर स्टार दें।',
     setEmail: 'ईमेल',
+    setMemberExpire: 'Membership expires',
+    setNotMember: 'Not a member',
     setNotLoggedIn: 'साइन इन नहीं किया गया',
     setViewUsage: 'उपयोग देखें',
     setChange: 'बदलें',
@@ -11801,9 +11818,8 @@ export const strings = {
     untitled: '未命名',
     account: '帳號',
     login: '登入',
-    loginGenspark: '登入  帳號',
+    loginScanTip: 'Scan with WeChat to sign in',
     loggedIn: '已登入',
-    loggedInGenspark: '已登入 ',
     waitingLogin: '正在等待瀏覽器登入…點按可重新開啟登入頁面',
     waitingShort: '等待登入…',
     loginTimeout: '登入逾時，點按重試',
@@ -12027,7 +12043,7 @@ export const strings = {
     setAiEndpointAdd: '新增端點',
     setAiEndpointRemove: '刪除',
     setAiEndpointName: '名稱',
-    setAiGensparkHint: '使用  帳號登入，無需 API key。',
+    setAiHint: '使用  帳號登入，無需 API key。',
     setAiCodexPath: 'Codex 可執行檔',
     setAiCodexPathHint: '僅自訂安裝時填寫；留空會自動偵測。',
     setAiCodexAutoPlaceholder: '留空自動偵測（建議）',
@@ -12045,8 +12061,8 @@ export const strings = {
     setAiMaxTokensDesc:
       '一次回合的輸出預算。推理模型會先消耗預算用於思考，預算用畢時回覆可能變成空白，遇到此情況請調高本項。',
     setSecAiMedia: '生圖、媒體與搜尋',
-    setAiMediaGensparkHint: '生圖與圖片/影片解析使用  帳號登入。',
-    setAiSearchGensparkHint: '網頁與圖片搜尋使用  帳號登入；未登入或關閉雲端工具時改用免費來源。',
+    setAiMediaHint: '生圖與圖片/影片解析使用  帳號登入。',
+    setAiSearchHint: '網頁與圖片搜尋使用  帳號登入；未登入或關閉雲端工具時改用免費來源。',
     setAiSearchSerperHint: 'Serper 用你的 key 同時提供網頁與圖片搜尋。',
     setAiSearchSerplyHint: 'Serply 用你的 key 同時提供網頁與圖片搜尋。',
     setAiSearchSearchApiHint: 'SearchApi 用你的 key 同時提供網頁與圖片搜尋。',
@@ -12074,6 +12090,8 @@ export const strings = {
     starPromptLater: '以後再說',
     onbStarHint: '如果你喜歡 UToOffice，歡迎到 GitHub 給我們一顆星。',
     setEmail: '電子郵件',
+    setMemberExpire: 'Membership expires',
+    setNotMember: 'Not a member',
     setNotLoggedIn: '未登入',
     setViewUsage: '查看用量',
     setChange: '變更',
