@@ -397,9 +397,9 @@ export interface HomeApi {
   /** background checks download quietly and install on quit instead of showing the card (default off) */
   getSilentInstallUpdate(): Promise<boolean>
   setSilentInstallUpdate(on: boolean): Promise<void>
-  /** Account status (gsk login state; to be upgraded to a signup/account system later) */
+  /** account status (WeChat login + membership plan/quota) */
   accountStatus(): Promise<AccountStatus>
-  /** start  login (opens the browser; accountStatus flips to logged-in on completion); returns whether the launch succeeded */
+  /** start WeChat web-scan login (opens the browser; accountStatus flips to logged-in on completion); returns whether the launch succeeded */
   accountLogin(): Promise<boolean>
   /** progress events for the login started via accountLogin; returns an unsubscribe */
   onAccountLogin(handler: (ev: AccountLoginEvent) => void): () => void
@@ -407,8 +407,10 @@ export interface HomeApi {
   onOpenSettings(handler: (target: { section: string }) => void): () => void
   /** re-open the pending login auth URL in the default browser (rescue when auto-open failed) */
   openLoginUrl(): Promise<void>
-  /** log out (clears the saved API key; the login state is shared globally with the gsk CLI) */
+  /** log out (clears the WeChat login state) */
   accountLogout(): Promise<void>
+  /** open the account-center page (post a one-time token; openid stays out of the URL) */
+  accountOpenCenter(): Promise<boolean>
   /** app version (from package.json / electron app.getVersion) */
   getAppVersion(): Promise<string>
   /** live updater state (null until an update was first seen); Settings → About */
@@ -580,19 +582,28 @@ export interface CloudProjectsSnapshot {
 }
 
 export interface AccountStatus {
-  /** gsk is installed and logged in */
+  /** logged in via WeChat web scan */
   loggedIn: boolean
-  email?: string
-  /** remaining credits (absent when the balance query failed) */
-  creditBalance?: number
+  /** WeChat openid (after login) */
+  openid?: string
+  /** membership expiry 'YYYY-MM-DD HH:mm:ss', null = not subscribed (kept for compat; UI shows plan + quota) */
+  expireTime?: string | null
+  /** is a paid member (not free tier) */
+  isMember: boolean
+  /** subscription plan name (free / standard / premium tier) */
+  planName: string
+  /** monthly token quota */
+  quotaTokens: number
+  /** tokens used this month */
+  usedTokens: number
+  /** tokens remaining this month */
+  remainingTokens: number
 }
 
-/** login flow progress pushed from main (gsk login CLI output) */
+/** login flow progress pushed from main (WeChat web-scan login) */
 export interface AccountLoginEvent {
-  phase: 'launched' | 'url' | 'success' | 'error'
-  url?: string
-  expiresInSec?: number
-  /** 'network' | 'expired' | raw CLI error text */
+  phase: 'launched' | 'success' | 'error'
+  /** 'network' | other error text */
   error?: string
 }
 
@@ -716,6 +727,7 @@ export const HOME_CHANNELS = {
   openSettings: 'home:open-settings',
   accountLoginOpenUrl: 'home:account-login-open-url',
   accountLogout: 'home:account-logout',
+  accountOpenCenter: 'home:account-open-center',
   getAppVersion: 'home:get-app-version',
   onboardingSeen: 'home:onboarding-seen',
   setOnboardingSeen: 'home:set-onboarding-seen',

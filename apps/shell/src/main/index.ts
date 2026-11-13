@@ -134,21 +134,16 @@ import {
   withShown,
 } from './star-prompt'
 import {
-  clearCloudProjectsStore,
   cloudProjectExternalUrl,
   readCloudProjectsStore,
   syncCloudProjects,
 } from './cloud-projects'
 import { handleDroppedFiles } from './dropped-files'
 import { collectLaunchPaths } from './launch-paths'
-import {
-  genofficeLogout,
-  gskLoginInfo,
-  loadGenofficeAuth,
-  setGskProxyUrl,
-  startGenofficeLogin,
-  watchGskApiKey,
-} from '@genoffice/ai-search'
+import { loadGenofficeAuth, setGskProxyUrl, watchGskApiKey } from '@genoffice/ai-search'
+import { setUtoCloudIdentity } from '@genoffice/ai-provider'
+import { clearWxLogin, fetchAccountToken, fetchMember, readWxLogin, writeWxLogin } from './wx-login'
+import { startLoginCallback, stopLoginCallback } from './login-callback'
 
 import {
   buildDocsMenu,
@@ -4809,53 +4804,106 @@ function statEntries(paths: string[]): Promise<RecentEntry[]> {
 }
 
 function registerHomeIpc(): void {
-  // signed-in means UToOffice's own device-code login; the shared gsk CLI key
-  // is only a silent fallback, deliberately not shown here to nudge users onto our key
+  // cloud AI proxy authenticates by cached openid; register the resolver once
+  setUtoCloudIdentity({
+    openid: () => readWxLogin(app.getPath('userData'))?.openid ?? null,
+    product: () => 'office',
+  })
   ipcMain.handle(HOME_CHANNELS.accountStatus, async () => {
-    if (!loadGenofficeAuth()) return { loggedIn: false }
-    await proxyBootstrap
-    const info = await gskLoginInfo()
-    if (info) return { loggedIn: true, email: info.email, creditBalance: info.creditBalance }
-    // login-info answering 401 drops an expired key: report signed-out right away
-    return { loggedIn: !!loadGenofficeAuth() }
+    const state = readWxLogin(app.getPath('userData'))
+    if (!state) {
+      return {
+        loggedIn: false,
+        isMember: false,
+        planName: '体验版',
+        quotaTokens: 0,
+        usedTokens: 0,
+        remainingTokens: 0,
+      }
+    }
+    // server fallback: refresh membership status (plan + quota)
+    const member = await fetchMember(state.openid)
+    if (
+      member.isMember !== state.isMember ||
+      member.planName !== state.planName ||
+      member.remainingTokens !== state.remainingTokens
+    ) {
+      writeWxLogin(app.getPath('userData'), {
+        openid: member.openid,
+        expireTime: member.expireTime,
+        isMember: member.isMember,
+        planName: member.planName,
+        quotaTokens: member.quotaTokens,
+        usedTokens: member.usedTokens,
+        remainingTokens: member.remainingTokens,
+      })
+    }
+    return {
+      loggedIn: true,
+      openid: state.openid,
+      expireTime: member.expireTime,
+      isMember: member.isMember,
+      planName: member.planName,
+      quotaTokens: member.quotaTokens,
+      usedTokens: member.usedTokens,
+      remainingTokens: member.remainingTokens,
+    }
   })
 
-  // login progress is streamed to the requesting renderer; the auth URL is
-  // kept main-side so the "open manually" rescue never opens a renderer-supplied URL
-  let pendingLoginUrl = ''
+  // Web-scan login: open the account page in the browser; a local loopback
+  // server receives the openid callback and persists the login state.
   ipcMain.handle(HOME_CHANNELS.accountLogin, async (event) => {
     analytics.track('login_click')
     const sender = event.sender
-    pendingLoginUrl = ''
-    await proxyBootstrap
     const send = (payload: AccountLoginEvent) => {
       if (!sender.isDestroyed()) sender.send(HOME_CHANNELS.accountLoginEvent, payload)
     }
-    // open the browser on the first url event only; later events refresh the rescue URL
-    let opened = false
-    const launched = startGenofficeLogin((progress) => {
-      if (progress.url) {
-        pendingLoginUrl = progress.url
-        if (!opened) {
-          opened = true
-          void shell.openExternal(progress.url)
-        }
-      }
-      if (progress.phase === 'success') analytics.track('login_success')
-      send(progress)
-    })
-    if (launched) send({ phase: 'launched' })
-    return launched
+    // 1. start the local callback server
+    let cbPort = 0
+    try {
+      cbPort = await startLoginCallback((openid) => {
+        void (async () => {
+          const member = await fetchMember(openid)
+          writeWxLogin(app.getPath('userData'), {
+            openid,
+            expireTime: member.expireTime,
+            isMember: member.isMember,
+            planName: member.planName,
+            quotaTokens: member.quotaTokens,
+            usedTokens: member.usedTokens,
+            remainingTokens: member.remainingTokens,
+          })
+          analytics.track('login_success')
+          send({ phase: 'success' })
+        })()
+      })
+    } catch {
+      send({ phase: 'error', error: 'network' })
+      return false
+    }
+    // 2. open the web login page (browser scan)
+    send({ phase: 'launched' })
+    const url = `https://uto-office.cn/account?login=1&cbport=${cbPort}`
+    await shell.openExternal(url)
+    return true
   })
 
   ipcMain.handle(HOME_CHANNELS.accountLoginOpenUrl, () => {
-    if (pendingLoginUrl) void shell.openExternal(pendingLoginUrl)
+    // web-scan login has no stored QR code; the login button relaunches the flow
   })
 
   ipcMain.handle(HOME_CHANNELS.accountLogout, async () => {
-    await genofficeLogout()
-    // the cloud projects cache belongs to the account that just signed out
-    clearCloudProjectsStore(cloudProjectsStorePath())
+    clearWxLogin(app.getPath('userData'))
+    stopLoginCallback()
+  })
+
+  ipcMain.handle(HOME_CHANNELS.accountOpenCenter, async () => {
+    const state = readWxLogin(app.getPath('userData'))
+    if (!state) return false
+    const token = await fetchAccountToken(state.openid)
+    if (!token) return false
+    await shell.openExternal(`https://uto-office.cn/account?token=${encodeURIComponent(token)}`)
+    return true
   })
 
   ipcMain.handle(HOME_CHANNELS.getAppVersion, (): string => app.getVersion())
@@ -6948,8 +6996,6 @@ function installDockMenu(): void {
 // Prefer proxy env vars (terminal launch); a packaged app launched from Finder inherits no shell
 // env vars, so fall back to the system HTTP proxy. The renderer uses Chromium's system proxy and
 // is unaffected. Same bootstrap as slides-main startSlidesStandalone.
-// awaited by login IPC so the first status probe / login click cannot race the proxy resolution
-let proxyBootstrap: Promise<void> = Promise.resolve()
 
 async function installMainProcessProxy(): Promise<void> {
   let proxyUrl = [
@@ -7189,7 +7235,7 @@ app.whenReady().then(async () => {
     }
   }
 
-  proxyBootstrap = installMainProcessProxy()
+  void installMainProcessProxy()
   app.setAccessibilitySupportEnabled(true)
   // Settle the shared uiLang from saved settings BEFORE any tab renderer can
   // ask 'app:get-language': the editor handlers return the i18n module's

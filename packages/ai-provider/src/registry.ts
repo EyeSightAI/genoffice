@@ -46,6 +46,10 @@ export interface ResolvedEndpoint {
   maxTokens?: number
   /** images may be sent to this endpoint (custom: from the profile, else the heuristic) */
   vision?: boolean
+  /** override the chat-completions path suffix (default 'chat/completions'); the UTO proxy serves /ai/chat */
+  chatPath?: string
+  /** inject openid + product from the global UTO cloud identity resolver into the request body */
+  injectIdentity?: boolean
 }
 
 export interface ProviderAdapter {
@@ -353,6 +357,18 @@ export const AI_PROVIDER_ADAPTERS: Record<AiProviderId, ProviderAdapter> = {
     resolveEndpoint: opencodeEndpoint('https://api.commandcode.ai/provider', {
       anthropic: /^claude-/,
     }),
+  },
+  uto: {
+    meta: metaOf('uto'),
+    capabilities: { auth: 'gsk-login', vision: true },
+    resolveEndpoint() {
+      return {
+        protocol: 'openai-compatible',
+        baseUrl: 'https://uto-office.cn/api',
+        chatPath: 'ai/chat',
+        injectIdentity: true,
+      }
+    },
   },
   custom: {
     meta: metaOf('custom'),

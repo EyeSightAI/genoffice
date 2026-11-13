@@ -1832,7 +1832,7 @@ export function App({
     // 's key never lands in the settings file; the main process injects
     // it from the gsk login state. When logged out, requests return an error
     // guiding sign-in — not intercepted here.
-    return settings.provider === 'genspark' || !!config.apiKey
+    return settings.provider === 'genspark' || settings.provider === 'uto' || !!config.apiKey
   }
 
   /** Image attachments read as base64 and sent multimodal with this user message

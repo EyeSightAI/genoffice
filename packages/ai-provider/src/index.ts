@@ -113,6 +113,7 @@ export {
   type ThinkingShape,
 } from './thinking-effort'
 export { chatForProvider } from './chat'
+export { getUtoCloudIdentity, setUtoCloudIdentity } from './uto-cloud'
 export { setAiUserAgent, setRescueFetch } from './fetch'
 export { isAiNetworkError } from './network-error'
 export { isAiOverloadedError } from './overload-error'

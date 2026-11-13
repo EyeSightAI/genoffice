@@ -58,6 +58,8 @@ export async function chatForProvider(
           bodyExtras: { ...endpoint.bodyExtras, ...toggleThinkingBodyFor(config) },
           headers: endpoint.headers,
           reasoningEffort: openAiEffortFor(config, endpoint.protocol),
+          chatPath: endpoint.chatPath,
+          injectIdentity: endpoint.injectIdentity,
         })
       case 'openai-responses':
         return chatOpenAiResponses(wd, endpoint.baseUrl, config, system, user, {

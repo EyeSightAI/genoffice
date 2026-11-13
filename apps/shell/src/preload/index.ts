@@ -382,6 +382,10 @@ const homeApi: HomeApi = {
   async accountLogout() {
     await ipcRenderer.invoke(HOME_CHANNELS.accountLogout)
   },
+  async accountOpenCenter() {
+    const result: unknown = await ipcRenderer.invoke(HOME_CHANNELS.accountOpenCenter)
+    return result === true
+  },
   async getAppVersion() {
     const result: unknown = await ipcRenderer.invoke(HOME_CHANNELS.getAppVersion)
     return typeof result === 'string' ? result : ''

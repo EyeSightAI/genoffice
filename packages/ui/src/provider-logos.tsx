@@ -317,6 +317,19 @@ const LOGOS: Record<AiProviderId, ReactNode> = {
       <path d="M8.5 14.2c.9-1 2.2-1.5 3.5-1.5s2.6.5 3.5 1.5" strokeLinecap="round" />
     </svg>
   ),
+  uto: (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M6.5 18.5a4 4 0 0 1-.45-7.98A5.5 5.5 0 0 1 16.8 9.2a3.75 3.75 0 0 1-.3 9.3h-10Z" />
+    </svg>
+  ),
   custom: (
     <svg
       viewBox="0 0 24 24"

@@ -752,12 +752,12 @@ function GroupPicker({ groups, count, onCancel, onPick, onCreate, onRemove }: Gr
 }
 
 // ── Account entry (bottom-left) ──────────────────────────
-// Currently the  (gsk) login entry; to be upgraded to a signup/account system later.
-// Clicking it opens the settings modal directly (SettingsModal.tsx), which hosts
-// login/logout plus preferences (language, theme, save location, update channel).
+// WeChat web-scan login entry; clicking it opens the settings modal (SettingsModal.tsx),
+// which hosts login/logout, membership status and preferences (language, theme,
+// save location, update channel).
 
 const LOGIN_POLL_MS = 2500
-/** fallback deadline when the CLI does not report expires_in (device codes live ~300s) */
+/** fallback deadline when the account page never reports back (web scan ~300s) */
 const LOGIN_MAX_WAIT_MS = 300_000
 
 function AccountEntry({
@@ -779,12 +779,9 @@ function AccountEntry({
   const [waiting, setWaiting] = useState(false)
   // incremented on login retry, resetting the polling timer
   const [loginNonce, setLoginNonce] = useState(0)
-  const [loginError, setLoginError] = useState<
-    'timeout' | 'launch' | 'network' | 'expired' | 'failed' | null
-  >(null)
-  // auth URL reported by the login CLI — rescue entry when the browser did not open
-  const [authUrl, setAuthUrl] = useState<string | null>(null)
-  const [urlCopied, setUrlCopied] = useState(false)
+  const [loginError, setLoginError] = useState<'timeout' | 'launch' | 'network' | 'failed' | null>(
+    null,
+  )
   const loginDeadline = useRef(0)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [skillUpdate, setSkillUpdate] = useState(false)
@@ -817,32 +814,25 @@ function AccountEntry({
     }
   }, [settingsOpen])
 
-  // login progress pushed from main (gsk login CLI output)
+  // login progress pushed from main (WeChat web-scan login)
   useEffect(() => {
     const off = window.aiOffice.onAccountLogin?.((ev) => {
-      if (ev.phase === 'url') {
-        if (ev.url) setAuthUrl(ev.url)
-        if (ev.expiresInSec) loginDeadline.current = Date.now() + ev.expiresInSec * 1000
-      } else if (ev.phase === 'success') {
+      if (ev.phase === 'success') {
         void window.aiOffice.accountStatus().then((s) => {
           if (s.loggedIn) {
             setStatus(s)
             setWaiting(false)
-            setAuthUrl(null)
           }
         })
       } else if (ev.phase === 'error') {
         setWaiting(false)
-        setAuthUrl(null)
-        setLoginError(
-          ev.error === 'network' ? 'network' : ev.error === 'expired' ? 'expired' : 'failed',
-        )
+        setLoginError(ev.error === 'network' ? 'network' : 'failed')
       }
     })
     return off
   }, [])
 
-  // config-file polling stays as the fallback success path (works even if progress events are lost)
+  // status polling stays as the fallback success path (works even if progress events are lost)
   useEffect(() => {
     if (!waiting) return
     const timer = setInterval(() => {
@@ -850,10 +840,8 @@ function AccountEntry({
         if (s.loggedIn) {
           setStatus(s)
           setWaiting(false)
-          setAuthUrl(null)
         } else if (Date.now() > loginDeadline.current) {
           setWaiting(false)
-          setAuthUrl(null)
           setLoginError('timeout')
         }
       })
@@ -862,14 +850,12 @@ function AccountEntry({
   }, [waiting, loginNonce])
 
   const loggedIn = status?.loggedIn ?? false
-  const email = status?.email ?? ''
-  const initial = email ? email[0].toUpperCase() : loggedIn ? 'G' : '?'
+  const isMember = status?.isMember ?? false
   const errorText = loginError
     ? {
         timeout: t('loginTimeout'),
         launch: t('loginLaunchFailed'),
         network: t('loginNetworkError'),
-        expired: t('loginExpired'),
         failed: t('loginFailed'),
       }[loginError]
     : null
@@ -879,16 +865,21 @@ function AccountEntry({
     statusSeq.current++
     void window.aiOffice.accountLogout().then(() => {
       setLoggingOut(false)
-      setStatus({ loggedIn: false })
+      setStatus({
+        loggedIn: false,
+        isMember: false,
+        planName: '体验版',
+        quotaTokens: 0,
+        usedTokens: 0,
+        remainingTokens: 0,
+      })
     })
   }
 
   const startLogin = () => {
-    // clicking again while waiting = relaunch the login (main kills the stale CLI, so the new device code is the live one)
+    // clicking again while waiting = relaunch the login
     setLoginError(null)
     setWaiting(true)
-    setAuthUrl(null)
-    setUrlCopied(false)
     loginDeadline.current = Date.now() + LOGIN_MAX_WAIT_MS
     setLoginNonce((n) => n + 1)
     void window.aiOffice.accountLogin().then((launched) => {
@@ -896,16 +887,6 @@ function AccountEntry({
         setWaiting(false)
         setLoginError('launch')
       }
-    })
-  }
-
-  const openLoginUrl = () => void window.aiOffice.openLoginUrl?.()
-
-  const copyLoginUrl = () => {
-    if (!authUrl) return
-    void navigator.clipboard.writeText(authUrl).then(() => {
-      setUrlCopied(true)
-      window.setTimeout(() => setUrlCopied(false), 2000)
     })
   }
 
@@ -932,10 +913,6 @@ function AccountEntry({
           status={status}
           loggingOut={loggingOut}
           loginWaiting={waiting}
-          loginUrl={authUrl}
-          urlCopied={urlCopied}
-          onOpenLoginUrl={openLoginUrl}
-          onCopyLoginUrl={copyLoginUrl}
           onClose={() => setSettingsOpen(false)}
           onFileSearchChange={onFileSearchSettingsChange}
           onLogin={() => {
@@ -948,69 +925,15 @@ function AccountEntry({
           target={target}
         />
       )}
-      {!settingsOpen && waiting && authUrl && (
-        <div className="login-hint" role="status">
-          <button className="login-hint-open" onClick={openLoginUrl}>
-            {t('loginOpenShort')}
-          </button>
-          <button
-            className={`login-hint-copy${urlCopied ? ' copied' : ''}`}
-            onClick={copyLoginUrl}
-            // static tip: screentips are suppressed from pointerdown until the pointer
-            // leaves the control, so a swapped-in "copied" tip would never show — the
-            // check-mark icon is the visible feedback
-            data-tip={t('loginCopyUrl')}
-            aria-label={urlCopied ? t('loginCopied') : t('loginCopyUrl')}
-          >
-            {urlCopied ? (
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path
-                  d="m3.5 8.5 3 3 6-7"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            ) : (
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <rect
-                  x="5.5"
-                  y="5.5"
-                  width="7"
-                  height="7"
-                  rx="1.5"
-                  stroke="currentColor"
-                  strokeWidth="1.3"
-                />
-                <path
-                  d="M3.5 10.5V5a1.5 1.5 0 0 1 1.5-1.5h5.5"
-                  stroke="currentColor"
-                  strokeWidth="1.3"
-                  strokeLinecap="round"
-                />
-              </svg>
-            )}
-          </button>
-        </div>
-      )}
       <button
         className="account-btn"
         onClick={handleClick}
         aria-haspopup="dialog"
         aria-expanded={settingsOpen}
-        data-tip={
-          loggedIn
-            ? email || t('loggedInGenspark')
-            : waiting
-              ? t('waitingLogin')
-              : (errorText ?? t('loginGenspark'))
-        }
+        data-tip={isMember ? '查看会员权益' : '开通会员'}
         aria-label={t('settings')}
       >
-        <span
-          className={`account-avatar${loggedIn ? ' logged-in' : ''}${waiting ? ' waiting' : ''}`}
-        >
+        <span className={`account-avatar${isMember ? ' member' : ''}${waiting ? ' waiting' : ''}`}>
           {waiting ? (
             <svg
               className="account-spinner"
@@ -1032,22 +955,23 @@ function AccountEntry({
               />
             </svg>
           ) : (
-            initial
+            <svg
+              className="account-member-icon"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M6 3h12l4 6-10 12L2 9l4-6z" />
+            </svg>
           )}
           {skillUpdate && (
             <span className="account-badge" role="img" aria-label={t('intgUpdateDue')} />
           )}
         </span>
         <span className="account-text">
-          <span className="account-name">
-            {loggedIn
-              ? email
-                ? email.split('@')[0]
-                : t('loggedIn')
-              : waiting
-                ? t('waitingShort')
-                : t('login')}
-          </span>
+          <span className="account-name">{isMember ? '会员' : '开通会员'}</span>
           {!loggedIn && !waiting && errorText && (
             <span className="account-sub error">{errorText}</span>
           )}
@@ -1220,7 +1144,7 @@ function CloudProjectsView() {
         <p className="empty proj-empty">
           <span className="empty-hint">{t('cloudLoginHint')}</span>
           <button className="btn btn-secondary" disabled={loginWaiting} onClick={startLogin}>
-            {loginWaiting ? t('waitingShort') : t('loginGenspark')}
+            {loginWaiting ? t('waitingShort') : t('login')}
           </button>
         </p>
       )
@@ -1528,8 +1452,10 @@ export function Home() {
     const on = s?.loggedIn ?? false
     setLoggedIn(on)
     if (!on) setCloudMode(false)
-    const name = on ? (s?.email ?? '').split('@')[0] : ''
-    setAccountName(name ? name[0].toUpperCase() + name.slice(1) : '')
+    // WeChat login currently stores only openid (no nickname), so the greeting
+    // omits the name instead of showing a placeholder member word.
+    const name = ''
+    setAccountName(name)
   }, [])
   const [greetAskKey] = useState(
     () => GREET_ASK_KEYS[Math.floor(Math.random() * GREET_ASK_KEYS.length)]!,

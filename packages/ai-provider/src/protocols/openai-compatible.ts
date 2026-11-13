@@ -3,6 +3,7 @@ import { aiFetch } from '../fetch'
 import { httpBodyDetail } from '../http-error'
 import { gensparkAttributionHeaders, opencodeSessionHeaders } from '../providers'
 import { modelEchoesReasoning } from '../registry'
+import { getUtoCloudIdentity } from '../uto-cloud'
 import type { AiChatResponse, AiProviderConfig } from '../types'
 import { createStreamWatchdog, type StreamWatchdog } from '../watchdog'
 import {
@@ -165,6 +166,10 @@ export interface OpenAiRequestOptions {
   headers?: Record<string, string> | undefined
   /** stream idle budget override for slow local servers */
   idleTimeoutMs?: number | undefined
+  /** override the chat-completions path suffix (default 'chat/completions'); the UTO proxy serves /ai/chat */
+  chatPath?: string | undefined
+  /** inject openid + product from the global UTO cloud identity resolver */
+  injectIdentity?: boolean | undefined
 }
 
 const usageRejectedGateways = new Set<string>()
@@ -219,7 +224,7 @@ async function openAiCompatibleTurn(
     wd.touch()
     cb.onActivity?.()
   }
-  const response = await aiFetch(endpointUrl(baseUrl, 'chat/completions'), {
+  const response = await aiFetch(endpointUrl(baseUrl, options.chatPath ?? 'chat/completions'), {
     method: 'POST',
     signal: wd.signal,
     headers: {
@@ -233,6 +238,7 @@ async function openAiCompatibleTurn(
     },
     body: JSON.stringify({
       model: config.model,
+      ...(options.injectIdentity ? getUtoCloudIdentity() : {}),
       ...(options.useMaxCompletionTokens
         ? { max_completion_tokens: maxTokens }
         : { max_tokens: maxTokens }),
@@ -415,7 +421,7 @@ export async function chatOpenAiCompatible(
   user: string,
   options: OpenAiRequestOptions = {},
 ): Promise<AiChatResponse> {
-  const response = await aiFetch(endpointUrl(baseUrl, 'chat/completions'), {
+  const response = await aiFetch(endpointUrl(baseUrl, options.chatPath ?? 'chat/completions'), {
     method: 'POST',
     signal: wd.signal,
     headers: {
@@ -427,6 +433,7 @@ export async function chatOpenAiCompatible(
     },
     body: JSON.stringify({
       model: config.model,
+      ...(options.injectIdentity ? getUtoCloudIdentity() : {}),
       messages: [
         { role: 'system', content: system },
         { role: 'user', content: user },

@@ -67,6 +67,8 @@ export async function streamForProvider(
           headers: endpoint.headers,
           idleTimeoutMs: endpoint.idleTimeoutMs,
           reasoningEffort: openAiEffortFor(config, endpoint.protocol),
+          chatPath: endpoint.chatPath,
+          injectIdentity: endpoint.injectIdentity,
         })
       case 'openai-responses':
         return streamOpenAiResponses(baseUrl, config, system, messages, tools, tokens, cb, {

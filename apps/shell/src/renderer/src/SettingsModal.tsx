@@ -1778,11 +1778,6 @@ export interface SettingsModalProps {
   loggingOut: boolean
   /** browser sign-in in progress (spinner shows on the account entry) */
   loginWaiting: boolean
-  /** device auth URL while waiting — rescue actions when the browser did not auto-open */
-  loginUrl: string | null
-  urlCopied: boolean
-  onOpenLoginUrl: () => void
-  onCopyLoginUrl: () => void
   onClose: () => void
   /** the decision-model search settings were saved; the home search re-judges or drops its current order */
   onFileSearchChange?: () => void
@@ -1800,10 +1795,6 @@ export function SettingsModal({
   status,
   loggingOut,
   loginWaiting,
-  loginUrl,
-  urlCopied,
-  onOpenLoginUrl,
-  onCopyLoginUrl,
   onClose,
   onFileSearchChange,
   onLogin,
@@ -1984,7 +1975,15 @@ export function SettingsModal({
   })()
 
   const loggedIn = status?.loggedIn ?? false
-  const email = status?.email ?? ''
+  const isMember = status?.isMember ?? false
+  const planName = status?.planName ?? '体验版'
+  const quotaTokens = status?.quotaTokens ?? 0
+  const remainingTokens = status?.remainingTokens ?? 0
+
+  // open the account-center page (recharge / manage subscription in the browser)
+  const openAccountCenter = async () => {
+    await window.aiOffice.accountOpenCenter?.()
+  }
 
   return (
     <div
@@ -2028,47 +2027,33 @@ export function SettingsModal({
             {section === 'account' && (
               <>
                 <h3 className="set-pane-title">{t('setSecAccount')}</h3>
-                <Field label={t('setEmail')} value={loggedIn ? email : t('setNotLoggedIn')} />
-                {loggedIn && (
-                  <Field
-                    label={t('credits')}
-                    value={
-                      status?.creditBalance === undefined
-                        ? '—'
-                        : Math.floor(status.creditBalance).toLocaleString('en-US')
-                    }
-                    action={
-                      <button
-                        className="set-btn"
-                        data-tip={t('creditsTip')}
-                        onClick={() => void window.aiOffice.openCreditUsage?.()}
-                      >
-                        {t('setViewUsage')}
-                      </button>
-                    }
-                  />
+                {loggedIn ? (
+                  <>
+                    <Field label="套餐" value={planName} />
+                    <Field
+                      label="本月余量"
+                      value={`${Math.floor(remainingTokens / 1000)} / ${Math.floor(
+                        quotaTokens / 1000,
+                      )} 积分`}
+                    />
+                  </>
+                ) : (
+                  <Field label="会员到期" value={t('setNotLoggedIn')} />
                 )}
                 <div className="set-pane-footer">
                   {loggedIn ? (
-                    <button className="set-btn danger" disabled={loggingOut} onClick={onLogout}>
-                      {loggingOut ? t('loggingOut') : t('logout')}
-                    </button>
-                  ) : (
                     <>
-                      {loginWaiting && loginUrl && (
-                        <>
-                          <button className="set-btn" onClick={onOpenLoginUrl}>
-                            {t('loginOpenManually')}
-                          </button>
-                          <button className="set-btn" onClick={onCopyLoginUrl}>
-                            {urlCopied ? t('loginCopied') : t('loginCopyUrl')}
-                          </button>
-                        </>
-                      )}
-                      <button className="set-btn primary" onClick={onLogin}>
-                        {loginWaiting ? t('waitingShort') : t('loginGenspark')}
+                      <button className="set-btn primary" onClick={openAccountCenter}>
+                        打开账户中心
+                      </button>
+                      <button className="set-btn danger" disabled={loggingOut} onClick={onLogout}>
+                        {loggingOut ? t('loggingOut') : t('logout')}
                       </button>
                     </>
+                  ) : (
+                    <button className="set-btn primary" onClick={onLogin}>
+                      {loginWaiting ? t('waitingShort') : t('login')}
+                    </button>
                   )}
                 </div>
               </>
