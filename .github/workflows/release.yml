@@ -78,6 +78,7 @@ jobs:
         with:
           files: |
             apps/shell/release/*.exe
+            apps/shell/release/*.blockmap
             apps/shell/release/latest.yml
 
       - name: Sync to server mirror (国内更新加速)
@@ -90,7 +91,7 @@ jobs:
           c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
           c.connect('${{ secrets.SERVER_HOST }}', username='${{ secrets.SERVER_USER }}', password='${{ secrets.SERVER_PASSWORD }}')
           sftp = c.open_sftp()
-          for f in ['apps/shell/release/latest.yml', 'apps/shell/release/UToOffice-Setup.exe']:
+          for f in ['apps/shell/release/latest.yml', 'apps/shell/release/UToOffice-Setup.exe', 'apps/shell/release/UToOffice-Setup.exe.blockmap']:
               sftp.put(f, '/www/wwwroot/update/' + f.split('/')[-1])
           sftp.close()
           # server-side post-deploy: upload installer to chengdu OSS (internal, fast)
