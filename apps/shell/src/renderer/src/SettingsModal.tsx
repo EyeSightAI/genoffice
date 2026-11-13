@@ -331,7 +331,7 @@ function foldModels(providerId: string, models: string[]) {
 }
 
 /** AI model pane: provider / model / key / base URL, saved to userData/ai-settings.json */
-function AiModelPane({ t }: { t: TFunc }) {
+function AiModelPane({ t, isMember }: { t: TFunc; isMember: boolean }) {
   const [catalog, setCatalog] = useState<AiCatalogEntry[]>(
     () => window.aiOffice.getAiProviders?.() ?? [],
   )
@@ -482,6 +482,7 @@ function AiModelPane({ t }: { t: TFunc }) {
   }
   const is = provider === 'genspark'
   const isCodex = provider === 'codex'
+  const isUto = provider === 'uto'
 
   const touch = () => {
     setDirty(true)
@@ -582,6 +583,11 @@ function AiModelPane({ t }: { t: TFunc }) {
     touch()
   }
   const selectProvider = (id: AiSettings['provider']) => {
+    // BYOK (any provider other than the cloud AI) is members-only
+    if (id !== 'uto' && !isMember) {
+      window.alert('自配模型（BYOK）是会员专属功能，请先开通会员')
+      return
+    }
     // cloud tools cannot be off with genspark (chat runs through gsk anyway)
     setSettings({
       ...settings,
@@ -820,7 +826,7 @@ function AiModelPane({ t }: { t: TFunc }) {
             }}
           />
         </div>
-      ) : !is ? (
+      ) : !is && !isUto ? (
         <>
           <div className="set-field">
             <div className="set-field-text">
@@ -1068,6 +1074,10 @@ function AiModelPane({ t }: { t: TFunc }) {
             </>
           )}
         </>
+      ) : isUto ? (
+        <div className="set-field-desc set-ai-note">
+          云端 AI 已自动配置（DeepSeek Flash），无需 API Key，用量按会员积分计费。
+        </div>
       ) : null}
       <div className="set-field">
         <div className="set-field-text">
@@ -2058,7 +2068,7 @@ export function SettingsModal({
                 </div>
               </>
             )}
-            {section === 'aiModel' && <AiModelPane t={t} />}
+            {section === 'aiModel' && <AiModelPane t={t} isMember={status?.isMember ?? false} />}
             {section === 'aiMedia' && (
               <AiMediaPane
                 t={t}
