@@ -170,11 +170,11 @@ describe('Settings → Integrations', () => {
     // MCP block: the launcher itself while genoffice is not on the PATH, as a command and as JSON
     const mcp = [...host.querySelectorAll('.set-intg-mcp code')].map((c) => c.textContent)
     expect(mcp[0]).toBe(
-      'claude mcp add --transport stdio genoffice -- /Applications/UToOffice.app/Contents/Resources/cli/genoffice mcp',
+      'claude mcp add --transport stdio utooffice -- /Applications/UToOffice.app/Contents/Resources/cli/genoffice mcp',
     )
     expect(JSON.parse(mcp[1]!)).toEqual({
       mcpServers: {
-        genoffice: {
+        utooffice: {
           command: '/Applications/UToOffice.app/Contents/Resources/cli/genoffice',
           args: ['mcp'],
         },
@@ -226,13 +226,13 @@ describe('Settings → Integrations', () => {
     expect(mcpLaunch({ status: 'missing', launcherDir: winDir })).toEqual(win)
     expect(mcpLaunch({ status: 'present', launcherDir: winDir })).toEqual(win)
     expect(mcpClaudeCommand(win)).toBe(
-      `claude mcp add -e ELECTRON_RUN_AS_NODE=1 --transport stdio genoffice -- "${win.command}" "${win.args[0]}" mcp`,
+      `claude mcp add -e ELECTRON_RUN_AS_NODE=1 --transport stdio utooffice -- "${win.command}" "${win.args[0]}" mcp`,
     )
-    expect(JSON.parse(mcpConfigJson(win))).toEqual({ mcpServers: { genoffice: win } })
+    expect(JSON.parse(mcpConfigJson(win))).toEqual({ mcpServers: { utooffice: win } })
     expect(
       mcpClaudeCommand({ command: '/Applications/Gen Office.app/cli/genoffice', args: ['mcp'] }),
     ).toBe(
-      'claude mcp add --transport stdio genoffice -- "/Applications/Gen Office.app/cli/genoffice" mcp',
+      'claude mcp add --transport stdio utooffice -- "/Applications/Gen Office.app/cli/genoffice" mcp',
     )
   })
 

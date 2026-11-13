@@ -44,11 +44,11 @@ const shellWord = (w: string) => (/\s/.test(w) ? `"${w}"` : w)
 export function mcpClaudeCommand(launch: McpLaunch): string {
   const env = Object.entries(launch.env ?? {}).map(([k, v]) => `-e ${k}=${v} `)
   const words = [launch.command, ...launch.args].map(shellWord).join(' ')
-  return `claude mcp add ${env.join('')}--transport stdio genoffice -- ${words}`
+  return `claude mcp add ${env.join('')}--transport stdio utooffice -- ${words}`
 }
 
 export function mcpConfigJson(launch: McpLaunch): string {
-  const json = JSON.stringify({ mcpServers: { genoffice: launch } }, null, 2)
+  const json = JSON.stringify({ mcpServers: { utooffice: launch } }, null, 2)
   return json.replace(/"args": \[[^\]]*\]/, `"args": ${JSON.stringify(launch.args)}`)
 }
 
