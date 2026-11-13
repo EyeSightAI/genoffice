@@ -13,10 +13,10 @@
 Word, Excel, PowerPoint ve PDF dosyaları; siz ve yapay zekânız tarafından düzenlenir, gerçek biçimlerinde geri kaydedilir.</p>
 
 <p align="center">
-  <a href="../../LICENSE"><img src="https://img.shields.io/github/license/genspark-ai/genoffice" alt="Lisans: Apache-2.0"></a>
-  <a href="https://github.com/genspark-ai/genoffice/releases/latest"><img src="https://img.shields.io/github/v/release/genspark-ai/genoffice" alt="Son sürüm"></a>
-  <a href="https://github.com/genspark-ai/genoffice/releases"><img src="https://img.shields.io/github/downloads/genspark-ai/genoffice/total" alt="İndirmeler"></a>
-  <a href="https://github.com/genspark-ai/genoffice/stargazers"><img src="https://img.shields.io/github/stars/genspark-ai/genoffice?style=flat" alt="GitHub yıldızları"></a>
+  <a href="../../LICENSE"><img src="https://img.shields.io/github/license/EyeSightAI/genoffice" alt="Lisans: Apache-2.0"></a>
+  <a href="https://github.com/EyeSightAI/genoffice/releases/latest"><img src="https://img.shields.io/github/v/release/EyeSightAI/genoffice" alt="Son sürüm"></a>
+  <a href="https://github.com/EyeSightAI/genoffice/releases"><img src="https://img.shields.io/github/downloads/EyeSightAI/genoffice/total" alt="İndirmeler"></a>
+  <a href="https://github.com/EyeSightAI/genoffice/stargazers"><img src="https://img.shields.io/github/stars/EyeSightAI/genoffice?style=flat" alt="GitHub yıldızları"></a>
   <a href="https://x.com/merrickbuilds"><img src="https://img.shields.io/badge/follow-%40merrickbuilds-000000?logo=x&logoColor=white" alt="X'te @merrickbuilds'i takip edin"></a>
 </p>
 
@@ -79,9 +79,9 @@ yönündedir — kaydetme her zaman OOXML yazar, asla ODF yazmaz.
   açmadan makinenizde gerçek Office dosyaları oluşturabilir, dönüştürebilir,
   okuyabilir ve düzenleyebilir.
 
-**Edinin:** [macOS](https://github.com/genspark-ai/genoffice/releases/latest) (Apple Silicon ve Intel) ·
-[Windows](https://github.com/genspark-ai/genoffice/releases/latest) (x64 ve Arm) ·
-[Linux](https://github.com/genspark-ai/genoffice/releases/latest) (deb, rpm, AppImage) —
+**Edinin:** [macOS](https://github.com/EyeSightAI/genoffice/releases/latest) (Apple Silicon ve Intel) ·
+[Windows](https://github.com/EyeSightAI/genoffice/releases/latest) (x64 ve Arm) ·
+[Linux](https://github.com/EyeSightAI/genoffice/releases/latest) (deb, rpm, AppImage) —
 ayrıntılar ve gereksinimler [İndir](#download) bölümünde.
 
 ## Demo
@@ -259,7 +259,7 @@ Office dosyaları oluşturabilir, dönüştürebilir, okuyabilir ve düzenleyebi
 </tr>
 <tr>
 <td><b>Ajanınıza tek bir istem</b> — "Güneş Sistemi hakkında sekiz slaytlık bir sunum oluştur." Ajan skill'i okur, bir stil sayfası, bir ana hat ve slayt başına bir sayfa spesifikasyonu yazar, iki fotoğrafı <code>genoffice image</code> ile üretir ve <code>genoffice create</code> dosyayı <code>.pptx</code> olarak birleştirip <code>slides render</code> bakmanız için slayt başına bir PNG vermeden önce <code>genoffice slides check</code> komutunun taşan ya da çakışan her şeyi reddetmesine izin verir.</td>
-<td><b>Bir kez kurun, Ayarlar → Integrations üzerinden</b> — GenOffice bu bilgisayarda bulduğu kodlama ajanlarını listeler ve skill'i seçtiğiniz her birine yazar. Ya da skill'i zip olarak indirin ya da <code>npx skills add genspark-ai/genoffice</code> çalıştırın. Komutlar ve tam iş akışı <a href="#command-line-and-agent-skill">Komut satırı ve ajan skill'i</a> bölümünde.</td>
+<td><b>Bir kez kurun, Ayarlar → Integrations üzerinden</b> — GenOffice bu bilgisayarda bulduğu kodlama ajanlarını listeler ve skill'i seçtiğiniz her birine yazar. Ya da skill'i zip olarak indirin ya da <code>npx skills add EyeSightAI/genoffice</code> çalıştırın. Komutlar ve tam iş akışı <a href="#command-line-and-agent-skill">Komut satırı ve ajan skill'i</a> bölümünde.</td>
 </tr>
 </table>
 
@@ -394,7 +394,7 @@ istemcisi.
 | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Uygulamada **Ayarlar → Integrations**  | Bu bilgisayarda bulunan ajanları listeler; tek tık skill'i seçtiğiniz her birine yazar. Bir GenOffice sürümü daha yeni bir skill getirdiğinde bir **Update** düğmesi belirir. |
 | Aynı sayfadaki **Download as zip**     | claude.ai, Claude masaüstü uygulamaları ve diğer asistanların yüklenen skill olarak kabul ettiği düzen.                                                                       |
-| `npx skills add genspark-ai/genoffice` | Bu depodan skill uyumlu herhangi bir ajana kurar.                                                                                                                             |
+| `npx skills add EyeSightAI/genoffice` | Bu depodan skill uyumlu herhangi bir ajana kurar.                                                                                                                             |
 
 Ardından yeni bir sohbet başlatın ve bir belge isteyin. Skill, ajana ne zaman
 `genoffice`'e başvuracağını, bir dosyayı düzenlemeden önce nasıl okuyacağını
@@ -523,16 +523,16 @@ MCP araç sonuçları olarak yolculuk etti. Makineden yalnızca `search` ve
 
 | Platform                             | Gereksinimler                                         | İndirme                                                                                |
 | ------------------------------------ | ----------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| **macOS** — Apple Silicon (arm64)    | macOS 11+                                             | [Son `.dmg` (arm64)](https://github.com/genspark-ai/genoffice/releases/latest)         |
-| **macOS** — Intel (x64)              | macOS 11+                                             | [Son `.dmg` (x64)](https://github.com/genspark-ai/genoffice/releases/latest)           |
-| **Windows** (x64, çoğu PC)           | Windows 10+, Intel/AMD                                | [Son `-x64.exe` yükleyici](https://github.com/genspark-ai/genoffice/releases/latest)   |
-| **Windows** Arm üzerinde (ARM64)     | Arm üzerinde Windows 11 (Snapdragon X ve benzerleri)  | [Son `-arm64.exe` yükleyici](https://github.com/genspark-ai/genoffice/releases/latest) |
-| **Linux** — Debian / Ubuntu          | x86_64, glibc 2.34+ (Ubuntu 22.04 veya daha yeni)     | [Son `.deb`](https://github.com/genspark-ai/genoffice/releases/latest)                 |
-| **Linux** — Fedora / RHEL / openSUSE | x86_64, glibc 2.34+ (Fedora 35+, RHEL 9+, Leap 15.6+) | [Son `.rpm`](https://github.com/genspark-ai/genoffice/releases/latest)                 |
-| **Linux** — diğer dağıtımlar         | x86_64, glibc 2.34+, FUSE 2                           | [Son `.AppImage`](https://github.com/genspark-ai/genoffice/releases/latest)            |
+| **macOS** — Apple Silicon (arm64)    | macOS 11+                                             | [Son `.dmg` (arm64)](https://github.com/EyeSightAI/genoffice/releases/latest)         |
+| **macOS** — Intel (x64)              | macOS 11+                                             | [Son `.dmg` (x64)](https://github.com/EyeSightAI/genoffice/releases/latest)           |
+| **Windows** (x64, çoğu PC)           | Windows 10+, Intel/AMD                                | [Son `-x64.exe` yükleyici](https://github.com/EyeSightAI/genoffice/releases/latest)   |
+| **Windows** Arm üzerinde (ARM64)     | Arm üzerinde Windows 11 (Snapdragon X ve benzerleri)  | [Son `-arm64.exe` yükleyici](https://github.com/EyeSightAI/genoffice/releases/latest) |
+| **Linux** — Debian / Ubuntu          | x86_64, glibc 2.34+ (Ubuntu 22.04 veya daha yeni)     | [Son `.deb`](https://github.com/EyeSightAI/genoffice/releases/latest)                 |
+| **Linux** — Fedora / RHEL / openSUSE | x86_64, glibc 2.34+ (Fedora 35+, RHEL 9+, Leap 15.6+) | [Son `.rpm`](https://github.com/EyeSightAI/genoffice/releases/latest)                 |
+| **Linux** — diğer dağıtımlar         | x86_64, glibc 2.34+, FUSE 2                           | [Son `.AppImage`](https://github.com/EyeSightAI/genoffice/releases/latest)            |
 
 Tüm derlemeler `main` dalından gelir; macOS ve Windows yükleyicileri imzalıdır.
-Eski sürümler [Releases](https://github.com/genspark-ai/genoffice/releases) sayfasındadır.
+Eski sürümler [Releases](https://github.com/EyeSightAI/genoffice/releases) sayfasındadır.
 
 <details>
 <summary><b>Linux'a kurulum</b></summary>
@@ -610,7 +610,7 @@ dosyasına bakın.
 GenOffice etkin geliştirme aşamasındadır ve geri bildiriminiz onu şekillendirir.
 
 - **Hata bildirin ya da özellik isteyin:**
-  [GitHub Issues](https://github.com/genspark-ai/genoffice/issues).
+  [GitHub Issues](https://github.com/EyeSightAI/genoffice/issues).
 - **GenOffice grup sohbetine katılın:** ekiple ve diğer kullanıcılarla konuşmak
   için [GenTeam](https://genoffice.ai/join).
 - **X'te [@merrickbuilds](https://x.com/merrickbuilds) hesabını takip edin:**

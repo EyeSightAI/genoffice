@@ -1,6 +1,6 @@
 # Установка UToOffice
 
-Каждая сборка опубликована на [странице релизов](https://github.com/genspark-ai/genoffice/releases/latest). Все они собраны из `main`; установщики для macOS и Windows подписаны.
+Каждая сборка опубликована на [странице релизов](https://github.com/EyeSightAI/genoffice/releases/latest). Все они собраны из `main`; установщики для macOS и Windows подписаны.
 
 ## Выберите файл для своего компьютера
 

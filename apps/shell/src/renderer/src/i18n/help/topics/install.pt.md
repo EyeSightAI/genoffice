@@ -1,6 +1,6 @@
 # Instalar o UToOffice
 
-Todas as versões são publicadas na [página de lançamentos](https://github.com/genspark-ai/genoffice/releases/latest). Todas vêm de `main`; e os instaladores para macOS e Windows estão assinados.
+Todas as versões são publicadas na [página de lançamentos](https://github.com/EyeSightAI/genoffice/releases/latest). Todas vêm de `main`; e os instaladores para macOS e Windows estão assinados.
 
 ## Escolher o arquivo para a sua máquina
 

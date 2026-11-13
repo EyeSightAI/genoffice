@@ -1,6 +1,6 @@
 # Instalace UToOffice
 
-Každá sestavení je zveřejněno na [stránce Releases](https://github.com/genspark-ai/genoffice/releases/latest). Všechna pocházejí z `main`; instalátory pro macOS a Windows jsou podepsané.
+Každá sestavení je zveřejněno na [stránce Releases](https://github.com/EyeSightAI/genoffice/releases/latest). Všechna pocházejí z `main`; instalátory pro macOS a Windows jsou podepsané.
 
 ## Vyberte soubor pro svůj počítač
 

@@ -1,6 +1,6 @@
 # התקנת UToOffice
 
-כל גרסה מתפרסמת ב[עמוד ההפצות](https://github.com/genspark-ai/genoffice/releases/latest). כולן מגיעות מ-`main`; ומתקיני macOS ו-Windows חתומים.
+כל גרסה מתפרסמת ב[עמוד ההפצות](https://github.com/EyeSightAI/genoffice/releases/latest). כולן מגיעות מ-`main`; ומתקיני macOS ו-Windows חתומים.
 
 ## בחירת הקובץ למחשב שלך
 

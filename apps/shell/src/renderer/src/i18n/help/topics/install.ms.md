@@ -1,6 +1,6 @@
 # Pemasangan UToOffice
 
-Setiap keluaran diterbitkan pada [halaman Keluaran](https://github.com/genspark-ai/genoffice/releases/latest). Semuanya datang daripada `main`; pemasang untuk macOS dan Windows adalah bertanda tangan.
+Setiap keluaran diterbitkan pada [halaman Keluaran](https://github.com/EyeSightAI/genoffice/releases/latest). Semuanya datang daripada `main`; pemasang untuk macOS dan Windows adalah bertanda tangan.
 
 ## Memilih fail untuk mesin anda
 

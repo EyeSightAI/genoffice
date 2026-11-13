@@ -1,6 +1,6 @@
 # تثبيت UToOffice
 
-كل نسخة منشورة على [صفحة الإصدارات](https://github.com/genspark-ai/genoffice/releases/latest). وجميعها مبنية من `main`؛ وحزّامات التثبيت لنظامي macOS وWindows موقّعة.
+كل نسخة منشورة على [صفحة الإصدارات](https://github.com/EyeSightAI/genoffice/releases/latest). وجميعها مبنية من `main`؛ وحزّامات التثبيت لنظامي macOS وWindows موقّعة.
 
 ## اختر الملف المناسب لجهازك
 
