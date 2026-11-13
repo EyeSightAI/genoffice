@@ -133,11 +133,6 @@ import {
   withResolved,
   withShown,
 } from './star-prompt'
-import {
-  cloudProjectExternalUrl,
-  readCloudProjectsStore,
-  syncCloudProjects,
-} from './cloud-projects'
 import { handleDroppedFiles } from './dropped-files'
 import { collectLaunchPaths } from './launch-paths'
 import { loadGenofficeAuth, setGskProxyUrl, watchGskApiKey } from '@genoffice/ai-search'
@@ -5738,19 +5733,6 @@ function registerHomeIpc(): void {
     starPromptSessionGrant = null
     // 'later' needs no write: the display was already counted by the query
     if (action === 'starred') writeStarPrompt(withResolved(readStarPrompt()))
-  })
-
-  const cloudProjectsStorePath = () => join(app.getPath('userData'), 'cloud-projects.json')
-
-  ipcMain.handle(HOME_CHANNELS.cloudProjectsCached, () =>
-    readCloudProjectsStore(cloudProjectsStorePath()),
-  )
-
-  ipcMain.handle(HOME_CHANNELS.cloudProjects, () => syncCloudProjects(cloudProjectsStorePath()))
-
-  ipcMain.handle(HOME_CHANNELS.openCloudProject, (_event, projectUrl: unknown) => {
-    const url = cloudProjectExternalUrl(projectUrl)
-    if (url) void shell.openExternal(url)
   })
 }
 
