@@ -289,6 +289,27 @@ export function AiPanel({
   // must honor it like the shared AiComposer does.
   const { spellcheck } = useAiPanelPrefs()
   const [busy, setBusy] = useState(false)
+  /** "Use template library" tab: when checked AI may auto-pick from library / strictly apply the current template (members only) */
+  const [useTemplateLibrary, setUseTemplateLibrary] = useState(false)
+  const [isMember, setIsMember] = useState(false)
+  const [templateHint, setTemplateHint] = useState<string | null>(null)
+
+  // load membership (whether the "use current template" tab is unlocked); refresh periodically
+  // so a refund/expiry propagates without restarting the editor
+  useEffect(() => {
+    let alive = true
+    const refresh = () => {
+      void window.slidesApi?.membershipStatus?.().then((s) => {
+        if (alive) setIsMember(s?.isMember ?? false)
+      })
+    }
+    refresh()
+    const timer = setInterval(refresh, 5 * 60 * 1000)
+    return () => {
+      alive = false
+      clearInterval(timer)
+    }
+  }, [])
   /** messages queued while a reply runs; the pump re-runs them through runWith on settle */
   const msgQueue = useChatRunQueue<{
     attachments: AttachmentMeta[]
@@ -416,6 +437,8 @@ export function AiPanel({
   applySlideRef.current = applySlide
   const applyDeckRef = useRef(applyDeck)
   applyDeckRef.current = applyDeck
+  const useTemplateLibraryRef = useRef(useTemplateLibrary)
+  useTemplateLibraryRef.current = useTemplateLibrary
   const onBeforeRunRef = useRef(onBeforeRun)
   onBeforeRunRef.current = onBeforeRun
   const onPathChangeRef = useRef(onPathChange)
@@ -840,6 +863,19 @@ export function AiPanel({
       getSelectedIds: () => (queueRunResolverRef.current ? [] : selectedRef.current),
       applySlide: (i, updated) => applySlideRef.current(i, updated),
       applyDeck: (all, goTo) => applyDeckRef.current(all, goTo),
+      useTemplateLibrary: () => useTemplateLibraryRef.current,
+      openTemplate: async (url: string) => {
+        const res = await window.slidesApi.openTemplate(url)
+        if (res && typeof res === 'object' && 'error' in res && typeof res.error === 'string') {
+          return { ok: false, error: res.error }
+        }
+        // Success: res is OpenResult {path, slides, size}; replace the current deck with the template's pages
+        if (res && 'slides' in res && Array.isArray(res.slides)) {
+          applyDeckRef.current(res.slides, 0)
+          return { ok: true }
+        }
+        return { ok: false, error: 'empty result' }
+      },
       landGeneratedPages: async (
         pageMarkers: string[],
         mode?: 'replace' | 'append' | 'insert_at',
@@ -1602,6 +1638,34 @@ export function AiPanel({
         // AI Beautify sends the current slide's rendering along, so the model sees what it edits;
         // the note rides on the model instruction only — the chat bubble stays the localized preset text
         let modelInstruction = await withSkillBodies(instruction, sentSkills)
+        if (useTemplateLibrary) {
+          modelInstruction +=
+            '\n\n【使用模板库 · 强制规则】' +
+            '\n- 第一步先看本轮的 <deck outline> 判断当前文档状态，二选一：① 当前文档已有内容（页数 > 1，或任一页有文字/图片/形状元素）→ 说明用户已经打开了一个模板文件，直接套用当前文档，严禁调用 search_templates 再选模板；② 当前文档空白（只有 1 页且无任何元素）→ 走下面的「先调研再选模板」流程。判断只看 deck outline 的页数和元素，不要臆测。' +
+            '\n- 【先调研，再选模板（空白文档必做）】不要急着选模板：先 ask_clarification 问卷问清用户的内容和场景（项目数据、汇报要点、使用场合、页数预期），拿到回答后，再 search_templates 用「场景词 + 内容词」的精准关键词搜模板（如「季度 汇报 数据」），对比多个候选的 title/tags/category/structure，选「最贴合用户场景和内容」的那一个——严禁随便选第一个或默认模板。选好后再 open_template 加载。' +
+            '\n- 【问卷只问内容】问卷只问内容/数据/场景/页数，绝不要问风格/配色/受众（模板负责风格）。' +
+            '\n- 【禁止重新生成】套用模板后，严禁用 generate_deck 重新生成整套 PPT。' +
+            '\n- 【每页检查 + 删减（必做）】套用模板后，必须先用 read_slide 逐页检查模板的每一页（判断每页是封面/目录/正文/数据页/图表页/结束页等，以及页上已有的文本框），再结合用户的内容需求，删掉「内容用不到的多余页」——比如模板有 20 页但内容只够 12 页，就删掉重复类型的页。删页用 apply_ops 一次性批量（多个 deleteSlide op，每页一个，slideIndex 从大到小排列，先删索引大的页），一次调用删完，不要逐页删或反复规划索引；至少保留一页。内容放不下就精简文字或删减页内项目，绝不重做一套。' +
+            '\n- 【目录页同步（必做）】如果模板有目录页（一页列着 PART 01 / PART 02 / 02 等章节标题），调整内容和删页后，必须回读目录页，把目录页的章节标题改成「实际保留的各章节正文页标题」——目录页标题要和正文页标题一一对应、顺序一致、不多不少。删掉某个章节时，目录页里对应的标题也要一并删掉；改了某章标题时，目录页也要同步改。目录页永远反映当前真实页面的章节结构。' +
+            '\n- 【仅无匹配模板时例外】只有 search_templates 搜不到满足用户需求的模板，才允许 generate_deck 自己生成。' +
+            '\n\n【严格套用（两者通用）】logo、背景、配色、字体绝不改动。' +
+            '\n\n【内容适配框体（强制，否则会出现字体重叠/内容不适配）】' +
+            '\n- 生成的内容长度必须适配模板现有文本框/占位符的大小：内容偏长就精简文字或减小字号，内容偏短就保留留白；' +
+            '\n- 任何文字严禁溢出文本框（内容超过框体高度或宽度即为失败），严禁与其他文字或图片重叠；' +
+            '\n- 每页生成后必须检查该页的 <layout-audit> 结果：只要有 overflow / overlap / out-of-bounds，立即修复，直到 audit ✅ 通过才允许进入下一页。' +
+            '\n\n【内容要有设计感】' +
+            '\n- 每页要有清晰的视觉层次（大标题 → 要点 → 细节），禁止平铺文字；' +
+            '\n- 善用留白、对齐、强调色块、图标，避免纯文字堆砌；' +
+            '\n- 关键信息用大数字/加粗/色块突出，形成视觉焦点。' +
+            '\n\n【排版适配内容类型】（不同内容用对应排版，禁止所有页同一种布局）' +
+            '\n- 多个并列要点 → 三列卡片或图标列表；' +
+            '\n- 对比关系 → 左右两列对照；' +
+            '\n- 数据指标 → 大数字突出或图表；' +
+            '\n- 时间/步骤 → 时间线或流程图；' +
+            '\n- 金句/结论 → 居中大字引用；' +
+            '\n- 单一重点 → 居中强调。' +
+            '\n\n【其他】每页不重复同一版式；按内容增减页内项目；只整理美化内容，不重新设计版式。'
+        }
         if (opts?.slideShot && settingsSupportVision(settingsRef.current)) {
           const shot = await captureSlideShot(currentRef.current)
           if (shot) {
@@ -2309,6 +2373,61 @@ export function AiPanel({
             />
           )}
           {attachNotice && <div className="ai-attach-notice">{attachNotice}</div>}
+          <div className="ai-template-bar">
+            <div className="ai-template-cards" role="group" aria-label="模板">
+              <button
+                type="button"
+                className={`ai-template-card${useTemplateLibrary ? ' selected' : ''}`}
+                aria-pressed={useTemplateLibrary}
+                onClick={() => {
+                  if (!isMember) {
+                    setTemplateHint('「使用模板库」为会员专属功能，请先开通会员')
+                    return
+                  }
+                  setTemplateHint(null)
+                  setUseTemplateLibrary((v) => !v)
+                }}
+                data-tip={
+                  isMember ? 'AI 自动从模板库选模板，或严格套用你打开的文件' : '会员专属功能'
+                }
+              >
+                <span className="ai-template-card-icon" aria-hidden>
+                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                    <rect x="2.5" y="2.5" width="15" height="15" rx="2.5" />
+                    <path d="M2.5 7.5h15M7.5 7.5v10" />
+                  </svg>
+                </span>
+                <span className="ai-template-card-title">使用模板库</span>
+                {useTemplateLibrary && (
+                  <span className="ai-template-card-check" aria-hidden>
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <path d="M2 5.2l2.2 2.2L8 3" />
+                    </svg>
+                  </span>
+                )}
+              </button>
+              <button
+                type="button"
+                className="ai-template-card ai-template-card-more"
+                onClick={() => void window.slidesApi.openTemplateLibrary?.()}
+                data-tip="去网站模板库浏览挑选精美模板"
+              >
+                <span className="ai-template-card-icon" aria-hidden>
+                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                    <rect x="2.5" y="2.5" width="15" height="15" rx="2.5" />
+                    <path d="M6 9.5h8M6 12.5h8" />
+                  </svg>
+                </span>
+                <span className="ai-template-card-title">更多模板</span>
+              </button>
+            </div>
+            {useTemplateLibrary && (
+              <div className="ai-template-note">
+                AI 会自动从模板库选模板，或严格套用你打开的文件
+              </div>
+            )}
+          </div>
+          {templateHint && <div className="ai-template-hint">{templateHint}</div>}
           <div className="ai-input-box">
             <AiQueueStrip
               items={msgQueue.queued}
