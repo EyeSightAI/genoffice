@@ -731,6 +731,7 @@ const config = {
     ],
   },
   win: {
+    artifactName: 'UToOffice-Setup.exe',
     target: [
       {
         target: 'nsis',
@@ -776,8 +777,8 @@ const config = {
     // so apt sees the new packages as the same lineage. Homepage comes from
     // package.json "homepage"; the Package field is pinned in the deb block
     // below (packageName is a per-target option, rejected here by the schema).
-    maintainer: 'Mainfunc, Inc. <team@genspark.ai>',
-    vendor: 'Mainfunc, Inc. <team@genspark.ai>',
+    maintainer: 'UToOffice <support@uto-office.cn>',
+    vendor: 'UToOffice <support@uto-office.cn>',
     category: 'Office',
     // Icon SET directory, not the single 1024px png: electron-builder does
     // not resize a lone png, so deb/rpm would install only
@@ -857,8 +858,7 @@ const config = {
     fpm: ['--rpm-rpmbuild-define=_build_id_links none'],
   },
   nsis: {
-    oneClick: false,
-    allowToChangeInstallationDirectory: true,
+    oneClick: true,
   },
   beforePack: async (context) => {
     ensurePlatformHelpers()
