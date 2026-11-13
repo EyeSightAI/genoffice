@@ -398,7 +398,7 @@ export const strings = {
     setAiCodexHint:
       '自动查找并使用当前 Codex CLI，更新后无需重新选择；也可填写自定义路径。无需 API Key。',
     setAiByokNote:
-      '对话使用你自己的 key；生图与媒体解析按「生图与媒体」设置；网页搜索仍走  登录或免费来源。',
+      '对话使用你自己的 key；生图与媒体解析按「生图与媒体」设置；网页搜索仍走登录或免费来源。',
     setAiSave: '保存',
     setAiSaved: '已保存',
     setAiTest: '测试连接',
@@ -427,7 +427,7 @@ export const strings = {
     setAiSharedKeyHint: '同一服务商的 key 与 Base URL 在各项能力间共用，只需填一次。',
     setAiGskTools: '云工具',
     setAiGskToolsDesc:
-      '服务商选择  时，网页搜索、生图与媒体解析经  云端并消耗积分；关闭后搜索改用免费来源， 生图工具不可用。',
+      '服务商选择云端时，网页搜索、生图与媒体解析经云端并消耗积分；关闭后搜索改用免费来源，云端生图工具不可用。',
     setGithub: '开源项目',
     starOnGitHub: '去 GitHub 点 Star',
     starPromptTitle: '喜欢 UToOffice 吗？',
@@ -939,7 +939,7 @@ export const strings = {
     setAiCodexHint:
       'Automatically finds the current signed-in Codex CLI after updates; a custom path is optional. No API key is needed.',
     setAiByokNote:
-      'Chats use your own key. Image generation and media analysis follow the AI Media section; web search still uses the  sign-in or free sources.',
+      'Chats use your own key. Image generation and media analysis follow the AI Media section; web search still uses the sign-in or free sources.',
     setAiSave: 'Save',
     setAiSaved: 'Saved',
     setAiTest: 'Test connection',
@@ -952,7 +952,7 @@ export const strings = {
     setSecAiMedia: 'AI Media & Search',
     setAiMediaHint: 'Image generation and image/video analysis use your sign-in.',
     setAiSearchHint:
-      'Web and image search use your  sign-in; signed out or with cloud tools off they fall back to free sources.',
+      'Web and image search use your sign-in; signed out or with cloud tools off they fall back to free sources.',
     setAiSearchSerperHint: 'Serper serves both web and image search with your key.',
     setAiSearchSerplyHint: 'Serply serves both web and image search with your key.',
     setAiSearchSearchApiHint: 'SearchApi serves both web and image search with your key.',
@@ -971,7 +971,7 @@ export const strings = {
       "A vendor's key and base URL are shared across capabilities; enter them once.",
     setAiGskTools: 'cloud tools',
     setAiGskToolsDesc:
-      'Web search, image generation and media analysis run through  and use credits while their provider is set to ; when off, search uses free sources and the  image tools are unavailable.',
+      'Web search, image generation and media analysis run through cloud and use credits while their provider is set to cloud; when off, search uses free sources and the cloud image tools are unavailable.',
     setGithub: 'Open Source',
     starOnGitHub: 'Star on GitHub',
     starPromptTitle: 'Enjoying UToOffice?',
@@ -1130,7 +1130,7 @@ export const strings = {
     askCtaRecents: 'Gắn sao từ Gần đây',
     askNoSave: 'Cuộc trò chuyện không được lưu; sẽ bị xóa khi khởi động lại ứng dụng.',
     askUnknownError: 'Yêu cầu AI thất bại. Thử lại.',
-    navCloud: 'Dự án ',
+    navCloud: 'Dự án',
     cloudSubtitle:
       'Các dự án được tạo trên web với AI 助手. Tiếp tục chỉnh sửa trên trình duyệt của bạn — nhấp vào bất kỳ dự án nào để mở.',
     cloudSearchPlaceholder: 'Tìm kiếm {n} dự án…',
@@ -1490,7 +1490,7 @@ export const strings = {
     setAiCodexHint:
       'Tự động tìm CLI Codex đã đăng nhập hiện tại sau các bản cập nhật; đường dẫn tùy chỉnh là không bắt buộc. Không cần khóa API.',
     setAiByokNote:
-      'Các cuộc trò chuyện sử dụng khóa của riêng bạn. Việc tạo hình ảnh và phân tích phương tiện tuân theo phần Phương tiện AI; tìm kiếm web vẫn sử dụng đăng nhập  hoặc các nguồn miễn phí.',
+      'Các cuộc trò chuyện sử dụng khóa của riêng bạn. Việc tạo hình ảnh và phân tích phương tiện tuân theo phần Phương tiện AI; tìm kiếm web vẫn sử dụng đăng nhập hoặc các nguồn miễn phí.',
     setAiSave: 'Lưu',
     setAiSaved: 'Đã lưu',
     setAiTest: 'Kiểm tra kết nối',
@@ -1501,10 +1501,9 @@ export const strings = {
     setAiMaxTokensDesc:
       'Ngân sách đầu ra cho một lượt trao đổi. Các mô hình suy luận dành một phần trong đó để suy nghĩ, do đó câu trả lời có thể trống nếu hết ngân sách; hãy tăng giá trị này nếu gặp tình trạng trên.',
     setSecAiMedia: 'Phương tiện AI & Tìm kiếm',
-    setAiMediaHint:
-      'Tạo hình ảnh và phân tích hình ảnh/video sử dụng thông tin đăng nhập  của bạn.',
+    setAiMediaHint: 'Tạo hình ảnh và phân tích hình ảnh/video sử dụng thông tin đăng nhập của bạn.',
     setAiSearchHint:
-      'Tìm kiếm web và hình ảnh sử dụng thông tin đăng nhập  của bạn; khi đăng xuất hoặc tắt công cụ đám mây, hệ thống sẽ chuyển sang dùng các nguồn miễn phí.',
+      'Tìm kiếm web và hình ảnh sử dụng thông tin đăng nhập của bạn; khi đăng xuất hoặc tắt công cụ đám mây, hệ thống sẽ chuyển sang dùng các nguồn miễn phí.',
     setAiSearchSerperHint: 'Serper cung cấp cả tìm kiếm web và hình ảnh bằng khóa của bạn.',
     setAiSearchSerplyHint: 'Serply cung cấp cả tìm kiếm web và hình ảnh bằng key của bạn.',
     setAiSearchSearchApiHint: 'SearchApi cung cấp cả tìm kiếm web và hình ảnh bằng key của bạn.',
@@ -1521,9 +1520,9 @@ export const strings = {
     setAiCapFileSearch: 'Tìm kiếm tệp cục bộ',
     setAiSharedKeyHint:
       'Khóa và URL cơ sở của nhà cung cấp được dùng chung cho các chức năng; chỉ cần nhập một lần.',
-    setAiGskTools: 'Công cụ đám mây ',
+    setAiGskTools: 'Công cụ đám mây',
     setAiGskToolsDesc:
-      'Tìm kiếm web, tạo hình ảnh và phân tích phương tiện được xử lý qua  và tiêu tốn credit khi nhà cung cấp được đặt là ; khi tắt, tìm kiếm sẽ dùng các nguồn miễn phí và công cụ hình ảnh  sẽ không khả dụng.',
+      'Tìm kiếm web, tạo hình ảnh và phân tích phương tiện được xử lý qua đám mây và tiêu tốn credit khi nhà cung cấp được đặt là đám mây; khi tắt, tìm kiếm sẽ dùng các nguồn miễn phí và công cụ hình ảnh đám mây sẽ không khả dụng.',
     setGithub: 'Mã nguồn mở',
     starOnGitHub: 'Gắn sao trên GitHub',
     starPromptTitle: 'Bạn thích UToOffice chứ?',
@@ -2045,7 +2044,7 @@ export const strings = {
     setAiCodexHint:
       'Güncellemelerden sonra oturum açılmış geçerli Codex CLI’yi otomatik bulur; özel yol isteğe bağlıdır. API anahtarı gerekmez.',
     setAiByokNote:
-      'Sohbetler kendi anahtarınızı kullanır. Görüntü oluşturma ve medya analizi AI Medya bölümünü izler; web araması yine  girişini veya ücretsiz kaynakları kullanır.',
+      'Sohbetler kendi anahtarınızı kullanır. Görüntü oluşturma ve medya analizi AI Medya bölümünü izler; web araması yine girişini veya ücretsiz kaynakları kullanır.',
     setAiSave: 'Kaydet',
     setAiSaved: 'Kaydedildi',
     setAiTest: 'Bağlantıyı sına',
@@ -2058,7 +2057,7 @@ export const strings = {
     setSecAiMedia: 'AI Medya ve Arama',
     setAiMediaHint: 'Görüntü oluşturma ve görüntü/video analizi girişinizi kullanır.',
     setAiSearchHint:
-      'Web ve görüntü araması  girişinizi kullanır; çıkış yapılmışsa veya bulut araçları kapalıysa ücretsiz kaynaklara döner.',
+      'Web ve görüntü araması girişinizi kullanır; çıkış yapılmışsa veya bulut araçları kapalıysa ücretsiz kaynaklara döner.',
     setAiSearchSerperHint: 'Serper, anahtarınızla hem web hem görüntü aramasını sağlar.',
     setAiSearchSerplyHint: 'Serply, anahtarınızla hem web hem görüntü aramasını sağlar.',
     setAiSearchSearchApiHint: 'SearchApi, anahtarınızla hem web hem görüntü aramasını sağlar.',
@@ -2077,7 +2076,7 @@ export const strings = {
       'Bir sağlayıcının anahtarı ve temel URL’si yetenekler arasında paylaşılır; bir kez girin.',
     setAiGskTools: 'bulut araçları',
     setAiGskToolsDesc:
-      'Sağlayıcıları  olarak ayarlıyken web araması, görüntü oluşturma ve medya analizi  üzerinden çalışır ve kredi kullanır; kapalıyken arama ücretsiz kaynakları kullanır ve  görüntü araçları kullanılamaz.',
+      'Sağlayıcıları bulut olarak ayarlıyken web araması, görüntü oluşturma ve medya analizi bulut üzerinden çalışır ve kredi kullanır; kapalıyken arama ücretsiz kaynakları kullanır ve bulut görüntü araçları kullanılamaz.',
     setGithub: 'Açık Kaynak',
     starOnGitHub: 'GitHub’da yıldızla',
     starPromptTitle: 'UToOffice’i beğeniyor musunuz?',
@@ -2606,7 +2605,7 @@ export const strings = {
     setAiCodexAutoPlaceholder: '自動検出（推奨）',
     setAiCodexHint: 'ローカルでサインイン済みの Codex CLI を使用します。API キーは不要です。',
     setAiByokNote:
-      'チャットは自分のキーを使用します。画像生成とメディア解析は「AI メディア」の設定に従い、Web 検索は引き続き  のサインインまたは無料ソースを使用します。',
+      'チャットは自分のキーを使用します。画像生成とメディア解析は「AI メディア」の設定に従い、Web 検索は引き続きサインインまたは無料ソースを使用します。',
     setAiSave: '保存',
     setAiSaved: '保存しました',
     setAiTest: '接続テスト',
@@ -2619,7 +2618,7 @@ export const strings = {
     setSecAiMedia: 'AI メディアと検索',
     setAiMediaHint: '画像生成と画像/動画解析は のサインインを使用します。',
     setAiSearchHint:
-      'Web 検索と画像検索は  のサインインを使用します。サインアウト時やクラウドツールがオフのときは無料ソースにフォールバックします。',
+      'Web 検索と画像検索はサインインを使用します。サインアウト時やクラウドツールがオフのときは無料ソースにフォールバックします。',
     setAiSearchSerperHint: 'Serper はあなたのキーで Web 検索と画像検索の両方を提供します。',
     setAiSearchSerplyHint: 'Serply はあなたのキーで Web 検索と画像検索の両方を提供します。',
     setAiSearchSearchApiHint: 'SearchApi はあなたのキーで Web 検索と画像検索の両方を提供します。',
@@ -2638,7 +2637,7 @@ export const strings = {
       '同じプロバイダーのキーと Base URL は各機能で共有されます。一度入力すれば済みます。',
     setAiGskTools: 'クラウドツール',
     setAiGskToolsDesc:
-      'プロバイダーが  のとき、Web 検索・画像生成・メディア解析は  経由でクレジットを消費します。オフにすると検索は無料ソースを使い、 の画像ツールは利用できません。',
+      'プロバイダーが クラウド のとき、Web 検索・画像生成・メディア解析は クラウド 経由でクレジットを消費します。オフにすると検索は無料ソースを使い、クラウド の画像ツールは利用できません。',
     setGithub: 'オープンソース',
     starOnGitHub: 'GitHub でスターを付ける',
     starPromptTitle: 'UToOffice はいかがですか？',
@@ -3160,7 +3159,7 @@ export const strings = {
     setAiCodexAutoPlaceholder: '자동 감지(권장)',
     setAiCodexHint: '로컬에서 로그인된 Codex CLI를 사용하므로 API 키가 필요 없습니다.',
     setAiByokNote:
-      '채팅은 내 키를 사용합니다. 이미지 생성과 미디어 분석은 「AI 미디어」 설정을 따르며, 웹 검색은 여전히  로그인 또는 무료 소스를 사용합니다.',
+      '채팅은 내 키를 사용합니다. 이미지 생성과 미디어 분석은 「AI 미디어」 설정을 따르며, 웹 검색은 여전히 로그인 또는 무료 소스를 사용합니다.',
     setAiSave: '저장',
     setAiSaved: '저장됨',
     setAiTest: '연결 테스트',
@@ -3173,7 +3172,7 @@ export const strings = {
     setSecAiMedia: 'AI 미디어 및 검색',
     setAiMediaHint: '이미지 생성과 이미지/동영상 분석은 로그인을 사용합니다.',
     setAiSearchHint:
-      '웹 검색과 이미지 검색은  로그인을 사용합니다. 로그아웃 상태거나 클라우드 도구가 꺼져 있으면 무료 소스로 대체됩니다.',
+      '웹 검색과 이미지 검색은 로그인을 사용합니다. 로그아웃 상태거나 클라우드 도구가 꺼져 있으면 무료 소스로 대체됩니다.',
     setAiSearchSerperHint: 'Serper는 내 키로 웹 검색과 이미지 검색을 모두 제공합니다.',
     setAiSearchSerplyHint: 'Serply는 내 키로 웹 검색과 이미지 검색을 모두 제공합니다.',
     setAiSearchSearchApiHint: 'SearchApi는 내 키로 웹 검색과 이미지 검색을 모두 제공합니다.',
@@ -3192,7 +3191,7 @@ export const strings = {
       '같은 제공자의 키와 Base URL은 모든 기능에서 공유되므로 한 번만 입력하면 됩니다.',
     setAiGskTools: '클라우드 도구',
     setAiGskToolsDesc:
-      '제공자가 일 때 웹 검색, 이미지 생성, 미디어 분석은 를 거쳐 크레딧을 사용합니다. 끄면 검색은 무료 소스를 사용하고  이미지 도구는 사용할 수 없습니다.',
+      '제공자가 클라우드일 때 웹 검색, 이미지 생성, 미디어 분석은 클라우드를 거쳐 크레딧을 사용합니다. 끄면 검색은 무료 소스를 사용하고 클라우드 이미지 도구는 사용할 수 없습니다.',
     setGithub: '오픈 소스',
     starOnGitHub: 'GitHub에서 스타 누르기',
     starPromptTitle: 'UToOffice가 마음에 드시나요?',
@@ -3728,7 +3727,7 @@ export const strings = {
     setAiCodexAutoPlaceholder: 'Détection auto (recommandé)',
     setAiCodexHint: 'Utilise le CLI Codex connecté localement ; aucune clé API requise.',
     setAiByokNote:
-      "Les conversations utilisent votre propre clé. La génération d'images et l'analyse de médias suivent la section « Médias IA » ; la recherche web utilise toujours la connexion  ou des sources gratuites.",
+      "Les conversations utilisent votre propre clé. La génération d'images et l'analyse de médias suivent la section « Médias IA » ; la recherche web utilise toujours la connexion ou des sources gratuites.",
     setAiSave: 'Enregistrer',
     setAiSaved: 'Enregistré',
     setAiTest: 'Tester la connexion',
@@ -3742,7 +3741,7 @@ export const strings = {
     setAiMediaHint:
       "La génération d'images et l'analyse d'images/vidéos utilisent votre connexion .",
     setAiSearchHint:
-      "La recherche web et d'images utilise votre connexion  ; déconnecté ou avec les outils cloud désactivés, elle se rabat sur des sources gratuites.",
+      "La recherche web et d'images utilise votre connexion ; déconnecté ou avec les outils cloud désactivés, elle se rabat sur des sources gratuites.",
     setAiSearchSerperHint:
       "Serper assure la recherche web et la recherche d'images avec votre clé.",
     setAiSearchSerplyHint:
@@ -3762,9 +3761,9 @@ export const strings = {
     setAiCapFileSearch: 'Recherche de fichiers locaux',
     setAiSharedKeyHint:
       "La clé et l'URL de base d'un fournisseur sont partagées entre les capacités ; saisissez-les une seule fois.",
-    setAiGskTools: 'Outils cloud ',
+    setAiGskTools: 'Outils cloud',
     setAiGskToolsDesc:
-      "Lorsque leur fournisseur est , la recherche web, la génération d'images et l'analyse de médias passent par  et consomment des crédits ; désactivé, la recherche utilise des sources gratuites et les outils d'image  sont indisponibles.",
+      "Lorsque leur fournisseur est cloud, la recherche web, la génération d'images et l'analyse de médias passent par cloud et consomment des crédits ; désactivé, la recherche utilise des sources gratuites et les outils d'image cloud sont indisponibles.",
     setGithub: 'Open source',
     starOnGitHub: 'Mettre une étoile sur GitHub',
     starPromptTitle: 'UToOffice vous plaît ?',
@@ -4336,7 +4335,7 @@ export const strings = {
       'Schlüssel und Base URL eines Anbieters gelten für alle Fähigkeiten; einmal eintragen genügt.',
     setAiGskTools: '-Cloud-Tools',
     setAiGskToolsDesc:
-      'Steht ihr Anbieter auf , laufen Websuche, Bildgenerierung und Medienanalyse über  und verbrauchen Credits; ausgeschaltet nutzt die Suche kostenlose Quellen und die -Bildwerkzeuge sind nicht verfügbar.',
+      'Steht ihr Anbieter auf Cloud, laufen Websuche, Bildgenerierung und Medienanalyse über Cloud und verbrauchen Credits; ausgeschaltet nutzt die Suche kostenlose Quellen und die Cloud-Bildwerkzeuge sind nicht verfügbar.',
     setGithub: 'Open Source',
     starOnGitHub: 'Auf GitHub Stern geben',
     starPromptTitle: 'Gefällt Ihnen UToOffice?',
@@ -4870,7 +4869,7 @@ export const strings = {
     setAiCodexAutoPlaceholder: 'Detección automática (recomendado)',
     setAiCodexHint: 'Usa la CLI de Codex con sesión local; no se necesita clave de API.',
     setAiByokNote:
-      'Los chats usan tu propia clave. La generación de imágenes y el análisis de medios siguen la sección «Medios de IA»; la búsqueda web sigue usando el inicio de sesión de  o fuentes gratuitas.',
+      'Los chats usan tu propia clave. La generación de imágenes y el análisis de medios siguen la sección «Medios de IA»; la búsqueda web sigue usando el inicio de sesión o fuentes gratuitas.',
     setAiSave: 'Guardar',
     setAiSaved: 'Guardado',
     setAiTest: 'Probar conexión',
@@ -4901,9 +4900,9 @@ export const strings = {
     setAiCapFileSearch: 'Búsqueda de archivos locales',
     setAiSharedKeyHint:
       'La clave y la URL base de un proveedor se comparten entre capacidades; introdúcelas una sola vez.',
-    setAiGskTools: 'Herramientas en la nube de ',
+    setAiGskTools: 'Herramientas en la nube',
     setAiGskToolsDesc:
-      'Cuando su proveedor es , la búsqueda web, la generación de imágenes y el análisis de medios pasan por  y consumen créditos; desactivado, la búsqueda usa fuentes gratuitas y las herramientas de imagen de  no están disponibles.',
+      'Cuando su proveedor es nube, la búsqueda web, la generación de imágenes y el análisis de medios pasan por nube y consumen créditos; desactivado, la búsqueda usa fuentes gratuitas y las herramientas de imagen de nube no están disponibles.',
     setGithub: 'Código abierto',
     starOnGitHub: 'Dar una estrella en GitHub',
     starPromptTitle: '¿Te gusta UToOffice?',
@@ -5424,7 +5423,7 @@ export const strings = {
     setAiCodexAutoPlaceholder: 'ค้นหาอัตโนมัติ (แนะนำ)',
     setAiCodexHint: 'ใช้ Codex CLI ที่เข้าสู่ระบบไว้ในเครื่อง โดยไม่ต้องใช้คีย์ API',
     setAiByokNote:
-      'การแชทใช้คีย์ของคุณเอง การสร้างภาพและการวิเคราะห์สื่อเป็นไปตามส่วน "สื่อ AI" ส่วนการค้นหาเว็บยังใช้การลงชื่อเข้าใช้  หรือแหล่งข้อมูลฟรี',
+      'การแชทใช้คีย์ของคุณเอง การสร้างภาพและการวิเคราะห์สื่อเป็นไปตามส่วน "สื่อ AI" ส่วนการค้นหาเว็บยังใช้การลงชื่อเข้าใช้ หรือแหล่งข้อมูลฟรี',
     setAiSave: 'บันทึก',
     setAiSaved: 'บันทึกแล้ว',
     setAiTest: 'ทดสอบการเชื่อมต่อ',
@@ -5437,7 +5436,7 @@ export const strings = {
     setSecAiMedia: 'สื่อ AI และการค้นหา',
     setAiMediaHint: 'การสร้างภาพและการวิเคราะห์ภาพ/วิดีโอใช้การลงชื่อเข้าใช้ ของคุณ',
     setAiSearchHint:
-      'การค้นหาเว็บและภาพใช้การลงชื่อเข้าใช้  หากไม่ได้ลงชื่อเข้าใช้หรือปิดเครื่องมือคลาวด์ จะใช้แหล่งข้อมูลฟรีแทน',
+      'การค้นหาเว็บและภาพใช้การลงชื่อเข้าใช้ หากไม่ได้ลงชื่อเข้าใช้หรือปิดเครื่องมือคลาวด์ จะใช้แหล่งข้อมูลฟรีแทน',
     setAiSearchSerperHint: 'Serper ให้บริการค้นหาเว็บและภาพด้วยคีย์ของคุณ',
     setAiSearchSerplyHint: 'Serply ให้บริการค้นหาเว็บและภาพด้วยคีย์ของคุณ',
     setAiSearchSearchApiHint: 'SearchApi ให้บริการค้นหาเว็บและภาพด้วยคีย์ของคุณ',
@@ -5454,9 +5453,9 @@ export const strings = {
     setAiCapFileSearch: 'ค้นหาไฟล์ในเครื่อง',
     setAiSharedKeyHint:
       'คีย์และ Base URL ของผู้ให้บริการเดียวกันใช้ร่วมกันทุกความสามารถ กรอกครั้งเดียวพอ',
-    setAiGskTools: 'เครื่องมือคลาวด์ ',
+    setAiGskTools: 'เครื่องมือคลาวด์',
     setAiGskToolsDesc:
-      'เมื่อผู้ให้บริการตั้งเป็น  การค้นหาเว็บ การสร้างภาพ และการวิเคราะห์สื่อจะผ่าน  และใช้เครดิต เมื่อปิด การค้นหาจะใช้แหล่งข้อมูลฟรีและเครื่องมือภาพของ  จะใช้ไม่ได้',
+      'เมื่อผู้ให้บริการตั้งเป็น คลาวด์ การค้นหาเว็บ การสร้างภาพ และการวิเคราะห์สื่อจะผ่าน คลาวด์ และใช้เครดิต เมื่อปิด การค้นหาจะใช้แหล่งข้อมูลฟรีและเครื่องมือภาพของ คลาวด์ จะใช้ไม่ได้',
     setGithub: 'โอเพนซอร์ส',
     starOnGitHub: 'กดดาวบน GitHub',
     starPromptTitle: 'ชอบ UToOffice ไหม?',
@@ -5497,7 +5496,7 @@ export const strings = {
     onbStepAria: 'หน้า {n} จาก {total}',
     onbTitle3: 'ฟรีสำหรับทุกคน',
     onbBody3: 'ไม่มีค่าลิขสิทธิ์ ไม่มีโฆษณา ไม่มีลายน้ำ',
-    onbNote3: 'ฟีเจอร์ AI อาจใช้เครดิต ',
+    onbNote3: 'ฟีเจอร์ AI อาจใช้เครดิต',
     onbBack: 'ย้อนกลับ',
     intgSkillsDesc:
       'UToOffice ใช้เฉพาะทักษะในโฟลเดอร์ทักษะของตัวเอง การนำเข้าจากโฟลเดอร์หรือ zip จะคัดลอกทักษะทั้งชุด และไม่มีสิ่งใดทำงานเมื่อนำเข้า',
@@ -5981,7 +5980,7 @@ export const strings = {
     setAiCodexAutoPlaceholder: 'Deteksi otomatis (disarankan)',
     setAiCodexHint: 'Menggunakan Codex CLI yang sudah login secara lokal; tanpa kunci API.',
     setAiByokNote:
-      'Chat memakai kunci Anda sendiri. Pembuatan gambar dan analisis media mengikuti bagian "Media AI"; pencarian web tetap memakai login  atau sumber gratis.',
+      'Chat memakai kunci Anda sendiri. Pembuatan gambar dan analisis media mengikuti bagian "Media AI"; pencarian web tetap memakai login atau sumber gratis.',
     setAiSave: 'Simpan',
     setAiSaved: 'Tersimpan',
     setAiTest: 'Uji koneksi',
@@ -5994,7 +5993,7 @@ export const strings = {
     setSecAiMedia: 'Media & Pencarian AI',
     setAiMediaHint: 'Pembuatan gambar dan analisis gambar/video menggunakan login Anda.',
     setAiSearchHint:
-      'Pencarian web dan gambar memakai login  Anda; saat keluar atau alat cloud dimatikan, keduanya memakai sumber gratis.',
+      'Pencarian web dan gambar memakai login Anda; saat keluar atau alat cloud dimatikan, keduanya memakai sumber gratis.',
     setAiSearchSerperHint: 'Serper menyediakan pencarian web dan gambar dengan kunci Anda.',
     setAiSearchSerplyHint: 'Serply menyediakan pencarian web dan gambar dengan kunci Anda.',
     setAiSearchSearchApiHint: 'SearchApi menyediakan pencarian web dan gambar dengan kunci Anda.',
@@ -6011,9 +6010,9 @@ export const strings = {
     setAiCapFileSearch: 'Pencarian file lokal',
     setAiSharedKeyHint:
       'Kunci dan Base URL satu penyedia dipakai bersama oleh semua kemampuan; cukup isi sekali.',
-    setAiGskTools: 'Alat cloud ',
+    setAiGskTools: 'Alat cloud',
     setAiGskToolsDesc:
-      'Saat penyedianya disetel ke , pencarian web, pembuatan gambar, dan analisis media berjalan lewat  dan memakai kredit; jika dimatikan, pencarian memakai sumber gratis dan alat gambar  tidak tersedia.',
+      'Saat penyedianya disetel ke cloud, pencarian web, pembuatan gambar, dan analisis media berjalan lewat cloud dan memakai kredit; jika dimatikan, pencarian memakai sumber gratis dan alat gambar cloud tidak tersedia.',
     setGithub: 'Sumber Terbuka',
     starOnGitHub: 'Beri Bintang di GitHub',
     starPromptTitle: 'Suka UToOffice?',
@@ -6541,7 +6540,7 @@ export const strings = {
     setAiCodexAutoPlaceholder: 'Автоопределение (рекомендуется)',
     setAiCodexHint: 'Использует локально авторизованный Codex CLI; ключ API не нужен.',
     setAiByokNote:
-      'Чаты используют ваш собственный ключ. Генерация изображений и анализ медиа настраиваются в разделе «Медиа ИИ»; веб-поиск по-прежнему использует вход в  или бесплатные источники.',
+      'Чаты используют ваш собственный ключ. Генерация изображений и анализ медиа настраиваются в разделе «Медиа ИИ»; веб-поиск по-прежнему использует вход или бесплатные источники.',
     setAiSave: 'Сохранить',
     setAiSaved: 'Сохранено',
     setAiTest: 'Проверить подключение',
@@ -6572,9 +6571,9 @@ export const strings = {
     setAiCapFileSearch: 'Поиск локальных файлов',
     setAiSharedKeyHint:
       'Ключ и базовый URL провайдера общие для всех функций; введите их один раз.',
-    setAiGskTools: 'Облачные инструменты ',
+    setAiGskTools: 'Облачные инструменты',
     setAiGskToolsDesc:
-      'Когда провайдером выбран , веб-поиск, генерация изображений и анализ медиа идут через  и расходуют кредиты; при выключении поиск использует бесплатные источники, а инструменты изображений  недоступны.',
+      'Когда провайдером выбран облако, веб-поиск, генерация изображений и анализ медиа идут через облако и расходуют кредиты; при выключении поиск использует бесплатные источники, а инструменты изображений облако недоступны.',
     setGithub: 'Открытый код',
     starOnGitHub: 'Поставить звезду на GitHub',
     starPromptTitle: 'Нравится UToOffice?',
@@ -7098,7 +7097,7 @@ export const strings = {
     setAiCodexAutoPlaceholder: 'اكتشاف تلقائي (موصى به)',
     setAiCodexHint: 'يستخدم Codex CLI المسجل محليًا؛ لا حاجة إلى مفتاح API.',
     setAiByokNote:
-      'تستخدم المحادثات مفتاحك الخاص. يتبع توليد الصور وتحليل الوسائط قسم «وسائط الذكاء الاصطناعي»؛ ولا يزال البحث في الويب يستخدم تسجيل دخول  أو مصادر مجانية.',
+      'تستخدم المحادثات مفتاحك الخاص. يتبع توليد الصور وتحليل الوسائط قسم «وسائط الذكاء الاصطناعي»؛ ولا يزال البحث في الويب يستخدم تسجيل دخول أو مصادر مجانية.',
     setAiSave: 'حفظ',
     setAiSaved: 'تم الحفظ',
     setAiTest: 'اختبار الاتصال',
@@ -7130,7 +7129,7 @@ export const strings = {
       'مفتاح المزوّد وعنوان Base URL مشتركان بين جميع القدرات؛ أدخلهما مرة واحدة فقط.',
     setAiGskTools: 'أدوات السحابية',
     setAiGskToolsDesc:
-      'عندما يكون المزوّد ، يمر البحث في الويب وتوليد الصور وتحليل الوسائط عبر  ويستهلك الرصيد؛ عند الإيقاف يستخدم البحث مصادر مجانية وتصبح أدوات صور  غير متاحة.',
+      'عندما يكون المزوّد سحابة، يمر البحث في الويب وتوليد الصور وتحليل الوسائط عبر سحابة ويستهلك الرصيد؛ عند الإيقاف يستخدم البحث مصادر مجانية وتصبح أدوات صور سحابة غير متاحة.',
     setGithub: 'مفتوح المصدر',
     starOnGitHub: 'ضع نجمة على GitHub',
     starPromptTitle: 'هل أعجبك UToOffice؟',
@@ -7419,7 +7418,7 @@ export const strings = {
     loginCopyUrl: 'Copiar link de login',
     loginCopied: 'Copiado',
     loginNetworkError:
-      'Não foi possível conectar ao  — verifique sua rede ou as configurações de proxy',
+      'Não foi possível conectar ao — verifique sua rede ou as configurações de proxy',
     loginExpired: 'A autorização expirou — clique para tentar novamente',
     loginFailed: 'Falha no login — clique para tentar novamente',
     loggingOut: 'Saindo…',
@@ -7655,7 +7654,7 @@ export const strings = {
     setAiCodexAutoPlaceholder: 'Detectar automaticamente (recomendado)',
     setAiCodexHint: 'Usa o Codex CLI conectado localmente; nenhuma chave de API é necessária.',
     setAiByokNote:
-      'Os chats usam a sua própria chave. A geração de imagens e a análise de mídia seguem a seção «Mídia de IA»; a busca na web continua usando o login do  ou fontes gratuitas.',
+      'Os chats usam a sua própria chave. A geração de imagens e a análise de mídia seguem a seção «Mídia de IA»; a busca na web continua usando o login ou fontes gratuitas.',
     setAiSave: 'Salvar',
     setAiSaved: 'Salvo',
     setAiTest: 'Testar conexão',
@@ -7685,9 +7684,9 @@ export const strings = {
     setAiCapFileSearch: 'Pesquisa de arquivos locais',
     setAiSharedKeyHint:
       'A chave e a URL base de um provedor são compartilhadas entre as capacidades; insira-as uma só vez.',
-    setAiGskTools: 'Ferramentas na nuvem ',
+    setAiGskTools: 'Ferramentas na nuvem',
     setAiGskToolsDesc:
-      'Quando o provedor é o , a busca na web, a geração de imagens e a análise de mídia passam pelo  e consomem créditos; desativado, a busca usa fontes gratuitas e as ferramentas de imagem do  ficam indisponíveis.',
+      'Quando o provedor é o nuvem, a busca na web, a geração de imagens e a análise de mídia passam pelo nuvem e consomem créditos; desativado, a busca usa fontes gratuitas e as ferramentas de imagem do nuvem ficam indisponíveis.',
     setGithub: 'Código aberto',
     starOnGitHub: 'Dar uma estrela no GitHub',
     starPromptTitle: 'Gostando do UToOffice?',
@@ -8212,7 +8211,7 @@ export const strings = {
     setAiCodexAutoPlaceholder: 'Rilevamento automatico (consigliato)',
     setAiCodexHint: 'Usa Codex CLI con accesso locale; non è richiesta alcuna chiave API.',
     setAiByokNote:
-      "Le chat usano la tua chiave. La generazione di immagini e l'analisi dei media seguono la sezione «Media IA»; la ricerca web usa ancora l'accesso  o fonti gratuite.",
+      "Le chat usano la tua chiave. La generazione di immagini e l'analisi dei media seguono la sezione «Media IA»; la ricerca web usa ancora l'accesso o fonti gratuite.",
     setAiSave: 'Salva',
     setAiSaved: 'Salvato',
     setAiTest: 'Prova connessione',
@@ -8243,9 +8242,9 @@ export const strings = {
     setAiCapFileSearch: 'Ricerca file locali',
     setAiSharedKeyHint:
       "La chiave e l'URL base di un provider sono condivisi tra le capacità; inseriscili una volta sola.",
-    setAiGskTools: 'Strumenti cloud ',
+    setAiGskTools: 'Strumenti cloud',
     setAiGskToolsDesc:
-      "Quando il provider è , la ricerca web, la generazione di immagini e l'analisi dei media passano da  e consumano crediti; se disattivato, la ricerca usa fonti gratuite e gli strumenti immagine di  non sono disponibili.",
+      "Quando il provider è cloud, la ricerca web, la generazione di immagini e l'analisi dei media passano da cloud e consumano crediti; se disattivato, la ricerca usa fonti gratuite e gli strumenti immagine di cloud non sono disponibili.",
     setGithub: 'Open source',
     starOnGitHub: 'Metti una stella su GitHub',
     starPromptTitle: 'Ti piace UToOffice?',
@@ -8768,7 +8767,7 @@ export const strings = {
     setAiCodexAutoPlaceholder: 'Wykryj automatycznie (zalecane)',
     setAiCodexHint: 'Używa lokalnie zalogowanego Codex CLI; klucz API nie jest potrzebny.',
     setAiByokNote:
-      'Czaty używają Twojego klucza. Generowanie obrazów i analiza mediów zależą od sekcji „Media AI”; wyszukiwanie w sieci nadal korzysta z logowania  lub darmowych źródeł.',
+      'Czaty używają Twojego klucza. Generowanie obrazów i analiza mediów zależą od sekcji „Media AI”; wyszukiwanie w sieci nadal korzysta z logowania lub darmowych źródeł.',
     setAiSave: 'Zapisz',
     setAiSaved: 'Zapisano',
     setAiTest: 'Testuj połączenie',
@@ -8798,9 +8797,9 @@ export const strings = {
     setAiCapFileSearch: 'Wyszukiwanie plików lokalnych',
     setAiSharedKeyHint:
       'Klucz i bazowy URL dostawcy są wspólne dla wszystkich funkcji; wpisz je raz.',
-    setAiGskTools: 'Narzędzia chmurowe ',
+    setAiGskTools: 'Narzędzia chmurowe',
     setAiGskToolsDesc:
-      'Gdy dostawcą jest , wyszukiwanie w sieci, generowanie obrazów i analiza mediów przechodzą przez  i zużywają kredyty; po wyłączeniu wyszukiwanie używa darmowych źródeł, a narzędzia obrazów  są niedostępne.',
+      'Gdy dostawcą jest chmura, wyszukiwanie w sieci, generowanie obrazów i analiza mediów przechodzą przez chmura i zużywają kredyty; po wyłączeniu wyszukiwanie używa darmowych źródeł, a narzędzia obrazów chmura są niedostępne.',
     setGithub: 'Open source',
     starOnGitHub: 'Gwiazdka na GitHubie',
     starPromptTitle: 'Podoba Ci się UToOffice?',
@@ -8968,8 +8967,7 @@ export const strings = {
     cloudSortRecent: 'Nejnovější',
     cloudSortOldest: 'Nejstarší',
     cloudRefresh: 'Obnovit',
-    cloudLoginHint:
-      'Přihlaste se ke svému účtu  a zobrazte projekty, které jste vytvořili na webu.',
+    cloudLoginHint: 'Přihlaste se ke svému účtu a zobrazte projekty, které jste vytvořili na webu.',
     cloudEmpty: 'Zatím žádné webové projekty.',
     cloudError: 'Načtení se nezdařilo. Zkuste to později.',
     cloudRetry: 'Zkusit znovu',
@@ -9263,7 +9261,7 @@ export const strings = {
     setAiCodexHint:
       'Automaticky najde a použije aktuální Codex CLI, po aktualizaci není třeba nic měnit; lze zadat i vlastní cestu. API klíč není potřeba.',
     setAiByokNote:
-      'Chaty používají váš vlastní klíč. Generování obrázků a analýza médií se řídí sekcí AI média; webové vyhledávání dál používá přihlášení ke  nebo bezplatné zdroje.',
+      'Chaty používají váš vlastní klíč. Generování obrázků a analýza médií se řídí sekcí AI média; webové vyhledávání dál používá přihlášení nebo bezplatné zdroje.',
     setAiSave: 'Uložit',
     setAiSaved: 'Uloženo',
     setAiTest: 'Otestovat připojení',
@@ -9293,9 +9291,9 @@ export const strings = {
     setAiCapFileSearch: 'Hledání místních souborů',
     setAiSharedKeyHint:
       'Klíč a základní URL jednoho poskytovatele se sdílejí mezi funkcemi; zadejte je jen jednou.',
-    setAiGskTools: 'Cloudové nástroje ',
+    setAiGskTools: 'Cloudové nástroje',
     setAiGskToolsDesc:
-      'Webové vyhledávání, generování obrázků a analýza médií běží přes  a čerpají kredity, pokud je jejich poskytovatel nastaven na ; při vypnutí vyhledávání používá bezplatné zdroje a obrázkové nástroje  nejsou dostupné.',
+      'Webové vyhledávání, generování obrázků a analýza médií běží přes cloud a čerpají kredity, pokud je jejich poskytovatel nastaven na cloud; při vypnutí vyhledávání používá bezplatné zdroje a obrázkové nástroje cloud nejsou dostupné.',
     setGithub: 'Open source',
     starOnGitHub: 'Dát hvězdičku na GitHubu',
     starPromptTitle: 'Líbí se vám UToOffice?',
@@ -9902,7 +9900,7 @@ export const strings = {
       'De sleutel en basis-URL van een provider gelden voor alle functies; één keer invoeren volstaat.',
     setAiGskTools: '-cloudtools',
     setAiGskToolsDesc:
-      'Staat de provider op , dan lopen zoeken op het web, afbeeldingen genereren en media-analyse via  en kosten ze credits; uitgeschakeld gebruikt zoeken gratis bronnen en zijn de -afbeeldingstools niet beschikbaar.',
+      'Staat de provider op cloud, dan lopen zoeken op het web, afbeeldingen genereren en media-analyse via cloud en kosten ze credits; uitgeschakeld gebruikt zoeken gratis bronnen en zijn de cloud-afbeeldingstools niet beschikbaar.',
     setGithub: 'Open source',
     starOnGitHub: 'Geef een ster op GitHub',
     starPromptTitle: 'Bevalt UToOffice?',
@@ -10426,7 +10424,7 @@ export const strings = {
     setAiCodexHint:
       'Menggunakan Codex CLI yang telah log masuk secara setempat; tiada kunci API diperlukan.',
     setAiByokNote:
-      'Sembang menggunakan kunci anda sendiri. Penjanaan imej dan analisis media mengikut bahagian "Media AI"; carian web masih menggunakan log masuk  atau sumber percuma.',
+      'Sembang menggunakan kunci anda sendiri. Penjanaan imej dan analisis media mengikut bahagian "Media AI"; carian web masih menggunakan log masuk atau sumber percuma.',
     setAiSave: 'Simpan',
     setAiSaved: 'Disimpan',
     setAiTest: 'Uji sambungan',
@@ -10439,7 +10437,7 @@ export const strings = {
     setSecAiMedia: 'Media & Carian AI',
     setAiMediaHint: 'Penjanaan imej dan analisis imej/video menggunakan log masuk anda.',
     setAiSearchHint:
-      'Carian web dan imej menggunakan log masuk  anda; apabila log keluar atau alat awan dimatikan, ia menggunakan sumber percuma.',
+      'Carian web dan imej menggunakan log masuk anda; apabila log keluar atau alat awan dimatikan, ia menggunakan sumber percuma.',
     setAiSearchSerperHint: 'Serper menyediakan carian web dan imej dengan kunci anda.',
     setAiSearchSerplyHint: 'Serply menyediakan carian web dan imej dengan kunci anda.',
     setAiSearchSearchApiHint: 'SearchApi menyediakan carian web dan imej dengan kunci anda.',
@@ -10456,9 +10454,9 @@ export const strings = {
     setAiCapFileSearch: 'Carian fail tempatan',
     setAiSharedKeyHint:
       'Kunci dan Base URL pembekal dikongsi oleh semua keupayaan; isi sekali sahaja.',
-    setAiGskTools: 'Alat awan ',
+    setAiGskTools: 'Alat awan',
     setAiGskToolsDesc:
-      'Apabila pembekalnya ditetapkan kepada , carian web, penjanaan imej dan analisis media melalui  dan menggunakan kredit; apabila dimatikan, carian menggunakan sumber percuma dan alat imej  tidak tersedia.',
+      'Apabila pembekalnya ditetapkan kepada awan, carian web, penjanaan imej dan analisis media melalui awan dan menggunakan kredit; apabila dimatikan, carian menggunakan sumber percuma dan alat imej awan tidak tersedia.',
     setGithub: 'Sumber Terbuka',
     starOnGitHub: 'Beri Bintang di GitHub',
     starPromptTitle: 'Suka UToOffice?',
@@ -10969,7 +10967,7 @@ export const strings = {
     setAiCodexAutoPlaceholder: 'זיהוי אוטומטי (מומלץ)',
     setAiCodexHint: 'משתמש ב-Codex CLI המחובר מקומית; אין צורך במפתח API.',
     setAiByokNote:
-      'הצ׳אטים משתמשים במפתח שלך. יצירת תמונות וניתוח מדיה נקבעים בקטע "מדיה AI"; חיפוש באינטרנט עדיין משתמש בהתחברות  או במקורות חינמיים.',
+      'הצ׳אטים משתמשים במפתח שלך. יצירת תמונות וניתוח מדיה נקבעים בקטע "מדיה AI"; חיפוש באינטרנט עדיין משתמש בהתחברות או במקורות חינמיים.',
     setAiSave: 'שמירה',
     setAiSaved: 'נשמר',
     setAiTest: 'בדיקת חיבור',
@@ -10982,7 +10980,7 @@ export const strings = {
     setSecAiMedia: 'מדיה וחיפוש AI',
     setAiMediaHint: 'יצירת תמונות וניתוח תמונות/וידאו משתמשים בהתחברות שלך.',
     setAiSearchHint:
-      'חיפוש באינטרנט ובתמונות משתמש בהתחברות  שלך; כשלא מחוברים או כשכלי הענן כבויים הוא חוזר למקורות חינמיים.',
+      'חיפוש באינטרנט ובתמונות משתמש בהתחברות שלך; כשלא מחוברים או כשכלי הענן כבויים הוא חוזר למקורות חינמיים.',
     setAiSearchSerperHint: 'Serper מספק חיפוש באינטרנט ובתמונות עם המפתח שלך.',
     setAiSearchSerplyHint: 'Serply מספק חיפוש באינטרנט ובתמונות עם המפתח שלך.',
     setAiSearchSearchApiHint: 'SearchApi מספק חיפוש באינטרנט ובתמונות עם המפתח שלך.',
@@ -10999,9 +10997,9 @@ export const strings = {
     setAiCapFileSearch: 'חיפוש קבצים מקומיים',
     setAiSharedKeyHint:
       'המפתח וכתובת ה-Base URL של ספק משותפים לכל היכולות; יש להזין אותם פעם אחת בלבד.',
-    setAiGskTools: 'כלי הענן של ',
+    setAiGskTools: 'כלי הענן',
     setAiGskToolsDesc:
-      'כשהספק מוגדר ל-, חיפוש באינטרנט, יצירת תמונות וניתוח מדיה עוברים דרך  וצורכים קרדיטים; כשהוא כבוי החיפוש משתמש במקורות חינמיים וכלי התמונות של  אינם זמינים.',
+      'כשהספק מוגדר ל-ענן, חיפוש באינטרנט, יצירת תמונות וניתוח מדיה עוברים דרך ענן וצורכים קרדיטים; כשהוא כבוי החיפוש משתמש במקורות חינמיים וכלי התמונות של ענן אינם זמינים.',
     setGithub: 'קוד פתוח',
     starOnGitHub: 'תנו כוכב ב-GitHub',
     starPromptTitle: 'נהנים מ-UToOffice?',
@@ -11516,7 +11514,7 @@ export const strings = {
     setAiCodexHint:
       'स्थानीय रूप से साइन-इन किए गए Codex CLI का उपयोग करता है; API कुंजी की आवश्यकता नहीं।',
     setAiByokNote:
-      'चैट आपकी अपनी कुंजी का उपयोग करती हैं। इमेज जनरेशन और मीडिया विश्लेषण "AI मीडिया" अनुभाग के अनुसार होते हैं; वेब खोज अभी भी  साइन-इन या मुफ़्त स्रोतों का उपयोग करती है।',
+      'चैट आपकी अपनी कुंजी का उपयोग करती हैं। इमेज जनरेशन और मीडिया विश्लेषण "AI मीडिया" अनुभाग के अनुसार होते हैं; वेब खोज अभी भी साइन-इन या मुफ़्त स्रोतों का उपयोग करती है।',
     setAiSave: 'सहेजें',
     setAiSaved: 'सहेजा गया',
     setAiTest: 'कनेक्शन परखें',
@@ -11529,7 +11527,7 @@ export const strings = {
     setSecAiMedia: 'AI मीडिया और खोज',
     setAiMediaHint: 'इमेज जनरेशन और इमेज/वीडियो विश्लेषण आपके साइन-इन का उपयोग करते हैं।',
     setAiSearchHint:
-      'वेब और इमेज खोज आपके  साइन-इन का उपयोग करती हैं; साइन-आउट होने पर या क्लाउड टूल बंद होने पर वे मुफ़्त स्रोतों पर लौट जाती हैं।',
+      'वेब और इमेज खोज आपके साइन-इन का उपयोग करती हैं; साइन-आउट होने पर या क्लाउड टूल बंद होने पर वे मुफ़्त स्रोतों पर लौट जाती हैं।',
     setAiSearchSerperHint: 'Serper आपकी कुंजी से वेब और इमेज खोज दोनों देता है।',
     setAiSearchSerplyHint: 'Serply आपकी कुंजी से वेब और इमेज खोज दोनों देता है।',
     setAiSearchSearchApiHint: 'SearchApi आपकी कुंजी से वेब और इमेज खोज दोनों देता है।',
@@ -11548,7 +11546,7 @@ export const strings = {
       'एक प्रदाता की कुंजी और Base URL सभी क्षमताओं में साझा होते हैं; एक बार ही दर्ज करें।',
     setAiGskTools: 'क्लाउड टूल',
     setAiGskToolsDesc:
-      'जब प्रदाता  हो, वेब खोज, इमेज जनरेशन और मीडिया विश्लेषण  से होकर चलते हैं और क्रेडिट खर्च करते हैं; बंद होने पर खोज मुफ़्त स्रोत उपयोग करती है और  इमेज टूल उपलब्ध नहीं रहते।',
+      'जब प्रदाता क्लाउड हो, वेब खोज, इमेज जनरेशन और मीडिया विश्लेषण क्लाउड से होकर चलते हैं और क्रेडिट खर्च करते हैं; बंद होने पर खोज मुफ़्त स्रोत उपयोग करती है और क्लाउड इमेज टूल उपलब्ध नहीं रहते।',
     setGithub: 'ओपन सोर्स',
     starOnGitHub: 'GitHub पर स्टार दें',
     starPromptTitle: 'UToOffice पसंद आ रहा है?',
@@ -12050,7 +12048,7 @@ export const strings = {
     setAiCodexHint:
       '自動尋找目前的 Codex CLI，更新後無需重新選擇；也可填寫自訂路徑。無需 API Key。',
     setAiByokNote:
-      '對話使用你自己的 key；生圖與媒體解析依「生圖與媒體」設定；網頁搜尋仍走  登入或免費來源。',
+      '對話使用你自己的 key；生圖與媒體解析依「生圖與媒體」設定；網頁搜尋仍走登入或免費來源。',
     setAiSave: '儲存',
     setAiSaved: '已儲存',
     setAiTest: '測試連線',
@@ -12079,7 +12077,7 @@ export const strings = {
     setAiSharedKeyHint: '同一服務商的 key 與 Base URL 在各項能力間共用，只需填一次。',
     setAiGskTools: '雲端工具',
     setAiGskToolsDesc:
-      '服務商選擇  時，網頁搜尋、生圖與媒體解析經  雲端並消耗點數；關閉後搜尋改用免費來源， 生圖工具不可用。',
+      '服務商選擇雲端時，網頁搜尋、生圖與媒體解析經雲端並消耗點數；關閉後搜尋改用免費來源，雲端生圖工具不可用。',
     setGithub: '開源專案',
     starOnGitHub: '到 GitHub 給我們一顆星',
     starPromptTitle: '喜歡 UToOffice 嗎？',
